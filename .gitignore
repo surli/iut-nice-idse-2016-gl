@@ -1,0 +1,8 @@
+.DS_Store
+.idea
+bin
+.jar
+.settings
+.classpath
+.project
+target
