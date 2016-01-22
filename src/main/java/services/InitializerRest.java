@@ -6,7 +6,6 @@ import org.codehaus.jettison.json.*;
 
 import java.constante.Config;
 import java.model.Model;
-import java.constante.*;
 
 
 /**
@@ -33,16 +32,16 @@ public class InitializerRest {
 
         // verification du token
         if(!json.has("_token"))
-            return Response.status(500).entity("Invalide token").build();
+            return Response.status(401).entity("Invalid token").build();
         if(!Config._token.equals(json.getString("_token")))
-            return Response.status(500).entity("Invalide token").build();
+            return Response.status(401).entity("Invalid token").build();
 
         // verification du champ game
         if(!json.has("game"))
-            return Response.status(500).entity("Invalide parameter").build();
+            return Response.status(405).entity("Invalid parameter").build();
         String game = json.getString("game");
         if(game.length() < 3)
-            return Response.status(500).entity("Invalide parameter").build();
+            return Response.status(405).entity("Invalid parameter").build();
 
         // creation de la game
         if(!model.addGame(game))
