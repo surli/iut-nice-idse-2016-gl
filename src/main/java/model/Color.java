@@ -1,3 +1,5 @@
+package java.model;
+
 public enum Color {
 	Bleu,
 	Jaune,
