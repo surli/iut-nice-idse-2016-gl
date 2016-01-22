@@ -1,16 +1,21 @@
-package java.model;
-
 import java.util.ArrayList;
 
 public class Model {
 	private ArrayList<Game> games;
 	private static Model model=null;
 	
+	/**
+	 * Constructeur par défaut
+	 */
 	private Model()
 	{
 		this.games= new ArrayList<Game>();
 	}
 
+	/**
+	 * Récupérer une instance du modèle, si null création du modèle
+	 * @return model
+	 */
 	public static Model getInstance() {
 		if (model == null) {
 			model = new Model();
@@ -18,9 +23,14 @@ public class Model {
 		return model;
 	}
 	
+	/**
+	 * Ajouter une partie
+	 * @param name
+	 * @return true/false
+	 */
 	public boolean addGame(String name)
 	{
-		if(!containsGame(name))
+		if(!existsGame(name))
 		{
 			Game game = new Game(name);
 			this.games.add(game);
@@ -29,11 +39,16 @@ public class Model {
 		return false;
 	}
 	
-	public boolean containsGame(String name)
+	/**
+	 * Verifie si la partie existe
+	 * @param gameName
+	 * @return true/false
+	 */
+	public boolean existsGame(String gameName)
 	{
 		for(Game game : games)
 		{
-			if(game.getName().equals(name))
+			if(game.getName().equals(gameName))
 			{
 				return true;
 			}
@@ -41,22 +56,16 @@ public class Model {
 		return false;
 	}
 
-	public boolean addPlayerToGame(String gameName,String playerName)
-	{
-		Game game = findGameByName(gameName);
-		if(game != null)
-		{
-			game.addPlayer(playerName);
-			return true;
-		}
-		return false;
-	}
-	
-	public Game findGameByName(String name)
+	/**
+	 * Chercher la partie selon son nom
+	 * @param gameName
+	 * @return Game/null
+	 */
+	public Game findGameByName(String gameName)
 	{
 		for(Game game : games)
 		{
-			if(game.getName().equals(name))
+			if(game.getName().equals(gameName))
 			{
 				return game;
 			}
@@ -64,5 +73,42 @@ public class Model {
 		return null;
 	}
 	
+	/**
+	 * Ajoute un joueur à une partie si le nom du joueur n'est pas déjà existant et que le nom de la partie est correct
+	 * @param gameName
+	 * @param playerName
+	 * @return true/false
+	 */
+	public boolean addPlayerToGame(String gameName,String playerName)
+	{
+		Game game = findGameByName(gameName);
+		if(game != null)
+		{
+			return game.addPlayer(playerName);
+		}
+		return false;
+	}
 	
+	
+	/**
+	 * Chercher un joueur selon le nom de la partie et le nom du joueur renseignés
+	 * @param gameName
+	 * @param playerName
+	 * @return Player/null
+	 */
+	public Player findPlayerByName(String gameName,String playerName)
+	{
+		Game game = findGameByName(gameName);
+		if(game != null)
+		{
+			for(Player player : game.getPlayers())
+			{
+				if(player.getName().equals(playerName))
+				{
+					return player;
+				}
+			}
+		}
+		return null;
+	}
 }

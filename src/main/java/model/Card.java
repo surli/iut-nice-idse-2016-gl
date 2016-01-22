@@ -1,5 +1,3 @@
-package java.model;
-
 public class Card implements Comparable<Card>{
 	private int value;
 	private Color color;
