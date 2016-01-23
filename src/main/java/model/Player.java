@@ -1,5 +1,7 @@
-import java.util.ArrayList;
+package java.model;
 
+
+import java.util.ArrayList;
 
 public class Player {
 	private String name;

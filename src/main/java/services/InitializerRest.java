@@ -5,7 +5,7 @@ import javax.ws.rs.core.*;
 import org.codehaus.jettison.json.*;
 
 import java.constante.Config;
-import java.model.Model;
+import java.model.*;
 
 
 /**

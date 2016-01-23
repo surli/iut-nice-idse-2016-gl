@@ -1,3 +1,4 @@
+package java.model;
 import java.util.ArrayList;
 
 public class Model {
@@ -5,7 +6,7 @@ public class Model {
 	private static Model model=null;
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par dï¿½faut
 	 */
 	private Model()
 	{
@@ -13,7 +14,7 @@ public class Model {
 	}
 
 	/**
-	 * Récupérer une instance du modèle, si null création du modèle
+	 * Rï¿½cupï¿½rer une instance du modï¿½le, si null crï¿½ation du modï¿½le
 	 * @return model
 	 */
 	public static Model getInstance() {
@@ -74,7 +75,7 @@ public class Model {
 	}
 	
 	/**
-	 * Ajoute un joueur à une partie si le nom du joueur n'est pas déjà existant et que le nom de la partie est correct
+	 * Ajoute un joueur ï¿½ une partie si le nom du joueur n'est pas dï¿½jï¿½ existant et que le nom de la partie est correct
 	 * @param gameName
 	 * @param playerName
 	 * @return true/false
@@ -91,7 +92,7 @@ public class Model {
 	
 	
 	/**
-	 * Chercher un joueur selon le nom de la partie et le nom du joueur renseignés
+	 * Chercher un joueur selon le nom de la partie et le nom du joueur renseignï¿½s
 	 * @param gameName
 	 * @param playerName
 	 * @return Player/null
