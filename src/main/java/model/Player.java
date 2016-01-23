@@ -1,5 +1,3 @@
-package java.model;
-
 import java.util.ArrayList;
 
 
