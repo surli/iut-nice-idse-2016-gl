@@ -8,6 +8,7 @@ public class Game {
 	private String gameName;
 	private ArrayList<Player> players;
 	private Board board;
+	private int maxPlayer=4;
 	
 	public Game(Player host,String gameName)
 	{
@@ -17,7 +18,7 @@ public class Game {
 		this.board = new Board(players);
 		this.players.add(host);
 	}
-	
+
 	public Player getHost() { return host; }
 	public void setHost(Player host) { this.host = host; }
 	
@@ -33,6 +34,9 @@ public class Game {
 	public Board getBoard() { return board; }
 	public void setBoard(Board board) {	this.board = board;	}
 	
+	public int getMaxPlayer() { return maxPlayer; }
+	public void setMaxPlayer(int maxPlayer) { this.maxPlayer = maxPlayer; }
+	
 	/**
 	 * Ajoute joueur à la partie
 	 * @param player
@@ -40,6 +44,10 @@ public class Game {
 	 */
 	public boolean addPlayer(Player player)
 	{
+		if(players.size() == maxPlayer)
+		{
+			return false;
+		}
 		if(!containsPlayer(player.getName()))
 		{
 			this.players.add(player);
@@ -91,5 +99,23 @@ public class Game {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Retourne le nombre de places restantes
+	 * @return int
+	 */
+	public int remainingSlot()
+	{
+		return maxPlayer-players.size();
+	}
+	
+	/**
+	 * Retourne le nombre de joueurs présents dans la partie
+	 * @return int
+	 */
+	public int numberOfPlayers()
+	{
+		return players.size();
 	}
 }
