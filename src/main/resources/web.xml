@@ -8,7 +8,7 @@
     <servlet>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>services</param-value>
+            <param-value>fr.unice.idse.services</param-value>
         </init-param>
         <description>JAX-RS Tools Generated - Do not modify</description>
         <servlet-name>JAX-RS Servlet</servlet-name>
