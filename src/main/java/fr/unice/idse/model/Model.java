@@ -15,7 +15,7 @@ public class Model {
 	}
 
 	/**
-	 * R�cup�rer une instance du mod�le, si null cr�ation du mod�le
+	 * Récupérer une instance du modèle, si null création du modèle
 	 * @return model
 	 */
 	public static Model getInstance() {
@@ -25,6 +25,8 @@ public class Model {
 		return model;
 	}
 	
+	public ArrayList<Game> getGames() { return games; }
+
 	/**
 	 * Ajouter une partie
 	 * @param gameName
@@ -42,7 +44,7 @@ public class Model {
 	}
 	
 	/**
-	 * Cr�er un joueur s'il n'existe pas
+	 * Créer un joueur s'il n'existe pas
 	 * @param playerName
 	 * @return Player
 	 */
@@ -56,7 +58,7 @@ public class Model {
 	}
 	
 	/**
-	 * V�rifie si le joueur indiqu� existe dans les parties
+	 * Vérifie si le joueur indiqué existe dans les parties
 	 * @param playerName
 	 * @return true/false
 	 */
@@ -143,7 +145,7 @@ public class Model {
 	
 	
 	/**
-	 * Chercher un joueur selon le nom de la partie et le nom du joueur renseign�s
+	 * Chercher un joueur selon le nom de la partie et le nom du joueur renseignés
 	 * @param gameName
 	 * @param playerName
 	 * @return Player/null
