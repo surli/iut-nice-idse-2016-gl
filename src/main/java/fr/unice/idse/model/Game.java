@@ -33,23 +33,62 @@ public class Game {
 	public Board getBoard() { return board; }
 	public void setBoard(Board board) {	this.board = board;	}
 	
-	public boolean addPlayer(String playerName)
+	/**
+	 * Ajoute joueur à la partie
+	 * @param player
+	 * @return true/false
+	 */
+	public boolean addPlayer(Player player)
 	{
-		if(!containsPlayer(playerName))
+		if(!containsPlayer(player.getName()))
 		{
-			Player player=new Player(playerName);
 			this.players.add(player);
 			return true;
 		}
 		return false;
 	}
 
+	/**
+	 * Verifie si le joueur indiqué est présent dans la partie
+	 * @param playerName
+	 * @return true/false
+	 */
 	public boolean containsPlayer(String playerName)
 	{
 		for(Player player : players)
 		{
 			if(player.getName().equals(playerName))
 				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Cherche joueur en fonction de son nom
+	 * @param playerName
+	 * @return Player
+	 */
+	public Player findPlayerByName(String playerName)
+	{
+		for(Player player : players)
+		{
+			if(player.getName().equals(playerName))
+				return player;
+		}
+		return null;
+	}
+	
+	/**
+	 * Supprime joueur de la partie
+	 * @param playerName
+	 * @return true/false
+	 */
+	public boolean removePlayer(String playerName)
+	{
+		if(containsPlayer(playerName))
+		{
+			players.remove(findPlayerByName(playerName));
+			return true;
 		}
 		return false;
 	}
