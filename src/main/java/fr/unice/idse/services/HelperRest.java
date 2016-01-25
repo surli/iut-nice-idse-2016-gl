@@ -20,7 +20,7 @@ public class HelperRest {
         Model model = Model.getInstance();
         HashMap<String, String> list = new HashMap<>();
         for (Game game : model.getGames()){
-            list.put(game.getName(), )
+            list.put(game.getName(), game.numberOfPlayers() + "/" + game.getMaxPlayer());
         }
         return Response.status(200).entity("").build();
     }
