@@ -25,16 +25,50 @@ public class Model {
 	
 	/**
 	 * Ajouter une partie
-	 * @param name
+	 * @param gameName
 	 * @return true/false
 	 */
-	public boolean addGame(String name)
+	public boolean addGame(Player player, String gameName)
 	{
-		if(!existsGame(name))
+		if(!existsGame(gameName))
 		{
-			Game game = new Game(name);
+			Game game = new Game(player,gameName);
 			this.games.add(game);
 			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Créer un joueur s'il n'existe pas
+	 * @param playerName
+	 * @return Player
+	 */
+	public Player createPlayer(String playerName)
+	{
+		if(!playerExists(playerName))
+		{
+			return new Player(playerName);
+		}
+		return null;
+	}
+	
+	/**
+	 * Vérifie si le joueur indiqué existe dans les parties
+	 * @param playerName
+	 * @return true/false
+	 */
+	public boolean playerExists(String playerName)
+	{
+		for(Game game : games)
+		{
+			for(Player player : game.getPlayers())
+			{
+				if(player.getName().equals(playerName))
+				{
+					return true;
+				}
+			}
 		}
 		return false;
 	}
