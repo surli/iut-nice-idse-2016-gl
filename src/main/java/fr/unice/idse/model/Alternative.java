@@ -1,4 +1,4 @@
-package idse.model;
+package fr.unice.idse.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;

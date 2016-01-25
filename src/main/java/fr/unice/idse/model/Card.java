@@ -1,4 +1,4 @@
-package idse.model;
+package fr.unice.idse.model;
 
 public class Card implements Comparable<Card>{
 	private int value;

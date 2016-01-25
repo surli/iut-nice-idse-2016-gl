@@ -1,4 +1,4 @@
-package idse.constante;
+package fr.unice.idse.constante;
 
 /**
  * Classe config

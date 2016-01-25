@@ -1,12 +1,13 @@
-package idse.services;
+package fr.unice.idse.services;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-import idse.model.Model;
+import fr.unice.idse.model.Model;
+import fr.unice.idse.model.Player;
 import org.codehaus.jettison.json.*;
 
-import idse.constante.Config;
+import fr.unice.idse.constante.Config;
 
 
 /**
@@ -45,12 +46,10 @@ public class InitializerRest {
             return Response.status(405).entity("Invalid parameter").build();
 
         // creation de la game
-        if(!model.addGame(game))
+        if(!model.addGame(model.createPlayer(""), game))
             return Response.status(500).entity("{message: false}").build();
 
         return Response.status(200).entity("{message: true}").build();
     }
-
-    public Response
 
 }

@@ -1,4 +1,4 @@
-package idse.model;
+package fr.unice.idse.model;
 
 public enum Color {
 	Bleu,
