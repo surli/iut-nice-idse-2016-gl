@@ -1,11 +1,12 @@
-package java.services;
+package idse.services;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+
+import idse.model.Model;
 import org.codehaus.jettison.json.*;
 
-import java.constante.Config;
-import java.model.*;
+import idse.constante.Config;
 
 
 /**
@@ -22,7 +23,7 @@ public class InitializerRest {
      * Vérifie si la partie existe ou non. Renvoie {message: boolean}
      * @return Response
      */
-    @Path("/create")
+    @Path("/creategame")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response createGame(String objJSON) throws JSONException {
@@ -49,5 +50,7 @@ public class InitializerRest {
 
         return Response.status(200).entity("{message: true}").build();
     }
+
+    public Response
 
 }

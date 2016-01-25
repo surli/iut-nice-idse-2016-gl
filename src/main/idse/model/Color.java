@@ -1,4 +1,4 @@
-package java.model;
+package idse.model;
 
 public enum Color {
 	Bleu,

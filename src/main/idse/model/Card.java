@@ -1,4 +1,4 @@
-package java.model;
+package idse.model;
 
 public class Card implements Comparable<Card>{
 	private int value;

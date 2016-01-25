@@ -9,8 +9,8 @@
     <version>1.0</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <compiler.source>1.7</compiler.source>
-        <compiler.target>1.7</compiler.target>
+        <compiler.source>1.8</compiler.source>
+        <compiler.target>1.8</compiler.target>
     </properties>
     <build>
         <sourceDirectory>${basedir}/src/main</sourceDirectory>

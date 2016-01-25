@@ -1,4 +1,4 @@
-package java.model;
+package idse.model;
 import java.util.ArrayList;
 
 public class Model {
@@ -41,7 +41,7 @@ public class Model {
 	}
 	
 	/**
-	 * Créer un joueur s'il n'existe pas
+	 * Crï¿½er un joueur s'il n'existe pas
 	 * @param playerName
 	 * @return Player
 	 */
@@ -55,7 +55,7 @@ public class Model {
 	}
 	
 	/**
-	 * Vérifie si le joueur indiqué existe dans les parties
+	 * Vï¿½rifie si le joueur indiquï¿½ existe dans les parties
 	 * @param playerName
 	 * @return true/false
 	 */

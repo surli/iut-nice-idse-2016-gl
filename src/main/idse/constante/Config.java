@@ -1,4 +1,4 @@
-package java.constante;
+package idse.constante;
 
 /**
  * Classe config
