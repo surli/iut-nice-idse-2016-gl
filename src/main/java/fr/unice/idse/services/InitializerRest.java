@@ -34,22 +34,24 @@ public class InitializerRest {
 
         // verification du token
         if(!json.has("_token"))
-            return Response.status(401).entity("Invalid token").build();
+            return Response.status(401).entity("{error : Invalid token}").build();
         if(!Config._token.equals(json.getString("_token")))
-            return Response.status(401).entity("Invalid token").build();
+            return Response.status(401).entity("{error : Invalid token}").build();
 
         // verification du champ game
         if(!json.has("game"))
-            return Response.status(405).entity("Invalid parameter").build();
+            return Response.status(405).entity("{error : Invalid parameter}").build();
         String game = json.getString("game");
         if(game.length() < 3)
-            return Response.status(405).entity("Invalid parameter").build();
+            return Response.status(405).entity("{error : Invalid parameter}").build();
         if(!json.has("player"))
-            return Response.status(405).entity("Invalid parameter").build();
-        String player = json.getString("player");
+            return Response.status(405).entity("{error : Invalid parameter}").build();
+        Player player = model.createPlayer(json.getString("player"));
+        if(player == null)
+            return Response.status(405).entity("{error : Joueur existant").build();
 
         // creation de la game
-        if(!model.addGame(model.createPlayer(player), game))
+        if(!model.addGame(player, game))
             return Response.status(500).entity("{message: false}").build();
 
         return Response.status(200).entity("{message: true}").build();
