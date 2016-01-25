@@ -19,7 +19,7 @@ public class InitializerRest {
 
     /**
      * Méthode en POST permettant la création de partie.
-     * Signature : {_token: token, game: String}
+     * Signature : {_token: token, game: String, player: String(pseudo du joueur)}
      * Le nom de la game doit être suppérieur à 3 caractères;
      * Vérifie si la partie existe ou non. Renvoie {message: boolean}
      * @return Response
@@ -44,9 +44,12 @@ public class InitializerRest {
         String game = json.getString("game");
         if(game.length() < 3)
             return Response.status(405).entity("Invalid parameter").build();
+        if(!json.has("player"))
+            return Response.status(405).entity("Invalid parameter").build();
+        String player = json.getString("player");
 
         // creation de la game
-        if(!model.addGame(model.createPlayer(""), game))
+        if(!model.addGame(model.createPlayer(player), game))
             return Response.status(500).entity("{message: false}").build();
 
         return Response.status(200).entity("{message: true}").build();
