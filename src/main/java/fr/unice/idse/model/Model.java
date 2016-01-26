@@ -15,7 +15,7 @@ public class Model {
 	}
 
 	/**
-	 * R�cup�rer une instance du mod�le, si null cr�ation du mod�le
+	 * Récupérer une instance du modèle, si null création du modèle
 	 * @return model
 	 */
 	public static Model getInstance() {
@@ -25,6 +25,8 @@ public class Model {
 		return model;
 	}
 	
+	public ArrayList<Game> getGames() { return games; }
+
 	/**
 	 * Ajouter une partie
 	 * @param gameName
@@ -42,7 +44,7 @@ public class Model {
 	}
 	
 	/**
-	 * Cr�er un joueur s'il n'existe pas
+	 * Créer un joueur s'il n'existe pas
 	 * @param playerName
 	 * @return Player
 	 */
@@ -56,7 +58,7 @@ public class Model {
 	}
 	
 	/**
-	 * V�rifie si le joueur indiqu� existe dans les parties
+	 * Vérifie si le joueur indiqué existe dans les parties
 	 * @param playerName
 	 * @return true/false
 	 */
@@ -110,24 +112,40 @@ public class Model {
 	}
 	
 	/**
-	 * Ajoute un joueur � une partie si le nom du joueur n'est pas d�j� existant et que le nom de la partie est correct
+	 * Ajoute un joueur à une partie si le joueur n'est pas déjà existant et que le nom de la partie est correct
 	 * @param gameName
-	 * @param playerName
+	 * @param player
 	 * @return true/false
 	 */
-	public boolean addPlayerToGame(String gameName,String playerName)
+	public boolean addPlayerToGame(String gameName,Player player)
 	{
 		Game game = findGameByName(gameName);
 		if(game != null)
 		{
-			return game.addPlayer(playerName);
+			return game.addPlayer(player);
+		}
+		return false;
+	}
+	
+	/**
+	 * Supprime joueur d'une partie
+	 * @param gameName
+	 * @param playerName
+	 * @return true/false
+	 */
+	public boolean removePlayerFromGame(String gameName, String playerName)
+	{
+		Game game = findGameByName(gameName);
+		if(game != null)
+		{
+			return game.removePlayer(playerName);
 		}
 		return false;
 	}
 	
 	
 	/**
-	 * Chercher un joueur selon le nom de la partie et le nom du joueur renseign�s
+	 * Chercher un joueur selon le nom de la partie et le nom du joueur renseignés
 	 * @param gameName
 	 * @param playerName
 	 * @return Player/null
@@ -137,14 +155,9 @@ public class Model {
 		Game game = findGameByName(gameName);
 		if(game != null)
 		{
-			for(Player player : game.getPlayers())
-			{
-				if(player.getName().equals(playerName))
-				{
-					return player;
-				}
-			}
+			return game.findPlayerByName(playerName);
 		}
 		return null;
 	}
+	 
 }
