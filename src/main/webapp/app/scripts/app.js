@@ -25,6 +25,11 @@ angular
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
         // Ajout des routes inscription + connexion
+            .state('login', {
+                url:"/login",
+                templateUrl: "views/login.html",
+                controller: "LoginController"
+            })
             .state('app', {
                 url: "/app",
                 templateUrl: "views/app.html",
@@ -41,5 +46,5 @@ angular
                 controller: "GameController"
             });
 
-        $urlRouterProvider.otherwise("/app/start");
+        $urlRouterProvider.otherwise("/login");
     });

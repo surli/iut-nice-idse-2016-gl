@@ -184,5 +184,35 @@ footer {
   }
 }
 
+#login {
+  .col-md-offset-3.col-md-6.text-center{
+    background: white;
+    margin-top: 50px;
+    padding: 10px;
+    color: black;
+    border: 3px solid #C32929;
+    border-radius: 9px;
+  }
+  #bouton-login {
+    padding: 23px 44px;
+    margin: 12px 0px 27px 0;
+    font-size: 27pt;
+    border-radius: 50%;
+    color: #FFF;
+    background: #27ae60;
+    border: 10px solid #4B4B4B;
+  }
+  .input-lg, .input-group-lg > .form-control, .input-group-lg > .input-group-addon, .input-group-lg > .input-group-btn > .btn{
+    font-size: 27px;
+  }
+  h1{
+    color: #F2DB22;
+    font-size: 58pt;
+  }
+  a{
+    color: grey;
+    font-size: 30px;
+  }
+}
 
 
