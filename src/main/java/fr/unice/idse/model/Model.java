@@ -159,5 +159,40 @@ public class Model {
 		}
 		return null;
 	}
-	 
+	
+	/**
+	 * Le joueur désigné joue une carte en fonction de la position de la carte
+	 * (cardPosition)dans la main du joueur, dans la partie indiquée  
+	 * @param game
+	 * @param playerName
+	 * @param colorNumber
+	 * @param cardPosition
+	 * @return true/false
+	 */
+	public boolean play(String gameName,String playerName, int cardPosition)
+	{
+		Game game=findGameByName(gameName);
+		Player player=findPlayerByName(gameName, playerName);
+		if(player != null)
+			return player.play(cardPosition,game.getBoard());
+		return false;
+	}
+	
+	/**
+	 * Le joueur désigné joue une carte en fonction de la position de la carte
+	 * (cardPosition)dans la main du joueur, dans la partie indiquée et change de
+	 * couleur selon la couleur indiquée (0 -> Bleu, 1 -> Jaune, 2 -> Rouge, 3 -> Vert)
+	 * @param game
+	 * @param playerName
+	 * @param colorNumber
+	 * @return true/false
+	 */
+	public boolean play(String gameName,String playerName,int cardPosition, int colorNumber)
+	{
+		Game game=findGameByName(gameName);
+		Player player=findPlayerByName(gameName, playerName);
+		if(player != null)
+			return player.play(cardPosition,game.getBoard());
+		return false;
+	}
 }
