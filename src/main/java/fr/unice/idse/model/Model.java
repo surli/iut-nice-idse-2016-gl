@@ -214,4 +214,30 @@ public class Model {
 		}
 		return false;
 	}
+	
+	
+	/**
+	 * Méthode qui permet de lancer une partie en vérifiant que l'hote de la partie est bien celui indiqué en paramètre
+	 * @param gameName
+	 * @param playerName
+	 * @return true/false
+	 */
+	public boolean startGame(String gameName,String playerName)
+	{
+		Game game = findGameByName(gameName);
+		
+		if(game != null)
+		{
+			Player player = findPlayerByName(gameName, playerName);
+			if(player != null)
+			{
+				if(game.getHost().getName().equals(player.getName()))
+				{
+					return game.start();
+				}
+			}
+		}
+		return false;
+	}
+	 
 }
