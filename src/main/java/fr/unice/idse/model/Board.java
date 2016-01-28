@@ -7,7 +7,9 @@ public class Board
 	
 	private ArrayList<Player> players;
 	private Alternative variante;
-	private int actualPlayer =0;
+	private int actualPlayer = 0;
+	private Stack stack;
+	private Deck deck;
 	
 	public Board()
 	{
@@ -34,5 +36,18 @@ public class Board
 	public Player getActualPlayer()
 	{
 		return players.get(actualPlayer);
+	}
+
+	public Stack getStack() {
+		return stack;
+	}
+
+	public Deck getDeck() {
+		return deck;
+	}
+	
+	public void changeColor(Color color)
+	{
+		getStack().changeColor(color);
 	}
 }
