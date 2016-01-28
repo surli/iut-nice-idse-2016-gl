@@ -189,10 +189,29 @@ public class Model {
 	 */
 	public boolean play(String gameName,String playerName,int cardPosition, int colorNumber)
 	{
-		Game game=findGameByName(gameName);
-		Player player=findPlayerByName(gameName, playerName);
+		boolean result = false;
+		Game game = findGameByName(gameName);
+		Board board = game.getBoard();
+		Player player = findPlayerByName(gameName, playerName);
 		if(player != null)
-			return player.play(cardPosition,game.getBoard());
+		{
+			result= player.play(cardPosition,game.getBoard());
+			Color color=null;
+			switch(colorNumber)
+			{
+				case 0: color=Color.Bleu;
+				case 1: color=Color.Jaune;
+				case 2: color=Color.Rouge;
+				case 3: color=Color.Vert;
+			}
+			try{
+				board.changeColor(color);
+			}
+			catch(NullPointerException e)
+			{
+				e.printStackTrace();
+			}
+		}
 		return false;
 	}
 }
