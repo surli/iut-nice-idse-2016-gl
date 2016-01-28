@@ -8,7 +8,7 @@ public class Game {
 	private String gameName;
 	//private ArrayList<Player> players;//à discuter la nécessitée de la mettre
 	private Board board;
-	private int maxPlayer=4;
+	private int minPlayer=2,maxPlayer=4;
 	
 	public Game(Player host,String gameName)
 	{
@@ -118,4 +118,19 @@ public class Game {
 	{
 		return board.getPlayers().size();
 	}
+	
+	/**
+	 * Méthode qui initialise une partie afin de qu'elle devienne jouable
+	 * @return
+	 */
+	public boolean start()
+	{
+		if(numberOfPlayers()>minPlayer && numberOfPlayers()<maxPlayer)
+		{
+			board.init();
+			return true;
+		}
+		return false;
+	}
+
 }
