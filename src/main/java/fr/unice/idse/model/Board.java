@@ -46,8 +46,20 @@ public class Board
 		return deck;
 	}
 	
+	/**
+	 * Change la couleur de la carte supérieur du talon
+	 * @param color
+	 */
 	public void changeColor(Color color)
 	{
 		getStack().changeColor(color);
+	}
+	
+	/**
+	 * Initialise le plateau
+	 */
+	public void init()
+	{
+		
 	}
 }
