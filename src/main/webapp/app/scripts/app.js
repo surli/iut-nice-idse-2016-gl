@@ -30,6 +30,11 @@ angular
                 templateUrl: "views/login.html",
                 controller: "LoginController"
             })
+            .state('register', {
+                url:"/register",
+                templateUrl: "views/register.html",
+                controller: "RegisterController"
+            })
             .state('app', {
                 url: "/app",
                 templateUrl: "views/app.html",
