@@ -80,6 +80,7 @@
 				<version>8.1.16.v20140903</version>
 			</plugin>
 		</plugins>
-		<finalName>test-service</finalName>
+		<sourceDirectory>${basedir}/src/main</sourceDirectory>
+		<testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
 	</build>
 </project>
