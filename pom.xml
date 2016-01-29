@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>iut.unice.fr</groupId>
+	<groupId>iut.unice.idse</groupId>
 	<artifactId>uno</artifactId>
 	<version>1.0</version>
 	<properties>
@@ -11,7 +11,7 @@
 		<compiler.source>1.8</compiler.source>
 		<compiler.target>1.8</compiler.target>
 	</properties>
-	<packaging>pom</packaging>
+	<packaging>war</packaging>
 
 	<dependencies>
 		<dependency>
@@ -79,8 +79,18 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>8.1.16.v20140903</version>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
 		</plugins>
-		<sourceDirectory>${basedir}/src/main</sourceDirectory>
+		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 		<testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
 	</build>
 </project>
