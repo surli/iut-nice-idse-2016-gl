@@ -68,5 +68,9 @@ public class Player {
 		this.dealer = dealer;
 	}
 	
+	public boolean play(int cardPosition,Board board)
+	{
+		return false;	
+	}
 	
 }
