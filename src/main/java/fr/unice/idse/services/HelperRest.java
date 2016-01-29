@@ -20,7 +20,7 @@ public class HelperRest {
      * @return Response
      */
     @GET
-    @Path("games")
+    @Path("/games")
     @Produces(MediaType.APPLICATION_JSON)
     public Response listGame(){
         Model model = Model.getInstance();
