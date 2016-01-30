@@ -30,9 +30,7 @@ public class InitializerRestTest {
 		jsonAsMap.put("_token", "hbj7BB7Y6B87T282B87T27N90A098");
 		jsonAsMap.put("game", "Superfly");
 		jsonAsMap.put("playername", "marcel");
-		
-	
-			
+					
 		given().
 		contentType(com.jayway.restassured.http.ContentType.JSON).
 		body(jsonAsMap).
@@ -43,6 +41,8 @@ public class InitializerRestTest {
 		 */
         then().statusCode(200);
 		}
+		
+		
 		
 
 	//@Test
