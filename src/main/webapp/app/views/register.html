@@ -1,23 +1,34 @@
 <div id="register" class="container">
     <div class="col-md-offset-3 col-md-6 text-center">
-
-        <h1>UNO</h1>
-        <p class="col-md-4">
-            <p>If you already have an account just <a href="login" >Log in</a></p>
+        <h1 class="title-uno">
+            <span class="color-orange">U</span><span class="color-rouge">N</span><span class="color-vert">O</span>
+        </h1>
+        <br />
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Register</div>
+                <div class="panel-body">
+                    <form  method="post" class="form-horizontal" data-ng-submit="goRegister()">
+                        <div class="form-group">
+                            <input class="input-form input-lg" type="text" placeholder="Prénom" id="prenom" data-ng-model="prenom"/>
+                        </div>
+                        <div class="form-group">
+                            <input class="input-form input-lg" type="email" placeholder="Email" id="email" data-ng-model="email"/>
+                        </div>
+                        <div class="form-group">
+                            <input class="input-form input-lg" type="password" placeholder="Password" id="pass" data-ng-model="pass"/>
+                        </div>
+                        <br />
+                        <button type="submit" class="btn btn-lg btn-success" >Register</button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <form  method="post" data-ng-submit="goRegi()">
-            <div class="form-group">
-                <input class="input-re" type="text" placeholder="Prenom" id="prenom" data-ng-model="prenom"/>
-            </div>
-            <div class="form-group">
-                <input class="input-re" type="email" placeholder="Email" id="email" data-ng-model="email"/>
-            </div>
-            <div class="form-group">
-                <input class="input-re" type="password" placeholder="Password" id="pass" data-ng-model="pass"/>
-
-            </div>
-                <button type="submit" id="bouton-login" class="btn btn-lg" >Login</button>
-
-        </form>
+        <br />
+        <p>
+            You already have an account ?
+            <br />
+            <button class="btn btn-danger" data-ui-sref="login" >Login</button>
+        </p>
     </div>
 </div>

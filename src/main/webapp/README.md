@@ -2,7 +2,7 @@
 
 Run `npm install` for install npm dependencies.
 Run `npm install bower -g` for install bower and `bower install` for install bower dependencies.
-Run `npm install -g grunt-cli` for install Grunt.
+Run `npm install grunt-cli -g` for install Grunt.
 Run `gem install sass` for install Sass.
 Run `gem install compass` for install Compass.
 
@@ -21,6 +21,6 @@ Run `grunt` or `grunt --force` for building and `grunt serve` for preview.
 
 Running `grunt test` will run the unit tests with karma.
 
-## Documentation Yeoman`
+## Documentation Yeoman
 
 https://github.com/yeoman/generator-angular#readme
