@@ -60,6 +60,9 @@ public class Board
 	 */
 	public void init()
 	{
-		
+		for(int i = 0; i<players.size(); i++)
+		{
+			players.get(i).getCards().add(null);
+		}
 	}
 }
