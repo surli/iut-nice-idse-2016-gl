@@ -13,18 +13,34 @@ angular
         'ngAnimate',
         'ngCookies',
         'ngResource',
-        'ngRoute',
         'ngSanitize',
         'ui.router'
     ])
-    .run(['$rootScope', '$location', function ($rootScope, $location) {
-        $rootScope.$on('$routeChangeStart', function (event, currRoute, prevRoute) {
-            // TODO $location
-        });
+    .config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push(['$rootScope', function($rootScope) {
+            $rootScope.isLoading = 0;
+            return {
+                'request': function(config) {
+                    $rootScope.isLoading++;
+                    return config;
+                },
+                'requestError': function(rejection) {
+                    $rootScope.isLoading = Math.max(0, $rootScope.isLoading - 1);
+                    return rejection;
+                },
+                'response': function(response) {
+                    $rootScope.isLoading = Math.max(0, $rootScope.isLoading - 1);
+                    return response;
+                },
+                'responseError': function(rejection) {
+                    $rootScope.isLoading = Math.max(0, $rootScope.isLoading - 1);
+                    return rejection;
+                }
+            };
+        }]);
     }])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
-        // Ajout des routes inscription + connexion
             .state('login', {
                 url:"/login",
                 templateUrl: "views/login.html",
@@ -37,6 +53,7 @@ angular
             })
             .state('app', {
                 url: "/app",
+                abstract: true,
                 templateUrl: "views/app.html",
                 controller: "AppController"
             })
