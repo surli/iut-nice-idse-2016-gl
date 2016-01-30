@@ -1,9 +1,11 @@
+'use strict';
+
 angular.module('unoApp')
     .controller("GameController", ["$rootScope", "$scope", "$http", function ($rootScope, $scope, $http) {
     // TODO : IN GAME
-    $rootScope.inGame = true;
+    $rootScope.inGame   = true;
     $rootScope.username = "George";
-    $rootScope.points = 0;
+    $rootScope.points   = 0;
 
     //$http.get("localhost:8080/rest/jeu/start/"+$rootScope.username);
 

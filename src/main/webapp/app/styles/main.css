@@ -11,7 +11,7 @@ html {
   -webkit-text-size-adjust: 100%; }
 
 body {
-  margin: 0;}
+  margin: 0; }
 
 article,
 aside,
@@ -5821,211 +5821,293 @@ button.close {
   font-weight: 400;
   src: local("Cabin Regular"), local("Cabin-Regular"), url(fonts/4VMQLG5UaE3m5rr_emmAqaCWcynf_cDxXwCLxiixG1c.woff2) format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000; }
-body {
-  margin: 0;
+.btn {
+  color: #FFF;
+  border: none; }
+  .btn:focus, .btn:focus:active {
+    outline: none;
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2); }
+  .btn:hover {
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2); }
+  .btn .btn-primary:hover, .btn .btn-primary:active, .btn .btn-primary:visited, .btn .btn-primary:focus {
+    background-color: #5555ff; }
+  .btn .btn-danger:hover, .btn .btn-danger:active, .btn .btn-danger:visited, .btn .btn-danger:focus {
+    background-color: #ff5555; }
+  .btn .btn-success:hover, .btn .btn-success:active, .btn .btn-success:visited, .btn .btn-success:focus {
+    background-color: #55aa55; }
+  .btn .btn-warning:hover, .btn .btn-warning:active, .btn .btn-warning:visited, .btn .btn-warning:focus {
+    background-color: #ffaa00; }
+
+input {
+  border: none;
+  text-align: center;
+  color: #4B4B4B;
+  border-radius: 5px;
+  font-family: Cabin, Georgia, Times, serif; }
+  input:focus {
+    outline: none;
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2); }
+
+.panel {
+  border: none;
+  background-color: rgba(0, 0, 0, 0.2); }
+  .panel .panel-heading {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #FFF;
+    border: none; }
+  .panel .panel-body {
+    padding: 30px 0; }
+
+.carte {
+  width: 72px;
+  height: 108px;
+  background: #FFF;
+  border-radius: 12px;
+  text-align: center;
+  background-image: url(../images/cartes.svg);
+  background-size: 1008px 864px;
+  transform-origin: left bottom; }
+  .carte.Trefle-1 {
+    background-position: 0px 0px !important; }
+  .carte.Trefle-2 {
+    background-position: -72px 0px !important; }
+  .carte.Trefle-3 {
+    background-position: -144px 0px !important; }
+  .carte.Trefle-4 {
+    background-position: -216px 0px !important; }
+  .carte.Trefle-5 {
+    background-position: -288px 0px !important; }
+  .carte.Trefle-6 {
+    background-position: -360px 0px !important; }
+  .carte.Trefle-7 {
+    background-position: -432px 0px !important; }
+  .carte.Trefle-8 {
+    background-position: -504px 0px !important; }
+  .carte.Trefle-9 {
+    background-position: -576px 0px !important; }
+  .carte.Trefle-10 {
+    background-position: -648px 0px !important; }
+  .carte.Trefle-11 {
+    background-position: -720px 0px !important; }
+  .carte.Trefle-12 {
+    background-position: -792px 0px !important; }
+  .carte.Trefle-13 {
+    background-position: -864px 0px !important; }
+  .carte.Carreau-1 {
+    background-position: 0px -108px !important; }
+  .carte.Carreau-2 {
+    background-position: -72px -108px !important; }
+  .carte.Carreau-3 {
+    background-position: -144px -108px !important; }
+  .carte.Carreau-4 {
+    background-position: -216px -108px !important; }
+  .carte.Carreau-5 {
+    background-position: -288px -108px !important; }
+  .carte.Carreau-6 {
+    background-position: -360px -108px !important; }
+  .carte.Carreau-7 {
+    background-position: -432px -108px !important; }
+  .carte.Carreau-8 {
+    background-position: -504px -108px !important; }
+  .carte.Carreau-9 {
+    background-position: -576px -108px !important; }
+  .carte.Carreau-10 {
+    background-position: -648px -108px !important; }
+  .carte.Carreau-11 {
+    background-position: -720px -108px !important; }
+  .carte.Carreau-12 {
+    background-position: -792px -108px !important; }
+  .carte.Carreau-13 {
+    background-position: -864px -108px !important; }
+  .carte.Carreau-14 {
+    background-position: -936px -108px !important; }
+  .carte.Coeur-1 {
+    background-position: 0px -216px !important; }
+  .carte.Coeur-2 {
+    background-position: -72px -216px !important; }
+  .carte.Coeur-3 {
+    background-position: -144px -216px !important; }
+  .carte.Coeur-4 {
+    background-position: -216px -216px !important; }
+  .carte.Coeur-5 {
+    background-position: -288px -216px !important; }
+  .carte.Coeur-6 {
+    background-position: -360px -216px !important; }
+  .carte.Coeur-7 {
+    background-position: -432px -216px !important; }
+  .carte.Coeur-8 {
+    background-position: -504px -216px !important; }
+  .carte.Coeur-9 {
+    background-position: -576px -216px !important; }
+  .carte.Coeur-10 {
+    background-position: -648px -216px !important; }
+  .carte.Coeur-11 {
+    background-position: -720px -216px !important; }
+  .carte.Coeur-12 {
+    background-position: -792px -216px !important; }
+  .carte.Coeur-13 {
+    background-position: -864px -216px !important; }
+  .carte.Coeur-14 {
+    background-position: -936px -216px !important; }
+  .carte.Pique-1 {
+    background-position: 0px -324px !important; }
+  .carte.Pique-2 {
+    background-position: -72px -324px !important; }
+  .carte.Pique-3 {
+    background-position: -144px -324px !important; }
+  .carte.Pique-4 {
+    background-position: -216px -324px !important; }
+  .carte.Pique-5 {
+    background-position: -288px -324px !important; }
+  .carte.Pique-6 {
+    background-position: -360px -324px !important; }
+  .carte.Pique-7 {
+    background-position: -432px -324px !important; }
+  .carte.Pique-8 {
+    background-position: -504px -324px !important; }
+  .carte.Pique-9 {
+    background-position: -576px -324px !important; }
+  .carte.Pique-10 {
+    background-position: -648px -324px !important; }
+  .carte.Pique-11 {
+    background-position: -720px -324px !important; }
+  .carte.Pique-12 {
+    background-position: -792px -324px !important; }
+  .carte.Pique-13 {
+    background-position: -864px -324px !important; }
+  .carte.Pique-14 {
+    background-position: -936px -324px !important; }
+
+.color-orange {
+  color: #ffaa00 !important; }
+
+.color-rouge {
+  color: #ff5555 !important; }
+
+.color-vert {
+  color: #55aa55 !important; }
+
+.color-bleu {
+  color: #5555ff !important; }
+
+html, body {
+  min-height: 100%;
   padding: 0;
-  min-width: 800px;
-  background: #09594c;
+  margin: 0; }
+
+body {
+  background: #327680;
   font-family: 'Lobster', Georgia, Times, serif;
   color: #FFF;
   font-size: 16pt; }
   body a {
     text-decoration: none;
     color: #FFF; }
+    body a:link {
+      text-decoration: none; }
     body a:hover {
-      color: #27ae60;
-      text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff; }
+      text-decoration: none;
+      color: #55aa55; }
+  body .title-uno {
+    font-size: 26pt; }
 
 header .navbar-brand {
-  font-size: 18pt; }
+  font-size: 30pt; }
+  header .navbar-brand:hover {
+    text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff; }
 
 footer {
   text-align: center;
-  padding: 15px 0; }
-
-#start .title {
-  color: #27ae60;
-  text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
-  font-size: 40pt; }
-#start #bouton-jouer {
-  padding: 30px 50px;
-  margin: 50px 0px 100px 0;
-  font-size: 30pt;
-  border-radius: 50%;
-  color: #FFF;
-  background: #27ae60;
-  border: 10px solid #4B4B4B; }
-  #start #bouton-jouer:hover {
-    color: #4B4B4B;
-    background: #FFF;
-    border: 10px solid #27ae60; }
-#start #username {
-  border: 2px solid #4B4B4B;
-  text-align: center;
-  color: #4B4B4B;
-  margin: 20px 0; }
+  padding: 15px 0;
+  box-sizing: border-box; }
 
 #game {
-  min-width: 850px; }
+  margin: 0;
+  padding: 20px;
+  position: relative; }
   #game #table-game {
-    width: 100%;
-    height: 500px;
-    background: #27ae60;
-    border: 20px solid #4E342E;
-    margin: 50px 0;
-    border-radius: 50px;
+    padding: 50px 0;
+    box-sizing: border-box;
+    width: 300px;
+    height: 300px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    margin: auto;
     position: relative; }
-    #game #table-game .carte {
-      width: 80.6px;
-      height: 114.4px;
-      background: #FFF;
-      border-radius: 5px;
-      border: 1px outset #4B4B4B;
-      text-align: center;
-      background-image: url(../images/cartes.png);
-      background-size: 1047.8px 572px; }
-      #game #table-game .carte.main {
-        position: relative !important; }
-        #game #table-game .carte.main:hover {
-          transform: scale(1.1);
-          cursor: pointer; }
-      #game #table-game .carte.Trefle-1 {
-        background-position: 0px 0px !important; }
-      #game #table-game .carte.Trefle-2 {
-        background-position: -80.6px 0px !important; }
-      #game #table-game .carte.Trefle-3 {
-        background-position: -161.2px 0px !important; }
-      #game #table-game .carte.Trefle-4 {
-        background-position: -241.8px 0px !important; }
-      #game #table-game .carte.Trefle-5 {
-        background-position: -322.4px 0px !important; }
-      #game #table-game .carte.Trefle-6 {
-        background-position: -403px 0px !important; }
-      #game #table-game .carte.Trefle-7 {
-        background-position: -483.6px 0px !important; }
-      #game #table-game .carte.Trefle-8 {
-        background-position: -564.2px 0px !important; }
-      #game #table-game .carte.Trefle-9 {
-        background-position: -644.8px 0px !important; }
-      #game #table-game .carte.Trefle-10 {
-        background-position: -725.4px 0px !important; }
-      #game #table-game .carte.Trefle-11 {
-        background-position: -806px 0px !important; }
-      #game #table-game .carte.Trefle-12 {
-        background-position: -886.6px 0px !important; }
-      #game #table-game .carte.Trefle-13 {
-        background-position: -967.2px 0px !important; }
-      #game #table-game .carte.Carreau-1 {
-        background-position: 0px -114.4px !important; }
-      #game #table-game .carte.Carreau-2 {
-        background-position: -80.6px -114.4px !important; }
-      #game #table-game .carte.Carreau-3 {
-        background-position: -161.2px -114.4px !important; }
-      #game #table-game .carte.Carreau-4 {
-        background-position: -241.8px -114.4px !important; }
-      #game #table-game .carte.Carreau-5 {
-        background-position: -322.4px -114.4px !important; }
-      #game #table-game .carte.Carreau-6 {
-        background-position: -403px -114.4px !important; }
-      #game #table-game .carte.Carreau-7 {
-        background-position: -483.6px -114.4px !important; }
-      #game #table-game .carte.Carreau-8 {
-        background-position: -564.2px -114.4px !important; }
-      #game #table-game .carte.Carreau-9 {
-        background-position: -644.8px -114.4px !important; }
-      #game #table-game .carte.Carreau-10 {
-        background-position: -725.4px -114.4px !important; }
-      #game #table-game .carte.Carreau-11 {
-        background-position: -806px -114.4px !important; }
-      #game #table-game .carte.Carreau-12 {
-        background-position: -886.6px -114.4px !important; }
-      #game #table-game .carte.Carreau-13 {
-        background-position: -967.2px -114.4px !important; }
-      #game #table-game .carte.Carreau-14 {
-        background-position: -1047.8px -114.4px !important; }
-      #game #table-game .carte.Coeur-1 {
-        background-position: 0px -228.8px !important; }
-      #game #table-game .carte.Coeur-2 {
-        background-position: -80.6px -228.8px !important; }
-      #game #table-game .carte.Coeur-3 {
-        background-position: -161.2px -228.8px !important; }
-      #game #table-game .carte.Coeur-4 {
-        background-position: -241.8px -228.8px !important; }
-      #game #table-game .carte.Coeur-5 {
-        background-position: -322.4px -228.8px !important; }
-      #game #table-game .carte.Coeur-6 {
-        background-position: -403px -228.8px !important; }
-      #game #table-game .carte.Coeur-7 {
-        background-position: -483.6px -228.8px !important; }
-      #game #table-game .carte.Coeur-8 {
-        background-position: -564.2px -228.8px !important; }
-      #game #table-game .carte.Coeur-9 {
-        background-position: -644.8px -228.8px !important; }
-      #game #table-game .carte.Coeur-10 {
-        background-position: -725.4px -228.8px !important; }
-      #game #table-game .carte.Coeur-11 {
-        background-position: -806px -228.8px !important; }
-      #game #table-game .carte.Coeur-12 {
-        background-position: -886.6px -228.8px !important; }
-      #game #table-game .carte.Coeur-13 {
-        background-position: -967.2px -228.8px !important; }
-      #game #table-game .carte.Coeur-14 {
-        background-position: -1047.8px -228.8px !important; }
-      #game #table-game .carte.Pique-1 {
-        background-position: 0px -343.2px !important; }
-      #game #table-game .carte.Pique-2 {
-        background-position: -80.6px -343.2px !important; }
-      #game #table-game .carte.Pique-3 {
-        background-position: -161.2px -343.2px !important; }
-      #game #table-game .carte.Pique-4 {
-        background-position: -241.8px -343.2px !important; }
-      #game #table-game .carte.Pique-5 {
-        background-position: -322.4px -343.2px !important; }
-      #game #table-game .carte.Pique-6 {
-        background-position: -403px -343.2px !important; }
-      #game #table-game .carte.Pique-7 {
-        background-position: -483.6px -343.2px !important; }
-      #game #table-game .carte.Pique-8 {
-        background-position: -564.2px -343.2px !important; }
-      #game #table-game .carte.Pique-9 {
-        background-position: -644.8px -343.2px !important; }
-      #game #table-game .carte.Pique-10 {
-        background-position: -725.4px -343.2px !important; }
-      #game #table-game .carte.Pique-11 {
-        background-position: -806px -343.2px !important; }
-      #game #table-game .carte.Pique-12 {
-        background-position: -886.6px -343.2px !important; }
-      #game #table-game .carte.Pique-13 {
-        background-position: -967.2px -343.2px !important; }
-      #game #table-game .carte.Pique-14 {
-        background-position: -1047.8px -343.2px !important; }
-      #game #table-game .carte.pioche {
-        background-position: -161.2px -457.6px !important; }
     #game #table-game #pioche {
+      width: 72px;
+      height: 108px;
+      border-radius: 12px;
+      background-image: url(../images/pioche.jpg);
+      background-size: cover;
+      transition: all;
+      transition-duration: 0.3s;
+      border-bottom: 10px outset #FFF;
       position: absolute;
-      top: 40%;
-      left: 50%;
-      right: 50%;
-      bottom: 60%;
-      margin-top: -57.2px;
-      margin-left: -88.66px; }
+      top: 80px;
+      left: 70px; }
       #game #table-game #pioche:hover {
         transform: scale(1.1);
+        box-shadow: 0 0 15px 1px #4B4B4B;
         cursor: pointer; }
     #game #table-game #fausse {
       position: absolute;
-      top: 40%;
-      left: 50%;
-      right: 50%;
-      bottom: 60%;
-      margin-top: -57.2px; }
-    #game #table-game #main {
-      width: auto;
-      margin: 350px auto auto;
-      text-align: center;
-      border-spacing: 7px;
-      border-collapse: separate; }
-      #game #table-game #main tr td {
-        width: 80.6px; }
+      top: 80px;
+      right: 70px; }
+  #game #main {
+    width: 100%;
+    height: 108px;
+    margin: 50px auto 30px auto;
+    text-align: center; }
+    #game #main ul {
+      display: inline-block; }
+      #game #main ul li {
+        float: left;
+        list-style: none;
+        margin-left: -24px;
+        box-shadow: 0 0 15px 1px #4B4B4B; }
+        #game #main ul li:hover {
+          margin-right: 24px;
+          margin-left: -18px;
+          transform: scale(1.1);
+          cursor: pointer;
+          z-index: 9999; }
+
+/* Rotation */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }
+#loader {
+  width: 4em;
+  height: 4em;
+  position: fixed;
+  left: 50%;
+  right: 50%;
+  top: 50%;
+  bottom: 50%;
+  margin-left: -2em;
+  margin-top: -2em;
+  content: "";
+  color: #FFF;
+  background-color: #ff5555;
+  animation: rotate 2.5s infinite linear;
+  z-index: 9999;
+  transition: ease-out;
+  transition-duration: 2s; }
+  #loader:before, #loader:after {
+    width: 4em;
+    height: 4em;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0; }
+  #loader:before {
+    transform: rotate(60deg);
+    background-color: #ffaa00; }
+  #loader:after {
+    transform: rotate(-60deg);
+    background-color: #ffaa00; }
 
 /*# sourceMappingURL=main.css.map */
