@@ -6,17 +6,17 @@ public class Game {
 	
 	private Player host;
 	private String gameName;
-	private ArrayList<Player> players;
+	//private ArrayList<Player> players;//à discuter la nécessitée de la mettre
 	private Board board;
-	private int maxPlayer=4;
+	private int minPlayer=2,maxPlayer=4;
 	
 	public Game(Player host,String gameName)
 	{
 		this.host = host;
 		this.gameName = gameName;
-		this.players = new ArrayList<Player>();
-		this.board = new Board(players);
-		this.players.add(host);
+		//this.players = new ArrayList<Player>();
+		this.board = new Board();
+		this.board.getPlayers().add(host);
 	}
 
 	public Player getHost() { return host; }
@@ -28,8 +28,8 @@ public class Game {
 	public String getName() { return gameName; }
 	public void setName(String gameName) { this.gameName = gameName; }
 	
-	public ArrayList<Player> getPlayers() {	return players;	}
-	public void setPlayers(ArrayList<Player> players) {	this.players = players; }
+	public ArrayList<Player> getPlayers() {	return board.getPlayers();	}
+	public void setPlayers(ArrayList<Player> players) {	this.board.setPlayers(players); }
 	
 	public Board getBoard() { return board; }
 	public void setBoard(Board board) {	this.board = board;	}
@@ -44,13 +44,13 @@ public class Game {
 	 */
 	public boolean addPlayer(Player player)
 	{
-		if(players.size() == maxPlayer)
+		if(board.getPlayers().size() == maxPlayer)
 		{
 			return false;
 		}
 		if(!containsPlayer(player.getName()))
 		{
-			this.players.add(player);
+			this.board.getPlayers().add(player);
 			return true;
 		}
 		return false;
@@ -63,7 +63,7 @@ public class Game {
 	 */
 	public boolean containsPlayer(String playerName)
 	{
-		for(Player player : players)
+		for(Player player : board.getPlayers())
 		{
 			if(player.getName().equals(playerName))
 				return true;
@@ -78,7 +78,7 @@ public class Game {
 	 */
 	public Player findPlayerByName(String playerName)
 	{
-		for(Player player : players)
+		for(Player player : board.getPlayers())
 		{
 			if(player.getName().equals(playerName))
 				return player;
@@ -95,7 +95,7 @@ public class Game {
 	{
 		if(containsPlayer(playerName))
 		{
-			players.remove(findPlayerByName(playerName));
+			board.getPlayers().remove(findPlayerByName(playerName));
 			return true;
 		}
 		return false;
@@ -107,7 +107,7 @@ public class Game {
 	 */
 	public int remainingSlot()
 	{
-		return maxPlayer-players.size();
+		return maxPlayer-board.getPlayers().size();
 	}
 	
 	/**
@@ -116,6 +116,21 @@ public class Game {
 	 */
 	public int numberOfPlayers()
 	{
-		return players.size();
+		return board.getPlayers().size();
 	}
+	
+	/**
+	 * Méthode qui initialise une partie afin de qu'elle devienne jouable
+	 * @return
+	 */
+	public boolean start()
+	{
+		if(numberOfPlayers()>minPlayer && numberOfPlayers()<maxPlayer)
+		{
+			board.init();
+			return true;
+		}
+		return false;
+	}
+
 }

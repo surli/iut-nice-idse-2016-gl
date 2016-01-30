@@ -159,5 +159,85 @@ public class Model {
 		}
 		return null;
 	}
+	
+	/**
+	 * Le joueur désigné joue une carte en fonction de la position de la carte
+	 * (cardPosition)dans la main du joueur, dans la partie indiquée  
+	 * @param game
+	 * @param playerName
+	 * @param colorNumber
+	 * @param cardPosition
+	 * @return true/false
+	 */
+	public boolean play(String gameName,String playerName, int cardPosition)
+	{
+		Game game=findGameByName(gameName);
+		Player player=findPlayerByName(gameName, playerName);
+		if(player != null)
+			return player.play(cardPosition,game.getBoard());
+		return false;
+	}
+	
+	/**
+	 * Le joueur désigné joue une carte en fonction de la position de la carte
+	 * (cardPosition)dans la main du joueur, dans la partie indiquée et change de
+	 * couleur selon la couleur indiquée (0 -> Bleu, 1 -> Jaune, 2 -> Rouge, 3 -> Vert)
+	 * @param game
+	 * @param playerName
+	 * @param colorNumber
+	 * @return true/false
+	 */
+	public boolean play(String gameName,String playerName,int cardPosition, int colorNumber)
+	{
+		boolean result = false;
+		Game game = findGameByName(gameName);
+		Board board = game.getBoard();
+		Player player = findPlayerByName(gameName, playerName);
+		if(player != null)
+		{
+			result= player.play(cardPosition,game.getBoard());
+			Color color=null;
+			switch(colorNumber)
+			{
+				case 0: color=Color.Bleu;
+				case 1: color=Color.Jaune;
+				case 2: color=Color.Rouge;
+				case 3: color=Color.Vert;
+			}
+			try{
+				board.changeColor(color);
+			}
+			catch(NullPointerException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * Méthode qui permet de lancer une partie en vérifiant que l'hote de la partie est bien celui indiqué en paramètre
+	 * @param gameName
+	 * @param playerName
+	 * @return true/false
+	 */
+	public boolean startGame(String gameName,String playerName)
+	{
+		Game game = findGameByName(gameName);
+		
+		if(game != null)
+		{
+			Player player = findPlayerByName(gameName, playerName);
+			if(player != null)
+			{
+				if(game.getHost().getName().equals(player.getName()))
+				{
+					return game.start();
+				}
+			}
+		}
+		return false;
+	}
 	 
 }

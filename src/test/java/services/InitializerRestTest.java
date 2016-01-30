@@ -26,7 +26,7 @@ public class InitializerRestTest {
 		 * Creation dun tableau formaté JSON avec les 3 parametres	
 		 */
 			
-		Map<String, Object>  jsonAsMap = new HashMap<>();
+		Map<String, Object>  jsonAsMap = new HashMap<String, Object>();
 		jsonAsMap.put("_token", "hbj7BB7Y6B87T282B87T27N90A098");
 		jsonAsMap.put("game", "Superfly");
 		jsonAsMap.put("playername", "marcel");
@@ -49,5 +49,8 @@ public class InitializerRestTest {
 	//verifier authentification si besoin
 	//given().auth().basic(username, password).when().get("/secured").then().statusCode(200);
 	}
+
+
+
 
 
