@@ -1,12 +1,13 @@
-/**
- * Created by Tev on 28/01/2016.
- */
 angular.module('unoApp')
-    .controller("LoginController", ["$rootScope", "$scope", "$location", function ($rootScope, $scope, $location) {
+    .controller("LoginController", ["$rootScope", "$scope", "$state", function ($rootScope, $scope, $state) {
         // TODO : FOR CONNECT
-        $scope.goAuth = function () {
+        $scope.goLogin = function () {
             if ($scope.email && $scope.pass) {
-                $location.path('app/start');
+                $state.go('app.start');
             }
+        };
+
+        $scope.goLoginGuess = function () {
+            $state.go('app.start');
         };
     }]);
