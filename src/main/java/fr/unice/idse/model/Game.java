@@ -56,9 +56,9 @@ public class Game {
 		return false;
 	}
 	
-	public boolean GameBegin()
+	public boolean gameBegin()
 	{
-		return board.GameBegin();
+		return board.gameBegin();
 	}
 
 	/**
