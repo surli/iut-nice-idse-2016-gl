@@ -14,7 +14,7 @@ public class Player {
 	public Player(String name)
 	{
 		this.name = name;
-		this.cards = new ArrayList<>();
+		this.cards = new ArrayList<Card>();
 		this.turn = false;
 		this.lastCardPlayed = null;
 		this.score = 0;

@@ -1,0 +1,49 @@
+<div id="login" class="container">
+    <div class="col-md-12 text-center">
+        <h1 class="title-uno">
+            <span class="color-orange">U</span><span class="color-rouge">N</span><span class="color-vert">O</span>
+        </h1>
+        <br />
+        <div class="col-md-6">
+            <div class="panel panel-default" style="height: 305px">
+                <div class="panel-heading">Login</div>
+                <div class="panel-body">
+                    <form method="post" class="form-horizontal" data-ng-submit="goLogin()">
+                        <div class="form-group">
+                            <input class="input-form input-lg" type="email" placeholder="Email" id="email" data-ng-model="email"/>
+                        </div>
+                        <div class="form-group">
+                            <input class="input-form input-lg" type="password" placeholder="Password" id="pass" data-ng-model="pass"/>
+                        </div>
+                        <br />
+                        <button type="submit" class="btn btn-lg btn-success">Login</button>
+                    </form>
+                </div>
+            </div>
+            <br />
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default" style="height: 305px">
+                <div class="panel-heading">- OR -</div>
+                <div class="panel-body">
+                    <br />
+                    <br />
+                    <button data-ng-click="goLoginGuess();" style="font-size: 26pt;" class="btn btn-lg btn-success" >Connect Guest</button>
+                    <br />
+                    <br />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <p>
+                <span class="hidden-sm hidden-md hidden-lg">
+                    <br/>
+                    <br/>
+                </span>
+                You don't have an account ?
+                <br />
+                <button class="btn btn-danger" data-ui-sref="register" >Register</button>
+            </p>
+        </div>
+    </div>
+</div>
