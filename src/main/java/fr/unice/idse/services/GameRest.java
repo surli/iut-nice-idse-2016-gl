@@ -35,6 +35,13 @@ public class GameRest {
         return Response.status(200).entity("{state: "+game.getBoard().gameBegin()+"}").build();
     }
 
+    /**
+     * Méthode en POST permettant l'ajout d'un joueur dans une partie
+     * Signature : {_token: token, pseudo: String}
+     * La partie doit être existante.
+     * Renvoie {status: boolean}
+     * @return Response
+     */
     @POST
     @Path("{gamename}/addplayer")
     @Produces(MediaType.APPLICATION_JSON)

@@ -58,40 +58,5 @@ public class InitializerRest {
         return Response.status(200).entity("{message: true}").build();
     }
 
-    /**
-     * Méthode en POST permettant l'ajout d'un joueur dans une partie
-     * Signature : {_token: token, game: String, player: String(pseudo du joueur)}
-     * La partie doit être existante.
-     * Renvoie {message: boolean}
-     * @return Response
-     */
-    @Path("/addplayer")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response addPlayerInGame(String objJSON) throws JSONException{
-        // création de tous les objets
-        Model model = Model.getInstance();
-        JSONObject json = new JSONObject(objJSON);
-
-        // verification du token
-        if(!json.has("_token"))
-            return Response.status(401).entity("{error : Invalid token}").build();
-        if(!Config._token.equals(json.getString("_token")))
-            return Response.status(401).entity("{error : Invalid token}").build();
-
-        // verification du champ game
-        if(!json.has("game"))
-            return Response.status(405).entity("{error : Invalid parameter}").build();
-        if(!json.has("player"))
-            return Response.status(405).entity("{error : Invalid parameter}").build();
-        Player player = model.createPlayer(json.getString("player"));
-        if(player == null)
-            return Response.status(405).entity("{error : Joueur existant").build();
-
-        if(!model.addPlayerToGame(json.getString("game"), player))
-            return Response.status(500).entity("{error : false}").build();
-
-        return Response.status(200).entity("{message: true}").build();
-    }
 
 }
