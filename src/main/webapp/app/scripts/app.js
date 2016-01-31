@@ -14,7 +14,8 @@ angular
         'ngCookies',
         'ngResource',
         'ngSanitize',
-        'ui.router'
+        'ui.router',
+        'LocalStorageModule'
     ])
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push(['$rootScope', function($rootScope) {
@@ -39,6 +40,9 @@ angular
             };
         }]);
     }])
+    .config(['localStorageServiceProvider', function(localStorageServiceProvider) {
+        localStorageServiceProvider.setStorageType('sessionStorage');
+    }])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('login', {
@@ -56,6 +60,11 @@ angular
                 abstract: true,
                 templateUrl: "views/app.html",
                 controller: "AppController"
+            })
+            .state('app.home', {
+                url: "/home",
+                templateUrl: "views/home.html",
+                controller: "HomeController"
             })
             .state('app.start', {
                 url: "/start",

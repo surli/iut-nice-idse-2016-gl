@@ -88,6 +88,14 @@ input {
   }
 }
 
+.nav > li > a {
+  &:hover, &:focus {
+    background-color: transparent;
+    color: $rouge;
+    outline: none;
+  }
+}
+
 .panel {
   border: none;
   background-color: rgba(0, 0, 0, 0.2);
@@ -100,8 +108,14 @@ input {
   }
 
   .panel-body {
-    padding: 30px 0;
+    padding: 30px 10px;
   }
+}
+
+.jumbotron {
+  border: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
 .carte {
@@ -190,6 +204,28 @@ header {
 
     &:hover {
       text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+    }
+  }
+
+  .navbar-toggle {
+    background-color: rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .icon-bar {
+      background-color: $orange;
+    }
+  }
+
+  .navbar-collapse {
+    box-shadow: none;
+
+    li {
+      font-size: 20pt;
+      text-align: center;
+      line-height: 50px;
     }
   }
 }

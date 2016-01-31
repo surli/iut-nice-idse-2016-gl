@@ -5848,6 +5848,11 @@ input {
     outline: none;
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2); }
 
+.nav > li > a:hover, .nav > li > a:focus {
+  background-color: transparent;
+  color: #ff5555;
+  outline: none; }
+
 .panel {
   border: none;
   background-color: rgba(0, 0, 0, 0.2); }
@@ -5856,7 +5861,12 @@ input {
     color: #FFF;
     border: none; }
   .panel .panel-body {
-    padding: 30px 0; }
+    padding: 30px 10px; }
+
+.jumbotron {
+  border: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  text-align: center; }
 
 .carte {
   width: 72px;
@@ -6015,6 +6025,18 @@ header .navbar-brand {
   font-size: 30pt; }
   header .navbar-brand:hover {
     text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff; }
+header .navbar-toggle {
+  background-color: rgba(0, 0, 0, 0.2); }
+  header .navbar-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.4); }
+  header .navbar-toggle .icon-bar {
+    background-color: #ffaa00; }
+header .navbar-collapse {
+  box-shadow: none; }
+  header .navbar-collapse li {
+    font-size: 20pt;
+    text-align: center;
+    line-height: 50px; }
 
 footer {
   text-align: center;
