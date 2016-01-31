@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('unoApp')
     .controller("RegisterController", ["$rootScope", "$scope", "$state", "Auth", function ($rootScope, $scope, $state, Auth) {
         // TODO : REGISTER

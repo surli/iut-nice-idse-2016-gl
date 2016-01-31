@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('unoApp')
     .controller("StartController", ["$rootScope", "$scope", "$state", function ($rootScope, $scope, $state) {
         // TODO : FOR START GAME

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('unoApp')
     .service('Auth', function(localStorageService) {
         return {

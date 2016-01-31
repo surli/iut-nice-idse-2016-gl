@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('unoApp')
     .controller("LoginController", ["$rootScope", "$scope", "$state", "Auth", function ($rootScope, $scope, $state, Auth) {
         // TODO : LOGIN
