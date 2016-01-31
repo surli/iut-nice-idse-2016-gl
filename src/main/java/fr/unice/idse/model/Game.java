@@ -55,6 +55,11 @@ public class Game {
 		}
 		return false;
 	}
+	
+	public boolean GameBegin()
+	{
+		return board.GameBegin();
+	}
 
 	/**
 	 * Verifie si le joueur indiqué est présent dans la partie
