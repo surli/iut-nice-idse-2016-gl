@@ -1,23 +1,24 @@
 package services;
 
 
-import fr.unice.idse.model.Game;
-import fr.unice.idse.model.Model;
+import fr.unice.idse.constante.Config;
+import fr.unice.idse.model.*;
 import fr.unice.idse.services.GameRest;
-import fr.unice.idse.services.InitializerRest;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+import org.codehaus.jettison.json.*;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class GameRestTest extends JerseyTest {
 
@@ -44,9 +45,29 @@ public class GameRestTest extends JerseyTest {
     }
 
     @Test
-    public void retourneUneErreur500SiPartieNexistePas() {
+    public void retourneUneErreur404SiPartieNexistePas() {
         Response response = target("/game/sdsdsdss/gamestate").request().get();
-        assertEquals(500, response.getStatus());
+        assertEquals(404, response.getStatus());
+    }
+
+    @Test
+    public void ajouteUnJoueurInexistantDansUnePartie() throws JSONException{
+        String json = "{_token: '"+ Config._token+"', pseudo: 'titi'}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+        Response response = target("/game/tata/addplayer").request().post(jsonEntity);
+
+        assertEquals(200, response.getStatus());
+        JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
+        assertTrue(jsonresponse.getBoolean("status"));
+    }
+
+    @Test
+    public void ajouterUnJoueurExistantDansUnePartie() throws JSONException{
+        String json = "{_token: '"+ Config._token+"', pseudo: 'toto'}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+        Response response = target("/game/tata/addplayer").request().post(jsonEntity);
+
+        assertEquals(405, response.getStatus());
     }
 
 }

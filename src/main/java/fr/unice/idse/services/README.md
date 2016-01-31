@@ -60,7 +60,7 @@ jetty:run
 ```
 
 
-__POST /uno/initializer/creategame__
+__POST /uno/initializer/creategame (fait)__
 
 Send :
 ```json
@@ -77,7 +77,7 @@ Return :
 * 405 Missing or invalid parameters
 * 500 Gamename already in use
 
-__GET /uno/lobby/listgame__
+__GET /uno/lobby/listgame (fait)__
  
  Return :
  ```json
@@ -106,7 +106,7 @@ __GET /uno/lobby/listplayer__
 }
 ```
 
-__GET /uno/game/{gamename}/addplayer__
+__POST /uno/game/{gamename}/addplayer (fait)__
 
 Send :
  ```json
@@ -126,7 +126,7 @@ Send :
 }
 ```
 
-__GET /uno/game/{gamename}/gamestate__
+__GET /uno/game/{gamename}/gamestate (fait)__
 
 Return :
  ```json
