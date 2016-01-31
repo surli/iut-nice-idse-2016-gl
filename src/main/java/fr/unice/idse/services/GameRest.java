@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 public class GameRest {
 
     @POST
-    @Path("{gamename}/addplayer")
+    @Path("{gamename}/gamestate")
     @Produces(MediaType.APPLICATION_JSON)
     public void isStarted(@PathParam("gamename") String gamename, String objJSON){
         Model model = Model.getInstance();
