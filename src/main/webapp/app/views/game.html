@@ -1,0 +1,12 @@
+<div id="table-game">
+    <div id="pioche" data-ng-click="piocherCarte()"></div>
+    <div id="fausse" class="carte {{fausse.famille}}-{{fausse.nombre}}"></div>
+</div>
+
+<div id="main">
+    <ul>
+        <li data-ng-repeat="carte in cartes track by $index"
+            data-ng-click="jouerCarte(carte)"
+            class="carte {{carte.famille}}-{{carte.nombre}}"></li>
+    </ul>
+</div>
