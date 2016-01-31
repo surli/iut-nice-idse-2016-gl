@@ -105,7 +105,7 @@ __GET /uno/lobby/listplayer__
 }
 ```
 
-__GET /uno/initializer/game/{gamename}/addplayer__
+__GET /uno/game/{gamename}/addplayer__
 
 Send :
  ```json
@@ -115,7 +115,7 @@ Send :
 }
 ```
 
-__POST /uno/initializer/game/{gamename}/begingame__
+__POST /uno/game/{gamename}/begingame__
 
 Send :
  ```json
@@ -125,7 +125,7 @@ Send :
 }
 ```
 
-__GET /uno/initializer/game/{gamename}/gamestate__
+__GET /uno/game/{gamename}/gamestate__
 
 Return :
  ```json
@@ -134,7 +134,7 @@ Return :
 }
 ```
 
-__GET /uno/initializer/game/{gamename}/actualplayer__
+__GET /uno/game/{gamename}/actualplayer__
 
 Return :
  ```json
@@ -143,7 +143,7 @@ Return :
 }
 ```
 
-__GET /uno/initializer/game/{gamename}/updated__
+__GET /uno/game/{gamename}/updated__
 
 Return :
  ```json
@@ -152,7 +152,7 @@ Return :
 }
 ```
 
-__GET /uno/initializer/game/{pseudo}/hand__
+__GET /uno/game/{pseudo}/hand__
 
 Return :
  ```json
