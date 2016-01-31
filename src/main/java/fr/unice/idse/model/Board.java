@@ -13,6 +13,7 @@ public class Board
 	private Color actualColor;
 	private boolean meaning;
 	private int maxPlayer;
+	private boolean gameBegin;
 	
 	public Board()
 	{
@@ -23,6 +24,7 @@ public class Board
 		actualPlayer = 0;
 		meaning = true;
 		maxPlayer = 4;
+		gameBegin = false;
 	}
 	
 	/*public Board(ArrayList<Player> players)
@@ -100,6 +102,7 @@ public class Board
 		}
 		stack.initStack(deck);
 		actualColor = stack.topCard().getColor();
+		gameBegin = true;
 	}
 	
 	/**
@@ -161,5 +164,14 @@ public class Board
 	{
 		getActualPlayer().getCards().add(deck.topCard());
 		deck.removeTopCard();
+	}
+	
+	/**
+	 * Retourne si le jeu à commencé
+	 * @return
+	 */
+	public boolean GameBegin()
+	{
+		return gameBegin;
 	}
 }
