@@ -61,16 +61,16 @@ public class DeckTest {
 		int green = 0;
 		
 		for(int i=0; i<deck.countCards();i++){
-			if(deck.getDeck().get(i).getColor().equals(Color.Jaune)){
+			if(deck.getDeck().get(i).getColor().equals(Color.Yellow)){
 				yellow++;
 			}
-			if(deck.getDeck().get(i).getColor().equals(Color.Jaune)){
+			if(deck.getDeck().get(i).getColor().equals(Color.Yellow)){
 				red++;
 			}
-			if(deck.getDeck().get(i).getColor().equals(Color.Jaune)){
+			if(deck.getDeck().get(i).getColor().equals(Color.Yellow)){
 				green++;
 			}
-			if(deck.getDeck().get(i).getColor().equals(Color.Jaune)){
+			if(deck.getDeck().get(i).getColor().equals(Color.Yellow)){
 				blue++;
 			}
 		}
