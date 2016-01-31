@@ -31,7 +31,7 @@ public class BoardTest
 		Board board = new Board();
 		board.getStack().addCard(new Card(8, Color.Noir));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertTrue(board.AskPlayableCard(new Card(8, Color.Rouge)));
+		assertTrue(board.askPlayableCard(new Card(8, Color.Rouge)));
 	}
 	
 	@Test
@@ -40,7 +40,7 @@ public class BoardTest
 		Board board = new Board();
 		board.getStack().addCard(new Card(8, Color.Bleu));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertFalse(board.AskPlayableCard(new Card(7, Color.Jaune)));
+		assertFalse(board.askPlayableCard(new Card(7, Color.Jaune)));
 	}
 	
 	@Test
@@ -49,7 +49,7 @@ public class BoardTest
 		Board board = new Board();
 		board.getStack().addCard(new Card(8, Color.Rouge));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertTrue(board.AskPlayableCard(new Card(7, Color.Rouge)));
+		assertTrue(board.askPlayableCard(new Card(7, Color.Rouge)));
 	}
 	
 	@Test
@@ -58,7 +58,7 @@ public class BoardTest
 		Board board = new Board();
 		board.getStack().addCard(new Card(8, Color.Vert));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertFalse(board.AskPlayableCard(new Card(7, Color.Rouge)));
+		assertFalse(board.askPlayableCard(new Card(7, Color.Rouge)));
 	}
 	
 	@Test
@@ -69,6 +69,6 @@ public class BoardTest
 		board.getActualPlayer().getCards().add(new Card(7, Color.Rouge));
 		board.getStack().addCard(new Card(8, Color.Rouge));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertTrue(board.AskPlayerCanPlay(board.getActualPlayer()));
+		assertTrue(board.askPlayerCanPlay(board.getActualPlayer()));
 	}
 }
