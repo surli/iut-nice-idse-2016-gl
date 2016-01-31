@@ -115,22 +115,22 @@ public class Card implements Comparable<Card>{
 			int i;
 			int couleurSupport=0,couleurObj=0;
 			
-			if(this.color.equals("carreau"))
+			if(this.color.equals(Color.Blue))
 				couleurSupport=1;
-			if(this.color.equals("trefle"))
+			if(this.color.equals(Color.Green))
 				couleurSupport=2;
-			if(this.color.equals("coeur"))
+			if(this.color.equals(Color.Red))
 				couleurSupport=3;
-			if(this.color.equals("pique"))
+			if(this.color.equals(Color.Yellow))
 				couleurSupport=4;
 			
-			if(((Card)obj).color.equals("carreau"))
+			if(((Card)obj).color.equals(Color.Blue))
 				couleurObj=1;
-			if(((Card)obj).color.equals("trefle"))
+			if(((Card)obj).color.equals(Color.Green))
 				couleurObj=2;
-			if(((Card)obj).color.equals("coeur"))
+			if(((Card)obj).color.equals(Color.Red))
 				couleurObj=3;
-			if(((Card)obj).color.equals("pique"))
+			if(((Card)obj).color.equals(Color.Yellow))
 				couleurObj=4;
 			
 			i=Integer.compare(couleurSupport, couleurObj);
