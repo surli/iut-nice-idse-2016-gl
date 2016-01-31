@@ -1,13 +1,18 @@
 angular.module('unoApp')
-    .controller("LoginController", ["$rootScope", "$scope", "$state", function ($rootScope, $scope, $state) {
-        // TODO : FOR CONNECT
+    .controller("LoginController", ["$rootScope", "$scope", "$state", "Auth", function ($rootScope, $scope, $state, Auth) {
+        // TODO : LOGIN
+        if (Auth.isConnected()) {
+            $state.go("app.home");
+        }
+
         $scope.goLogin = function () {
-            if ($scope.email && $scope.pass) {
-                $state.go('app.start');
-            }
+            window.alert("Log in not available !");
         };
 
         $scope.goLoginGuess = function () {
-            $state.go('app.start');
+            Auth.setUser({
+                name: "Anonyme"
+            });
+            $state.go('app.home');
         };
     }]);

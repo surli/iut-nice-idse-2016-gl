@@ -1,8 +1,11 @@
 angular.module('unoApp')
-    .controller("RegisterController", ["$rootScope", "$scope", "$state", function ($rootScope, $scope, $state) {
-        // TODO : FOR REGISTER
+    .controller("RegisterController", ["$rootScope", "$scope", "$state", "Auth", function ($rootScope, $scope, $state, Auth) {
+        // TODO : REGISTER
+        if (Auth.isConnected()) {
+            $state.go("app.home");
+        }
+
         $scope.goRegister = function () {
-            // Jeremy faudra que on voit ensemble pour l'envoi vers REST
-            $state.go('app.start');
+            window.alert("Register not available !");
         };
     }]);
