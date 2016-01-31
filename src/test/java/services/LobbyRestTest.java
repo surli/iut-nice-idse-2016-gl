@@ -1,5 +1,7 @@
 package services;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
+import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.services.LobbyRest;
 import org.codehaus.jettison.json.JSONException;
@@ -13,6 +15,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -39,6 +43,9 @@ public class LobbyRestTest extends JerseyTest {
      */
     @Test
     public void retourneUnTableauVideSiAucuneGame() throws JSONException{
+        Model model = Model.getInstance();
+        model.setGames(new ArrayList<Game>());
+
         Response response = target("/lobby/games").request().get();
         assertEquals(200, response.getStatus());
 
@@ -50,6 +57,7 @@ public class LobbyRestTest extends JerseyTest {
     @Test
     public void retourneUnTableauAvecUneGame() throws JSONException{
         Model model = Model.getInstance();
+        model.setGames(new ArrayList<Game>());
         model.addGame(model.createPlayer("toto"), "laPartie");
 
         Response response = target("/lobby/games").request().get();
