@@ -100,8 +100,10 @@ public class Card implements Comparable<Card>{
 				case 11:
 					result += "Reverse"+color;
 				case 12:
-					result += "Wild"+color;
+					result += "DrawTwo"+color;
 				case 13:
+					result += "Wild"+color;
+				case 14:
 					result += "DrawFour"+color;
 				
 				default:

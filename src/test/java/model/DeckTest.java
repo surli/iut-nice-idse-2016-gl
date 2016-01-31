@@ -59,6 +59,7 @@ public class DeckTest {
 		int red = 0;
 		int blue = 0;
 		int green = 0;
+		int black = 0;
 		
 		for(int i=0; i<deck.countCards();i++){
 			if(deck.getDeck().get(i).getColor().equals(Color.Yellow)){
@@ -73,12 +74,16 @@ public class DeckTest {
 			if(deck.getDeck().get(i).getColor().equals(Color.Blue)){
 				blue++;
 			}
+			if(deck.getDeck().get(i).getColor().equals(Color.Black)){
+				black++;
+			}
 		}
 		
-		assertEquals(yellow,19);
-		assertEquals(red,19);
-		assertEquals(green,19);
-		assertEquals(blue,19);
+		assertEquals(yellow,25);
+		assertEquals(red,25);
+		assertEquals(green,25);
+		assertEquals(blue,25);
+		assertEquals(black,8);
 	}
 	
 	@Test

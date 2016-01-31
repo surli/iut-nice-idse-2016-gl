@@ -40,42 +40,30 @@ public class Deck {
 	 *  - 4 cartes "+4"
 	 */
 	public void fillDeck() {
-		for(int i=0;i<=9;i++)
+		for(int i=0;i<=14;i++)
 		{
 			if(i==0){
+				// Création d'une carte 0 par couleur
 				deck.add(new Card(i,Color.Blue));
-			}
-			else{
-				deck.add(new Card(i,Color.Blue));
-				deck.add(new Card(i,Color.Blue));
-			}
-		}
-		for(int i=0;i<=9;i++)
-		{
-			if(i==0){
 				deck.add(new Card(i,Color.Red));
-			}
-			else{
-				deck.add(new Card(i,Color.Red));
-				deck.add(new Card(i,Color.Red));
-			}
-		}
-		for(int i=0;i<=9;i++)
-		{
-			if(i==0){
 				deck.add(new Card(i,Color.Yellow));
-			}
-			else{
-				deck.add(new Card(i,Color.Yellow));
-				deck.add(new Card(i,Color.Yellow));
-			}
-		}
-		for(int i=0;i<=9;i++)
-		{
-			if(i==0){
 				deck.add(new Card(i,Color.Green));
 			}
+			else if (i==13 || i==14){
+				// Création de 4 cartes joker et +4
+				deck.add(new Card(i,Color.Black));
+				deck.add(new Card(i,Color.Black));
+				deck.add(new Card(i,Color.Black));
+				deck.add(new Card(i,Color.Black));
+			}
 			else{
+				// Création de 2 cartes de chaque couleur
+				deck.add(new Card(i,Color.Blue));
+				deck.add(new Card(i,Color.Blue));
+				deck.add(new Card(i,Color.Red));
+				deck.add(new Card(i,Color.Red));
+				deck.add(new Card(i,Color.Yellow));
+				deck.add(new Card(i,Color.Yellow));
 				deck.add(new Card(i,Color.Green));
 				deck.add(new Card(i,Color.Green));
 			}
