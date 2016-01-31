@@ -6,17 +6,17 @@ public class Game {
 	
 	private Player host;
 	private String gameName;
-	//private ArrayList<Player> players;//à discuter la nécessitée de la mettre
 	private Board board;
-	private int minPlayer=2,maxPlayer=4;
+	private int numberPlayers;
 	
-	public Game(Player host,String gameName)
+	public Game(Player host,String gameName, int numberOfPlayers)
 	{
-		this.host = host;
-		this.gameName = gameName;
-		//this.players = new ArrayList<Player>();
-		this.board = new Board();
-		this.board.getPlayers().add(host);
+			this.host = host;
+			this.gameName = gameName;
+			//this.players = new ArrayList<Player>();
+			this.board = new Board();
+			this.board.getPlayers().add(host);
+			this.numberPlayers = numberOfPlayers;
 	}
 
 	public Player getHost() { return host; }
@@ -34,8 +34,8 @@ public class Game {
 	public Board getBoard() { return board; }
 	public void setBoard(Board board) {	this.board = board;	}
 	
-	public int getMaxPlayer() { return maxPlayer; }
-	public void setMaxPlayer(int maxPlayer) { this.maxPlayer = maxPlayer; }
+	public int getNumberPlayers() { return numberPlayers; }
+	public void setNumberPlayers(int numberPlayers) { this.numberPlayers = numberPlayers; }
 	
 	/**
 	 * Ajoute joueur à la partie
@@ -44,7 +44,7 @@ public class Game {
 	 */
 	public boolean addPlayer(Player player)
 	{
-		if(board.getPlayers().size() == maxPlayer)
+		if(board.getPlayers().size() == numberPlayers)
 		{
 			return false;
 		}
@@ -112,7 +112,7 @@ public class Game {
 	 */
 	public int remainingSlot()
 	{
-		return maxPlayer-board.getPlayers().size();
+		return numberPlayers-board.getPlayers().size();
 	}
 	
 	/**
@@ -130,7 +130,7 @@ public class Game {
 	 */
 	public boolean start()
 	{
-		if(numberOfPlayers()>minPlayer && numberOfPlayers()<maxPlayer)
+		if(numberOfPlayers()==numberPlayers)
 		{
 			board.init();
 			return true;
