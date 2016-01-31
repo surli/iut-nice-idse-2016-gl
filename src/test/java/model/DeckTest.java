@@ -64,13 +64,13 @@ public class DeckTest {
 			if(deck.getDeck().get(i).getColor().equals(Color.Yellow)){
 				yellow++;
 			}
-			if(deck.getDeck().get(i).getColor().equals(Color.Yellow)){
+			if(deck.getDeck().get(i).getColor().equals(Color.Red)){
 				red++;
 			}
-			if(deck.getDeck().get(i).getColor().equals(Color.Yellow)){
+			if(deck.getDeck().get(i).getColor().equals(Color.Green)){
 				green++;
 			}
-			if(deck.getDeck().get(i).getColor().equals(Color.Yellow)){
+			if(deck.getDeck().get(i).getColor().equals(Color.Blue)){
 				blue++;
 			}
 		}
