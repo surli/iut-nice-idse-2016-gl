@@ -58,7 +58,7 @@ public class LobbyRestTest extends JerseyTest {
     public void retourneUnTableauAvecUneGame() throws JSONException{
         Model model = Model.getInstance();
         model.setGames(new ArrayList<Game>());
-        model.addGame(model.createPlayer("toto"), "laPartie");
+        model.addGame(model.createPlayer("toto"), "laPartie",4);
 
         Response response = target("/lobby/games").request().get();
         assertEquals(200, response.getStatus());

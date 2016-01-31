@@ -33,11 +33,11 @@ public class Model {
 	 * @param gameName
 	 * @return true/false
 	 */
-	public boolean addGame(Player player, String gameName)
+	public boolean addGame(Player player, String gameName, int numberPlayers)
 	{
 		if(!existsGame(gameName))
 		{
-			Game game = new Game(player,gameName);
+			Game game = new Game(player,gameName,numberPlayers);
 			this.games.add(game);
 			return true;
 		}

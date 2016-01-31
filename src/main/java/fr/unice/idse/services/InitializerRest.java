@@ -52,7 +52,7 @@ public class InitializerRest {
             return Response.status(405).entity("{error : Joueur existant").build();
 
         // creation de la game
-        if(!model.addGame(player, game))
+        if(!model.addGame(player, game,4))
             return Response.status(500).entity("{message: false}").build();
 
         return Response.status(200).entity("{message: true}").build();
