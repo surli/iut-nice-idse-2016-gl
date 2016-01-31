@@ -33,12 +33,12 @@ public class Board
 		this.variante = new Alternative();
 	}*/	
 	
-	public void ChangeMeaning()
+	public void changeMeaning()
 	{
 		meaning = !meaning;
 	}
 	
-	public void NextPlayer()
+	public void nextPlayer()
 	{
 		if(meaning)
 		{
@@ -108,12 +108,12 @@ public class Board
 	/**
 	 * Retourne la liste des cartes jouables
 	 */
-	public ArrayList<Card> PlayableCards()
+	public ArrayList<Card> playableCards()
 	{
 		ArrayList<Card> playableCards = new ArrayList<Card>();
 		for(Card card : getActualPlayer().getCards())
 		{
-			if(AskPlayableCard(card))
+			if(askPlayableCard(card))
 			{
 				playableCards.add(card);
 			}
@@ -125,7 +125,7 @@ public class Board
 	 * Retourne si une carte est jouable
 	 * @param Card
 	 */
-	public boolean AskPlayableCard(Card card)
+	public boolean askPlayableCard(Card card)
 	{
 		return card.getValue() == stack.topCard().getValue() || card.getColor().equals(actualColor);
 	}
@@ -135,24 +135,24 @@ public class Board
 	 * @param player
 	 * @return
 	 */
-	public boolean AskPlayerCanPlay(Player player)
+	public boolean askPlayerCanPlay(Player player)
 	{
-		return player.equals(getActualPlayer()) && PlayableCards().size() > 0;
+		return player.equals(getActualPlayer()) && playableCards().size() > 0;
 	}
 	
 	/**
 	 * Joue le tour du joueur actuel en posant une carte dans la fosse.
 	 * @param card
 	 */
-	public void PoseCard(Card card)
+	public void poseCard(Card card)
 	{
 		//Control si la carte est posable
-		if(AskPlayableCard(card))
+		if(askPlayableCard(card))
 		{
 			stack.addCard(card);
 			actualColor = card.getColor();
 			getActualPlayer().getCards().remove(card);
-			NextPlayer();
+			nextPlayer();
 		}
 	}
 	
@@ -160,7 +160,7 @@ public class Board
 	 * Le joueur actuel pioche une carte, ne fait pas passer le tour pour le cas
 	 * où il subit une carte à effet spécial.
 	 */
-	public void Pioche()
+	public void pioche()
 	{
 		getActualPlayer().getCards().add(deck.topCard());
 		deck.removeTopCard();
@@ -170,7 +170,7 @@ public class Board
 	 * Retourne si le jeu à commencé
 	 * @return
 	 */
-	public boolean GameBegin()
+	public boolean gameBegin()
 	{
 		return gameBegin;
 	}

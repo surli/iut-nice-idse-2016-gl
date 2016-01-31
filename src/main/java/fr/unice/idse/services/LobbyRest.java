@@ -27,7 +27,7 @@ public class LobbyRest {
         String [] list = new String[model.getGames().size()];
         for (int i = 0; i < model.getGames().size(); i++){
             list[i] = "{name : '"+model.getGames().get(i).getGameName()+"', " +
-                       "numberPlayers : '"+model.getGames().get(i).numberOfPlayers()+"/"+model.getGames().get(i).getMaxPlayer()+"'}";
+                       "numberPlayers : '"+model.getGames().get(i).numberOfPlayers()+"/"+model.getGames().get(i).getNumberPlayers()+"'}";
         }
         return Response.status(200).entity("{games : "+ Arrays.toString(list)+"}").build();
     }

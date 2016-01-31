@@ -29,36 +29,36 @@ public class BoardTest
 	public void testCarteBonneValeurEstJouable()
 	{
 		Board board = new Board();
-		board.getStack().addCard(new Card(8, Color.Noir));
+		board.getStack().addCard(new Card(8, Color.Black));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertTrue(board.AskPlayableCard(new Card(8, Color.Rouge)));
+		assertTrue(board.askPlayableCard(new Card(8, Color.Red)));
 	}
 	
 	@Test
 	public void testCarteMauvaiseValeurEstNonJouable()
 	{
 		Board board = new Board();
-		board.getStack().addCard(new Card(8, Color.Bleu));
+		board.getStack().addCard(new Card(8, Color.Blue));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertFalse(board.AskPlayableCard(new Card(7, Color.Jaune)));
+		assertFalse(board.askPlayableCard(new Card(7, Color.Yellow)));
 	}
 	
 	@Test
 	public void testCarteBonneCouleurEtMauvaiseValeurEstJouable()
 	{
 		Board board = new Board();
-		board.getStack().addCard(new Card(8, Color.Rouge));
+		board.getStack().addCard(new Card(8, Color.Red));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertTrue(board.AskPlayableCard(new Card(7, Color.Rouge)));
+		assertTrue(board.askPlayableCard(new Card(7, Color.Red)));
 	}
 	
 	@Test
 	public void testCarteMauvaiseCouleurEtMauvaiseValeurEstNonJouable()
 	{
 		Board board = new Board();
-		board.getStack().addCard(new Card(8, Color.Vert));
+		board.getStack().addCard(new Card(8, Color.Green));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertFalse(board.AskPlayableCard(new Card(7, Color.Rouge)));
+		assertFalse(board.askPlayableCard(new Card(7, Color.Red)));
 	}
 	
 	@Test
@@ -66,9 +66,9 @@ public class BoardTest
 	{
 		Board board = new Board();
 		board.getPlayers().add(new Player("toto"));
-		board.getActualPlayer().getCards().add(new Card(7, Color.Rouge));
-		board.getStack().addCard(new Card(8, Color.Rouge));
+		board.getActualPlayer().getCards().add(new Card(7, Color.Red));
+		board.getStack().addCard(new Card(8, Color.Red));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertTrue(board.AskPlayerCanPlay(board.getActualPlayer()));
+		assertTrue(board.askPlayerCanPlay(board.getActualPlayer()));
 	}
 }

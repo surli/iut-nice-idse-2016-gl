@@ -43,41 +43,41 @@ public class Deck {
 		for(int i=0;i<=9;i++)
 		{
 			if(i==0){
-				deck.add(new Card(i,Color.Bleu));
+				deck.add(new Card(i,Color.Blue));
 			}
 			else{
-				deck.add(new Card(i,Color.Bleu));
-				deck.add(new Card(i,Color.Bleu));
+				deck.add(new Card(i,Color.Blue));
+				deck.add(new Card(i,Color.Blue));
 			}
 		}
 		for(int i=0;i<=9;i++)
 		{
 			if(i==0){
-				deck.add(new Card(i,Color.Rouge));
+				deck.add(new Card(i,Color.Red));
 			}
 			else{
-				deck.add(new Card(i,Color.Rouge));
-				deck.add(new Card(i,Color.Rouge));
+				deck.add(new Card(i,Color.Red));
+				deck.add(new Card(i,Color.Red));
 			}
 		}
 		for(int i=0;i<=9;i++)
 		{
 			if(i==0){
-				deck.add(new Card(i,Color.Jaune));
+				deck.add(new Card(i,Color.Yellow));
 			}
 			else{
-				deck.add(new Card(i,Color.Jaune));
-				deck.add(new Card(i,Color.Jaune));
+				deck.add(new Card(i,Color.Yellow));
+				deck.add(new Card(i,Color.Yellow));
 			}
 		}
 		for(int i=0;i<=9;i++)
 		{
 			if(i==0){
-				deck.add(new Card(i,Color.Vert));
+				deck.add(new Card(i,Color.Green));
 			}
 			else{
-				deck.add(new Card(i,Color.Vert));
-				deck.add(new Card(i,Color.Vert));
+				deck.add(new Card(i,Color.Green));
+				deck.add(new Card(i,Color.Green));
 			}
 		}
 	}

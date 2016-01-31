@@ -33,11 +33,11 @@ public class Model {
 	 * @param gameName
 	 * @return true/false
 	 */
-	public boolean addGame(Player player, String gameName)
+	public boolean addGame(Player player, String gameName, int numberPlayers)
 	{
 		if(!existsGame(gameName))
 		{
-			Game game = new Game(player,gameName);
+			Game game = new Game(player,gameName,numberPlayers);
 			this.games.add(game);
 			return true;
 		}
@@ -200,10 +200,10 @@ public class Model {
 			Color color=null;
 			switch(colorNumber)
 			{
-				case 0: color=Color.Bleu;
-				case 1: color=Color.Jaune;
-				case 2: color=Color.Rouge;
-				case 3: color=Color.Vert;
+				case 0: color=Color.Blue;
+				case 1: color=Color.Yellow;
+				case 2: color=Color.Red;
+				case 3: color=Color.Green;
 			}
 			try{
 				board.changeColor(color);
