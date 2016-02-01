@@ -75,31 +75,17 @@ public class GameRestTest extends JerseyTest {
         assertEquals(405, response.getStatus());
     }
 
-//    @Test 
-//    public void handPlayerTest() throws JSONException{
-//        	 Player player = model.findPlayerByName("tata", "toto");
-//                    
-//            Color color = null;
-//            int value = 0;
-//            int i;
-//            int taille =  player.getCards().size();
-//            
-//    		JSONObject obj = new JSONObject();
-//     
-//    		JSONArray listofPLayercards = new JSONArray();
-//    		
-//    		
-//     		for (i = 0; i < taille; i++) {
-//     			color=player.getCards().get(i).getColor();
-//     			value=player.getCards().get(i).getValue();
-//     			listofPLayercards.put("\"number\": "+value+"");
-//     			listofPLayercards.put("\"familly\": "+color+"");
-//     			listofPLayercards.put("\"idcard\": "+i+"");
-//     			obj.put("carte", listofPLayercards);
-//     		}
-//     		
-//    	     Response.ok(obj, MediaType.APPLICATION_JSON).build();
-//        }  
+    @Test
+    public void getHandDunJoueur() throws JSONException{
+        for(int i = 0; i < 3; i++)
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i));
+
+        model.findGameByName("tata").start();
+        Response response = target("/game/tata/toto/hand").request().get();
+        assertEquals(200, response.getStatus());
+        JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
+        assertEquals(7, jsonresponse.getJSONArray("cartes").length());
+    } 
     
 
     @Test

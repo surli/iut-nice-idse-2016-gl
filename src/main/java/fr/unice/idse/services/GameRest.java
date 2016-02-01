@@ -11,6 +11,7 @@ import org.codehaus.jettison.json.JSONObject;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -156,34 +157,23 @@ public class GameRest {
      */
     
     @GET 
-    @Path("/hand/{playerName}/{gameName}")
+    @Path("/{gameName}/{playerName}/hand")
     @Produces(MediaType.APPLICATION_JSON)
     public Response handplayer(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName ) throws JSONException{
-    	 Model model = Model.getInstance();
-    	 Player player = model.findPlayerByName(gameName, playerName);
-       if(player==null){
-    	   return Response.status(405).entity("No player with : "+playerName).build();
-       }
+         Model model = Model.getInstance();
+         Player player = model.findPlayerByName(gameName, playerName);
+         if(player==null){
+             return Response.status(405).entity("No player with : "+playerName).build();
+         }
         
-        Color color = null;
-        int value = 0;
-        int i;
         int taille =  player.getCards().size();
-        
-		JSONObject obj = new JSONObject();
- 
-		JSONArray listofPLayercards = new JSONArray();
-		
-		
- 		for (i = 0; i < taille; i++) {
- 			color=player.getCards().get(i).getColor();
- 			value=player.getCards().get(i).getValue();
- 			listofPLayercards.put("\"number\": "+value+"");
- 			listofPLayercards.put("\"familly\": "+color+"");
- 			listofPLayercards.put("\"idcard\": "+i+"");
- 			obj.put("carte", listofPLayercards);
- 		}
- 		
-	     return Response.ok(obj, MediaType.APPLICATION_JSON).build();
+
+        String [] list = new String[taille];
+        for (int i = 0; i < taille; i++){
+            list[i] = "{\"number\" : \""+player.getCards().get(i).getColor()+"\", " +
+                       "\"familly\" : \""+player.getCards().get(i).getValue()+"\"," +
+                       "\"idcard\" : \""+ i +"\"}";
+        }
+        return Response.status(200).entity("{\"cartes\": "+ Arrays.toString(list)+" }").build();
     }
 }
