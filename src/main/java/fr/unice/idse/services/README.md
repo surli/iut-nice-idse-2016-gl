@@ -13,7 +13,7 @@
 ### Contributors
 
 * Jeremie Elbaz
-* Joselin  Elcin
+* Jocelin  Heinen
 * Damien Clemenceau
 
 ### Introduction
@@ -42,19 +42,19 @@ jetty:run
 ```
 /uno
 ├── /initializer
-│   ├── /creategame
+│   ├── /creategame (TO BE UPDATE)
 ├── /lobby
-│   ├── /listgame
+│   ├── /listgame (DONE)
 │   ├── /listplayer
 ├── /game
 │   ├── /{gamename}
-│   │   ├── /addplayer
+│   │   ├── /addplayer (DONE)
 │   │   ├── /begingame
-│   │   ├── /gamestate
+│   │   ├── /gamestate (DONE)
 │   │   ├── /actualplayer
 │   │   ├── /updated 
 │   │   ├── /{pseudo}
-│   │   │   ├── /hand
+│   │   │   ├── /hand 
 ├── /player
 │   ├── /{pseudo}
 ```

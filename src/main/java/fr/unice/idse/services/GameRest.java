@@ -73,4 +73,18 @@ public class GameRest {
 
         return Response.status(200).entity("{status : "+model.addPlayerToGame(gamename, player)+"}").build();
     }
+    
+    @GET 
+    @Path("/hand/{pseudo}{gameName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response handplayer(@PathParam("playerName") String playerName){
+    	 Model model = Model.getInstance();
+         Game game = model.findPlayerByName(gameName, playerName);
+         if(game == null)
+             return Response.status(404).entity("Partie inconnu").build();
+
+         return Response.status(200).entity("{state: "+game.getBoard().gameBegin()+"}").build();
+    }
+    
+ 
 }
