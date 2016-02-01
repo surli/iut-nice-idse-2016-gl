@@ -32,7 +32,7 @@ public class GameRest {
         if(game == null)
             return Response.status(404).entity("Partie inconnu").build();
 
-        return Response.status(200).entity("{state: "+game.getBoard().gameBegin()+"}").build();
+        return Response.status(200).entity("{\"state\": "+game.getBoard().gameBegin()+"}").build();
     }
 
     /**
@@ -71,6 +71,6 @@ public class GameRest {
         if(game.gameBegin())
             return Response.status(500).entity("Game started").build();
 
-        return Response.status(200).entity("{status : "+model.addPlayerToGame(gamename, player)+"}").build();
+        return Response.status(200).entity("{\"status\" : "+model.addPlayerToGame(gamename, player)+"}").build();
     }
 }
