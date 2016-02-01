@@ -9,6 +9,7 @@ import org.codehaus.jettison.json.JSONObject;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.hamcrest.CoreMatchers;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
@@ -21,14 +22,20 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-/**
- * Created by Jeremie on 29/01/2016.
- */
+
 public class LobbyRestTest extends JerseyTest {
 
     @Override
     protected Application configure() {
         return new ResourceConfig(LobbyRest.class);
+    }
+
+    Model model;
+
+    @Before
+    public void init(){
+        model = Model.getInstance();
+        model.setGames(new ArrayList<Game>());
     }
 
     @Test
@@ -43,9 +50,6 @@ public class LobbyRestTest extends JerseyTest {
      */
     @Test
     public void retourneUnTableauVideSiAucuneGame() throws JSONException{
-        Model model = Model.getInstance();
-        model.setGames(new ArrayList<Game>());
-
         Response response = target("/lobby/games").request().get();
         assertEquals(200, response.getStatus());
 
@@ -56,8 +60,6 @@ public class LobbyRestTest extends JerseyTest {
 
     @Test
     public void retourneUnTableauAvecUneGame() throws JSONException{
-        Model model = Model.getInstance();
-        model.setGames(new ArrayList<Game>());
         model.addGame(model.createPlayer("toto"), "laPartie",4);
 
         Response response = target("/lobby/games").request().get();
