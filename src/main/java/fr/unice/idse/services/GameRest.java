@@ -1,6 +1,7 @@
 package fr.unice.idse.services;
 
 import fr.unice.idse.constante.Config;
+import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
@@ -8,6 +9,8 @@ import junp.AMERICAIN.Moteur;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
+import java.util.ArrayList;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -76,30 +79,31 @@ public class GameRest {
         return Response.status(200).entity("{status : "+model.addPlayerToGame(gamename, player)+"}").build();
     }
     
+    /**
+     * @param playerName
+     * @param gameName
+     * @return
+     */
+    
     @GET 
     @Path("/hand/{pseudo}/{gameName}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response handplayer(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName ){
     	 Model model = Model.getInstance();
-         Player player = model.findPlayerByName(gameName, playerName);
+    	 Player player = model.findPlayerByName(gameName, playerName);
          if(player == null){
              return Response.status(405).entity("Joueur inconnu").build();
          }
          
-         int taille =  player.getCards().size();
+        int taille =  player.getCards().size();
  		for (int i = 0; i < taille; i++) {
- 			player.getCards().get(i).getColor();
- 			player.getCards().get(i).getValue();
+ 			Color color=player.getCards().get(i).getColor();
+ 			int value=player.getCards().get(i).getValue();
+ 	     return Response.status(200).entity("{\"cartes\":[{\"idcard\":"+i+",\"number\":"+value+" ,\"familly\":"+color+"}]}").build();
 
+ 	     
  		}
          
-         return Response.status(200).entity("{'cartes':[{'number': ,'familly':  }]}").build();
     }
     
-//    {
-//    	"cartes": [{
-//    		"number": 2,
-//    		"familly": "As"
-//    	}]
-//    }
 }
