@@ -156,7 +156,7 @@ public class GameRest {
      */
     
     @GET 
-    @Path("/hand/{pseudo}/{gameName}")
+    @Path("/hand/{playerName}/{gameName}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response handplayer(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName ) throws JSONException{
     	 Model model = Model.getInstance();
