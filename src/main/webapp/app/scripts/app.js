@@ -46,36 +46,50 @@ angular
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('login', {
-                url:"/login",
-                templateUrl: "views/login.html",
-                controller: "LoginController"
+                url: '/login',
+                templateUrl: 'views/login.html',
+                controller: 'LoginController'
             })
             .state('register', {
-                url:"/register",
-                templateUrl: "views/register.html",
-                controller: "RegisterController"
+                url: '/register',
+                templateUrl: 'views/register.html',
+                controller: 'RegisterController'
             })
             .state('app', {
-                url: "/app",
+                url: '/app',
                 abstract: true,
-                templateUrl: "views/app.html",
-                controller: "AppController"
+                templateUrl: 'views/app.html',
+                controller: 'AppController'
             })
             .state('app.home', {
-                url: "/home",
-                templateUrl: "views/home.html",
-                controller: "HomeController"
+                url: '/home',
+                templateUrl: 'views/home.html',
+                controller: 'HomeController',
+                resolve: {
+                    Games: function($http, $q) {
+                        var deferred = $q.defer();
+
+                        $http.get('/rest/lobby/games')
+                            .then(function(data) {
+                                deferred.resolve(data);
+                            }, function(error) {
+                                deferred.reject(error);
+                            });
+
+                        return deferred.promise;
+                    }
+                }
             })
             .state('app.start', {
-                url: "/start",
-                templateUrl: "views/start.html",
-                controller: "StartController"
+                url: '/start',
+                templateUrl: 'views/start.html',
+                controller: 'StartController'
             })
             .state('app.game', {
-                url: "/game",
-                templateUrl: "views/game.html",
-                controller: "GameController"
+                url: '/game/:name',
+                templateUrl: 'views/game.html',
+                controller: 'GameController'
             });
 
-        $urlRouterProvider.otherwise("/login");
+        $urlRouterProvider.otherwise('/login');
     });
