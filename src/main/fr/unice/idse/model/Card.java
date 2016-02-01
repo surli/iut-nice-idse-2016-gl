@@ -76,39 +76,55 @@ public class Card implements Comparable<Card>{
 			String result="Carte(";
 			switch(value) {
 				case 0:
-					result += "Zero"+color;
+					result += "Zero "+color;
+					break;
 				case 1:
-					result += "One"+color;
+					result += "One "+color;
+					break;
 				case 2:
-					result += "Two"+color;
+					result += "Two "+color;
+					break;
 				case 3:
-					result += "Three"+color;
+					result += "Three "+color;
+					break;
 				case 4:
-					result += "Four"+color;
+					result += "Four "+color;
+					break;
 				case 5:
-					result += "Five"+color;
+					result += "Five "+color;
+					break;
 				case 6:
-					result += "Six"+color;
+					result += "Six "+color;
+					break;
 				case 7:
-					result += "Seven"+color;
+					result += "Seven "+color;
+					break;
 				case 8:
-					result += "Eight"+color;
+					result += "Eight "+color;
+					break;
 				case 9:
-					result += "Nine"+color;
+					result += "Nine "+color;
+					break;
 				case 10:
-					result += "Skip"+color;
+					result += "Skip "+color;
+					break;
 				case 11:
-					result += "Reverse"+color;
+					result += "Reverse "+color;
+					break;
 				case 12:
-					result += "DrawTwo"+color;
+					result += "DrawTwo "+color;
+					break;
 				case 13:
-					result += "Wild"+color;
+					result += "Wild "+color;
+					break;
 				case 14:
-					result += "DrawFour"+color;
-				
+					result += "DrawFour "+color;
+					break;
 				default:
-					result = "";
+					result = "test";
+					break;
 			}
+			result += ")";
 			return result;
 		}
 		
