@@ -33,14 +33,12 @@ public class GameRestTest extends JerseyTest {
     }
 
     Model model;
-    Game game;
 
     @Before
     public void init(){
         model = Model.getInstance();
         model.setGames(new ArrayList<Game>());
         model.addGame(model.createPlayer("toto"),"tata", 4);
-        game = model.findGameByName("tata");
     }
 
     @Test
@@ -75,52 +73,6 @@ public class GameRestTest extends JerseyTest {
         Response response = target("/game/tata/addplayer").request().post(jsonEntity);
 
         assertEquals(405, response.getStatus());
-    }
-    
-    @Test
-    public void retourneLeJoueurActuelDeLaPartie() throws JSONException{
-    	// Init the game
-    	game.addPlayer(model.createPlayer("marcel"));
-    	game.addPlayer(model.createPlayer("chris"));
-    	game.addPlayer(model.createPlayer("maurice"));
-    	game.start();
-    	game.getPlayers().get(1).setTurn(true);
-    	
-    	// Test the methods
-        Response response = target("/game/tata/actualplayer").request().get();
-        JSONObject json = new JSONObject(response.readEntity(String.class));
-
-        // Assert
-        assertEquals(200, response.getStatus());
-        assertEquals("marcel", json.getString("pseudo"));
-    }
-    
-    @Test
-    public void retourneErreur401SiLaPartieEstPasDemarre() throws JSONException{    	
-    	// Test the methods
-        Response response = target("/game/tata/actualplayer").request().get();
-        JSONObject json = new JSONObject(response.readEntity(String.class));
-
-        // Assert
-        assertEquals(401, response.getStatus());
-        assertEquals("Game has not begin", json.getString("error"));
-    }
-    
-    @Test
-    public void retourneErreur422SiCeNEstLeTourDAucunJoueur() throws JSONException{  
-       	// Init the game
-    	game.addPlayer(model.createPlayer("marcel"));
-    	game.addPlayer(model.createPlayer("chris"));
-    	game.addPlayer(model.createPlayer("maurice"));
-    	game.start();
-    	
-    	// Test the methods
-        Response response = target("/game/tata/actualplayer").request().get();
-        JSONObject json = new JSONObject(response.readEntity(String.class));
-
-        // Assert
-        assertEquals(422, response.getStatus());
-        assertEquals("No current player has been set", json.getString("error"));
     }
 
 //    @Test 
