@@ -73,4 +73,39 @@ public class GameRest {
 
         return Response.status(200).entity("{status : "+model.addPlayerToGame(gamename, player)+"}").build();
     }
+    
+    /**
+     * Méthode en GET permettant de recuperer le joueur devant jouer
+     * La partie doit être existante.
+     * Renvoie {"pseudo": String}
+     * @return Response
+     */
+    @GET
+    @Path("{gamename}/actualplayer")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response actualPlayer(@PathParam("gamename") String gamename) {
+        // Initialisation des objets
+        Model model = Model.getInstance();
+        Game game = model.findGameByName(gamename);
+        
+        // Verifie si le jeu a commencer
+    	if(!game.gameBegin()){
+    		return Response.status(401).entity("{\"error\":\"Game has not begin\"}").build();
+    	}
+    	
+    	// Recherche le joueur actuel
+    	Player currentPlayer = null;
+    	for(Player player : game.getPlayers()) {
+    		if(player.isTurn()) {
+    			currentPlayer = player;
+    		}
+    	}
+    	
+    	// Verifie qu'un joueur courant existe
+    	if(currentPlayer == null) {
+    		return Response.status(422).entity("{\"error\":\"No current player has been set\"}").build();
+    	}
+    	
+    	return Response.status(200).entity("{\"pseudo\":\"" + currentPlayer.getName() + "\"}").build();
+    }
 }

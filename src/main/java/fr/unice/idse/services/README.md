@@ -137,10 +137,28 @@ Return :
 
 __GET /uno/game/{gamename}/actualplayer__
 
-Return :
+Return the current player of the game 
+
+There are three type of return :
+
+1. Response 200 Ok
  ```json
 {
-    "pseudo":"john",
+    "pseudo": String,
+}
+```
+
+2. Response 401 Unauthorized
+ ```json
+{
+    "error": "Game has not begin",
+}
+```
+
+3. Response 422 Unprocessable Entity
+ ```json
+{
+    "error": "No current player has been set",
 }
 ```
 
