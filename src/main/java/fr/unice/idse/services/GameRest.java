@@ -4,6 +4,8 @@ import fr.unice.idse.constante.Config;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
+import junp.AMERICAIN.Moteur;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -75,16 +77,27 @@ public class GameRest {
     }
     
     @GET 
-    @Path("/hand/{pseudo}{gameName}")
+    @Path("/hand/{pseudo}/{gameName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response handplayer(@PathParam("playerName") String playerName){
+    public Response handplayer(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName ){
     	 Model model = Model.getInstance();
-         Game game = model.findPlayerByName(gameName, playerName);
-         if(game == null)
-             return Response.status(404).entity("Partie inconnu").build();
-
-         return Response.status(200).entity("{state: "+game.getBoard().gameBegin()+"}").build();
+         Player player = model.findPlayerByName(gameName, playerName);
+         if(player == null){
+             return Response.status(405).entity("Joueur inconnu").build();
+         }
+         
+         int taille =  player.getCards().size();
+ 		for (int i = 0; i < taille; i++) {
+ 			
+ 		}
+         
+         return Response.status(200).entity("{'cartes':[{'number': ,'familly':  }]}").build();
     }
     
- 
+//    {
+//    	"cartes": [{
+//    		"number": 2,
+//    		"familly": "As"
+//    	}]
+//    }
 }
