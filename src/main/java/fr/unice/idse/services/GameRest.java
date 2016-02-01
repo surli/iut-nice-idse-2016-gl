@@ -89,10 +89,12 @@ public class GameRest {
     @GET 
     @Path("/hand/{pseudo}/{gameName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public JSONObject handplayer(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName ) throws JSONException{
+    public Response handplayer(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName ) throws JSONException{
     	 Model model = Model.getInstance();
     	 Player player = model.findPlayerByName(gameName, playerName);
-       
+       if(player==null){
+    	   return Response.status(405).entity("No player with : "+playerName).build();
+       }
         
         Color color = null;
         int value = 0;
@@ -113,8 +115,7 @@ public class GameRest {
  			obj.put("carte", listofPLayercards);
  		}
  		
-
-	     return obj;
+	     return Response.ok(obj, MediaType.APPLICATION_JSON).build();
     }
     
 }
