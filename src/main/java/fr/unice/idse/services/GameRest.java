@@ -5,10 +5,10 @@ import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
-import junp.AMERICAIN.Moteur;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -83,27 +83,38 @@ public class GameRest {
      * @param playerName
      * @param gameName
      * @return
+     * @throws JSONException 
      */
     
     @GET 
     @Path("/hand/{pseudo}/{gameName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response handplayer(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName ){
+    public JSONObject handplayer(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName ) throws JSONException{
     	 Model model = Model.getInstance();
     	 Player player = model.findPlayerByName(gameName, playerName);
-         if(player == null){
-             return Response.status(405).entity("Joueur inconnu").build();
-         }
-         
+       
+        
+        Color color = null;
+        int value = 0;
+        int i;
         int taille =  player.getCards().size();
- 		for (int i = 0; i < taille; i++) {
- 			Color color=player.getCards().get(i).getColor();
- 			int value=player.getCards().get(i).getValue();
- 	     return Response.status(200).entity("{\"cartes\":[{\"idcard\":"+i+",\"number\":"+value+" ,\"familly\":"+color+"}]}").build();
-
- 	     
+        
+		JSONObject obj = new JSONObject();
+ 
+		JSONArray listofPLayercards = new JSONArray();
+		
+		
+ 		for (i = 0; i < taille; i++) {
+ 			color=player.getCards().get(i).getColor();
+ 			value=player.getCards().get(i).getValue();
+ 			listofPLayercards.put("\"number\": "+value+"");
+ 			listofPLayercards.put("\"familly\": "+color+"");
+ 			listofPLayercards.put("\"idcard\": "+i+"");
+ 			obj.put("carte", listofPLayercards);
  		}
-         
+ 		
+
+	     return obj;
     }
     
 }
