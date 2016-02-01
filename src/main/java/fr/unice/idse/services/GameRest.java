@@ -88,7 +88,9 @@ public class GameRest {
          
          int taille =  player.getCards().size();
  		for (int i = 0; i < taille; i++) {
- 			
+ 			player.getCards().get(i).getColor();
+ 			player.getCards().get(i).getValue();
+
  		}
          
          return Response.status(200).entity("{'cartes':[{'number': ,'familly':  }]}").build();
