@@ -1,11 +1,16 @@
 package fr.unice.idse.services;
 
 import fr.unice.idse.constante.Config;
+import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.json.JSONArray;
+
+import java.util.ArrayList;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -142,5 +147,43 @@ public class GameRest {
     	}
     	
     	return Response.status(200).entity("{\"pseudo\":\"" + currentPlayer.getName() + "\"}").build();
+    }
+    /*
+     * @param playerName
+     * @param gameName
+     * @return
+     * @throws JSONException 
+     */
+    
+    @GET 
+    @Path("/hand/{pseudo}/{gameName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response handplayer(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName ) throws JSONException{
+    	 Model model = Model.getInstance();
+    	 Player player = model.findPlayerByName(gameName, playerName);
+       if(player==null){
+    	   return Response.status(405).entity("No player with : "+playerName).build();
+       }
+        
+        Color color = null;
+        int value = 0;
+        int i;
+        int taille =  player.getCards().size();
+        
+		JSONObject obj = new JSONObject();
+ 
+		JSONArray listofPLayercards = new JSONArray();
+		
+		
+ 		for (i = 0; i < taille; i++) {
+ 			color=player.getCards().get(i).getColor();
+ 			value=player.getCards().get(i).getValue();
+ 			listofPLayercards.put("\"number\": "+value+"");
+ 			listofPLayercards.put("\"familly\": "+color+"");
+ 			listofPLayercards.put("\"idcard\": "+i+"");
+ 			obj.put("carte", listofPLayercards);
+ 		}
+ 		
+	     return Response.ok(obj, MediaType.APPLICATION_JSON).build();
     }
 }
