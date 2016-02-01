@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('unoApp')
-    .controller("HomeController", ["$rootScope", "$scope", "$state", function ($rootScope, $scope, $state) {
-        // TODO : HOME
+    .controller('HomeController', ['$scope', 'Games', function ($scope, Games) {
+        $scope.games = Games.data.games;
     }]);
