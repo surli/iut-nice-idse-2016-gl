@@ -69,6 +69,7 @@ public class Main
 		                		if(numberCardPlayer > actualPlayer.getCards().size())
 			                	{
 			                		played = true;
+			                		System.out.println("Le joueur joue : " + card);
 			                		board.nextPlayer();
 			                	}
 		                	}
