@@ -65,9 +65,9 @@ __POST /uno/initializer/creategame__
 Send :
 ```json
 {
-    "_token":"123456789",
-    "gamename":"uno",
-    "pseudo":"john"
+    "_token":"hbj7BB7Y6B87T282B87T27N90A098",
+    "game":"uno",
+    "player":"john"
 }
 ```
 Return :

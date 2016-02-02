@@ -42,6 +42,7 @@ public class Main
 					boolean played = false;
 					while(!played)
 					{
+						int numberCardPlayer = actualPlayer.getCards().size();
 						System.out.println("Entrez une valeure qui est entre crochet pour jouer une carte.");
 						BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		                String input = "";
@@ -65,7 +66,7 @@ public class Main
 		                	}
 		                	else
 		                	{
-		                		if(!actualCardInStack.equals(board.getStack().topCard()))
+		                		if(numberCardPlayer > actualPlayer.getCards().size())
 			                	{
 			                		played = true;
 			                		board.nextPlayer();

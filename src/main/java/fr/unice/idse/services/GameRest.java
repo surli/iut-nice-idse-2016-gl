@@ -135,13 +135,8 @@ public class GameRest {
     	}
     	
     	// Recherche le joueur actuel
-    	Player currentPlayer = null;
-    	for(Player player : game.getPlayers()) {
-    		if(player.isTurn()) {
-    			currentPlayer = player;
-    		}
-    	}
-    	
+    	Player currentPlayer = model.findGameByName(gamename).getBoard().getActualPlayer();
+
     	// Verifie qu'un joueur courant existe
     	if(currentPlayer == null) {
     		return Response.status(422).entity("{\"error\":\"No current player has been set\"}").build();
@@ -170,8 +165,8 @@ public class GameRest {
 
         String [] list = new String[taille];
         for (int i = 0; i < taille; i++){
-            list[i] = "{\"number\" : \""+player.getCards().get(i).getColor()+"\", " +
-                       "\"familly\" : \""+player.getCards().get(i).getValue()+"\"," +
+            list[i] = "{\"number\" : \""+player.getCards().get(i).getValue()+"\", " +
+                       "\"familly\" : \""+player.getCards().get(i).getColor()+"\"," +
                        "\"idcard\" : \""+ i +"\"}";
         }
         return Response.status(200).entity("{\"cartes\": "+ Arrays.toString(list)+" }").build();
