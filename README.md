@@ -54,7 +54,7 @@ Dans goals ou Command line : `install test`
 
 - Jérémie Elbaz
 - Jocelin Heinen
-Lien du README du groupe : [Cliquez ici](/src/main/java/fr/unice/idse/services/README.md)
+Lien du README du groupe : [Cliquez ici](/stash/projects/LPA/repos/projet-s2/src/main/java/fr/unice/idse/services/README.md)
 
 ###Base de donnée
 >Chef de groupe : Marina 
