@@ -163,21 +163,18 @@ Return :
 }
 ```
 
-__PUT /uno/game/{gamename}/{pseudo}__ (PlayCard)
+__POST /uno/game/{gamename}/{pseudo}__ (PickACard)
 
-Send :
- ```json
-{
-    "posCard": 0
-}
-```
+Return Ok
 
 __PUT /uno/game/{gamename}/{pseudo}__ (PlayCard)
 
 Send :
  ```json
 {
-    "posCard": 0
+    "value": 0,
+	"color": "Blue",
+	"actionCard": null
 }
 ```
 
