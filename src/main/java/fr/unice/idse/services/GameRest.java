@@ -153,15 +153,15 @@ public class GameRest {
      */
     
     @GET 
-    @Path("/{gameName}/{playerName}/hand")
+    @Path("/{gameName}/command/{pseudo}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response handplayer(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName ) throws JSONException{
+    public Response handplayer(@PathParam("pseudo") String pseudo,@PathParam("gameName") String gameName ) throws JSONException{
          Model model = Model.getInstance();
-         Player player = model.findPlayerByName(gameName, playerName);
+         Player player = model.findPlayerByName(gameName, pseudo);
          if(player==null){
-             return Response.status(405).entity("No player with : "+playerName).build();
+             return Response.status(405).entity("No player with : "+pseudo).build();
          }
-        
+         
         int taille =  player.getCards().size();
 
         String [] list = new String[taille];

@@ -112,7 +112,7 @@ public class GameRestTest extends JerseyTest {
             model.addPlayerToGame("tata", model.createPlayer("azert"+i));
 
         model.findGameByName("tata").start();
-        Response response = target("/game/tata/toto/hand").request().get();
+        Response response = target("/game/tata/command/toto").request().get();
         assertEquals(200, response.getStatus());
         JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
         assertEquals(7, jsonresponse.getJSONArray("cartes").length());
