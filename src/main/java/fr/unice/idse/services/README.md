@@ -13,7 +13,7 @@
 ### Contributors
 
 * Jeremie Elbaz
-* Jocelin  Heinen
+* Jocelin Heinen
 * Damien Clemenceau
 
 ### Introduction
@@ -41,31 +41,21 @@ jetty:run
 ##### Routes structure
 ```
 /uno
-├── /initializer
-│   ├── /creategame (TO BE UPDATE)
-├── /lobby
-│   ├── /listgame (DONE)
-│   ├── /listplayer
-├── /game
-│   ├── /{gamename}
-│   │   ├── /addplayer (DONE)
-│   │   ├── /begingame
-│   │   ├── /gamestate (DONE)
-│   │   ├── /actualplayer
-│   │   ├── /updated 
-│   │   ├── /{pseudo}
-│   │   │   ├── /hand 
-├── /player
-│   ├── /{pseudo}
+├── /game (GET/POST)
+│   ├── /{gamename} (GET/PUT/DELETE)
+│   │   ├── /command (GET/POST)
+│   │   ├── /{pseudo} (GET/PUT)
+├── /player (GET)
+│   ├── /{pseudo} (GET)
 ```
 
+Chaque route doit posseder un Token dans le header pour nom _token
 
-__POST /uno/initializer/creategame (fait)__
+__POST /uno/game__ CreateGame
 
 Send :
 ```json
 {
-    "_token":"123456789",
     "gamename":"uno",
     "pseudo":"john"
 }
@@ -77,7 +67,7 @@ Return :
 * 405 Missing or invalid parameters
 * 500 Gamename already in use
 
-__GET /uno/lobby/listgame (fait)__
+__GET /uno/game__ GetListGames
  
  Return :
  ```json
@@ -92,7 +82,106 @@ __GET /uno/lobby/listgame (fait)__
 }
 ```
  
-__GET /uno/lobby/listplayer__
+__PUT /uno/game/{gamename}__ AddPlayer
+
+Send :
+ ```json
+{
+    "pseudo":"bob"
+}
+```
+
+__GET /uno/game/{gamename}__ GetGameState
+
+> TODO
+
+Send :
+ ```json
+{
+	"state":1,
+	"player": 
+	[
+		{"pseudo":"bob","nbCard":5},
+		{"pseudo":"john","nbCard":5},
+		{"pseudo":"marcel","nbCard":4}
+	]
+}
+```
+
+__DELETE /uno/game/{gamename}__ GetGameState
+
+> TODO
+
+Return Ok
+
+__GET /uno/game/{gamename}/command__ CurrentPlayer
+
+Return the current player of the game 
+
+There are three type of return :
+
+1. Response 200 Ok
+ ```json
+{
+    "pseudo": "John",
+}
+```
+
+2. Response 401 Unauthorized
+ ```json
+{
+    "error": "Game has not begin",
+}
+```
+
+__PUT /uno/game/{gamename}/command__ BeginGame
+
+> TODO
+
+Return Ok
+
+__GET /uno/game/{gamename}/updated__ GetUpdate
+
+Return :
+ ```json
+{
+    "update":true,
+}
+```
+
+__GET /uno/game/{gamename}/{pseudo}__ (GetHand)
+
+Return :
+ ```json
+{
+    "cards": [
+        {
+            "number":2,
+            "familly":"As"
+        }
+    ]
+}
+```
+
+__PUT /uno/game/{gamename}/{pseudo}__ (PlayCard)
+
+Send :
+ ```json
+{
+    "posCard": 0
+}
+```
+
+__PUT /uno/game/{gamename}/{pseudo}__ (PlayCard)
+
+Send :
+ ```json
+{
+    "posCard": 0
+}
+```
+
+__GET /uno/player__ GetListPlayers
  
   Return :
  ```json
@@ -106,84 +195,6 @@ __GET /uno/lobby/listplayer__
 }
 ```
 
-__POST /uno/game/{gamename}/addplayer (fait)__
-
-Send :
- ```json
-{
-    "_token":"123456789",
-    "pseudo":"bob",
-}
-```
-
-__POST /uno/game/{gamename}/begingame__
-
-Send :
- ```json
-{
-    "_token":"123456789",
-    "pseudo":"john",
-}
-```
-
-__GET /uno/game/{gamename}/gamestate (fait)__
-
-Return :
- ```json
-{
-    "state":0,
-}
-```
-
-__GET /uno/game/{gamename}/actualplayer__
-
-Return the current player of the game 
-
-There are three type of return :
-
-1. Response 200 Ok
- ```json
-{
-    "pseudo": String,
-}
-```
-
-2. Response 401 Unauthorized
- ```json
-{
-    "error": "Game has not begin",
-}
-```
-
-3. Response 422 Unprocessable Entity
- ```json
-{
-    "error": "No current player has been set",
-}
-```
-
-__GET /uno/game/{gamename}/updated__
-
-Return :
- ```json
-{
-    "update":true,
-}
-```
-
-__GET /uno/game/{pseudo}/hand__
-
-Return :
- ```json
-{
-    "cartes": [
-        {
-            "number":2,
-            "familly":"As"
-        }
-    ]
-}
-```
 
 ### Running test
 
