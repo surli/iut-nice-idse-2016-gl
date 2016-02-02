@@ -14,16 +14,12 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
-import org.json.JSONArray;
 import org.junit.Before;
 import org.junit.Test;
 
 import fr.unice.idse.constante.Config;
-import fr.unice.idse.model.Card;
-import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
-import fr.unice.idse.model.Player;
 import fr.unice.idse.services.GameRest;
 
 public class GameRestTest extends JerseyTest {
@@ -53,7 +49,7 @@ public class GameRestTest extends JerseyTest {
 		game.start();
 
 		// Test the methods
-		Response response = target("/game/tata/actualplayer").request().get();
+		Response response = target("/game/tata/command").request().get();
 		JSONObject json = new JSONObject(response.readEntity(String.class));
 
 		// Assert
@@ -64,7 +60,7 @@ public class GameRestTest extends JerseyTest {
 	@Test
 	public void retourneErreur401SiLaPartieEstPasDemarre() throws JSONException {
 		// Test the methods
-		Response response = target("/game/tata/actualplayer").request().get();
+		Response response = target("/game/tata/command").request().get();
 		JSONObject json = new JSONObject(response.readEntity(String.class));
 
 		// Assert
@@ -74,7 +70,7 @@ public class GameRestTest extends JerseyTest {
 
 	@Test
     public void retourneFalseSiLaPartieExisteMaisPasCommencer() throws JSONException{
-        Response response = target("/game/tata/gamestate").request().get();
+        Response response = target("/game/tata").request().get();
         assertEquals(200, response.getStatus());
         JSONObject json = new JSONObject(response.readEntity(String.class));
         assertEquals(false, json.getBoolean("state"));
@@ -82,7 +78,7 @@ public class GameRestTest extends JerseyTest {
 
     @Test
     public void retourneUneErreur404SiPartieNexistePas() {
-        Response response = target("/game/sdsdsdss/gamestate").request().get();
+        Response response = target("/game/sdsdsdss").request().get();
         assertEquals(404, response.getStatus());
     }
 
@@ -90,7 +86,7 @@ public class GameRestTest extends JerseyTest {
     public void ajouteUnJoueurInexistantDansUnePartie() throws JSONException{
         String json = "{_token: '"+ Config._token+"', pseudo: 'titi'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata/addplayer").request().post(jsonEntity);
+        Response response = target("/game/tata").request().put(jsonEntity);
 
         assertEquals(200, response.getStatus());
         JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
@@ -99,7 +95,7 @@ public class GameRestTest extends JerseyTest {
 
     @Test
     public void ajouterUnJoueurExistantDansUnePartie() throws JSONException{
-        String json = "{_token: '"+ Config._token+"', pseudo: 'toto'}";
+        String json = "{pseudo: 'toto'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
         Response response = target("/game/tata/addplayer").request().post(jsonEntity);
 
@@ -112,7 +108,7 @@ public class GameRestTest extends JerseyTest {
             model.addPlayerToGame("tata", model.createPlayer("azert"+i));
 
         model.findGameByName("tata").start();
-        Response response = target("/game/tata/command/toto").request().get();
+        Response response = target("/game/tata/toto").request().get();
         assertEquals(200, response.getStatus());
         JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
         assertEquals(7, jsonresponse.getJSONArray("cartes").length());
@@ -121,9 +117,9 @@ public class GameRestTest extends JerseyTest {
 
     @Test
     public void lancerUnePartieSansTousLesJoueurs() throws JSONException{
-        String json = "{_token: '"+Config._token+"', pseudo: 'toto'}";
+        String json = "{pseudo: 'toto'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata/begingame").request().post(jsonEntity);
+        Response response = target("/game/tata/command").request().put(jsonEntity);
 
         assertEquals(500, response.getStatus());
         assertEquals("Game not tucked", response.readEntity(String.class));
@@ -135,9 +131,9 @@ public class GameRestTest extends JerseyTest {
             model.addPlayerToGame("tata", model.createPlayer("azert"+i));
         model.findGameByName("tata").start();
 
-        String json = "{_token: '"+Config._token+"', pseudo: 'toto'}";
+        String json = "{pseudo: 'toto'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata/begingame").request().post(jsonEntity);
+        Response response = target("/game/tata/command").request().put(jsonEntity);
 
         assertEquals(500, response.getStatus());
         assertEquals("Game started", response.readEntity(String.class));
@@ -148,9 +144,9 @@ public class GameRestTest extends JerseyTest {
         for(int i = 0; i < 3; i++)
             model.addPlayerToGame("tata", model.createPlayer("azert"+i));
 
-        String json = "{_token: '"+Config._token+"', pseudo: 'toto'}";
+        String json = "{pseudo: 'toto'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata/begingame").request().post(jsonEntity);
+        Response response = target("/game/tata/command").request().put(jsonEntity);
 
         assertEquals(200, response.getStatus());
         JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));

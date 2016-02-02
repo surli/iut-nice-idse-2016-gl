@@ -3,7 +3,7 @@ package fr.unice.idse.services;
 import java.util.Arrays;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -14,7 +14,6 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import fr.unice.idse.constante.Config;
-import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
@@ -30,7 +29,7 @@ public class GameRest {
      * @return Response
      */
     @GET
-    @Path("{gamename}/gamestate")
+    @Path("{gamename}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response isStarted(@PathParam("gamename") String gamename){
         Model model = Model.getInstance();
@@ -44,13 +43,13 @@ public class GameRest {
 
     /**
      * Méthode en POST permettant l'ajout d'un joueur dans une partie
-     * Signature : {_token: token, pseudo: String}
+     * Signature : {pseudo: String}
      * La partie doit être existante.
      * Renvoie {status: boolean}
      * @return Response
      */
-    @POST
-    @Path("{gamename}/addplayer")
+    @PUT
+    @Path("{gamename}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addPlayer(@PathParam("gamename") String gamename, String objJSON) throws JSONException{
         // Initialisation des objets
@@ -62,11 +61,13 @@ public class GameRest {
             return Response.status(404).entity("Partie inconnu").build();
 
         // verification du token
+        /*
         if(!json.has("_token"))
             return Response.status(401).entity("Invalid token").build();
         if(!Config._token.equals(json.getString("_token")))
             return Response.status(401).entity("Invalid token").build();
-
+		*/
+        
         // verification du joueur
         if(!json.has("pseudo"))
             return Response.status(405).entity("Missing or invalid parameters").build();
@@ -82,8 +83,8 @@ public class GameRest {
     }
 
 
-    @POST
-    @Path("{gamename}/begingame")
+    @PUT
+    @Path("{gamename}/command")
     @Produces(MediaType.APPLICATION_JSON)
     public Response beginGame(@PathParam("gamename") String gamename, String objJSON) throws JSONException{
         // Initialisation des objets
@@ -95,10 +96,12 @@ public class GameRest {
             return Response.status(404).entity("Partie inconnu").build();
 
         // verification du token
+        /*
         if(!json.has("_token"))
             return Response.status(401).entity("Invalid token").build();
         if(!Config._token.equals(json.getString("_token")))
             return Response.status(401).entity("Invalid token").build();
+		*/
 
         // verification du pseudo
         if(!json.has("pseudo"))
@@ -123,7 +126,7 @@ public class GameRest {
      * @return Response
      */
     @GET
-    @Path("{gamename}/actualplayer")
+    @Path("{gamename}/command")
     @Produces(MediaType.APPLICATION_JSON)
     public Response actualPlayer(@PathParam("gamename") String gamename) {
         // Initialisation des objets
@@ -153,7 +156,7 @@ public class GameRest {
      */
     
     @GET 
-    @Path("/{gameName}/command/{pseudo}")
+    @Path("/{gameName}/{pseudo}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response handplayer(@PathParam("pseudo") String pseudo,@PathParam("gameName") String gameName ) throws JSONException{
          Model model = Model.getInstance();
