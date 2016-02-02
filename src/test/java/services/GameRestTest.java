@@ -45,53 +45,12 @@ public class GameRestTest extends JerseyTest {
 	}
 
 	@Test
-	public void retourneFalseSiLaPartieExisteMaisPasCommencer()
-			throws JSONException {
-		Response response = target("/game/tata/gamestate").request().get();
-		assertEquals(200, response.getStatus());
-		JSONObject json = new JSONObject(response.readEntity(String.class));
-		assertEquals(false, json.getBoolean("state"));
-	}
-
-	@Test
-	public void retourneUneErreur404SiPartieNexistePas() {
-		Response response = target("/game/sdsdsdss/gamestate").request().get();
-		assertEquals(404, response.getStatus());
-	}
-
-	@Test
-	public void ajouteUnJoueurInexistantDansUnePartie() throws JSONException {
-		String json = "{_token: '" + Config._token + "', pseudo: 'titi'}";
-		Entity<String> jsonEntity = Entity.entity(json,
-				MediaType.APPLICATION_JSON);
-		Response response = target("/game/tata/addplayer").request().post(
-				jsonEntity);
-
-		assertEquals(200, response.getStatus());
-		JSONObject jsonresponse = new JSONObject(
-				response.readEntity(String.class));
-		assertTrue(jsonresponse.getBoolean("status"));
-	}
-
-	@Test
-	public void ajouterUnJoueurExistantDansUnePartie() throws JSONException {
-		String json = "{_token: '" + Config._token + "', pseudo: 'toto'}";
-		Entity<String> jsonEntity = Entity.entity(json,
-				MediaType.APPLICATION_JSON);
-		Response response = target("/game/tata/addplayer").request().post(
-				jsonEntity);
-
-		assertEquals(405, response.getStatus());
-	}
-
-	@Test
 	public void retourneLeJoueurActuelDeLaPartie() throws JSONException {
 		// Init the game
 		game.addPlayer(model.createPlayer("marcel"));
 		game.addPlayer(model.createPlayer("chris"));
 		game.addPlayer(model.createPlayer("maurice"));
 		game.start();
-		game.getPlayers().get(1).setTurn(true);
 
 		// Test the methods
 		Response response = target("/game/tata/actualplayer").request().get();
@@ -99,7 +58,7 @@ public class GameRestTest extends JerseyTest {
 
 		// Assert
 		assertEquals(200, response.getStatus());
-		assertEquals("marcel", json.getString("pseudo"));
+		assertEquals("toto", json.getString("pseudo"));
 	}
 
 	@Test
@@ -114,87 +73,88 @@ public class GameRestTest extends JerseyTest {
 	}
 
 	@Test
-	public void handPlayerTest() throws JSONException {
-		game.addPlayer(model.createPlayer("marcel"));
-		game.addPlayer(model.createPlayer("chris"));
-		game.addPlayer(model.createPlayer("maurice"));
-		game.start();
+    public void retourneFalseSiLaPartieExisteMaisPasCommencer() throws JSONException{
+        Response response = target("/game/tata/gamestate").request().get();
+        assertEquals(200, response.getStatus());
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals(false, json.getBoolean("state"));
+    }
 
-		Player player = game.findPlayerByName("toto");
-		ArrayList<Card> cards = new ArrayList<Card>();
-		cards.add(new Card(1, Color.Blue));
-		cards.add(new Card(2, Color.Blue));
-		cards.add(new Card(1, Color.Red));
-		player.setCards(cards);
+    @Test
+    public void retourneUneErreur404SiPartieNexistePas() {
+        Response response = target("/game/sdsdsdss/gamestate").request().get();
+        assertEquals(404, response.getStatus());
+    }
 
-		Color color = null;
-		int value = 0;
-		int i = 0;
-		int taille = player.getCards().size();
+    @Test
+    public void ajouteUnJoueurInexistantDansUnePartie() throws JSONException{
+        String json = "{_token: '"+ Config._token+"', pseudo: 'titi'}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+        Response response = target("/game/tata/addplayer").request().post(jsonEntity);
 
-		JSONObject obj = new JSONObject();
-		JSONArray listofPLayercards = new JSONArray();
+        assertEquals(200, response.getStatus());
+        JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
+        assertTrue(jsonresponse.getBoolean("status"));
+    }
 
-		for (i = 0; i < taille; i++) {
-			color = player.getCards().get(i).getColor();
-			value = player.getCards().get(i).getValue();
-			listofPLayercards.put("\"number\": " + value + "");
-			listofPLayercards.put("\"familly\": " + color + "");
-			listofPLayercards.put("\"idcard\": " + i + "");
-			obj.put("carte", listofPLayercards);
-		}
-		Response.ok(obj, MediaType.APPLICATION_JSON).build();
-		
-		Response response = target("/game/tata/toto/hand").request().get();
-		JSONObject json = new JSONObject(response.readEntity(String.class));
-		
-		assertEquals(obj, json);
-		assertEquals(200, response.getStatus());
-	}
+    @Test
+    public void ajouterUnJoueurExistantDansUnePartie() throws JSONException{
+        String json = "{_token: '"+ Config._token+"', pseudo: 'toto'}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+        Response response = target("/game/tata/addplayer").request().post(jsonEntity);
 
-	@Test
-	public void lancerUnePartieSansTousLesJoueurs() throws JSONException {
-		String json = "{_token: '" + Config._token + "', pseudo: 'toto'}";
-		Entity<String> jsonEntity = Entity.entity(json,
-				MediaType.APPLICATION_JSON);
-		Response response = target("/game/tata/begingame").request().post(
-				jsonEntity);
+        assertEquals(405, response.getStatus());
+    }
 
-		assertEquals(500, response.getStatus());
-		assertEquals("Game not tucked", response.readEntity(String.class));
-	}
+    @Test
+    public void getHandDunJoueur() throws JSONException{
+        for(int i = 0; i < 3; i++)
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i));
 
-	@Test
-	public void lancerUnePartieQuiADejaCommencer() throws JSONException {
-		for (int i = 0; i < 3; i++)
-			model.addPlayerToGame("tata", model.createPlayer("azert" + i));
-		model.findGameByName("tata").start();
+        model.findGameByName("tata").start();
+        Response response = target("/game/tata/toto/hand").request().get();
+        assertEquals(200, response.getStatus());
+        JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
+        assertEquals(7, jsonresponse.getJSONArray("cartes").length());
+    } 
+    
 
-		String json = "{_token: '" + Config._token + "', pseudo: 'toto'}";
-		Entity<String> jsonEntity = Entity.entity(json,
-				MediaType.APPLICATION_JSON);
-		Response response = target("/game/tata/begingame").request().post(
-				jsonEntity);
+    @Test
+    public void lancerUnePartieSansTousLesJoueurs() throws JSONException{
+        String json = "{_token: '"+Config._token+"', pseudo: 'toto'}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+        Response response = target("/game/tata/begingame").request().post(jsonEntity);
 
-		assertEquals(500, response.getStatus());
-		assertEquals("Game started", response.readEntity(String.class));
-	}
+        assertEquals(500, response.getStatus());
+        assertEquals("Game not tucked", response.readEntity(String.class));
+    }
 
-	@Test
-	public void lancerUnePartieAvecTousLesJoueurs() throws JSONException {
-		for (int i = 0; i < 3; i++)
-			model.addPlayerToGame("tata", model.createPlayer("azert" + i));
+    @Test
+    public void lancerUnePartieQuiADejaCommencer() throws JSONException{
+        for(int i = 0; i < 3; i++)
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i));
+        model.findGameByName("tata").start();
 
-		String json = "{_token: '" + Config._token + "', pseudo: 'toto'}";
-		Entity<String> jsonEntity = Entity.entity(json,
-				MediaType.APPLICATION_JSON);
-		Response response = target("/game/tata/begingame").request().post(
-				jsonEntity);
+        String json = "{_token: '"+Config._token+"', pseudo: 'toto'}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+        Response response = target("/game/tata/begingame").request().post(jsonEntity);
 
-		assertEquals(200, response.getStatus());
-		JSONObject jsonresponse = new JSONObject(
-				response.readEntity(String.class));
-		assertTrue(jsonresponse.getBoolean("status"));
-	}
+        assertEquals(500, response.getStatus());
+        assertEquals("Game started", response.readEntity(String.class));
+    }
+
+    @Test
+    public void lancerUnePartieAvecTousLesJoueurs() throws JSONException{
+        for(int i = 0; i < 3; i++)
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i));
+
+        String json = "{_token: '"+Config._token+"', pseudo: 'toto'}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+        Response response = target("/game/tata/begingame").request().post(jsonEntity);
+
+        assertEquals(200, response.getStatus());
+        JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
+        assertTrue(jsonresponse.getBoolean("status"));
+    }
 
 }

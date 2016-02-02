@@ -14,6 +14,7 @@ public class Board
 	private boolean meaning;
 	private int maxPlayer;
 	private boolean gameBegin;
+	private boolean gameEnd;
 	
 	public Board()
 	{
@@ -25,6 +26,7 @@ public class Board
 		meaning = true;
 		maxPlayer = 4;
 		gameBegin = false;
+		gameEnd = false;
 	}
 	
 	/*public Board(ArrayList<Player> players)
@@ -42,11 +44,11 @@ public class Board
 	{
 		if(meaning)
 		{
-			actualPlayer = (actualPlayer+1)%maxPlayer;
+			actualPlayer = (actualPlayer+1)%players.size();
 		}
 		else
 		{
-			actualPlayer = (actualPlayer-1)%maxPlayer;
+			actualPlayer = (actualPlayer-1)%players.size();
 		}
 	}
 	
@@ -90,8 +92,7 @@ public class Board
 	 */
 	public void init()
 	{
-		deck.fillDeck();
-		deck.shuffle();
+		deck.initDeck();
 		for(Player player : players)
 		{
 			for(int j = 0; j < 7; j++)
@@ -141,7 +142,8 @@ public class Board
 	}
 	
 	/**
-	 * Joue le tour du joueur actuel en posant une carte dans la fosse.
+	 * Le joueur actuel pose une carte dans la fosse.
+	 * Met actuellement fin à la partie si le joueur à plus de carte.
 	 * @param card
 	 */
 	public void poseCard(Card card)
@@ -152,7 +154,10 @@ public class Board
 			stack.addCard(card);
 			actualColor = card.getColor();
 			getActualPlayer().getCards().remove(card);
-			nextPlayer();
+			if(getActualPlayer().getCards().isEmpty())
+			{
+				gameEnd = true;
+			}
 		}
 	}
 	
@@ -173,5 +178,14 @@ public class Board
 	public boolean gameBegin()
 	{
 		return gameBegin;
+	}
+	
+	/**
+	 * Retourne si le jeu est fini
+	 * @return
+	 */
+	public boolean gameEnd()
+	{
+		return gameEnd;
 	}
 }

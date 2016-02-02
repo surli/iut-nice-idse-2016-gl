@@ -61,6 +61,11 @@ public class Game {
 		return board.gameBegin();
 	}
 
+	public boolean gameEnd()
+	{
+		return board.gameEnd();
+	}
+	
 	/**
 	 * Verifie si le joueur indiqué est présent dans la partie
 	 * @param playerName

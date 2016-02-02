@@ -6021,6 +6021,8 @@ body {
   body .title-uno {
     font-size: 26pt; }
 
+header .navbar {
+  margin-bottom: 0; }
 header .navbar-brand {
   font-size: 30pt; }
   header .navbar-brand:hover {
