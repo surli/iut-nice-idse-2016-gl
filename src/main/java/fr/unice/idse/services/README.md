@@ -41,12 +41,25 @@ jetty:run
 ##### Routes structure
 ```
 /uno
-├── /game (GET/POST)
-│   ├── /{gamename} (GET/PUT/DELETE)
-│   │   ├── /command (GET/POST)
-│   │   ├── /{pseudo} (GET/PUT)
-├── /player (GET)
-│   ├── /{pseudo} (GET)
+├── /game 
+│   ├── GET             Liste des parties
+│   ├── POST            Créer une partie
+│   ├── /{gamename} 
+│   │   ├── GET         Retourne l'état de la game
+│   │   ├── PUT         Ajoute un joueur dans la partie
+│   │   ├── DELETE      Supprime une partie
+│   │   ├── /command
+│   │   │   ├── GET     Retourne le joueur courant
+│   │   │   ├── PUT     Lance une partie (Que l'host)
+│   │   ├── /{pseudo} 
+│   │   │   ├── GET     Retoune la main du joueur
+│   │   │   ├── POST    Pioche une carte
+│   │   │   ├── PUT     Joue une carte
+├── /player 
+│   ├── /{pseudo} 
+│   │   ├── GET         Retourne la liste des joueurs
+├── /auth
+│   ├── POST            Authentifie un Guest en renvoyant un token
 ```
 
 Chaque route doit posseder un Token dans le header pour nom _token
