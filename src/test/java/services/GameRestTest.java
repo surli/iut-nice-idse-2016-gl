@@ -153,4 +153,50 @@ public class GameRestTest extends JerseyTest {
         assertTrue(jsonresponse.getBoolean("status"));
     }
 
+    @Test
+    public void createTest(){
+        /**
+         * Creation dun tableau formaté JSON avec les 3 parametres
+         */
+        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', game: 'superfly', player: 'marcel'}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+
+        /**
+         * on verifie que le code de retour est bien 200/succes
+         */
+        Response response = target("/game").request().post(jsonEntity);
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void retourneStatus200PourAfficherToutesLesGames(){
+        Response response = target("/game").request().get();
+        assertEquals(200, response.getStatus());
+    }
+
+    /**
+     * Doit retourner un tableau vide vu qu'aucune partie n'a été créé
+     * @throws JSONException
+     */
+    @Test
+    public void retourneUnTableauVideSiAucuneGame() throws JSONException{
+        model.setGames(new ArrayList<>());
+        Response response = target("/game").request().get();
+        assertEquals(200, response.getStatus());
+
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals(0, json.getJSONArray("games").length());
+    }
+
+    @Test
+    public void retourneUnTableauAvecUneGame() throws JSONException{
+        Response response = target("/game").request().get();
+        assertEquals(200, response.getStatus());
+
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals(1, json.getJSONArray("games").length());
+    }
+
 }

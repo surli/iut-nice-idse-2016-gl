@@ -2,11 +2,7 @@ package fr.unice.idse.services;
 
 import java.util.Arrays;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -18,8 +14,86 @@ import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
 
+/**
+ * /game
+ * │   ├── GET             Liste des parties (Fait)
+ * │   ├── POST            Créer une partie (Fait)
+ * │   ├── /{gamename}
+ * │   │   ├── GET         Retourne l'état de la game (Fait)
+ * │   │   ├── PUT         Ajoute un joueur dans la partie (Fait)
+ * │   │   ├── DELETE      Supprime une partie
+ * │   │   ├── /command
+ * │   │   │   ├── GET     Retourne le joueur courant (Fait)
+ * │   │   │   ├── PUT     Lance une partie (Que l'host) (Fait)
+ * │   │   ├── /{pseudo}
+ * │   │   │   ├── GET     Retoune la main du joueur (Fait)
+ * │   │   │   ├── POST    Pioche une carte
+ * │   │   │   ├── PUT     Joue une carte
+ */
+
 @Path("/game")
 public class GameRest {
+
+
+    /**
+     * Méthode permettant de lister toutes les parties existantes
+     * Retour : {games : [
+     *                      [name : String,
+     *                       numberPlayers : String]
+     *                   ]}
+     * @return Response
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response listGame(){
+        Model model = Model.getInstance();
+        String [] list = new String[model.getGames().size()];
+        for (int i = 0; i < model.getGames().size(); i++){
+            list[i] = "{\"name\" : \""+model.getGames().get(i).getGameName()+"\", " +
+                    "\"numberPlayers\" : \""+model.getGames().get(i).numberOfPlayers()+"/"+model.getGames().get(i).getNumberPlayers()+"\"}";
+        }
+        return Response.status(200).entity("{\"games\" : "+ Arrays.toString(list)+"}").build();
+    }
+
+    /**
+     * Méthode en POST permettant la création de partie.
+     * Signature : {game: String, player: String(pseudo du joueur)}
+     * Le nom de la game doit être suppérieur à 3 caractères;
+     * Vérifie si la partie existe ou non. Renvoie {message: boolean}
+     * @return Response
+     */
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createGame(String objJSON) throws JSONException {
+        // Cration de tous les objets
+        Model model = Model.getInstance();
+        JSONObject json = new JSONObject(objJSON);
+
+        // verification du token
+        if(!json.has("_token"))
+            return Response.status(401).entity("{\"error\" : \"Invalid token\"}").build();
+        if(!Config._token.equals(json.getString("_token")))
+            return Response.status(401).entity("{\"error\" : \"Invalid token\"}").build();
+
+        // verification du champ game
+        if(!json.has("game"))
+            return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
+        String game = json.getString("game");
+        if(game.length() < 3)
+            return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
+        if(!json.has("player"))
+            return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
+        Player player = model.createPlayer(json.getString("player"));
+        if(player == null)
+            return Response.status(405).entity("{\"error\" : \"Joueur existant\"").build();
+
+        // creation de la game
+        if(!model.addGame(player, game,4))
+            return Response.status(500).entity("{\"message\": false}").build();
+
+        return Response.status(200).entity("{\"message\": true}").build();
+    }
+
     /**
      * Retourne si la partie a commencée
      * gamename : Nom de la partie
