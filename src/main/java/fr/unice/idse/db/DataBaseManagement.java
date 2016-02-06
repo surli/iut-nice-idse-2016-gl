@@ -1,4 +1,4 @@
-package fr.unice.idse.bdd;
+package fr.unice.idse.db;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -6,9 +6,12 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.Statement;
 
-public class Bdd {
-	// a modifier
-	private String url = "jdbc:mysql://localhost/uno";
+public class DataBaseManagement {
+	/*
+	 * need to modify + import external jar library oracle database JDBC driver
+	 * at build path
+	 */
+	private String url = "jdbc:oracle:thin:@localhost:1521:uno";
 	private String user = "root";
 	private String pass = "root";
 	private Connection con = null;
@@ -19,7 +22,7 @@ public class Bdd {
 		this.statement = null;
 
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("oracle.jdbc.driver.OracleDriver");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,9 +45,9 @@ public class Bdd {
 	public boolean userLogin(String email, String password) {
 		try {
 			ResultSet resultQuery = this.statement.executeQuery(
-					"SELECT email,password FROM users WHERE email =" + email + "AND password =" + password + ";");
-			if (resultQuery.getString("email") == email && resultQuery.getString("password") == password)
-				return true;				
+					"SELECT u_email, u_password FROM users WHERE u_email =" + email + "AND u_password =" + password + ";");
+			if (resultQuery.getString("u_email") == email && resultQuery.getString("u_password") == password)
+				return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
