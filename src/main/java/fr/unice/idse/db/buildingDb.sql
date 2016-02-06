@@ -4,7 +4,7 @@ CREATE user_t AS OBJECT (
 u_id INT(10),
 u_email VARCHAR2(30), 
 u_pseudo VARCHAR2(20), 
-u_password VARCHAR2(50)
+u_password VARCHAR2(50),
 MEMBER FUNCTION get_uemail RETURN VARCHAR, 
 MEMBER FUNCTION get_upseudo RETURN VARCHAR
 ) NOT FINAL ;
@@ -45,6 +45,6 @@ g_hands handslist_t
 CREATE TABLE games OF game_t (
 CONSTRAINT gc1 PRIMARY KEY(g_id),
 CONSTRAINT gc2 g_players NOT NULL,
-CONSTRAINT gc3 g_hands NOT NULL,
+CONSTRAINT gc3 g_hands NOT NULL
 );
 /
