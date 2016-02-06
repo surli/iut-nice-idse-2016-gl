@@ -42,7 +42,7 @@ public class Main
 					boolean played = false;
 					while(!played)
 					{
-						int numberCardPlayer = actualPlayer.getCards().size();
+						int numberCardsPlayer = actualPlayer.getCards().size();
 						System.out.println("Entrez une valeure qui est entre crochet pour jouer une carte.");
 						BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		                String input = "";
@@ -63,13 +63,19 @@ public class Main
 		                	if(gameTest.gameEnd())
 		                	{
 		                		winner = actualPlayer;
+		                		played = true;
+		                		System.out.println("Le joueur joue : " + card);
 		                	}
 		                	else
 		                	{
-		                		if(numberCardPlayer > actualPlayer.getCards().size())
+		                		if(numberCardsPlayer > actualPlayer.getCards().size())
 			                	{
 			                		played = true;
 			                		System.out.println("Le joueur joue : " + card);
+			                		if(actualPlayer.getCards().size() == 1)
+			                		{
+			                			System.out.println("Uno");
+			                		}
 			                		board.nextPlayer();
 			                	}
 		                	}
@@ -78,7 +84,7 @@ public class Main
 				}
 				else
 				{
-					board.pioche();
+					board.drawCard();
 					System.out.println("Le joueur a pioche : " + actualPlayer.getCards().get(actualPlayer.getCards().size()-1));
 					board.nextPlayer();
 				}

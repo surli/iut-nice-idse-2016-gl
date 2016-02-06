@@ -12,9 +12,10 @@ public class Board
 	private Deck deck;
 	private Color actualColor;
 	private boolean meaning;
-	private int maxPlayer;
 	private boolean gameBegin;
 	private boolean gameEnd;
+	private boolean effect;
+	private int cptDrawCard;
 	
 	public Board()
 	{
@@ -24,16 +25,11 @@ public class Board
 		stack = new Stack();
 		actualPlayer = 0;
 		meaning = true;
-		maxPlayer = 4;
 		gameBegin = false;
 		gameEnd = false;
-	}
-	
-	/*public Board(ArrayList<Player> players)
-	{
-		this.players = players;
-		this.variante = new Alternative();
-	}*/	
+		effect = false;
+		cptDrawCard = 1;
+	}	
 	
 	public void changeMeaning()
 	{
@@ -128,7 +124,7 @@ public class Board
 	 */
 	public boolean askPlayableCard(Card card)
 	{
-		return card.getValue() == stack.topCard().getValue() || card.getColor().equals(actualColor);
+		return card.getValue() == stack.topCard().getValue() || card.getColor().equals(actualColor) || card.getColor().equals(Color.Black);
 	}
 	
 	/**
@@ -143,7 +139,7 @@ public class Board
 	
 	/**
 	 * Le joueur actuel pose une carte dans la fosse.
-	 * Met actuellement fin à la partie si le joueur à plus de carte.
+	 * Met actuellement fin à la partie si le joueur a plus de carte.
 	 * @param card
 	 */
 	public void poseCard(Card card)
@@ -165,10 +161,20 @@ public class Board
 	 * Le joueur actuel pioche une carte, ne fait pas passer le tour pour le cas
 	 * où il subit une carte à effet spécial.
 	 */
-	public void pioche()
+	public void drawCard()
 	{
-		getActualPlayer().getCards().add(deck.topCard());
-		deck.removeTopCard();
+		int cpt = cptDrawCard;
+		while(cpt > 0)
+		{
+			if(getDeck().isEmpty())
+			{
+				getDeck().reassembleDeck(getStack());
+			}
+			getActualPlayer().getCards().add(deck.topCard());
+			deck.removeTopCard();
+			cpt--;
+		}
+		
 	}
 	
 	/**
