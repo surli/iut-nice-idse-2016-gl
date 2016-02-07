@@ -49,27 +49,27 @@ public class Model {
 	 * @param playerName
 	 * @return Player
 	 */
-	public Player createPlayer(String playerName)
+	public Player createPlayer(String playerName,String playerToken)
 	{
 		if(!playerExists(playerName))
 		{
-			return new Player(playerName);
+			return new Player(playerName,playerToken);
 		}
 		return null;
 	}
 	
 	/**
 	 * Vérifie si le joueur indiqué existe dans les parties
-	 * @param playerName
+	 * @param playerToken
 	 * @return true/false
 	 */
-	public boolean playerExists(String playerName)
+	public boolean playerExists(String playerToken)
 	{
 		for(Game game : games)
 		{
 			for(Player player : game.getPlayers())
 			{
-				if(player.getName().equals(playerName))
+				if(player.getToken().equals(playerToken))
 				{
 					return true;
 				}
@@ -134,12 +134,12 @@ public class Model {
 	 * @param playerName
 	 * @return true/false
 	 */
-	public boolean removePlayerFromGame(String gameName, String playerName)
+	public boolean removePlayerFromGameByName(String gameName, String playerName)
 	{
 		Game game = findGameByName(gameName);
 		if(game != null)
 		{
-			return game.removePlayer(playerName);
+			return game.removePlayerByName(playerName);
 		}
 		return false;
 	}
@@ -157,6 +157,39 @@ public class Model {
 		if(game != null)
 		{
 			return game.findPlayerByName(playerName);
+		}
+		return null;
+	}
+	
+	/**
+	 * Supprime joueur d'une partie
+	 * @param gameName
+	 * @param playerToken
+	 * @return true/false
+	 */
+	public boolean removePlayerFromGameByToken(String gameName, String playerToken)
+	{
+		Game game = findGameByName(gameName);
+		if(game != null)
+		{
+			return game.removePlayerByToken(playerToken);
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * Chercher un joueur selon le nom de la partie et le nom du joueur renseignés
+	 * @param gameName
+	 * @param playerToken
+	 * @return Player/null
+	 */
+	public Player findPlayerByToken(String gameName,String playerToken)
+	{
+		Game game = findGameByName(gameName);
+		if(game != null)
+		{
+			return game.findPlayerByName(playerToken);
 		}
 		return null;
 	}

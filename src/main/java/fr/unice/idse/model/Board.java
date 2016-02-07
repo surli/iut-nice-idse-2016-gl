@@ -12,9 +12,10 @@ public class Board
 	private Deck deck;
 	private Color actualColor;
 	private boolean meaning;
-	private int maxPlayer;
 	private boolean gameBegin;
 	private boolean gameEnd;
+	private boolean effect;
+	private int cptDrawCard;
 	
 	public Board()
 	{
@@ -24,22 +25,58 @@ public class Board
 		stack = new Stack();
 		actualPlayer = 0;
 		meaning = true;
-		maxPlayer = 4;
 		gameBegin = false;
 		gameEnd = false;
-	}
+		effect = false;
+		cptDrawCard = 1;
+	}	
 	
-	/*public Board(ArrayList<Player> players)
-	{
-		this.players = players;
-		this.variante = new Alternative();
-	}*/	
-	
+	/**
+	 * Change le sens de la partie.
+	 */
 	public void changeMeaning()
 	{
 		meaning = !meaning;
 	}
 	
+	/**
+	 * Change l'état d'effet.
+	 */
+	public void setEffect()
+	{
+		effect = !effect;
+	}
+	
+	/**
+	 * Retourne si on est dans le cas d'une carte à effet.
+	 * @return
+	 */
+	public boolean getEffect()
+	{
+		return effect;
+	}
+	
+	/**
+	 * Change le nombre de carte à piocher.
+	 * @param i
+	 */
+	public void setCptDrawCard(int i)
+	{
+		cptDrawCard = i;
+	}
+	
+	/**
+	 * Retourne le nombre de carte à piocher.
+	 * @return
+	 */
+	public int getCptDrawCard()
+	{
+		return cptDrawCard;
+	}
+	
+	/**
+	 * Change le joueur actuel par raport au sens de la partie.
+	 */
 	public void nextPlayer()
 	{
 		if(meaning)
@@ -49,9 +86,17 @@ public class Board
 		else
 		{
 			actualPlayer = (actualPlayer-1)%players.size();
+			if(actualPlayer < 0)
+			{
+				actualPlayer += players.size();
+			}
 		}
 	}
 	
+	/**
+	 * Retourne la liste de joueur de la partie.
+	 * @return
+	 */
 	public ArrayList<Player> getPlayers()
 	{
 		return players;
@@ -62,21 +107,33 @@ public class Board
 		this.players = players;
 	}
 	
+	/**
+	 * Retourne le joueur actuel.
+	 * @return
+	 */
 	public Player getActualPlayer()
 	{
 		return players.get(actualPlayer);
 	}
-
+	
+	/**
+	 * Retourne la fosse de la partie.
+	 * @return
+	 */
 	public Stack getStack() {
 		return stack;
 	}
 
+	/**
+	 * Retourne la pioche de la partie.
+	 * @return
+	 */
 	public Deck getDeck() {
 		return deck;
 	}
 	
 	/**
-	 * Change la couleur actuel du jeu
+	 * Change la couleur actuel de la partie.
 	 * @param color
 	 */
 	//Je suis pas trop daccord sur le fait de changer la couleur de la carte 
@@ -88,7 +145,7 @@ public class Board
 	}
 	
 	/**
-	 * Initialise le plateau de jeu
+	 * Initialise le plateau du jeu.
 	 */
 	public void init()
 	{
@@ -128,7 +185,7 @@ public class Board
 	 */
 	public boolean askPlayableCard(Card card)
 	{
-		return card.getValue() == stack.topCard().getValue() || card.getColor().equals(actualColor);
+		return card.getValue() == stack.topCard().getValue() || card.getColor().equals(actualColor) || card.getColor().equals(Color.Black);
 	}
 	
 	/**
@@ -143,7 +200,7 @@ public class Board
 	
 	/**
 	 * Le joueur actuel pose une carte dans la fosse.
-	 * Met actuellement fin à la partie si le joueur à plus de carte.
+	 * Met actuellement fin à la partie si le joueur a plus de carte.
 	 * @param card
 	 */
 	public void poseCard(Card card)
@@ -165,14 +222,24 @@ public class Board
 	 * Le joueur actuel pioche une carte, ne fait pas passer le tour pour le cas
 	 * où il subit une carte à effet spécial.
 	 */
-	public void pioche()
+	public void drawCard()
 	{
-		getActualPlayer().getCards().add(deck.topCard());
-		deck.removeTopCard();
+		int cpt = cptDrawCard;
+		while(cpt > 0)
+		{
+			if(getDeck().isEmpty())
+			{
+				getDeck().reassembleDeck(getStack());
+			}
+			getActualPlayer().getCards().add(deck.topCard());
+			deck.removeTopCard();
+			cpt--;
+		}
+		
 	}
 	
 	/**
-	 * Retourne si le jeu à commencé
+	 * Retourne si le jeu a commencé
 	 * @return
 	 */
 	public boolean gameBegin()
