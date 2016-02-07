@@ -69,7 +69,7 @@ public class GameRest {
         // verification du joueur
         if(!json.has("pseudo"))
             return Response.status(405).entity("Missing or invalid parameters").build();
-        Player player = model.createPlayer(json.getString("pseudo"));
+        Player player = model.createPlayer(json.getString("pseudo"),"");
         if(player == null)
             return Response.status(405).entity("Missing or invalid parameters").build();
 

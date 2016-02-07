@@ -38,7 +38,7 @@ public class GameRestTest extends JerseyTest {
     public void init(){
         model = Model.getInstance();
         model.setGames(new ArrayList<Game>());
-        model.addGame(model.createPlayer("toto"),"tata", 4);
+        model.addGame(model.createPlayer("toto",""),"tata", 4);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void getHandDunJoueur() throws JSONException{
         for(int i = 0; i < 3; i++)
-            model.addPlayerToGame("tata", model.createPlayer("azert"+i));
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i,""));
 
         model.findGameByName("tata").start();
         Response response = target("/game/tata/toto/hand").request().get();
@@ -101,7 +101,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void lancerUnePartieQuiADejaCommencer() throws JSONException{
         for(int i = 0; i < 3; i++)
-            model.addPlayerToGame("tata", model.createPlayer("azert"+i));
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i,""));
         model.findGameByName("tata").start();
 
         String json = "{_token: '"+Config._token+"', pseudo: 'toto'}";
@@ -115,7 +115,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void lancerUnePartieAvecTousLesJoueurs() throws JSONException{
         for(int i = 0; i < 3; i++)
-            model.addPlayerToGame("tata", model.createPlayer("azert"+i));
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i,""));
 
         String json = "{_token: '"+Config._token+"', pseudo: 'toto'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);

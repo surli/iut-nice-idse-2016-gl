@@ -16,8 +16,8 @@ public class BoardTest
 	public void testInitBoard() 
 	{
 		Board board = new Board();
-		board.getPlayers().add(new Player("toto"));
-		board.getPlayers().add(new Player("test"));
+		board.getPlayers().add(new Player("toto",""));
+		board.getPlayers().add(new Player("test",""));
 		board.init();
 		assertFalse(board.getDeck().isEmpty());
 		assertTrue(board.getPlayers().get(0).getCards().size()>0);
@@ -65,7 +65,7 @@ public class BoardTest
 	public void testJoueurPeutJouer()
 	{
 		Board board = new Board();
-		board.getPlayers().add(new Player("toto"));
+		board.getPlayers().add(new Player("toto",""));
 		board.getActualPlayer().getCards().add(new Card(7, Color.Red));
 		board.getStack().addCard(new Card(8, Color.Red));
 		board.changeColor(board.getStack().topCard().getColor());
@@ -76,9 +76,9 @@ public class BoardTest
 	public void testChangeDeSens()
 	{
 		Board board = new Board();
-		Player toto = new Player("toto");
-		Player test = new Player("test");
-		Player titi = new Player("titi");
+		Player toto = new Player("toto","");
+		Player test = new Player("test","");
+		Player titi = new Player("titi","");
 		board.getPlayers().add(toto);
 		board.getPlayers().add(test);
 		board.getPlayers().add(titi);
@@ -96,7 +96,7 @@ public class BoardTest
 	public void testPoseUneBonneCarte()
 	{
 		Board board = new Board();
-		Player toto = new Player("toto");
+		Player toto = new Player("toto","");
 		Card carteaposer = new Card(0, Color.Red);
 		toto.getCards().add(carteaposer);
 		board.getStack().getStack().add(new Card(0, Color.Blue));
@@ -110,7 +110,7 @@ public class BoardTest
 	public void testPoseUneMauvaiseCarte()
 	{
 		Board board = new Board();
-		Player toto = new Player("toto");
+		Player toto = new Player("toto","");
 		Card carteaposer = new Card(0, Color.Red);
 		toto.getCards().add(carteaposer);
 		board.getStack().getStack().add(new Card(1, Color.Blue));
@@ -124,7 +124,7 @@ public class BoardTest
 	public void testPiocheUneCarte()
 	{
 		Board board = new Board();
-		Player toto = new Player("toto");
+		Player toto = new Player("toto","");
 		board.getStack().getStack().add(new Card(1, Color.Blue));
 		board.getPlayers().add(toto);
 		board.drawCard();
@@ -136,7 +136,7 @@ public class BoardTest
 	public void testPiochePlusieursCartes()
 	{
 		Board board = new Board();
-		Player toto = new Player("toto");
+		Player toto = new Player("toto","");
 		board.getStack().getStack().add(new Card(1, Color.Blue));
 		board.getStack().getStack().add(new Card(2, Color.Blue));
 		board.getStack().getStack().add(new Card(3, Color.Blue));

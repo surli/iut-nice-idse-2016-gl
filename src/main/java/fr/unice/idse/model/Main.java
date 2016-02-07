@@ -12,9 +12,9 @@ public class Main
 
 	public static void main(String[] args) 
 	{
-		Player playerHostTest = new Player("PlayerHostTest");
-		Player playerTest2 = new Player("Test");
-		Player playerTest3 = new Player("Toto");
+		Player playerHostTest = new Player("PlayerHostTest","");
+		Player playerTest2 = new Player("Test","");
+		Player playerTest3 = new Player("Toto","");
 		Game gameTest = new Game(playerHostTest, "GameTest", 3);
 		
 		gameTest.addPlayer(playerTest2);

@@ -47,7 +47,7 @@ public class InitializerRest {
             return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
         if(!json.has("player"))
             return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
-        Player player = model.createPlayer(json.getString("player"));
+        Player player = model.createPlayer(json.getString("player"),"");
         if(player == null)
             return Response.status(405).entity("{\"error\" : \"Joueur existant\"").build();
 
