@@ -31,11 +31,52 @@ public class Board
 		cptDrawCard = 1;
 	}	
 	
+	/**
+	 * Change le sens de la partie.
+	 */
 	public void changeMeaning()
 	{
 		meaning = !meaning;
 	}
 	
+	/**
+	 * Change l'état d'effet.
+	 */
+	public void setEffect()
+	{
+		effect = !effect;
+	}
+	
+	/**
+	 * Retourne si on est dans le cas d'une carte à effet.
+	 * @return
+	 */
+	public boolean getEffect()
+	{
+		return effect;
+	}
+	
+	/**
+	 * Change le nombre de carte à piocher.
+	 * @param i
+	 */
+	public void setCptDrawCard(int i)
+	{
+		cptDrawCard = i;
+	}
+	
+	/**
+	 * Retourne le nombre de carte à piocher.
+	 * @return
+	 */
+	public int getCptDrawCard()
+	{
+		return cptDrawCard;
+	}
+	
+	/**
+	 * Change le joueur actuel par raport au sens de la partie.
+	 */
 	public void nextPlayer()
 	{
 		if(meaning)
@@ -45,9 +86,17 @@ public class Board
 		else
 		{
 			actualPlayer = (actualPlayer-1)%players.size();
+			if(actualPlayer < 0)
+			{
+				actualPlayer += players.size();
+			}
 		}
 	}
 	
+	/**
+	 * Retourne la liste de joueur de la partie.
+	 * @return
+	 */
 	public ArrayList<Player> getPlayers()
 	{
 		return players;
@@ -58,21 +107,33 @@ public class Board
 		this.players = players;
 	}
 	
+	/**
+	 * Retourne le joueur actuel.
+	 * @return
+	 */
 	public Player getActualPlayer()
 	{
 		return players.get(actualPlayer);
 	}
-
+	
+	/**
+	 * Retourne la fosse de la partie.
+	 * @return
+	 */
 	public Stack getStack() {
 		return stack;
 	}
 
+	/**
+	 * Retourne la pioche de la partie.
+	 * @return
+	 */
 	public Deck getDeck() {
 		return deck;
 	}
 	
 	/**
-	 * Change la couleur actuel du jeu
+	 * Change la couleur actuel de la partie.
 	 * @param color
 	 */
 	//Je suis pas trop daccord sur le fait de changer la couleur de la carte 
@@ -84,7 +145,7 @@ public class Board
 	}
 	
 	/**
-	 * Initialise le plateau de jeu
+	 * Initialise le plateau du jeu.
 	 */
 	public void init()
 	{
@@ -178,7 +239,7 @@ public class Board
 	}
 	
 	/**
-	 * Retourne si le jeu à commencé
+	 * Retourne si le jeu a commencé
 	 * @return
 	 */
 	public boolean gameBegin()
