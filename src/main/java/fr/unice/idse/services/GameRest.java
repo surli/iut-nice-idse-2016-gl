@@ -245,8 +245,21 @@ public class GameRest {
         for (int i = 0; i < taille; i++){
             list[i] = "{\"number\" : \""+player.getCards().get(i).getValue()+"\", " +
                        "\"familly\" : \""+player.getCards().get(i).getColor()+"\"," +
-                       "\"idcard\" : \""+ i +"\"}";
+                       "\"position\" : \""+ i +"\"}";
         }
         return Response.status(200).entity("{\"cartes\": "+ Arrays.toString(list)+" }").build();
     }
+    
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response pickacard(String gameName, String pseudo) throws JSONException {
+        // Cration de tous les objets
+        Model model = Model.getInstance();
+        Player player = model.findPlayerByName(gameName, pseudo);
+
+        player.setCards(cards);
+
+        return Response.status(200).entity("carte ajoutée à la main du joueur").build();
+    }
+    
 }
