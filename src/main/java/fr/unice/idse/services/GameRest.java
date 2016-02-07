@@ -280,12 +280,9 @@ public class GameRest {
     	}
     	
     	// Verification que le joueur existe et st present dans la partie
-    	if(!model.playerExists(pseudo)) {
-    		return Response.status(405).entity("{\"error\": \"The player does not exist\"}").build();
-    	} 
     	Player player = model.findPlayerByName(gameName, pseudo);
     	if(player == null) {
-    		return Response.status(405).entity("{\"error\": \"The player does not belong to this game\"}").build();
+    		return Response.status(405).entity("{\"error\": \"The player does not exist\"}").build();
     	} 
     	
     	// Verification du JSON
@@ -295,9 +292,7 @@ public class GameRest {
     	}
     	
     	// Verifie que le joueur peut jouer
-    	Board board = model.findGameByName(gameName).getBoard();
-    	
-    	if(!board.askPlayerCanPlay(player)) {
+    	if(!model.findGameByName(gameName).getBoard().askPlayerCanPlay(player)) {
     		return Response.status(405).entity("{\"error\": \"The player can't play\"}").build();
     	}
     	
@@ -309,12 +304,12 @@ public class GameRest {
     	}
     	
     	// Verifie que la carte est jouable
-    	if(!Model.getInstance().findGameByName(gameName).getBoard().askPlayableCard(card)) {
+    	if(!model.findGameByName(gameName).getBoard().askPlayableCard(card)) {
     		return Response.status(405).entity("{\"error\": \"The card can't be played\"}").build();
     	}
     	
     	// Finalement la carte est jouer
-    	board.poseCard(card);
+        model.findGameByName(gameName).getBoard().poseCard(card);
     	
         return Response.status(200).entity("{\"success\":\"The card was succesfully played\"}").build();
     }
