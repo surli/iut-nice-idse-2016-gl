@@ -5,6 +5,9 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+@import url(../../bower_components/components-font-awesome/css/font-awesome.css);
+@import url("https://fonts.googleapis.com/css?family=Lobster");
+@import url("https://fonts.googleapis.com/css?family=Cabin");
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -5809,18 +5812,12 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
-@font-face {
-  font-family: 'Lobster';
-  font-style: normal;
-  font-weight: 400;
-  src: local("Lobster"), local("Lobster-Regular"), url(fonts/G6-OYdAAwU5fSlE7MlBvhQLUuEpTyoUstqEm5AMlJo4.woff2) format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000; }
-@font-face {
-  font-family: 'Cabin';
-  font-style: normal;
-  font-weight: 400;
-  src: local("Cabin Regular"), local("Cabin-Regular"), url(fonts/4VMQLG5UaE3m5rr_emmAqaCWcynf_cDxXwCLxiixG1c.woff2) format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000; }
+#ingage {
+  font-size: 2vw; }
+
+@media screen and (min-width: 200px) and (max-width: 640px) {
+  #ingage {
+    font-size: 7vw; } }
 .btn {
   color: #FFF;
   border: none; }
