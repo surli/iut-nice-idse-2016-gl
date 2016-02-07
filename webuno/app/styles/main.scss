@@ -1,20 +1,6 @@
 @import "../../bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
-
-@font-face {
-  font-family: 'Lobster';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Lobster'), local('Lobster-Regular'), url(fonts/G6-OYdAAwU5fSlE7MlBvhQLUuEpTyoUstqEm5AMlJo4.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
-}
-
-@font-face {
-  font-family: 'Cabin';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Cabin Regular'), local('Cabin-Regular'), url(fonts/4VMQLG5UaE3m5rr_emmAqaCWcynf_cDxXwCLxiixG1c.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
-}
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+@import url('https://fonts.googleapis.com/css?family=Cabin');
 
 // CHARTE COULEURS
 $orange: #ffaa00;
@@ -37,6 +23,15 @@ $carte-height: 360px*0.3;
   background-position: ($left*$col) ($top*$line) !important;
 }
 
+//Bouton responsive Commencer partie
+#ingage{
+  font-size: 2vw;
+}
+@media screen and (min-width: 200px) and (max-width: 640px){
+  #ingage{
+    font-size: 7vw;
+  }
+}
 .btn {
   color: #FFF;
   border: none;
