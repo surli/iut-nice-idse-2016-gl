@@ -24,46 +24,27 @@ import fr.unice.idse.services.GameRest;
 
 public class GameRestTest extends JerseyTest {
 
-<<<<<<< HEAD
-    @Override
-    protected Application configure() {
-        return new ResourceConfig(GameRest.class);
-    }
-
-    Model model;
-
-    @Before
-    public void init(){
-        model = Model.getInstance();
-        model.setGames(new ArrayList<Game>());
-        model.addGame(model.createPlayer("toto",""),"tata", 4);
-    }
-
-    @Test
-=======
 	@Override
 	protected Application configure() {
 		return new ResourceConfig(GameRest.class);
 	}
 
 	Model model;
-	Game game;
 
 	@Before
 	public void init() {
 		model = Model.getInstance();
 		model.setGames(new ArrayList<Game>());
-		model.addGame(model.createPlayer("toto"), "tata", 4);
-		game = model.findGameByName("tata");
+		model.addGame(model.createPlayer("toto", "token"), "tata", 4);
 	}
 
 	@Test
 	public void retourneLeJoueurActuelDeLaPartie() throws JSONException {
 		// Init the game
-		game.addPlayer(model.createPlayer("marcel"));
-		game.addPlayer(model.createPlayer("chris"));
-		game.addPlayer(model.createPlayer("maurice"));
-		game.start();
+		model.findGameByName("tata").addPlayer(model.createPlayer("marcel", "token2"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("chris", "token3"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("maurice", "token4"));
+        model.findGameByName("tata").start();
 
 		// Test the methods
 		Response response = target("/game/tata/command").request().get();
@@ -86,7 +67,6 @@ public class GameRestTest extends JerseyTest {
 	}
 
 	@Test
->>>>>>> 8bdfb4aee4b22dc7f3f755c96183fbbb8c7e4578
     public void retourneFalseSiLaPartieExisteMaisPasCommencer() throws JSONException{
         Response response = target("/game/tata").request().get();
         assertEquals(200, response.getStatus());
@@ -123,7 +103,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void getHandDunJoueur() throws JSONException{
         for(int i = 0; i < 3; i++)
-            model.addPlayerToGame("tata", model.createPlayer("azert"+i,""));
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i,"token"+i));
 
         model.findGameByName("tata").start();
         Response response = target("/game/tata/toto").request().get();
@@ -146,7 +126,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void lancerUnePartieQuiADejaCommencer() throws JSONException{
         for(int i = 0; i < 3; i++)
-            model.addPlayerToGame("tata", model.createPlayer("azert"+i,""));
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i,"token"+i));
         model.findGameByName("tata").start();
 
         String json = "{pseudo: 'toto'}";
@@ -160,7 +140,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void lancerUnePartieAvecTousLesJoueurs() throws JSONException{
         for(int i = 0; i < 3; i++)
-            model.addPlayerToGame("tata", model.createPlayer("azert"+i,""));
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i, "token"+i));
 
         String json = "{pseudo: 'toto'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
