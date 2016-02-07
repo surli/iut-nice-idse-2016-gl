@@ -22,6 +22,8 @@ import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.services.GameRest;
 
+
+
 public class GameRestTest extends JerseyTest {
 
 	@Override
@@ -197,6 +199,17 @@ public class GameRestTest extends JerseyTest {
         // Parse la reponse en JSON
         JSONObject json = new JSONObject(response.readEntity(String.class));
         assertEquals(1, json.getJSONArray("games").length());
+    }
+    
+    @Test
+    public void pickacardTest() throws JSONException{
+    	model.findGameByName("tata").start();
+    	String json = "{game:'tata', pseudo: 'toto'}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+        Response response = target("/game/tata/toto").request().post(jsonEntity);
+    	assertEquals(200, response.getStatus());
+    	
+
     }
 
 }
