@@ -8,8 +8,8 @@ import java.sql.Statement;
 
 public class DataBaseManagement {
 	/*
-	 * need to modify + import external jar library oracle database JDBC driver
-	 * at build path
+	 * need to modify private variables + import external jar library oracle
+	 * database JDBC driver at build path
 	 */
 	private String url = "jdbc:oracle:thin:@localhost:1521:uno";
 	private String user = "root";
@@ -33,19 +33,17 @@ public class DataBaseManagement {
 
 	public void end() {
 		try {
-			/* Fermeture de la connexion */
 			this.con.close();
 			this.statement.close();
 			System.out.println("Connection closed");
 		} catch (SQLException ignore) {
-			/* ignorer les erreurs a la fermeture */
 		}
 	}
 
-	public boolean userLogin(String email, String password) {
+	public boolean userLoginIsCorrect(String email, String password) {
 		try {
-			ResultSet resultQuery = this.statement.executeQuery(
-					"SELECT u_email, u_password FROM users WHERE u_email =" + email + "AND u_password =" + password + ";");
+			ResultSet resultQuery = this.statement.executeQuery("SELECT u_email, u_password FROM users WHERE u_email ="
+					+ email + "AND u_password =" + password + ";");
 			if (resultQuery.getString("u_email") == email && resultQuery.getString("u_password") == password)
 				return true;
 		} catch (SQLException e) {
