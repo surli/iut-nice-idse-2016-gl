@@ -9,7 +9,12 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
+
 import fr.unice.idse.constante.Config;
+import fr.unice.idse.model.Board;
+import fr.unice.idse.model.Card;
+import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
@@ -69,12 +74,14 @@ public class GameRest {
         Model model = Model.getInstance();
         JSONObject json = new JSONObject(objJSON);
 
+        /*
         // verification du token
         if(!json.has("_token"))
             return Response.status(401).entity("{\"error\" : \"Invalid token\"}").build();
         if(!Config._token.equals(json.getString("_token")))
             return Response.status(401).entity("{\"error\" : \"Invalid token\"}").build();
-
+         */
+        
         // verification du champ game
         if(!json.has("game"))
             return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
@@ -222,13 +229,13 @@ public class GameRest {
     	
     	return Response.status(200).entity("{\"pseudo\":\"" + currentPlayer.getName() + "\"}").build();
     }
+    
     /*
      * @param playerName
      * @param gameName
      * @return
      * @throws JSONException 
      */
-    
     @GET 
     @Path("/{gameName}/{pseudo}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -248,5 +255,67 @@ public class GameRest {
                        "\"idcard\" : \""+ i +"\"}";
         }
         return Response.status(200).entity("{\"cartes\": "+ Arrays.toString(list)+" }").build();
+    }
+    
+    /**
+     * Méthode en PUT permettant de jouer une carte
+     * La partie doit être existante et commencée.
+     * @param pseudo
+     * @param gameName
+     * @param strJSON {"value": int, "color": str, "actionCard": null}
+     * @return Response 200 | 422 | 405
+     * @throws JSONException 
+     */
+    @PUT 
+    @Path("/{gameName}/{pseudo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response playCard(@PathParam("pseudo") String pseudo,@PathParam("gameName") String gameName, String strJSON ) throws JSONException{
+    	Model model = Model.getInstance();      
+    	// Verification que la partie existe et est commencée
+    	if(!model.existsGame(gameName)) {
+    		return Response.status(405).entity("{\"error\": \"The game does not exist\"}").build();
+    	} 
+    	if(!model.findGameByName(gameName).gameBegin()) {
+    		return Response.status(405).entity("{\"error\": \"The game does hasn't begun\"}").build();
+    	}
+    	
+    	// Verification que le joueur existe et st present dans la partie
+    	if(!model.playerExists(pseudo)) {
+    		return Response.status(405).entity("{\"error\": \"The player does not exist\"}").build();
+    	} 
+    	Player player = model.findPlayerByName(gameName, pseudo);
+    	if(player == null) {
+    		return Response.status(405).entity("{\"error\": \"The player does not belong to this game\"}").build();
+    	} 
+    	
+    	// Verification du JSON
+    	JSONObject json = new JSONObject(strJSON);
+    	if(!json.has("value") || !json.has("color")) {
+    		return Response.status(405).entity("{\"error\": \"The json object does not follow the rules\"}").build();
+    	}
+    	
+    	// Verifie que le joueur peut jouer
+    	Board board = model.findGameByName(gameName).getBoard();
+    	
+    	if(!board.askPlayerCanPlay(player)) {
+    		return Response.status(405).entity("{\"error\": \"The player can't play\"}").build();
+    	}
+    	
+
+    	// Verifie que le joueur possede la carte
+    	Card card = new Card(json.getInt("value"), Color.valueOf(json.getString("color")));
+    	if(!player.getCards().contains(card)) {
+    		return Response.status(405).entity("{\"error\": \"The player does not possese this card\"}").build();
+    	}
+    	
+    	// Verifie que la carte est jouable
+    	if(!Model.getInstance().findGameByName(gameName).getBoard().askPlayableCard(card)) {
+    		return Response.status(405).entity("{\"error\": \"The card can't be played\"}").build();
+    	}
+    	
+    	// Finalement la carte est jouer
+    	board.poseCard(card);
+    	
+        return Response.status(200).entity("{\"success\":\"The card was succesfully played\"}").build();
     }
 }

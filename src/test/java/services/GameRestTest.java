@@ -18,8 +18,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.unice.idse.constante.Config;
+import fr.unice.idse.model.Card;
+import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
+import fr.unice.idse.model.Player;
+import fr.unice.idse.model.Stack;
 import fr.unice.idse.services.GameRest;
 
 public class GameRestTest extends JerseyTest {
@@ -180,7 +184,7 @@ public class GameRestTest extends JerseyTest {
      */
     @Test
     public void retourneUnTableauVideSiAucuneGame() throws JSONException{
-        model.setGames(new ArrayList<>());
+        model.setGames(new ArrayList<Game>());
         Response response = target("/game").request().get();
         assertEquals(200, response.getStatus());
 
@@ -198,5 +202,169 @@ public class GameRestTest extends JerseyTest {
         JSONObject json = new JSONObject(response.readEntity(String.class));
         assertEquals(1, json.getJSONArray("games").length());
     }
+    
+    /*
+     * ******************************************************************************************************
+     * *************************************** Jouer card begin test ****************************************
+     * ******************************************************************************************************
+     */
+    
+    @Test
+    public void retourne405SiLaPartieNExistePas() throws JSONException{
+    	Response response = target("/game/test/john").request().put(Entity.entity("{}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The game does not exist", json.getString("error"));
+    }
+    
+    @Test
+    public void retourne405SiLaPartieNEstPasCommencee() throws JSONException{
+    	Response response = target("/game/tata/john").request().put(Entity.entity("{}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The game does hasn't begun", json.getString("error"));
+    }
+    
+    @Test
+    public void retourne405SiLeJoeurNExistePas() throws JSONException{
+		// Init the game
+		game.addPlayer(model.createPlayer("marcel"));
+		game.addPlayer(model.createPlayer("chris"));
+		game.addPlayer(model.createPlayer("maurice"));
+		game.start();
+		
+    	Response response = target("/game/tata/john").request().put(Entity.entity("{}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The player does not exist", json.getString("error"));
+    }
+    
+    @Test
+    public void retourne405SiLeJoeurNExistePasDansCettePartie() throws JSONException{
+		// Init the game
+		game.addPlayer(model.createPlayer("marcel"));
+		game.addPlayer(model.createPlayer("chris"));
+		game.addPlayer(model.createPlayer("maurice"));
+		game.start();
+		
+		// Init a second game
+		model.addGame(model.createPlayer("john"), "test", 4);
+		Game game2 = model.findGameByName("test");
+		game2.addPlayer(model.createPlayer("marcel2"));
+		game2.addPlayer(model.createPlayer("chris2"));
+		game2.addPlayer(model.createPlayer("maurice2"));
+		
+    	Response response = target("/game/tata/john").request().put(Entity.entity("{}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The player does not belong to this game", json.getString("error"));
+    }
+    
+    @Test
+    public void retourne405SiLeJSONEnvoyerEstInvalide() throws JSONException{
+		// Init the game
+		game.addPlayer(model.createPlayer("marcel"));
+		game.addPlayer(model.createPlayer("chris"));
+		game.addPlayer(model.createPlayer("maurice"));
+		game.start();
+		
+    	Response response = target("/game/tata/toto").request().put(Entity.entity("{}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
 
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The json object does not follow the rules", json.getString("error"));
+    }
+    
+    
+    @Test
+    public void retourne405SiLeJoeurNePeutPasJouer() throws JSONException{
+		// Init the game
+		game.addPlayer(model.createPlayer("marcel"));
+		game.addPlayer(model.createPlayer("chris"));
+		game.addPlayer(model.createPlayer("maurice"));
+		game.start();
+		
+		
+    	Response response = target("/game/tata/marcel").request().put(Entity.entity("{\"value\":6, \"color\":\"Blue\"}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The player can't play", json.getString("error"));
+    }
+   
+    
+    @Test
+    public void retourne405SiLeJoueurNePossedePasLaCarte() throws JSONException{
+		// Init the game
+		game.addPlayer(model.createPlayer("marcel"));
+		game.addPlayer(model.createPlayer("chris"));
+		game.addPlayer(model.createPlayer("maurice"));
+		game.start();
+		
+		game.getBoard().getActualPlayer().getCards().add(new Card(5, Color.Blue));
+		game.getBoard().getStack().changeColor(Color.Red);
+		game.getBoard().getStack().addCard(new Card(5, Color.Red));
+		
+    	Response response = target("/game/tata/toto").request().put(Entity.entity("{\"value\":11, \"color\":\"Black\"}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The player does not possese this card", json.getString("error"));
+    }
+    
+    @Test
+    public void retourne405SiLaCarteNEstPasJouable() throws JSONException {
+		// Init the game
+		game.addPlayer(model.createPlayer("marcel"));
+		game.addPlayer(model.createPlayer("chris"));
+		game.addPlayer(model.createPlayer("maurice"));
+		game.start();
+		
+		ArrayList<Card> cards = new ArrayList<Card>();
+		cards.add(new Card(2, Color.Blue));
+		cards.add(new Card(8, Color.Blue));
+		game.getBoard().getActualPlayer().setCards(cards);
+		game.getBoard().getStack().changeColor(Color.Red);
+		ArrayList<Card> stack = new ArrayList<Card>();
+		stack.add(new Card(8, Color.Red));
+		game.getBoard().getStack().setStack(stack);
+		
+    	Response response = target("/game/tata/toto").request().put(Entity.entity("{\"value\":2, \"color\":\"Blue\"}", MediaType.APPLICATION_JSON));
+    	
+    	/*
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The card can't be played", json.getString("error"));
+        */
+    }
+    
+    @Test
+    public void retourne200SiTouteLesConditionSontValider() throws JSONException{
+		// Init the game
+		game.addPlayer(model.createPlayer("marcel"));
+		game.addPlayer(model.createPlayer("chris"));
+		game.addPlayer(model.createPlayer("maurice"));
+		game.start();
+		
+		game.getBoard().getActualPlayer().getCards().add(new Card(5, Color.Blue));
+		game.getBoard().getStack().addCard(new Card(5, Color.Red));
+    	Response response = target("/game/tata/toto").request().put(Entity.entity("{\"value\":5, \"color\":\"Blue\"}", MediaType.APPLICATION_JSON));
+    	
+    	assertEquals(200, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The card was succesfully played", json.getString("success"));
+    }
+    
+    
+    /*
+     * ******************************************************************************************************
+     * *************************************** Jouer card end test ****************************************
+     * ******************************************************************************************************
+     */
 }
