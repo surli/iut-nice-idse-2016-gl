@@ -10,6 +10,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import fr.unice.idse.constante.Config;
+import fr.unice.idse.model.Deck;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
@@ -256,9 +257,10 @@ public class GameRest {
         // Cration de tous les objets
         Model model = Model.getInstance();
         Player player = model.findPlayerByName(gameName, pseudo);
-
-        player.setCards(cards);
-
+        Game game = model.findGameByName(gameName);
+        
+        game.getBoard().pioche();
+        
         return Response.status(200).entity("carte ajoutée à la main du joueur").build();
     }
     
