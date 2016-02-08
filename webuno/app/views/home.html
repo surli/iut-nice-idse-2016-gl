@@ -1,39 +1,39 @@
 <div class="jumbotron">
     <button class="btn btn-success" id="ingage" data-ui-sref="app.start">
-        Commencer une partie
+        Start new game
     </button>
 </div>
 <div class="col-md-6">
     <div class="panel panel-default">
-        <div class="panel-heading text-center">Toutes les parties</div>
+        <div class="panel-heading text-center">All games</div>
         <div class="panel-body text-center">
-            <!-- Mettre la liste de toutes les parties ici dans un tableau en bouclant sur les parties pour les afficher -->
-            <table class="table">
+            <table class="table" data-ng-if="games.length > 0">
                 <tr>
-                    <th>Game</th>
-                    <th>NB Players</th>
-                    <th>Status</th>
-                    <th>&nbsp;</th>
+                    <th class="text-center">Game</th>
+                    <th class="text-center">NB Players</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">&nbsp;</th>
                 </tr>
                 <tr data-ng-repeat="game in games">
                     <td>{{game.name}}</td>
                     <td>{{game.numberPlayers}}</td>
-                    <td>{{(game.numberPlayers == "4/4") ? "Attente de joueurs" : "Démarré"}}</td>
+                    <td>{{(game.numberPlayers == "4/4") ? "Waiting for Players" : "Started"}}</td>
                     <td>
                         <button class="btn btn-primary btn-sm" data-ng-if="game.numberPlayers != '4/4'"
-                                data-ui-sref="game.room({ name: game.name })">Join
+                                data-ui-sref="app.room({ name: game.name })">Join
                         </button>
                     </td>
                 </tr>
             </table>
+            <p data-ng-if="games.length == 0">There is no started games yet</p>
         </div>
     </div>
 </div>
 <div class="col-md-6">
     <div class="panel panel-default">
-        <div class="panel-heading text-center">Mes parties</div>
+        <div class="panel-heading text-center">My games</div>
         <div class="panel-body text-center">
-            Mettre la liste de mes parties ici dans un tableau en bouclant sur les parties pour les afficher
+            //Mettre la liste de mes parties ici dans un tableau en bouclant sur les parties pour les afficher
         </div>
     </div>
 </div>
