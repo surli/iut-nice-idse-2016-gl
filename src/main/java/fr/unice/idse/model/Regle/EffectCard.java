@@ -6,11 +6,13 @@ public class EffectCard
 {
 	private int value;
 	private Color color;
+	private Board board;
 	
-	public EffectCard(int value, Color color)
+	public EffectCard(Board board, int value, Color color)
 	{
 		this.value = value;
 		this.color = color;
+		this.board = board;
 	}
 	
 	public int getValue()
@@ -21,6 +23,11 @@ public class EffectCard
 	public Color getColor()
 	{
 		return color;
+	}
+	
+	public Board getBoard()
+	{
+		return board;
 	}
 	
 	/**

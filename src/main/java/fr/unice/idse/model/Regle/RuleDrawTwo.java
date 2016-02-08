@@ -1,13 +1,13 @@
 package fr.unice.idse.model.Regle;
 
-import fr.unice.idse.model.Color;
+import fr.unice.idse.model.*;
 
 public class RuleDrawTwo extends EffectCard 
 {
 
-	public RuleDrawTwo(int value, Color color) 
+	public RuleDrawTwo(Board board, int value, Color color) 
 	{
-		super(value, color);
+		super(board, value, color);
 	}
 	
 	@Override
