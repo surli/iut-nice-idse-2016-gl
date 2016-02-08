@@ -1,12 +1,25 @@
 'use strict';
 
 angular.module('unoApp')
-    .service('Auth', function(localStorageService) {
+    .service('Auth', function(localStorageService, $http, $q) {
         return {
             getUser: function() {
                 return localStorageService.get('user');
             },
             setUser: function(newUser) {
+                var deferred = $q.defer();
+                $http.post('/rest/auth', {
+                    playername: newUser
+                }).then(function(response) {
+                    //newUser.token = response.data.token;
+                    deferred.resolve(response.data);
+                }, function(error) {
+                    deferred.reject(error);
+                });
+
+                return deferred.promise;
+            },
+            connectUser: function(newUser) {
                 localStorageService.set('user', newUser);
             },
             isConnected: function() {

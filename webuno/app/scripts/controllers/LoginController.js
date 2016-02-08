@@ -11,9 +11,13 @@ angular.module('unoApp')
         };
 
         $scope.goLoginGuess = function () {
+            var name = 'Anonyme' + Math.floor((Math.random() * (1000 - 1) + 1));
             Auth.setUser({
-                name: 'Anonyme'+Math.floor((Math.random() * (1000 - 1) + 1))
+                name: name
+            }).then(function(data) {
+                data.name = name;
+                Auth.connectUser(data);
+                $state.go('app.home');
             });
-            $state.go('app.home');
         };
     }]);
