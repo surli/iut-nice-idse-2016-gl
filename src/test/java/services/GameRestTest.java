@@ -1,6 +1,7 @@
 package services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -77,7 +78,20 @@ public class GameRestTest extends JerseyTest {
         Response response = target("/game/tata").request().get();
         assertEquals(200, response.getStatus());
         JSONObject json = new JSONObject(response.readEntity(String.class));
-        assertEquals(false, json.getBoolean("state"));
+        assertFalse(json.getBoolean("state"));
+    }
+
+    @Test
+    public void retourneTrueSiLaPartieEstLanceeAvecTousLesJoueurs() throws JSONException{
+        for(int i =0; i < 3; i++)
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i, "token"+i));
+        assertTrue(model.findGameByName("tata").start());
+
+        Response response = target("/game/tata").request().get();
+        assertEquals(200, response.getStatus());
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertTrue(json.getBoolean("state"));
+        assertEquals(4, json.getJSONArray("players").length());
     }
 
     @Test
@@ -154,6 +168,7 @@ public class GameRestTest extends JerseyTest {
 
         assertEquals(200, response.getStatus());
         JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
+        System.out.println(jsonresponse);
         assertTrue(jsonresponse.getBoolean("status"));
     }
 
