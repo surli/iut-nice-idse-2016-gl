@@ -23,6 +23,10 @@ angular.module('unoApp')
         $scope.joinGame = function (gameName) {
             $http.put('/rest/game/' + gameName, {
                     playerName: $scope.user.name
+                }, {
+                    headers: {
+                        token: $scope.user.token
+                    }
                 })
                 .then(function (response) {
                     console.log("Ajout joueur: ", response);

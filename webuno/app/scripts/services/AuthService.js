@@ -11,7 +11,6 @@ angular.module('unoApp')
                 $http.post('/rest/auth', {
                     playername: newUser
                 }).then(function(response) {
-                    //newUser.token = response.data.token;
                     deferred.resolve(response.data);
                 }, function(error) {
                     deferred.reject(error);

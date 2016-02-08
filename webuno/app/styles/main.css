@@ -5834,13 +5834,13 @@ button.close {
   .btn .btn-warning:hover, .btn .btn-warning:active, .btn .btn-warning:visited, .btn .btn-warning:focus {
     background-color: #ffaa00; }
 
-input {
+input, select {
   border: none;
   text-align: center;
   color: #4B4B4B;
   border-radius: 5px;
   font-family: Cabin, Georgia, Times, serif; }
-  input:focus {
+  input:focus, select:focus {
     outline: none;
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2); }
 
@@ -6132,6 +6132,6 @@ footer {
     background-color: #55aa55; }
   #loader:after {
     transform: rotate(-60deg);
-    background-color: #ffaa00; }
+    background-color: #55aa55; }
 
 /*# sourceMappingURL=main.css.map */

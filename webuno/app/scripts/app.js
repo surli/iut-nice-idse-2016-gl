@@ -18,29 +18,29 @@ angular
         'LocalStorageModule'
     ])
     .config(['$httpProvider', function ($httpProvider) {
-        $httpProvider.interceptors.push(['$rootScope', function($rootScope) {
+        $httpProvider.interceptors.push(['$rootScope', function ($rootScope) {
             $rootScope.isLoading = 0;
             return {
-                'request': function(config) {
+                'request': function (config) {
                     $rootScope.isLoading++;
                     return config;
                 },
-                'requestError': function(rejection) {
+                'requestError': function (rejection) {
                     $rootScope.isLoading = Math.max(0, $rootScope.isLoading - 1);
                     return rejection;
                 },
-                'response': function(response) {
+                'response': function (response) {
                     $rootScope.isLoading = Math.max(0, $rootScope.isLoading - 1);
                     return response;
                 },
-                'responseError': function(rejection) {
+                'responseError': function (rejection) {
                     $rootScope.isLoading = Math.max(0, $rootScope.isLoading - 1);
                     return rejection;
                 }
             };
         }]);
     }])
-    .config(['localStorageServiceProvider', function(localStorageServiceProvider) {
+    .config(['localStorageServiceProvider', function (localStorageServiceProvider) {
         localStorageServiceProvider.setStorageType('sessionStorage');
     }])
     .config(function ($stateProvider, $urlRouterProvider) {
@@ -66,13 +66,13 @@ angular
                 templateUrl: 'views/home.html',
                 controller: 'HomeController',
                 resolve: {
-                    Games: function($http, $q) {
+                    Games: function ($http, $q) {
                         var deferred = $q.defer();
 
                         $http.get('/rest/game')
-                            .then(function(data) {
+                            .then(function (data) {
                                 deferred.resolve(data);
-                            }, function(error) {
+                            }, function (error) {
                                 deferred.reject(error);
                             });
 
@@ -97,4 +97,11 @@ angular
             });
 
         $urlRouterProvider.otherwise('/login');
+    })
+    .run(function($http, $location, Auth) {
+        console.log($location);
+
+        if ($location.$$url != '/login' && $location != '/register')  {
+            $http.defaults.headers.common.Authorization = Auth.getUser().token ;
+        }
     });
