@@ -6,7 +6,7 @@ angular.module('unoApp')
             .then(function (data) {
                 $scope.cartes = data.data.cartes;
             }, function (error) {
-                $scope.error = "Une erreur est survenue !";
+                $scope.error = "Une erreur est survenue : " + error.toString();
             });
 
         //$scope.fausse = {};

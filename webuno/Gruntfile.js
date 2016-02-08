@@ -69,6 +69,15 @@ module.exports = function (grunt) {
 
         // The actual grunt server settings
         connect: {
+            proxies: [
+                {
+                    context: '/rest',
+                    host: 'localhost',
+                    port: 8080,
+                    https: false,
+                    changeOrigin: false
+                }
+            ],
             options: {
                 port: 9000,
                 // Change this to '0.0.0.0' to access the server from outside.
