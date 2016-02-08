@@ -17,7 +17,7 @@
                 <tr data-ng-repeat="game in games">
                     <td>{{game.name}}</td>
                     <td>{{game.numberPlayers}}</td>
-                    <td>{{(game.numberPlayers == "4/4") ? "Waiting for Players" : "Started"}}</td>
+                    <td>{{(game.numberPlayers == "4/4") ? "Started" : "Waiting for Players"}}</td>
                     <td>
                         <button class="btn btn-primary btn-sm" data-ng-if="game.numberPlayers != '4/4'"
                                 data-ui-sref="app.room({ name: game.name })">Join
