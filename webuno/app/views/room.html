@@ -12,8 +12,9 @@
         <div class="panel-body" style="padding: 0;">
             <table class="table">
                 <tr data-ng-repeat="player in game.players">
-                    <td>
+                    <td width="15">
                         <i data-ng-if="game.host == player.name" class="fa fa-bookmark-o" style="color: #f55; font-weight: bolder;"></i>
+                        <i data-ng-if="game.host != player.name" class="fa fa-child" style="color: #fa0;"></i>
                     </td>
                     <td class="text-center">{{player.name}} join the game</td>
                 </tr>
