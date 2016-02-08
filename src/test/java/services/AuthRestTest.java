@@ -3,6 +3,7 @@ package services;
 import fr.unice.idse.constante.Config;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
+import fr.unice.idse.model.Player;
 import fr.unice.idse.services.AuthRest;
 import fr.unice.idse.services.GameRest;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -31,13 +32,13 @@ public class AuthRestTest extends JerseyTest {
     @Before
     public void init() {
         model = Model.getInstance();
-        model.setGames(new ArrayList<>());
-        model.setPlayers(new ArrayList<>());
+        model.setGames(new ArrayList<Game>());
+        model.setPlayers(new ArrayList<Player>());
     }
 
     @Test
     public void ajouteUnJoueurReturnOk(){
-        String json = "{playername: 'titi'}";
+        String json = "{playername: 'cruptus'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
         Response response = target("/auth").request().post(jsonEntity);
         assertEquals(200, response.getStatus());
@@ -45,14 +46,13 @@ public class AuthRestTest extends JerseyTest {
 
     @Test
     public void ajouteDeuxJoueurMemeNom(){
-        String json = "{playername: 'titi'}";
+        String json = "{playername: 'cruptus'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
         Response response = target("/auth").request().post(jsonEntity);
         assertEquals(200, response.getStatus());
 
-        json = "{playername: 'titi'}";
         jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        response = target("/auth").request().post(jsonEntity);
-        assertEquals(405, response.getStatus());
+        Response response2 = target("/auth").request().post(jsonEntity);
+        assertEquals(405, response2.getStatus());
     }
 }

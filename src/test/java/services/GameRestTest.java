@@ -41,7 +41,8 @@ public class GameRestTest extends JerseyTest {
 	@Before
 	public void init() {
 		model = Model.getInstance();
-		model.setGames(new ArrayList<Game>());
+		model.setGames(new ArrayList<>());
+        model.setPlayers(new ArrayList<>());
 		model.addGame(model.createPlayer("toto", "token"), "tata", 4);
 	}
 

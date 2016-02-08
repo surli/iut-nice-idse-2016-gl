@@ -33,7 +33,8 @@ public class PlayerRestTest extends JerseyTest {
 	@Before
 	public void init() {
 		model = Model.getInstance();
-		model.setPlayers(new ArrayList<Player>());
+		model.setPlayers(new ArrayList<>());
+		model.setGames(new ArrayList<>());
 	}
 	
     /*
