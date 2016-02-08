@@ -1,21 +1,40 @@
 'use strict';
 
 angular.module('unoApp')
-    .controller('HomeController', ['$scope', '$timeout', '$http', 'Games', function ($scope, $timeout, $http, Games) {
+    .controller('HomeController', ['$scope', '$timeout', '$http', '$state', 'Games', function ($scope, $timeout, $http, $state, Games) {
         $scope.games = Games.data.games;
         console.log($scope.games);
-        request();
 
-        function request() {
-            $timeout(function() {
+        requestListGames();
+
+        function requestListGames() {
+            $timeout(function () {
                 $http.get('/rest/game/')
                     .then(function (data) {
-                        $scope.games = data;
-                        console.log($scope.game);
+                        $scope.games = data.data.games;
+                        console.log($scope.games);
                     }, function (error) {
                         console.log(error);
                     });
-                request();
-            }, 5000)
+                requestListGames();
+            }, 5000);
         }
+
+        $scope.joinGame = function (gameName) {
+            $http.put('/rest/game/' + gameName, {
+                    playerName: $scope.user.name
+                })
+                .then(function (data) {
+                    console.log("Ajout joueur: ", data);
+                    switch (data.status) {
+                        case 200 :
+                            $state.go('app.room', { name: gameName });
+                            break;
+                        default :
+                            console.log("Error : ", data);
+                    }
+                }, function (error) {
+                    console.log(error);
+                });
+        };
     }]);

@@ -16,4 +16,4 @@ cp -rf ../../webuno/dist/ webapp/
 cp -rf ../../webuno/WEB-INF/ webapp/WEB-INF/
 echo "Copie des fichiers terminée."
 
-echo "***** MISE EN PRODUCTION OPÉRATIONNELLE *****"
+echo "\n***** MISE EN PRODUCTION OPÉRATIONNELLE *****\n"

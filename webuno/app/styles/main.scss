@@ -357,11 +357,11 @@ footer {
 
   &:before {
     transform: rotate(60deg);
-    background-color: $orange;
+    background-color: $vert;
   }
 
   &:after {
     transform: rotate(-60deg);
-    background-color: $orange;
+    background-color: $vert;
   }
 }

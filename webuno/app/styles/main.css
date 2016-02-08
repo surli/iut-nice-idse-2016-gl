@@ -6129,7 +6129,7 @@ footer {
     top: 0; }
   #loader:before {
     transform: rotate(60deg);
-    background-color: #ffaa00; }
+    background-color: #55aa55; }
   #loader:after {
     transform: rotate(-60deg);
     background-color: #ffaa00; }
