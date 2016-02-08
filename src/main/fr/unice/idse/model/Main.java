@@ -70,7 +70,6 @@ public class Main
 		                	{
 		                		if(numberCardsPlayer > actualPlayer.getCards().size())
 			                	{
-		                			System.out.println("Le joueur a joue : " + board.getStack().topCard());
 			                		played = true;
 			                		System.out.println("Le joueur joue : " + card);
 			                		if(actualPlayer.getCards().size() == 1)
