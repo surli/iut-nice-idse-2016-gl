@@ -31,6 +31,22 @@ Run > Edit Configurations ... > clique sur "+" > Maven
 Lancez les tests avant de commit. Une commande simple (pareil que pour lancer le serveur REST)
 Dans goals ou Command line : `install test`
 
+###Release
+
+>######0.2
+
+- Pouvoir jouer une partie via console (que les cartes basiques)
+- Se connecter en Guest
+- Voir la liste des parties dans l'ihm
+- Créer une partie dans l'ihm
+
+>######0.1
+
+- Initialiser une partie en REST
+- Developpement de certaine vue
+- Moteur peut initialiser une partie
+
+
 ###Constitution des groupes
 >######Chef de projet : Jérémie Elbaz
 
@@ -66,7 +82,7 @@ Lien du README du groupe : `src/main/java/fr/unice/idse/services`
 
 ###Spécification du projet
 - Utilisation de Token pour assurer une sécurité en REST dans le header de la requête.
-- La partie peut se lancer uniquement quand toute la partie est complète.
+- La partie peut se lancer uniquement quand toute la partie est remplie.
 - Seulement l'hôte peut lancer la partie.
-- Les parties peuvent être comprises entre 2 et 6 joueurs. (Actuellement les parties créées sont à 4 joueurs.)
+- Les parties peuvent être comprises entre 2 et 6 joueurs.
 

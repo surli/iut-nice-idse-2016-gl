@@ -87,7 +87,7 @@ public class GameRest extends OriginRest{
             return sendResponse(405, "{\"error\" : \"Invalid parameter player\"}", "POST");
 
         if(!model.playerExistsInList(json.getString("player")))
-            return sendResponse(405, "{\"error\" : \"Joueur existant\"}", "POST");
+            return sendResponse(405, "{\"error\" : \"Joueur inexistant\"}", "POST");
         if(!model.getPlayerFromList(token).getName().equals(json.getString("player")))
             return sendResponse(405, "{\"error\" : \"Token invalid\"}", "POST");
 
