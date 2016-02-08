@@ -5,24 +5,17 @@ import fr.unice.idse.model.*;
 public class EffectCard 
 {
 	private int value;
-	private Color color;
 	private Board board;
 	
-	public EffectCard(Board board, int value, Color color)
+	public EffectCard(Board board, int value)
 	{
 		this.value = value;
-		this.color = color;
 		this.board = board;
 	}
 	
 	public int getValue()
 	{
 		return value;
-	}
-	
-	public Color getColor()
-	{
-		return color;
 	}
 	
 	public Board getBoard()
@@ -37,11 +30,10 @@ public class EffectCard
 	 */
 	public boolean isEffect(Card card)
 	{
-		return card.getColor().equals(getColor()) && card.getValue() == getValue();
-		
-		
+		return card.getValue() == getValue();	
 	}
 	
+	//Methode à override
 	public void action()
 	{
 		
