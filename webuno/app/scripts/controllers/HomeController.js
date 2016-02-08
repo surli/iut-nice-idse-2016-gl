@@ -3,16 +3,16 @@
 angular.module('unoApp')
     .controller('HomeController', ['$scope', '$timeout', '$http', '$state', 'Games', function ($scope, $timeout, $http, $state, Games) {
         $scope.games = Games.data.games;
+        var timeoutListGames;
 
         $scope.requestListGames = function () {
-            $timeout(function () {
+            timeoutListGames = $timeout(function () {
                 $http.get('/rest/game/')
                     .then(function (data) {
                         $scope.games = data.data.games;
-                        console.log("ListGames : ", $scope.games);
                         $scope.requestListGames();
                     }, function (error) {
-                        console.log(error);
+                        console.error(error);
                         $scope.requestListGames();
                     });
             }, 5000);
@@ -31,14 +31,18 @@ angular.module('unoApp')
                             if (response.data.status) {
                                 $state.go('app.room', {name: gameName});
                             } else {
-                                console.log("Error : ", response);
+                                console.error("MyError 1 : ", response);
                             }
                             break;
                         default :
-                            console.log("Error : ", response);
+                            console.error("MyError 2 : ", response);
                     }
                 }, function (error) {
-                    console.log(error);
+                    console.error(error);
                 });
         };
+
+        $scope.$on('$destroy', function(){
+            $timeout.cancel(timeoutListGames);
+        });
     }]);

@@ -1,13 +1,13 @@
 <div class="col-md-12 text-center">
     <h1 class="title">Room {{gameName}}</h1>
     <br />
-    <button data-ng-if="game.players.length == 4 && game.host == user.name" class="btn btn-success" data-ng-click="startGameNow()">Start game now</button>
+    <button data-ng-if="game.players.length == game.maxplayers && game.host == user.name" class="btn btn-success" data-ng-click="startGameNow()">Start game now</button>
 </div>
 <div class="col-md-10 col-md-offset-1">
     <div class="panel panel-default">
         <div class="panel-heading">
             Waiting for players...
-            <span style="float: right">{{game.players.length}}/4 joined</span>
+            <span style="float: right">{{game.players.length}}/{{game.maxplayers}} joined</span>
         </div>
         <div class="panel-body" style="padding: 0;">
             <table class="table">
