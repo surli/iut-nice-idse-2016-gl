@@ -5,7 +5,6 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-@import url(../../bower_components/components-font-awesome/css/font-awesome.css);
 @import url("https://fonts.googleapis.com/css?family=Lobster");
 @import url("https://fonts.googleapis.com/css?family=Cabin");
 html {
@@ -5859,6 +5858,10 @@ input {
     border: none; }
   .panel .panel-body {
     padding: 30px 10px; }
+    .panel .panel-body table {
+      margin: 0; }
+      .panel .panel-body table tr td, .panel .panel-body table tr th {
+        border-top: 1px solid rgba(0, 0, 0, 0.2); }
 
 .jumbotron {
   border: none;

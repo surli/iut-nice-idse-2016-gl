@@ -6,8 +6,8 @@
 <div class="col-md-6">
     <div class="panel panel-default">
         <div class="panel-heading text-center">All games</div>
-        <div class="panel-body text-center">
-            <table class="table" data-ng-if="games.length > 0">
+        <div class="panel-body text-center" style="padding:0;">
+            <table class="table" data-ng-if="games.length > 0" style="margin: 0;">
                 <tr>
                     <th class="text-center">Game</th>
                     <th class="text-center">NB Players</th>
@@ -19,21 +19,21 @@
                     <td>{{game.numberPlayers}}</td>
                     <td>{{(game.numberPlayers == "4/4") ? "Started" : "Waiting for Players"}}</td>
                     <td>
-                        <button class="btn btn-primary btn-sm" data-ng-if="game.numberPlayers != '4/4'"
+                        <button class="btn btn-warning btn-sm" data-ng-if="game.numberPlayers != '4/4'"
                                 data-ui-sref="app.room({ name: game.name })">Join
                         </button>
                     </td>
                 </tr>
             </table>
-            <p data-ng-if="games.length == 0">There is no started games yet</p>
+            <p style="padding: 15px;" data-ng-if="games.length == 0">There is no started games yet</p>
         </div>
     </div>
 </div>
 <div class="col-md-6">
     <div class="panel panel-default">
         <div class="panel-heading text-center">My games</div>
-        <div class="panel-body text-center">
-            //Mettre la liste de mes parties ici dans un tableau en bouclant sur les parties pour les afficher
+        <div class="panel-body text-center" style="padding:0;">
+            <p style="padding: 15px;">Mettre la liste de mes parties ici dans un tableau en bouclant sur les parties pour les afficher</p>
         </div>
     </div>
 </div>

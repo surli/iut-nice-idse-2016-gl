@@ -104,6 +104,16 @@ input {
 
   .panel-body {
     padding: 30px 10px;
+
+    table {
+      margin: 0;
+
+      tr {
+        td, th {
+          border-top: 1px solid rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
   }
 }
 
