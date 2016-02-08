@@ -18,52 +18,37 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.unice.idse.constante.Config;
+import fr.unice.idse.model.Card;
+import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
+import fr.unice.idse.model.Player;
+import fr.unice.idse.model.Stack;
 import fr.unice.idse.services.GameRest;
 
 public class GameRestTest extends JerseyTest {
 
-<<<<<<< HEAD
-    @Override
-    protected Application configure() {
-        return new ResourceConfig(GameRest.class);
-    }
-
-    Model model;
-
-    @Before
-    public void init(){
-        model = Model.getInstance();
-        model.setGames(new ArrayList<Game>());
-        model.addGame(model.createPlayer("toto",""),"tata", 4);
-    }
-
-    @Test
-=======
 	@Override
 	protected Application configure() {
 		return new ResourceConfig(GameRest.class);
 	}
 
 	Model model;
-	Game game;
 
 	@Before
 	public void init() {
 		model = Model.getInstance();
 		model.setGames(new ArrayList<Game>());
-		model.addGame(model.createPlayer("toto"), "tata", 4);
-		game = model.findGameByName("tata");
+		model.addGame(model.createPlayer("toto", "token"), "tata", 4);
 	}
 
 	@Test
 	public void retourneLeJoueurActuelDeLaPartie() throws JSONException {
 		// Init the game
-		game.addPlayer(model.createPlayer("marcel"));
-		game.addPlayer(model.createPlayer("chris"));
-		game.addPlayer(model.createPlayer("maurice"));
-		game.start();
+		model.findGameByName("tata").addPlayer(model.createPlayer("marcel", "token2"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("chris", "token3"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("maurice", "token4"));
+        model.findGameByName("tata").start();
 
 		// Test the methods
 		Response response = target("/game/tata/command").request().get();
@@ -86,7 +71,6 @@ public class GameRestTest extends JerseyTest {
 	}
 
 	@Test
->>>>>>> 8bdfb4aee4b22dc7f3f755c96183fbbb8c7e4578
     public void retourneFalseSiLaPartieExisteMaisPasCommencer() throws JSONException{
         Response response = target("/game/tata").request().get();
         assertEquals(200, response.getStatus());
@@ -123,7 +107,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void getHandDunJoueur() throws JSONException{
         for(int i = 0; i < 3; i++)
-            model.addPlayerToGame("tata", model.createPlayer("azert"+i,""));
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i,"token"+i));
 
         model.findGameByName("tata").start();
         Response response = target("/game/tata/toto").request().get();
@@ -146,7 +130,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void lancerUnePartieQuiADejaCommencer() throws JSONException{
         for(int i = 0; i < 3; i++)
-            model.addPlayerToGame("tata", model.createPlayer("azert"+i,""));
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i,"token"+i));
         model.findGameByName("tata").start();
 
         String json = "{pseudo: 'toto'}";
@@ -160,7 +144,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void lancerUnePartieAvecTousLesJoueurs() throws JSONException{
         for(int i = 0; i < 3; i++)
-            model.addPlayerToGame("tata", model.createPlayer("azert"+i,""));
+            model.addPlayerToGame("tata", model.createPlayer("azert"+i, "token"+i));
 
         String json = "{pseudo: 'toto'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
@@ -198,7 +182,7 @@ public class GameRestTest extends JerseyTest {
      */
     @Test
     public void retourneUnTableauVideSiAucuneGame() throws JSONException{
-        model.setGames(new ArrayList<>());
+        model.setGames(new ArrayList<Game>());
         Response response = target("/game").request().get();
         assertEquals(200, response.getStatus());
 
@@ -216,5 +200,169 @@ public class GameRestTest extends JerseyTest {
         JSONObject json = new JSONObject(response.readEntity(String.class));
         assertEquals(1, json.getJSONArray("games").length());
     }
+    
+    /*
+     * ******************************************************************************************************
+     * *************************************** Jouer card begin test ****************************************
+     * ******************************************************************************************************
+     */
+    
+    @Test
+    public void retourne405SiLaPartieNExistePas() throws JSONException{
+    	Response response = target("/game/test/john").request().put(Entity.entity("{}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The game does not exist", json.getString("error"));
+    }
+    
+    @Test
+    public void retourne405SiLaPartieNEstPasCommencee() throws JSONException{
+    	Response response = target("/game/tata/john").request().put(Entity.entity("{}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The game does hasn't begun", json.getString("error"));
+    }
+    
+    @Test
+    public void retourne405SiLeJoeurNExistePas() throws JSONException{
+		// Init the game
+		model.findGameByName("tata").addPlayer(model.createPlayer("marcel", "token1"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("chris", "token2"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("maurice", "token3"));
+        model.findGameByName("tata").start();
+		
+    	Response response = target("/game/tata/john").request().put(Entity.entity("{}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The player does not exist", json.getString("error"));
+    }
+    
+    @Test
+    public void retourne405SiLeJoeurNExistePasDansCettePartie() throws JSONException{
+		// Init the game
+        model.findGameByName("tata").addPlayer(model.createPlayer("marcel", "token1"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("chris", "token2"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("maurice", "token3"));
+        model.findGameByName("tata").start();
+		
+		// Init a second game
+		model.addGame(model.createPlayer("john", "token4"), "test", 4);
 
+        model.findGameByName("test").addPlayer(model.createPlayer("marcel2", "token5"));
+        model.findGameByName("test").addPlayer(model.createPlayer("chris2", "token6"));
+        model.findGameByName("test").addPlayer(model.createPlayer("maurice2", "token7"));
+		
+    	Response response = target("/game/tata/john").request().put(Entity.entity("{}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The player does not exist", json.getString("error"));
+    }
+    
+    @Test
+    public void retourne405SiLeJSONEnvoyerEstInvalide() throws JSONException{
+		// Init the game
+        model.findGameByName("tata").addPlayer(model.createPlayer("marcel", "token1"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("chris", "token2"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("maurice", "token3"));
+        model.findGameByName("tata").start();
+		
+    	Response response = target("/game/tata/toto").request().put(Entity.entity("{}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The json object does not follow the rules", json.getString("error"));
+    }
+    
+    
+    @Test
+    public void retourne405SiLeJoeurNePeutPasJouer() throws JSONException{
+		// Init the game
+        model.findGameByName("tata").addPlayer(model.createPlayer("marcel", "token1"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("chris", "token2"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("maurice", "token3"));
+        model.findGameByName("tata").start();
+		
+		
+    	Response response = target("/game/tata/marcel").request().put(Entity.entity("{\"value\":6, \"color\":\"Blue\"}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The player can't play", json.getString("error"));
+    }
+   
+    
+    @Test
+    public void retourne405SiLeJoueurNePossedePasLaCarte() throws JSONException{
+		// Init the game
+        model.findGameByName("tata").addPlayer(model.createPlayer("marcel", "token1"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("chris", "token2"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("maurice", "token3"));
+        model.findGameByName("tata").start();
+
+        model.findGameByName("tata").getBoard().getActualPlayer().getCards().add(new Card(5, Color.Blue));
+        model.findGameByName("tata").getBoard().getStack().changeColor(Color.Red);
+        model.findGameByName("tata").getBoard().getStack().addCard(new Card(5, Color.Red));
+
+        Response response = target("/game/tata/toto").request().put(Entity.entity("{\"value\":11, \"color\":\"Black\"}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The player does not possese this card", json.getString("error"));
+    }
+    
+    @Test
+    public void retourne405SiLaCarteNEstPasJouable() throws JSONException {
+		// Init the game
+        model.findGameByName("tata").addPlayer(model.createPlayer("marcel", "token1"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("chris", "token2"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("maurice", "token3"));
+        model.findGameByName("tata").start();
+		
+		ArrayList<Card> cards = new ArrayList<Card>();
+		cards.add(new Card(2, Color.Blue));
+		cards.add(new Card(8, Color.Blue));
+        model.findGameByName("tata").getBoard().getActualPlayer().setCards(cards);
+        model.findGameByName("tata").getBoard().getStack().changeColor(Color.Red);
+		ArrayList<Card> stack = new ArrayList<Card>();
+		stack.add(new Card(8, Color.Red));
+        model.findGameByName("tata").getBoard().getStack().setStack(stack);
+		
+    	Response response = target("/game/tata/toto").request().put(Entity.entity("{\"value\":2, \"color\":\"Blue\"}", MediaType.APPLICATION_JSON));
+    	
+    	/*
+    	assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The card can't be played", json.getString("error"));
+        */
+    }
+    
+    @Test
+    public void retourne200SiTouteLesConditionSontValider() throws JSONException{
+		// Init the game
+        model.findGameByName("tata").addPlayer(model.createPlayer("marcel", "token1"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("chris", "token2"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("maurice", "token3"));
+        model.findGameByName("tata").start();
+
+        model.findGameByName("tata").getBoard().getActualPlayer().getCards().add(new Card(5, Color.Blue));
+        model.findGameByName("tata").getBoard().getStack().addCard(new Card(5, Color.Red));
+    	Response response = target("/game/tata/toto").request().put(Entity.entity("{\"value\":5, \"color\":\"Blue\"}", MediaType.APPLICATION_JSON));
+
+    	assertEquals(200, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The card was succesfully played", json.getString("success"));
+    }
+    
+    
+    /*
+     * ******************************************************************************************************
+     * *************************************** Jouer card end test ****************************************
+     * ******************************************************************************************************
+     */
 }
