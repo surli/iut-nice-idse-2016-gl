@@ -12,13 +12,11 @@ import org.codehaus.jettison.json.JSONObject;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
 
 import fr.unice.idse.constante.Config;
-<<<<<<< HEAD
 import fr.unice.idse.model.Deck;
-=======
+
 import fr.unice.idse.model.Board;
 import fr.unice.idse.model.Card;
 import fr.unice.idse.model.Color;
->>>>>>> 73be349f1a8cdb8659521a5f951429ace1c78089
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
@@ -274,7 +272,13 @@ public class GameRest {
         Player player = model.findPlayerByName(gameName, pseudo);
         Game game = model.findGameByName(gameName);
         
-        game.getBoard().pioche();
+       Player verifplayer = game.getBoard().getActualPlayer();
+       
+       if(!player.equals(verifplayer)){
+    	  return Response.status(405).entity("Joueur non autorisé à piocher").build();
+       }
+        
+        game.getBoard().drawCard();
         
         return Response.status(200).entity("carte ajoutée à la main du joueur").build();
     }
@@ -335,5 +339,4 @@ public class GameRest {
     	
         return Response.status(200).entity("{\"success\":\"The card was succesfully played\"}").build();
     }
->>>>>>> 73be349f1a8cdb8659521a5f951429ace1c78089
 }
