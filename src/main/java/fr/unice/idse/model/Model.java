@@ -4,14 +4,16 @@ import java.util.ArrayList;
 
 public class Model {
 	private ArrayList<Game> games;
+	private ArrayList<Player> players;
 	private static Model model=null;
 	
 	/**
-	 * Constructeur par d�faut
+	 * Constructeur par défaut
 	 */
 	private Model()
 	{
 		this.games= new ArrayList<Game>();
+		this.players= new ArrayList<Player>();
 	}
 
 	/**
@@ -27,6 +29,8 @@ public class Model {
 	
 	public ArrayList<Game> getGames() { return games; }
 	public void setGames(ArrayList<Game> games) { this.games = games; }
+	public ArrayList<Player> getPlayers() {return players;}
+	public void setPlayers(ArrayList<Player> players) {this.players = players;}
 
 	/**
 	 * Ajouter une partie
@@ -46,30 +50,82 @@ public class Model {
 	
 	/**
 	 * Créer un joueur s'il n'existe pas
-	 * @param playerName
+	 * @param playerName, playerToken
 	 * @return Player
 	 */
-	public Player createPlayer(String playerName)
+	public Player createPlayer(String playerName,String playerToken)
 	{
 		if(!playerExists(playerName))
 		{
-			return new Player(playerName);
+			return new Player(playerName,playerToken);
 		}
 		return null;
 	}
 	
 	/**
-	 * Vérifie si le joueur indiqué existe dans les parties
+	 * Créer un joueur s'il n'existe pas et l'ajoute dans la liste des joueurs
+	 * @param playerName, playerToken
+	 * @return true/false
+	 */
+	public boolean createPlayerBis(String playerName,String playerToken)
+	{
+		if(!playerExists(playerName))
+		{
+			if(!playerExistsInList(playerName))
+			{
+				players.add(new Player(playerName,playerToken));
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Retourne le player indiqué avec son token
+	 * @param playerToken
+	 * @return Player
+	 */
+	public Player getPlayerFromList(String playerToken)
+	{
+		for(Player player : players)
+		{
+			if(player.getToken().equals(playerToken))
+			{
+				return player;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Vérifie si le player existe dans la liste des joueurs
 	 * @param playerName
 	 * @return true/false
 	 */
-	public boolean playerExists(String playerName)
+	public boolean playerExistsInList(String playerName)
+	{
+		for(Player player : players)
+		{
+			if(player.getName().equals(playerName))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Vérifie si le joueur indiqué existe dans les parties
+	 * @param playerToken
+	 * @return true/false
+	 */
+	public boolean playerExists(String playerToken)
 	{
 		for(Game game : games)
 		{
 			for(Player player : game.getPlayers())
 			{
-				if(player.getName().equals(playerName))
+				if(player.getToken().equals(playerToken))
 				{
 					return true;
 				}
@@ -123,6 +179,7 @@ public class Model {
 		Game game = findGameByName(gameName);
 		if(game != null)
 		{
+			players.remove(player);
 			return game.addPlayer(player);
 		}
 		return false;
@@ -134,12 +191,12 @@ public class Model {
 	 * @param playerName
 	 * @return true/false
 	 */
-	public boolean removePlayerFromGame(String gameName, String playerName)
+	public boolean removePlayerFromGameByName(String gameName, String playerName)
 	{
 		Game game = findGameByName(gameName);
 		if(game != null)
 		{
-			return game.removePlayer(playerName);
+			return game.removePlayerByName(playerName);
 		}
 		return false;
 	}
@@ -162,11 +219,42 @@ public class Model {
 	}
 	
 	/**
+	 * Supprime joueur d'une partie
+	 * @param gameName
+	 * @param playerToken
+	 * @return true/false
+	 */
+	public boolean removePlayerFromGameByToken(String gameName, String playerToken)
+	{
+		Game game = findGameByName(gameName);
+		if(game != null)
+		{
+			return game.removePlayerByToken(playerToken);
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * Chercher un joueur selon le nom de la partie et le nom du joueur renseignés
+	 * @param gameName
+	 * @param playerToken
+	 * @return Player/null
+	 */
+	public Player findPlayerByToken(String gameName,String playerToken)
+	{
+		Game game = findGameByName(gameName);
+		if(game != null)
+		{
+			return game.findPlayerByName(playerToken);
+		}
+		return null;
+	}
+	
+	/**
 	 * Le joueur désigné joue une carte en fonction de la position de la carte
 	 * (cardPosition)dans la main du joueur, dans la partie indiquée  
-	 * @param game
 	 * @param playerName
-	 * @param colorNumber
 	 * @param cardPosition
 	 * @return true/false
 	 */
@@ -183,7 +271,6 @@ public class Model {
 	 * Le joueur désigné joue une carte en fonction de la position de la carte
 	 * (cardPosition)dans la main du joueur, dans la partie indiquée et change de
 	 * couleur selon la couleur indiquée (0 -> Bleu, 1 -> Jaune, 2 -> Rouge, 3 -> Vert)
-	 * @param game
 	 * @param playerName
 	 * @param colorNumber
 	 * @return true/false
