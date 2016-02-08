@@ -48,7 +48,7 @@ public class Game {
 		{
 			return false;
 		}
-		if(!containsPlayer(player.getName()))
+		if(!containsPlayerByToken(player.getToken()))
 		{
 			this.board.getPlayers().add(player);
 			return true;
@@ -71,7 +71,7 @@ public class Game {
 	 * @param playerName
 	 * @return true/false
 	 */
-	public boolean containsPlayer(String playerName)
+	public boolean containsPlayerByName(String playerName)
 	{
 		for(Player player : board.getPlayers())
 		{
@@ -97,15 +97,60 @@ public class Game {
 	}
 	
 	/**
-	 * Supprime joueur de la partie
+	 * Supprime joueur de la partie selon son nom
 	 * @param playerName
 	 * @return true/false
 	 */
-	public boolean removePlayer(String playerName)
+	public boolean removePlayerByName(String playerName)
 	{
-		if(containsPlayer(playerName))
+		if(containsPlayerByName(playerName))
 		{
 			board.getPlayers().remove(findPlayerByName(playerName));
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Verifie si le joueur indiqué est présent dans la partie
+	 * @param playerToken
+	 * @return true/false
+	 */
+	public boolean containsPlayerByToken(String playerToken)
+	{
+		for(Player player : board.getPlayers())
+		{
+			if(player.getToken().equals(playerToken))
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Cherche joueur en fonction de son token
+	 * @param playerToken
+	 * @return Player
+	 */
+	public Player findPlayerByToken(String playerToken)
+	{
+		for(Player player : board.getPlayers())
+		{
+			if(player.getToken().equals(playerToken))
+				return player;
+		}
+		return null;
+	}
+	
+	/**
+	 * Supprime joueur de la partie selon son token
+	 * @param playerToken
+	 * @return true/false
+	 */
+	public boolean removePlayerByToken(String playerToken)
+	{
+		if(containsPlayerByToken(playerToken))
+		{
+			board.getPlayers().remove(findPlayerByName(playerToken));
 			return true;
 		}
 		return false;

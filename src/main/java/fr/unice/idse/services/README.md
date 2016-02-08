@@ -13,7 +13,7 @@
 ### Contributors
 
 * Jeremie Elbaz
-* Joselin  Elcin
+* Jocelin Heinen
 * Damien Clemenceau
 
 ### Introduction
@@ -41,42 +41,46 @@ jetty:run
 ##### Routes structure
 ```
 /uno
-├── /initializer
-│   ├── /creategame
-├── /lobby
-│   ├── /listgame
-│   ├── /listplayer
-├── /game
-│   ├── /{gamename}
-│   │   ├── /addplayer
-│   │   ├── /begingame
-│   │   ├── /gamestate
-│   │   ├── /actualplayer
-│   │   ├── /updated 
-│   │   ├── /{pseudo}
-│   │   │   ├── /hand
-├── /player
-│   ├── /{pseudo}
+├── /game 
+│   ├── GET             Liste des parties
+│   ├── POST            Créer une partie
+│   ├── /{gamename} 
+│   │   ├── GET         Retourne l'état de la game
+│   │   ├── PUT         Ajoute un joueur dans la partie
+│   │   ├── DELETE      Supprime une partie
+│   │   ├── /command
+│   │   │   ├── GET     Retourne le joueur courant
+│   │   │   ├── PUT     Lance une partie (Que l'host)
+│   │   ├── /{pseudo} 
+│   │   │   ├── GET     Retoune la main du joueur
+│   │   │   ├── POST    Pioche une carte
+│   │   │   ├── PUT     Joue une carte
+├── /player 
+│   ├── /{pseudo} 
+│   │   ├── GET         Retourne la liste des joueurs
+├── /auth
+│   ├── POST            Authentifie un Guest en renvoyant un token
 ```
 
+Chaque route doit posseder un Token dans le header pour nom _token
 
-__POST /uno/initializer/creategame__
+__POST /uno/game__ CreateGame
 
 Send :
 ```json
 {
-    "_token":"123456789",
     "gamename":"uno",
     "pseudo":"john"
 }
 ```
 Return :
+
 * 200 Ok
 * 401 Invalid token
 * 405 Missing or invalid parameters
 * 500 Gamename already in use
 
-__GET /uno/lobby/listgame__
+__GET /uno/game__ GetListGames
  
  Return :
  ```json
@@ -91,229 +95,39 @@ __GET /uno/lobby/listgame__
 }
 ```
  
-__GET /uno/lobby/listplayer__
- 
-  Return :
- ```json
-{
-    "players": [
-        {
-            "pseudo":"john",
-            "email":"john@mail.com",
-        }
-    ]
-}
-```
-
-__GET /uno/game/{gamename}/addplayer__
+__PUT /uno/game/{gamename}__ AddPlayer
 
 Send :
  ```json
 {
-    "_token":"123456789",
-    "pseudo":"bob",
+    "pseudo":"bob"
 }
 ```
 
-__POST /uno/game/{gamename}/begingame__
+__GET /uno/game/{gamename}__ GetGameState
+
+> TODO
 
 Send :
  ```json
 {
-    "_token":"123456789",
-    "pseudo":"john",
+	"state":1,
+	"player": 
+	[
+		{"pseudo":"bob","nbCard":5},
+		{"pseudo":"john","nbCard":5},
+		{"pseudo":"marcel","nbCard":4}
+	]
 }
 ```
 
-__GET /uno/game/{gamename}/gamestate__
+__DELETE /uno/game/{gamename}__ GetGameState
 
-Return :
- ```json
-{
-    "state":0,
-}
-```
+> TODO
 
-__GET /uno/game/{gamename}/actualplayer__
+Return Ok
 
-Return :
- ```json
-{
-    "pseudo":"john",
-}
-```
-
-__GET /uno/game/{gamename}/updated__
-
-Return :
- ```json
-{
-    "update":true,
-}
-```
-
-__GET /uno/game/{pseudo}/hand__
-
-Return :
- ```json
-{
-    "cartes": [
-        {
-            "number":2,
-            "familly":"As"
-        }
-    ]
-}
-```
-
-### Running test
-
-Launch the server then you can now run the test
-
-### TODO
-
-* Complete this README.md
-* Implements these routes
-* List all routes with they return value
-=======
-# UNO Web service
-
-### Table of contents
-
-- [Contributors](#contributors)
-- [Introduction](#introduction)
-- [Install](#install)
-- [Launch](#launch)
-- [Routes](#routes)
-- [Running test](#running-test)
-- [TODO](#todo)
-
-### Contributors
-
-* Jeremie Elbaz
-* Jocelin  Heinen
-* Damien Clemenceau
-
-### Introduction
-
-> TODO : Add a better introduction
-
-This WebService use jersey who provide a REST services. 
-
-### Install
-
-On eclipse right click on your project then _run as_ and _Maven Build_ in goals write :
-```
-install jetty:run
-```
-
-### Launch
-
-On eclipse right click on your project then _run as_ and _Maven Build_ in goals write :
-```
-jetty:run
-```
-
-### Routes
-
-##### Routes structure
-```
-/uno
-├── /initializer
-│   ├── /creategame (TO BE UPDATE)
-├── /lobby
-│   ├── /listgame (DONE)
-│   ├── /listplayer
-├── /game
-│   ├── /{gamename}
-│   │   ├── /addplayer (DONE)
-│   │   ├── /begingame
-│   │   ├── /gamestate (DONE)
-│   │   ├── /actualplayer
-│   │   ├── /updated 
-│   │   ├── /{pseudo}
-│   │   │   ├── /hand 
-├── /player
-│   ├── /{pseudo}
-```
-
-
-__POST /uno/initializer/creategame (fait)__
-
-Send :
-```json
-{
-    "_token":"123456789",
-    "gamename":"uno",
-    "pseudo":"john"
-}
-```
-Return :
-
-* 200 Ok
-* 401 Invalid token
-* 405 Missing or invalid parameters
-* 500 Gamename already in use
-
-__GET /uno/lobby/listgame (fait)__
- 
- Return :
- ```json
-{
-    "games": [
-        {
-            "name":"uno",
-            "state":0,
-            "nbPlayer":2
-        }
-    ]
-}
-```
- 
-__GET /uno/lobby/listplayer__
- 
-  Return :
- ```json
-{
-    "players": [
-        {
-            "pseudo":"john",
-            "email":"john@mail.com",
-        }
-    ]
-}
-```
-
-__POST /uno/game/{gamename}/addplayer (fait)__
-
-Send :
- ```json
-{
-    "_token":"123456789",
-    "pseudo":"bob",
-}
-```
-
-__POST /uno/game/{gamename}/begingame__
-
-Send :
- ```json
-{
-    "_token":"123456789",
-    "pseudo":"john",
-}
-```
-
-__GET /uno/game/{gamename}/gamestate (fait)__
-
-Return :
- ```json
-{
-    "state":0,
-}
-```
-
-__GET /uno/game/{gamename}/actualplayer__
+__GET /uno/game/{gamename}/command__ CurrentPlayer
 
 Return the current player of the game 
 
@@ -322,7 +136,7 @@ There are three type of return :
 1. Response 200 Ok
  ```json
 {
-    "pseudo": String,
+    "pseudo": "John",
 }
 ```
 
@@ -333,14 +147,13 @@ There are three type of return :
 }
 ```
 
-3. Response 422 Unprocessable Entity
- ```json
-{
-    "error": "No current player has been set",
-}
-```
+__PUT /uno/game/{gamename}/command__ BeginGame
 
-__GET /uno/game/{gamename}/updated__
+> TODO
+
+Return Ok
+
+__GET /uno/game/{gamename}/updated__ GetUpdate
 
 Return :
  ```json
@@ -349,12 +162,12 @@ Return :
 }
 ```
 
-__GET /uno/game/{pseudo}/hand__
+__GET /uno/game/{gamename}/{pseudo}__ (GetHand)
 
 Return :
  ```json
 {
-    "cartes": [
+    "cards": [
         {
             "number":2,
             "familly":"As"
@@ -362,6 +175,36 @@ Return :
     ]
 }
 ```
+
+__POST /uno/game/{gamename}/{pseudo}__ (PickACard)
+
+Return Ok
+
+__PUT /uno/game/{gamename}/{pseudo}__ (PlayCard)
+
+Send :
+ ```json
+{
+    "value": 0,
+	"color": "Blue",
+	"actionCard": null
+}
+```
+
+__GET /uno/player__ GetListPlayers
+ 
+  Return :
+ ```json
+{
+    "players": [
+        {
+            "pseudo":"john",
+            "email":"john@mail.com",
+        }
+    ]
+}
+```
+
 
 ### Running test
 

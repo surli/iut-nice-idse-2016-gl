@@ -10,14 +10,16 @@ public class Player {
 	private Card lastCardPlayed;
 	private int score;
 	private boolean dealer;
+	private String token;
 	
-	public Player(String name)
+	public Player(String name, String token)
 	{
 		this.name = name;
 		this.cards = new ArrayList<Card>();
 		this.turn = false;
 		this.lastCardPlayed = null;
 		this.score = 0;
+		this.token = token;
 	}
 
 	public String getName() {
@@ -68,6 +70,15 @@ public class Player {
 		this.dealer = dealer;
 	}
 	
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	public boolean play(int cardPosition,Board board)
 	{
 		return false;	
