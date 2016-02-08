@@ -1,5 +1,6 @@
 package fr.unice.idse.services;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.ws.rs.GET;
@@ -112,24 +113,48 @@ public class GameRest extends OriginRest{
     }
 
     /**
-     * Retourne si la partie a commencée
+     * Retourne l'état de la partie
      * gamename : Nom de la partie
      *
-     * Retourn {state: Boolean}
      * @param gamename Nom de partie
      * @return Response
      */
     @GET
     @Path("{gamename}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response isStarted(@PathParam("gamename") String gamename){
+    public Response isStarted(@PathParam("gamename") String gamename) throws JSONException {
         Model model = Model.getInstance();
-        Game game = model.findGameByName(gamename);
+        JSONObject jsonObject = new JSONObject();
+        ArrayList<JSONObject> players = new ArrayList<JSONObject>();
 
-        if(game == null)
+        if(model.findGameByName(gamename) == null)
             return sendResponse(404, "Partie inconnu", "GET");
 
-        return sendResponse(200, "{\"state\": "+game.getBoard().gameBegin()+"}", "GET");
+        if(model.findGameByName(gamename).getBoard().gameBegin()){
+            jsonObject.put("state", true);
+            jsonObject.put("currentplayer", model.findGameByName(gamename).getBoard().getActualPlayer().getName());
+            for(int i = 0; i < model.findGameByName(gamename).getBoard().getPlayers().size(); i++){
+                JSONObject objFils = new JSONObject();
+                objFils.put("name", model.findGameByName(gamename).getBoard().getPlayers().get(i).getName());
+                objFils.put("cartes", model.findGameByName(gamename).getBoard().getPlayers().get(i).getCards().size());
+                players.add(objFils);
+            }
+            jsonObject.put("players", players);
+            jsonObject.put("stack", model.findGameByName(gamename).getBoard().getStack().topCard());
+            return sendResponse(200, jsonObject.toString(), "GET");
+        }
+
+        for(int i = 0; i < model.findGameByName(gamename).getBoard().getPlayers().size(); i++) {
+            JSONObject objFils = new JSONObject();
+            objFils.put("name", model.findGameByName(gamename).getBoard().getPlayers().get(i).getName());
+            players.add(objFils);
+        }
+
+        jsonObject.put("state", false);
+        jsonObject.put("players", players);
+        jsonObject.put("host", model.findGameByName(gamename).getHost().getName());
+
+        return sendResponse(200, jsonObject.toString(), "GET");
     }
 
     /**
@@ -276,14 +301,12 @@ public class GameRest extends OriginRest{
         // Cration de tous les objets
         Model model = Model.getInstance();
         Player player = model.findPlayerByName(gameName, playerName);
-        Game game = model.findGameByName(gameName);
-        
-       Player verifplayer = game.getBoard().getActualPlayer();
-       
-       if(!player.equals(verifplayer))
-           return sendResponse(405, "Joueur non autorisé à piocher", "POST");
-        
-        game.getBoard().drawCard();
+        Player verifplayer = model.findGameByName(gameName).getBoard().getActualPlayer();
+
+        if(!player.equals(verifplayer))
+            return sendResponse(405, "Joueur non autorisé à piocher", "POST");
+
+        model.findGameByName(gameName).getBoard().drawCard();
 
         return sendResponse(200, "carte ajoutée à la main du joueur", "POST");
     }
