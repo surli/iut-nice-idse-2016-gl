@@ -265,8 +265,9 @@ public class GameRest {
      */
     
     @POST
+    @Path("/{gameName}/{pseudo}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pickacard(String gameName, String pseudo) throws JSONException {
+    public Response pickacard(@PathParam("gameName")String gameName,@PathParam("pseudo")String pseudo) throws JSONException {
         // Cration de tous les objets
         Model model = Model.getInstance();
         Player player = model.findPlayerByName(gameName, pseudo);

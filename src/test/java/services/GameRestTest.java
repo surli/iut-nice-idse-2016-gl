@@ -101,7 +101,7 @@ public class GameRestTest extends JerseyTest {
     public void ajouterUnJoueurExistantDansUnePartie() throws JSONException{
         String json = "{pseudo: 'toto'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata/addplayer").request().post(jsonEntity);
+        Response response = target("/game/tata/toto").request().put(jsonEntity);
 
         assertEquals(405, response.getStatus());
     }
@@ -203,16 +203,14 @@ public class GameRestTest extends JerseyTest {
         assertEquals(1, json.getJSONArray("games").length());
     }
     
-//    @Test
-//    public void pickacardTest() throws JSONException{
-//    	model.findGameByName("tata").start();
-//    	String json = "{game:'tata', pseudo: 'toto'}";
-//        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-//        Response response = target("/game/tata/toto").request().post(jsonEntity);
-//    	assertEquals(200, response.getStatus());
-//    	
-//
-//    }
+    @Test
+    public void pickacardTest() throws JSONException{
+    	model.findGameByName("tata").start();
+    	String json = "{game:'tata', pseudo: 'toto'}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+        Response response = target("/game/tata/toto").request().post(jsonEntity);
+    	assertEquals(200, response.getStatus());
+    }
 
     /*
      * ******************************************************************************************************
