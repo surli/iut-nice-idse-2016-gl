@@ -179,6 +179,7 @@ public class Model {
 		Game game = findGameByName(gameName);
 		if(game != null)
 		{
+			players.remove(player);
 			return game.addPlayer(player);
 		}
 		return false;
@@ -253,9 +254,7 @@ public class Model {
 	/**
 	 * Le joueur désigné joue une carte en fonction de la position de la carte
 	 * (cardPosition)dans la main du joueur, dans la partie indiquée  
-	 * @param game
 	 * @param playerName
-	 * @param colorNumber
 	 * @param cardPosition
 	 * @return true/false
 	 */
@@ -272,7 +271,6 @@ public class Model {
 	 * Le joueur désigné joue une carte en fonction de la position de la carte
 	 * (cardPosition)dans la main du joueur, dans la partie indiquée et change de
 	 * couleur selon la couleur indiquée (0 -> Bleu, 1 -> Jaune, 2 -> Rouge, 3 -> Vert)
-	 * @param game
 	 * @param playerName
 	 * @param colorNumber
 	 * @return true/false

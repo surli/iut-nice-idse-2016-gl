@@ -68,40 +68,38 @@ public class GameRest extends OriginRest{
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createGame(String objJSON) throws JSONException {
+    public Response createGame(String objJSON, @HeaderParam("token") String token) throws JSONException {
         // Cration de tous les objets
         Model model = Model.getInstance();
         JSONObject json = new JSONObject(objJSON);
-
-        /*
-        // verification du token
-        if(!json.has("_token"))
-            return Response.status(401).entity("{\"error\" : \"Invalid token\"}").build();
-        if(!Config._token.equals(json.getString("_token")))
-            return Response.status(401).entity("{\"error\" : \"Invalid token\"}").build();
-         */
         
         // verification du champ game
         if(!json.has("game"))
             return sendResponse(405, "{\"error\" : \"Invalid parameter game\"}", "POST");
+        // verification du token
+        if(token == null)
+            return sendResponse(405, "{\"error\" : \"Missing parameters token\"}", "PUT");
+
         String game = json.getString("game");
         if(game.length() < 3)
             return sendResponse(405, "{\"error\" : \"Invalid parameter game length\"}", "POST");
         if(!json.has("player"))
             return sendResponse(405, "{\"error\" : \"Invalid parameter player\"}", "POST");
-        Player player = model.createPlayer(json.getString("player"), "");
-        if(player == null)
-            return sendResponse(405, "{\"error\" : \"Joueur existant\"", "POST");
-        
+
+        if(!model.playerExistsInList(json.getString("player")))
+            return sendResponse(405, "{\"error\" : \"Joueur existant\"}", "POST");
+        if(!model.getPlayerFromList(token).getName().equals(json.getString("player")))
+            return sendResponse(405, "{\"error\" : \"Token invalid\"}", "POST");
+
         if(!json.has("numberplayers"))
             return sendResponse(405, "{\"error\" : \"Invalid parameter numberplayers\"}", "POST");
         int numberplayers = json.getInt("numberplayers");
-        if(numberplayers<2||numberplayers>6){
+        if(numberplayers<=2||numberplayers>=6){
             return sendResponse(405, "{\"error\" : \"Numberplayers must be 2 to 6 numberplayers\"}", "POST");
         }
         
         // creation de la game
-        if(!model.addGame(player, game,numberplayers))
+        if(!model.addGame(model.getPlayerFromList(token), game,numberplayers))
             return sendResponse(500, "{\"message\": false}", "POST");
 
         return sendResponse(200, "{\"message\": true}", "POST");
@@ -173,6 +171,8 @@ public class GameRest extends OriginRest{
             return sendResponse(404, "Partie inconnu", "PUT");
 
         // verification du token
+        if(token == null)
+            return sendResponse(405, "Missing parameters token", "PUT");
 
         // verification du joueur
         if(!json.has("playerName"))
@@ -180,6 +180,8 @@ public class GameRest extends OriginRest{
         Player player = model.createPlayer(json.getString("playerName"), token);
         if(player == null)
             return sendResponse(405, "Missing or invalid parameters", "PUT");
+        if(!player.getToken().equals(token))
+            return sendResponse(405, "Invalid parameters token", "PUT");
 
         // verification game status
         if(game.gameBegin())

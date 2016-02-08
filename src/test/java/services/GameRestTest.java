@@ -36,14 +36,15 @@ public class GameRestTest extends JerseyTest {
 		return new ResourceConfig(GameRest.class);
 	}
 
-	Model model;
+	public Model model;
 
 	@Before
 	public void init() {
 		model = Model.getInstance();
 		model.setGames(new ArrayList<>());
         model.setPlayers(new ArrayList<>());
-		model.addGame(model.createPlayer("toto", "token"), "tata", 4);
+        model.createPlayerBis("toto", "token");
+		model.addGame(model.getPlayerFromList("token"), "tata", 4);
 	}
 
 	@Test
@@ -103,9 +104,10 @@ public class GameRestTest extends JerseyTest {
 
     @Test
     public void ajouteUnJoueurInexistantDansUnePartie() throws JSONException{
-        String json = "{_token: '"+ Config._token+"', playerName: 'titi'}";
+        model.createPlayerBis("titi", "jdqsdhsqd");
+        String json = "{playerName: 'titi'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata").request().put(jsonEntity);
+        Response response = target("/game/tata").request().header("token", "jdqsdhsqd").put(jsonEntity);
 
         assertEquals(200, response.getStatus());
         JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
@@ -178,13 +180,14 @@ public class GameRestTest extends JerseyTest {
         /**
          * Creation dun tableau formaté JSON avec les 3 parametres
          */
-        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', game: 'superfly', player: 'marcel', numberplayers:4}";
+        assertTrue(model.createPlayerBis("marcel", "token1233"));
+        String json = "{game: 'superfly', player: 'marcel', numberplayers:4}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
 
         /**
          * on verifie que le code de retour est bien 200/succes
          */
-        Response response = target("/game").request().post(jsonEntity);
+        Response response = target("/game").request().header("token", "token1233").post(jsonEntity);
         assertEquals(200, response.getStatus());
     }
     
