@@ -15,12 +15,12 @@
                     <th class="text-center">&nbsp;</th>
                 </tr>
                 <tr data-ng-repeat="game in games">
-                    <td>{{game.name}}</td>
-                    <td>{{game.numberPlayers}}</td>
-                    <td>{{(game.numberPlayers == "4/4") ? "Started" : "Waiting for Players"}}</td>
+                    <td>{{game.gamename}}</td>
+                    <td>{{game.numberplayer}}</td>
+                    <td>{{(game.numberplayer == game.maxplayer) ? "Started" : "Waiting for Players"}}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm" data-ng-if="game.numberPlayers != '4/4'"
-                                data-ui-sref="app.room({ name: game.name })">Join
+                        <button class="btn btn-warning btn-sm" data-ng-if="game.numberplayer != game.maxplayer"
+                                data-ui-sref="app.room({ name: game.gamename })">Join
                         </button>
                     </td>
                 </tr>
@@ -33,7 +33,25 @@
     <div class="panel panel-default">
         <div class="panel-heading text-center">My games</div>
         <div class="panel-body text-center" style="padding:0;">
-            <p style="padding: 15px;">Mettre la liste de mes parties ici dans un tableau en bouclant sur les parties pour les afficher</p>
+            <table class="table" data-ng-if="games.length > 0" style="margin: 0;">
+                <tr>
+                    <th class="text-center">Game</th>
+                    <th class="text-center">NB Players</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">&nbsp;</th>
+                </tr>
+                <tr data-ng-repeat="game in games">
+                    <td>{{game.gamename}}</td>
+                    <td>{{game.numberplayer}}</td>
+                    <td>{{(game.numberplayer == game.maxplayer) ? "Started" : "Waiting for Players"}}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" data-ng-if="game.numberplayer != game.maxplayer"
+                                data-ui-sref="app.room({ name: game.gamename })">Join
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <p style="padding: 15px;" data-ng-if="games.length == 0">There is no started games yet</p>
         </div>
     </div>
 </div>

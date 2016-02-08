@@ -8,7 +8,8 @@ angular.module('unoApp')
                 $http.post('/rest/game', {
                         _token: 'hbj7BB7Y6B87T282B87T27N90A098',
                         game:   $scope.game,
-                        player: $scope.user.name
+                        player: $scope.user.name,
+                        numberplayers: $scope.nbPlayers
                     })
                     .then(function(data) {
                         switch (data.status) {
@@ -16,7 +17,7 @@ angular.module('unoApp')
                                 $state.go('app.room', { name: $scope.game });
                                 break;
                             case 405 :
-                                $scope.error = "Tu participes déjà à cette partie !";
+                                $scope.error = "Paramètre invalide !";
                                 break;
                             case 500 :
                                 $scope.error = "Partie déjà créée !";
