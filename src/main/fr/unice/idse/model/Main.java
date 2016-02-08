@@ -12,9 +12,9 @@ public class Main
 
 	public static void main(String[] args) 
 	{
-		Player playerHostTest = new Player("PlayerHostTest","");
-		Player playerTest2 = new Player("Test","");
-		Player playerTest3 = new Player("Toto","");
+		Player playerHostTest = new Player("PlayerHostTest","tok1");
+		Player playerTest2 = new Player("Test","tok2");
+		Player playerTest3 = new Player("Toto","tok3");
 		Game gameTest = new Game(playerHostTest, "GameTest", 3);
 		
 		gameTest.addPlayer(playerTest2);
@@ -70,6 +70,7 @@ public class Main
 		                	{
 		                		if(numberCardsPlayer > actualPlayer.getCards().size())
 			                	{
+		                			System.out.println("Le joueur a joue : " + board.getStack().topCard());
 			                		played = true;
 			                		System.out.println("Le joueur joue : " + card);
 			                		if(actualPlayer.getCards().size() == 1)
@@ -86,11 +87,18 @@ public class Main
 				{
 					board.drawCard();
 					System.out.println("Le joueur a pioche : " + actualPlayer.getCards().get(actualPlayer.getCards().size()-1));
-					board.nextPlayer();
+					if(!board.askPlayerCanPlay(actualPlayer))
+					{
+						board.nextPlayer();
+					}	
 				}
 				
 			}
 			System.out.println("Fin de la partie. Vainqueur : " + winner.getName());
+		}
+		else
+		{
+			System.out.println("Problème de chargement de la partie");
 		}
 	}
 }
