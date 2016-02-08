@@ -32,7 +32,7 @@ import fr.unice.idse.model.Player;
  * │   │   ├── /command
  * │   │   │   ├── GET     Retourne le joueur courant (Fait)
  * │   │   │   ├── PUT     Lance une partie (Que l'host) (Fait)
- * │   │   ├── /{pseudo}
+ * │   │   ├── /{playerName}
  * │   │   │   ├── GET     Retoune la main du joueur (Fait)
  * │   │   │   ├── POST    Pioche une carte
  * │   │   │   ├── PUT     Joue une carte
@@ -64,7 +64,7 @@ public class GameRest extends OriginRest{
 
     /**
      * Méthode en POST permettant la création de partie.
-     * Signature : {game: String, player: String(pseudo du joueur)}
+     * Signature : {game: String, player: String(playerName du joueur)}
      * Le nom de la game doit être suppérieur à 3 caractères;
      * Vérifie si la partie existe ou non. Renvoie {message: boolean}
      * @return Response
@@ -126,7 +126,7 @@ public class GameRest extends OriginRest{
 
     /**
      * Méthode en POST permettant l'ajout d'un joueur dans une partie
-     * Signature : {pseudo: String}
+     * Signature : {playerName: String}
      * La partie doit être existante.
      * Renvoie {status: boolean}
      * @return Response
@@ -152,9 +152,9 @@ public class GameRest extends OriginRest{
 		*/
         
         // verification du joueur
-        if(!json.has("pseudo"))
+        if(!json.has("playerName"))
             return sendResponse(405, "Missing or invalid parameters", "PUT");
-        Player player = model.createPlayer(json.getString("pseudo"),"");
+        Player player = model.createPlayer(json.getString("playerName"),"");
         if(player == null)
             return sendResponse(405, "Missing or invalid parameters", "PUT");
 
@@ -186,17 +186,17 @@ public class GameRest extends OriginRest{
             return Response.status(401).entity("Invalid token").build();
 		*/
 
-        // verification du pseudo
-        if(!json.has("pseudo"))
-            return sendResponse(405, "Missing parameters pseudo", "PUT");
-        if(model.findPlayerByName(gamename, json.getString("pseudo")) == null)
-            return sendResponse(405, "Pseudo unknown", "PUT");
+        // verification du playerName
+        if(!json.has("playerName"))
+            return sendResponse(405, "Missing parameters playerName", "PUT");
+        if(model.findPlayerByName(gamename, json.getString("playerName")) == null)
+            return sendResponse(405, "playerName unknown", "PUT");
 
         if(model.findGameByName(gamename).gameBegin())
             return sendResponse(500, "Game started", "PUT");
 
         if(model.findGameByName(gamename).getNumberPlayers() == model.findGameByName(gamename).getBoard().getPlayers().size())
-            if(model.startGame(gamename, json.getString("pseudo")))
+            if(model.startGame(gamename, json.getString("playerName")))
                 return sendResponse(200, "{\"status\": true}", "PUT");
 
         return sendResponse(500, "Game not tucked", "PUT");
@@ -205,7 +205,7 @@ public class GameRest extends OriginRest{
     /**
      * Méthode en GET permettant de recuperer le joueur devant jouer
      * La partie doit être existante.
-     * Renvoie {"pseudo": String}
+     * Renvoie {"playerName": String}
      * @return Response
      */
     @GET
@@ -227,7 +227,7 @@ public class GameRest extends OriginRest{
     	if(currentPlayer == null)
             return sendResponse(422, "{\"error\":\"No current player has been set\"}", "GET");
 
-        return sendResponse(200, "{\"pseudo\":\"" + currentPlayer.getName() + "\"}", "GET");
+        return sendResponse(200, "{\"playerName\":\"" + currentPlayer.getName() + "\"}", "GET");
     }
     
     /*
@@ -237,13 +237,13 @@ public class GameRest extends OriginRest{
      * @throws JSONException 
      */
     @GET 
-    @Path("/{gameName}/{pseudo}")
+    @Path("/{gameName}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response handplayer(@PathParam("pseudo") String pseudo,@PathParam("gameName") String gameName ) throws JSONException{
+    public Response handplayer(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName ) throws JSONException{
          Model model = Model.getInstance();
-         Player player = model.findPlayerByName(gameName, pseudo);
+         Player player = model.findPlayerByName(gameName, playerName);
          if(player==null)
-             return sendResponse(405, "No player with : "+pseudo, "GET");
+             return sendResponse(405, "No player with : "+playerName, "GET");
          
         int taille =  player.getCards().size();
 
@@ -262,12 +262,12 @@ public class GameRest extends OriginRest{
      */
     
     @POST
-    @Path("/{gameName}/{pseudo}")
+    @Path("/{gameName}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pickacard(@PathParam("gameName")String gameName,@PathParam("pseudo")String pseudo) throws JSONException {
+    public Response pickacard(@PathParam("gameName")String gameName,@PathParam("playerName")String playerName) throws JSONException {
         // Cration de tous les objets
         Model model = Model.getInstance();
-        Player player = model.findPlayerByName(gameName, pseudo);
+        Player player = model.findPlayerByName(gameName, playerName);
         Game game = model.findGameByName(gameName);
         
        Player verifplayer = game.getBoard().getActualPlayer();
@@ -283,16 +283,16 @@ public class GameRest extends OriginRest{
     /**
      * Méthode en PUT permettant de jouer une carte
      * La partie doit être existante et commencée.
-     * @param pseudo
+     * @param playerName
      * @param gameName
      * @param strJSON {"value": int, "color": str, "actionCard": null}
      * @return Response 200 | 422 | 405
      * @throws JSONException 
      */
     @PUT 
-    @Path("/{gameName}/{pseudo}")
+    @Path("/{gameName}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response playCard(@PathParam("pseudo") String pseudo,@PathParam("gameName") String gameName, String strJSON ) throws JSONException{
+    public Response playCard(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName, String strJSON ) throws JSONException{
     	Model model = Model.getInstance();      
     	// Verification que la partie existe et est commencée
     	if(!model.existsGame(gameName)) {
@@ -303,7 +303,7 @@ public class GameRest extends OriginRest{
     	}
     	
     	// Verification que le joueur existe et st present dans la partie
-    	Player player = model.findPlayerByName(gameName, pseudo);
+    	Player player = model.findPlayerByName(gameName, playerName);
     	if(player == null) {
             return sendResponse(405, "{\"error\": \"The player does not exist\"}", "PUT");
     	}
