@@ -42,6 +42,7 @@ public class AuthRestTest extends JerseyTest {
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
         Response response = target("/auth").request().post(jsonEntity);
         assertEquals(200, response.getStatus());
+        assertEquals(1, model.getPlayers().size());
     }
 
     @Test
@@ -54,5 +55,6 @@ public class AuthRestTest extends JerseyTest {
         jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
         Response response2 = target("/auth").request().post(jsonEntity);
         assertEquals(405, response2.getStatus());
+        assertEquals(1, model.getPlayers().size());
     }
 }
