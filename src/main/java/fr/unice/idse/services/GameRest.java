@@ -94,7 +94,7 @@ public class GameRest extends OriginRest{
         if(!json.has("numberplayers"))
             return sendResponse(405, "{\"error\" : \"Invalid parameter numberplayers\"}", "POST");
         int numberplayers = json.getInt("numberplayers");
-        if(numberplayers<=2||numberplayers>=6){
+        if(numberplayers<2||numberplayers>6){
             return sendResponse(405, "{\"error\" : \"Numberplayers must be 2 to 6 numberplayers\"}", "POST");
         }
         
