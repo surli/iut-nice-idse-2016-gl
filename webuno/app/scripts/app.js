@@ -69,7 +69,7 @@ angular
                     Games: function($http, $q) {
                         var deferred = $q.defer();
 
-                        $http.get('/rest/lobby/games')
+                        $http.get('/rest/game')
                             .then(function(data) {
                                 deferred.resolve(data);
                             }, function(error) {
@@ -84,6 +84,11 @@ angular
                 url: '/start',
                 templateUrl: 'views/start.html',
                 controller: 'StartController'
+            })
+            .state('app.room', {
+                url: '/room/:name',
+                templateUrl: 'views/room.html',
+                controller: 'RoomController'
             })
             .state('app.game', {
                 url: '/game/:name',
