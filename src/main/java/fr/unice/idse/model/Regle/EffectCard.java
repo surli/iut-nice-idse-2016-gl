@@ -38,6 +38,8 @@ public class EffectCard
 	public boolean isEffect(Card card)
 	{
 		return card.getColor().equals(getColor()) && card.getValue() == getValue();
+		
+		
 	}
 	
 	public void action()
