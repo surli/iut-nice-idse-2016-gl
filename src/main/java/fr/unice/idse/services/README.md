@@ -82,14 +82,15 @@ Return :
 
 __GET /uno/game__ GetListGames
  
- Return :
+ Return 200 Ok :
  ```json
 {
     "games": [
         {
-            "name":"uno",
-            "state":0,
-            "nbPlayer":2
+            "gamename":"uno",
+            "state":false,
+            "numberplayer":2,
+            "maxplayer":3
         }
     ]
 }

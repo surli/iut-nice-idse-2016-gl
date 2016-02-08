@@ -2,19 +2,18 @@ package fr.unice.idse.services;
 
 import java.util.Arrays;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
-
-import fr.unice.idse.constante.Config;
-import fr.unice.idse.model.Deck;
-
-import fr.unice.idse.model.Board;
 import fr.unice.idse.model.Card;
 import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Game;
@@ -56,8 +55,10 @@ public class GameRest extends OriginRest{
         Model model = Model.getInstance();
         String [] list = new String[model.getGames().size()];
         for (int i = 0; i < model.getGames().size(); i++){
-            list[i] = "{\"name\" : \""+model.getGames().get(i).getGameName()+"\", " +
-                    "\"numberPlayers\" : \""+model.getGames().get(i).numberOfPlayers()+"/"+model.getGames().get(i).getNumberPlayers()+"\"}";
+            list[i] = "{\"gamename\":\""+model.getGames().get(i).getGameName()+"\", " +
+                      "\"state\":\""+ model.getGames().get(i).gameBegin() +"\"," +
+                      "\"numberplayer\":"+ model.getGames().get(i).numberOfPlayers() +"," +
+                      "\"maxplayer\":\"" + model.getGames().get(i).getNumberPlayers() + "\"}";
         }
         return sendResponse(200, "{\"games\" : "+ Arrays.toString(list)+"}", "GET");
     }
@@ -237,7 +238,7 @@ public class GameRest extends OriginRest{
     /*
      * @param playerName
      * @param gameName
-     * @return
+     * @retur
      * @throws JSONException 
      */
     @GET 
