@@ -162,7 +162,7 @@ public class GameRestTest extends JerseyTest {
         /**
          * Creation dun tableau formaté JSON avec les 3 parametres
          */
-        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', game: 'superfly', player: 'marcel'}";
+        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', game: 'superfly', player: 'marcel', numberplayers:4}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
 
         /**

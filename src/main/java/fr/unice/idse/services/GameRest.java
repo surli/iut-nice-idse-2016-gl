@@ -95,9 +95,13 @@ public class GameRest extends OriginRest{
         Player player = model.createPlayer(json.getString("player"), "");
         if(player == null)
             return sendResponse(405, "{\"error\" : \"Joueur existant\"", "POST");
-
+        
+        if(!json.has("numberplayers"))
+            return sendResponse(405, "{\"error\" : \"Invalid parameter numberplayers\"}", "POST");
+        int numberplayers = json.getInt("numberplayers");
+        
         // creation de la game
-        if(!model.addGame(player, game,4))
+        if(!model.addGame(player, game,numberplayers))
             return sendResponse(500, "{\"message\": false}", "POST");
 
         return sendResponse(200, "{\"message\": true}", "POST");
