@@ -51,12 +51,12 @@ jetty:run
 │   │   ├── /command
 │   │   │   ├── GET     Retourne le joueur courant
 │   │   │   ├── PUT     Lance une partie (Que l'host)
-│   │   ├── /{pseudo} 
+│   │   ├── /{playerName} 
 │   │   │   ├── GET     Retoune la main du joueur
 │   │   │   ├── POST    Pioche une carte
 │   │   │   ├── PUT     Joue une carte
 ├── /player 
-│   ├── /{pseudo} 
+│   ├── /{playerName} 
 │   │   ├── GET         Retourne la liste des joueurs
 ├── /auth
 │   ├── POST            Authentifie un Guest en renvoyant un token
@@ -70,7 +70,7 @@ Send :
 ```json
 {
     "gamename":"uno",
-    "pseudo":"john"
+    "playerName":"john"
 }
 ```
 Return :
@@ -101,7 +101,7 @@ __PUT /uno/game/{gamename}__ AddPlayer
 Send :
  ```json
 {
-    "pseudo":"bob"
+    "playerName":"bob"
 }
 ```
 
@@ -115,9 +115,9 @@ Send :
 	"state":1,
 	"player": 
 	[
-		{"pseudo":"bob","nbCard":5},
-		{"pseudo":"john","nbCard":5},
-		{"pseudo":"marcel","nbCard":4}
+		{"playerName":"bob","nbCard":5},
+		{"playerName":"john","nbCard":5},
+		{"playerName":"marcel","nbCard":4}
 	]
 }
 ```
@@ -137,7 +137,7 @@ There are three type of return :
 1. Response 200 Ok
  ```json
 {
-    "pseudo": "John",
+    "playerName": "John",
 }
 ```
 
@@ -163,7 +163,7 @@ Return :
 }
 ```
 
-__GET /uno/game/{gamename}/{pseudo}__ (GetHand)
+__GET /uno/game/{gamename}/{playerName}__ (GetHand)
 
 Return :
  ```json
@@ -177,11 +177,11 @@ Return :
 }
 ```
 
-__POST /uno/game/{gamename}/{pseudo}__ (PickACard)
+__POST /uno/game/{gamename}/{playerName}__ (PickACard)
 
 Return Ok
 
-__PUT /uno/game/{gamename}/{pseudo}__ (PlayCard)
+__PUT /uno/game/{gamename}/{playerName}__ (PlayCard)
 
 Send :
  ```json
@@ -199,7 +199,7 @@ __GET /uno/player__ GetListPlayers
 {
     "players": [
         {
-            "pseudo":"john",
+            "playerName":"john",
             "email":"john@mail.com",
         }
     ]
