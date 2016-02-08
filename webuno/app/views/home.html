@@ -8,19 +8,23 @@
         <div class="panel-heading text-center">Toutes les parties</div>
         <div class="panel-body text-center">
             <!-- Mettre la liste de toutes les parties ici dans un tableau en bouclant sur les parties pour les afficher -->
-            <table id="allGames">
+            <table class="table">
                 <tr>
-                    <th>Nom du créateur</th>
-                    <th>Nombre de joueurs</th>
-                    <th>Statut de la partie</th>
+                    <th>Game</th>
+                    <th>NB Players</th>
+                    <th>Status</th>
+                    <th>&nbsp;</th>
                 </tr>
-                <!-- foreach(partie in parties){ -->
-                    <tr>
-                        <td>partie["createur"]</td>
-                        <td>partie["nbJoueurs"]</td>
-                        <td>partie["etat"]</td>
-                    </tr>
-                <!-- end foreach -->
+                <tr data-ng-repeat="game in games">
+                    <td>{{game.name}}</td>
+                    <td>{{game.numberPlayers}}</td>
+                    <td>{{(game.numberPlayers == "4/4") ? "Attente de joueurs" : "Démarré"}}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" data-ng-if="game.numberPlayers != '4/4'"
+                                data-ui-sref="game.room({ name: game.name })">Join
+                        </button>
+                    </td>
+                </tr>
             </table>
         </div>
     </div>
