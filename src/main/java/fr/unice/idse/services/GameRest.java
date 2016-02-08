@@ -12,6 +12,8 @@ import org.codehaus.jettison.json.JSONObject;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
 
 import fr.unice.idse.constante.Config;
+import fr.unice.idse.model.Deck;
+
 import fr.unice.idse.model.Board;
 import fr.unice.idse.model.Card;
 import fr.unice.idse.model.Color;
@@ -37,7 +39,7 @@ import fr.unice.idse.model.Player;
  */
 
 @Path("/game")
-public class GameRest {
+public class GameRest extends OriginRest{
 
 
     /**
@@ -84,21 +86,21 @@ public class GameRest {
         
         // verification du champ game
         if(!json.has("game"))
-            return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
+            return sendResponse(405, "{\"error\" : \"Invalid parameter game\"}", "POST");
         String game = json.getString("game");
         if(game.length() < 3)
-            return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
+            return sendResponse(405, "{\"error\" : \"Invalid parameter game length\"}", "POST");
         if(!json.has("player"))
-            return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
+            return sendResponse(405, "{\"error\" : \"Invalid parameter player\"}", "POST");
         Player player = model.createPlayer(json.getString("player"), "");
         if(player == null)
-            return Response.status(405).entity("{\"error\" : \"Joueur existant\"").build();
+            return sendResponse(405, "{\"error\" : \"Joueur existant\"", "POST");
 
         // creation de la game
         if(!model.addGame(player, game,4))
-            return Response.status(500).entity("{\"message\": false}").build();
+            return sendResponse(500, "{\"message\": false}", "POST");
 
-        return Response.status(200).entity("{\"message\": true}").build();
+        return sendResponse(200, "{\"message\": true}", "POST");
     }
 
     /**
@@ -252,9 +254,34 @@ public class GameRest {
         for (int i = 0; i < taille; i++){
             list[i] = "{\"number\" : \""+player.getCards().get(i).getValue()+"\", " +
                        "\"familly\" : \""+player.getCards().get(i).getColor()+"\"," +
-                       "\"idcard\" : \""+ i +"\"}";
+                       "\"position\" : \""+ i +"\"}";
         }
         return Response.status(200).entity("{\"cartes\": "+ Arrays.toString(list)+" }").build();
+    }
+    
+    /**
+     * Methode piocher une carte
+     * Verif user actuel est bien l'utilisateur
+     */
+    
+    @POST
+    @Path("/{gameName}/{pseudo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response pickacard(@PathParam("gameName")String gameName,@PathParam("pseudo")String pseudo) throws JSONException {
+        // Cration de tous les objets
+        Model model = Model.getInstance();
+        Player player = model.findPlayerByName(gameName, pseudo);
+        Game game = model.findGameByName(gameName);
+        
+       Player verifplayer = game.getBoard().getActualPlayer();
+       
+       if(!player.equals(verifplayer)){
+    	  return Response.status(405).entity("Joueur non autorisé à piocher").build();
+       }
+        
+        game.getBoard().drawCard();
+        
+        return Response.status(200).entity("carte ajoutée à la main du joueur").build();
     }
     
     /**
