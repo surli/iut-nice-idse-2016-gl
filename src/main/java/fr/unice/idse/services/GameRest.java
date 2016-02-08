@@ -59,7 +59,7 @@ public class GameRest extends OriginRest{
             list[i] = "{\"name\" : \""+model.getGames().get(i).getGameName()+"\", " +
                     "\"numberPlayers\" : \""+model.getGames().get(i).numberOfPlayers()+"/"+model.getGames().get(i).getNumberPlayers()+"\"}";
         }
-        return Response.status(200).entity("{\"games\" : "+ Arrays.toString(list)+"}").build();
+        return sendResponse(200, "{\"games\" : "+ Arrays.toString(list)+"}", "GET");
     }
 
     /**
@@ -119,9 +119,9 @@ public class GameRest extends OriginRest{
         Game game = model.findGameByName(gamename);
 
         if(game == null)
-            return Response.status(404).entity("Partie inconnu").build();
+            return sendResponse(404, "Partie inconnu", "GET");
 
-        return Response.status(200).entity("{\"state\": "+game.getBoard().gameBegin()+"}").build();
+        return sendResponse(200, "{\"state\": "+game.getBoard().gameBegin()+"}", "GET");
     }
 
     /**
@@ -141,7 +141,7 @@ public class GameRest extends OriginRest{
         JSONObject json = new JSONObject(objJSON);
 
         if(game == null)
-            return Response.status(404).entity("Partie inconnu").build();
+            return sendResponse(404, "Partie inconnu", "PUT");
 
         // verification du token
         /*
@@ -153,16 +153,16 @@ public class GameRest extends OriginRest{
         
         // verification du joueur
         if(!json.has("pseudo"))
-            return Response.status(405).entity("Missing or invalid parameters").build();
+            return sendResponse(405, "Missing or invalid parameters", "PUT");
         Player player = model.createPlayer(json.getString("pseudo"),"");
         if(player == null)
-            return Response.status(405).entity("Missing or invalid parameters").build();
+            return sendResponse(405, "Missing or invalid parameters", "PUT");
 
         // verification game status
         if(game.gameBegin())
-            return Response.status(500).entity("Game started").build();
+            return sendResponse(500, "Game started", "PUT");
 
-        return Response.status(200).entity("{\"status\" : "+model.addPlayerToGame(gamename, player)+"}").build();
+        return sendResponse(200, "{\"status\" : "+model.addPlayerToGame(gamename, player)+"}", "PUT");
     }
 
 
@@ -176,7 +176,7 @@ public class GameRest extends OriginRest{
         JSONObject json = new JSONObject(objJSON);
 
         if(game == null)
-            return Response.status(404).entity("Partie inconnu").build();
+            return sendResponse(404, "Partie inconnu", "PUT");
 
         // verification du token
         /*
@@ -188,18 +188,18 @@ public class GameRest extends OriginRest{
 
         // verification du pseudo
         if(!json.has("pseudo"))
-            return Response.status(405).entity("Missing or invalid parameters").build();
+            return sendResponse(405, "Missing parameters pseudo", "PUT");
         if(model.findPlayerByName(gamename, json.getString("pseudo")) == null)
-            return Response.status(405).entity("Missing or invalid parameters").build();
+            return sendResponse(405, "Pseudo unknown", "PUT");
 
         if(model.findGameByName(gamename).gameBegin())
-            return Response.status(500).entity("Game started").build();
+            return sendResponse(500, "Game started", "PUT");
 
         if(model.findGameByName(gamename).getNumberPlayers() == model.findGameByName(gamename).getBoard().getPlayers().size())
             if(model.startGame(gamename, json.getString("pseudo")))
-                return Response.status(200).entity("{\"status\": true}").build();
+                return sendResponse(200, "{\"status\": true}", "PUT");
 
-        return Response.status(500).entity("Game not tucked").build();
+        return sendResponse(500, "Game not tucked", "PUT");
     }
     
     /**
@@ -217,19 +217,17 @@ public class GameRest extends OriginRest{
         Game game = model.findGameByName(gamename);
         
         // Verifie si le jeu a commencer
-    	if(!game.gameBegin()){
-    		return Response.status(401).entity("{\"error\":\"Game has not begin\"}").build();
-    	}
+    	if(!game.gameBegin())
+            return sendResponse(401, "{\"error\":\"Game has not begin\"}", "GET");
     	
     	// Recherche le joueur actuel
     	Player currentPlayer = model.findGameByName(gamename).getBoard().getActualPlayer();
 
     	// Verifie qu'un joueur courant existe
-    	if(currentPlayer == null) {
-    		return Response.status(422).entity("{\"error\":\"No current player has been set\"}").build();
-    	}
-    	
-    	return Response.status(200).entity("{\"pseudo\":\"" + currentPlayer.getName() + "\"}").build();
+    	if(currentPlayer == null)
+            return sendResponse(422, "{\"error\":\"No current player has been set\"}", "GET");
+
+        return sendResponse(200, "{\"pseudo\":\"" + currentPlayer.getName() + "\"}", "GET");
     }
     
     /*
@@ -244,9 +242,8 @@ public class GameRest extends OriginRest{
     public Response handplayer(@PathParam("pseudo") String pseudo,@PathParam("gameName") String gameName ) throws JSONException{
          Model model = Model.getInstance();
          Player player = model.findPlayerByName(gameName, pseudo);
-         if(player==null){
-             return Response.status(405).entity("No player with : "+pseudo).build();
-         }
+         if(player==null)
+             return sendResponse(405, "No player with : "+pseudo, "GET");
          
         int taille =  player.getCards().size();
 
@@ -256,7 +253,7 @@ public class GameRest extends OriginRest{
                        "\"familly\" : \""+player.getCards().get(i).getColor()+"\"," +
                        "\"position\" : \""+ i +"\"}";
         }
-        return Response.status(200).entity("{\"cartes\": "+ Arrays.toString(list)+" }").build();
+        return sendResponse(200, "{\"cartes\": "+ Arrays.toString(list)+" }", "GET");
     }
     
     /**
@@ -275,13 +272,12 @@ public class GameRest extends OriginRest{
         
        Player verifplayer = game.getBoard().getActualPlayer();
        
-       if(!player.equals(verifplayer)){
-    	  return Response.status(405).entity("Joueur non autorisé à piocher").build();
-       }
+       if(!player.equals(verifplayer))
+           return sendResponse(405, "Joueur non autorisé à piocher", "POST");
         
         game.getBoard().drawCard();
-        
-        return Response.status(200).entity("carte ajoutée à la main du joueur").build();
+
+        return sendResponse(200, "carte ajoutée à la main du joueur", "POST");
     }
     
     /**
@@ -300,44 +296,44 @@ public class GameRest extends OriginRest{
     	Model model = Model.getInstance();      
     	// Verification que la partie existe et est commencée
     	if(!model.existsGame(gameName)) {
-    		return Response.status(405).entity("{\"error\": \"The game does not exist\"}").build();
-    	} 
+            return sendResponse(405, "{\"error\": \"The game does not exist\"}", "PUT");
+    	}
     	if(!model.findGameByName(gameName).gameBegin()) {
-    		return Response.status(405).entity("{\"error\": \"The game does hasn't begun\"}").build();
+            return sendResponse(405, "{\"error\": \"The game does hasn't begun\"}", "PUT");
     	}
     	
     	// Verification que le joueur existe et st present dans la partie
     	Player player = model.findPlayerByName(gameName, pseudo);
     	if(player == null) {
-    		return Response.status(405).entity("{\"error\": \"The player does not exist\"}").build();
-    	} 
+            return sendResponse(405, "{\"error\": \"The player does not exist\"}", "PUT");
+    	}
     	
     	// Verification du JSON
     	JSONObject json = new JSONObject(strJSON);
     	if(!json.has("value") || !json.has("color")) {
-    		return Response.status(405).entity("{\"error\": \"The json object does not follow the rules\"}").build();
+            return sendResponse(405, "{\"error\": \"The json object does not follow the rules\"}", "PUT");
     	}
     	
     	// Verifie que le joueur peut jouer
     	if(!model.findGameByName(gameName).getBoard().askPlayerCanPlay(player)) {
-    		return Response.status(405).entity("{\"error\": \"The player can't play\"}").build();
+            return sendResponse(405, "{\"error\": \"The player can't play\"}", "PUT");
     	}
     	
 
     	// Verifie que le joueur possede la carte
     	Card card = new Card(json.getInt("value"), Color.valueOf(json.getString("color")));
     	if(!player.getCards().contains(card)) {
-    		return Response.status(405).entity("{\"error\": \"The player does not possese this card\"}").build();
+            return sendResponse(405, "{\"error\": \"The player does not possese this card\"}", "PUT");
     	}
     	
     	// Verifie que la carte est jouable
     	if(!model.findGameByName(gameName).getBoard().askPlayableCard(card)) {
-    		return Response.status(405).entity("{\"error\": \"The card can't be played\"}").build();
+            return sendResponse(405, "{\"error\": \"The card can't be played\"}", "PUT");
     	}
     	
     	// Finalement la carte est jouer
         model.findGameByName(gameName).getBoard().poseCard(card);
-    	
-        return Response.status(200).entity("{\"success\":\"The card was succesfully played\"}").build();
+
+        return sendResponse(200, "{\"success\":\"The card was succesfully played\"}", "PUT");
     }
 }
