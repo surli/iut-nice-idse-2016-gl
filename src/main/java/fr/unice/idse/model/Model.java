@@ -71,7 +71,7 @@ public class Model {
 	{
 		if(!playerExists(playerName))
 		{
-			if(!playerExistsInList(playerToken))
+			if(!playerExistsInList(playerName))
 			{
 				players.add(new Player(playerName,playerToken));
 				return true;
@@ -99,14 +99,14 @@ public class Model {
 	
 	/**
 	 * Vérifie si le player existe dans la liste des joueurs
-	 * @param playerToken
+	 * @param playerName
 	 * @return true/false
 	 */
-	public boolean playerExistsInList(String playerToken)
+	public boolean playerExistsInList(String playerName)
 	{
 		for(Player player : players)
 		{
-			if(player.getToken().equals(playerToken))
+			if(player.getName().equals(playerName))
 			{
 				return true;
 			}
