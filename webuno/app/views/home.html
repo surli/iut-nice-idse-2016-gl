@@ -29,7 +29,19 @@
     <div class="panel panel-default">
         <div class="panel-heading text-center">Mes parties</div>
         <div class="panel-body text-center">
-            Mettre la liste de mes parties ici dans un tableau en bouclant sur les parties pour les afficher
+            <!--Mettre la liste de mes parties ici dans un tableau en bouclant sur les parties pour les afficher-->
+            <table id="myGames">
+                <tr>
+                    <th>Nombre de joueurs</th>
+                    <th>Statut de la partie</th>
+                </tr>
+                <!-- foreach(partie in parties){ -->
+                <tr>
+                    <td>partie["nbJoueurs"]</td>
+                    <td>partie["etat"]</td>git
+                </tr>
+                <!-- end foreach -->
+            </table>
         </div>
     </div>
 </div>
