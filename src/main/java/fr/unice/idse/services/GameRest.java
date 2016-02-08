@@ -29,8 +29,8 @@ import fr.unice.idse.model.Player;
  * │   │   │   ├── PUT     Lance une partie (Que l'host) (Fait)
  * │   │   ├── /{playerName}
  * │   │   │   ├── GET     Retoune la main du joueur (Fait)
- * │   │   │   ├── POST    Pioche une carte
- * │   │   │   ├── PUT     Joue une carte
+ * │   │   │   ├── POST    Pioche une carte (Fait)
+ * │   │   │   ├── PUT     Joue une carte (Fait)
  */
 
 @Path("/game")

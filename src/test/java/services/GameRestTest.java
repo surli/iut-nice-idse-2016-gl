@@ -305,6 +305,38 @@ public class GameRestTest extends JerseyTest {
         assertEquals("The json object does not follow the rules", json.getString("error"));
     }
     
+    @Test
+    public void retourne405SiLeJSONEnvoyerEstInvalideDusALaValueManquante() throws JSONException{
+		// Init the game
+        model.findGameByName("tata").addPlayer(model.createPlayer("marcel", "token1"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("chris", "token2"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("maurice", "token3"));
+        model.findGameByName("tata").start();
+		
+    	Response response = target("/game/tata/toto").request().put(Entity.entity("{\"color\":\"Blue\"}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The json object does not follow the rules", json.getString("error"));
+        assertEquals(false, json.has("value"));
+    }
+    
+    @Test
+    public void retourne405SiLeJSONEnvoyerEstInvalideDusALaColorManquante() throws JSONException{
+		// Init the game
+        model.findGameByName("tata").addPlayer(model.createPlayer("marcel", "token1"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("chris", "token2"));
+        model.findGameByName("tata").addPlayer(model.createPlayer("maurice", "token3"));
+        model.findGameByName("tata").start();
+		
+    	Response response = target("/game/tata/toto").request().put(Entity.entity("{\"value\":\"2\"}", MediaType.APPLICATION_JSON));
+    	assertEquals(405, response.getStatus());
+
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The json object does not follow the rules", json.getString("error"));
+        assertEquals(false, json.has("color"));
+    }
+    
     
     @Test
     public void retourne405SiLeJoeurNePeutPasJouer() throws JSONException{
