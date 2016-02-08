@@ -39,7 +39,7 @@ import fr.unice.idse.model.Player;
  */
 
 @Path("/game")
-public class GameRest {
+public class GameRest extends OriginRest{
 
 
     /**
@@ -86,21 +86,21 @@ public class GameRest {
         
         // verification du champ game
         if(!json.has("game"))
-            return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
+            return sendResponse(405, "{\"error\" : \"Invalid parameter game\"}", "POST");
         String game = json.getString("game");
         if(game.length() < 3)
-            return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
+            return sendResponse(405, "{\"error\" : \"Invalid parameter game length\"}", "POST");
         if(!json.has("player"))
-            return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
+            return sendResponse(405, "{\"error\" : \"Invalid parameter player\"}", "POST");
         Player player = model.createPlayer(json.getString("player"), "");
         if(player == null)
-            return Response.status(405).entity("{\"error\" : \"Joueur existant\"").build();
+            return sendResponse(405, "{\"error\" : \"Joueur existant\"", "POST");
 
         // creation de la game
         if(!model.addGame(player, game,4))
-            return Response.status(500).entity("{\"message\": false}").build();
+            return sendResponse(500, "{\"message\": false}", "POST");
 
-        return Response.status(200).entity("{\"message\": true}").build();
+        return sendResponse(200, "{\"message\": true}", "POST");
     }
 
     /**
