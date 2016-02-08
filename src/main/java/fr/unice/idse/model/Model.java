@@ -4,14 +4,16 @@ import java.util.ArrayList;
 
 public class Model {
 	private ArrayList<Game> games;
+	private ArrayList<Player> players;
 	private static Model model=null;
 	
 	/**
-	 * Constructeur par d�faut
+	 * Constructeur par défaut
 	 */
 	private Model()
 	{
 		this.games= new ArrayList<Game>();
+		this.players= new ArrayList<Player>();
 	}
 
 	/**
@@ -27,6 +29,8 @@ public class Model {
 	
 	public ArrayList<Game> getGames() { return games; }
 	public void setGames(ArrayList<Game> games) { this.games = games; }
+	public ArrayList<Player> getPlayers() {return players;}
+	public void setPlayers(ArrayList<Player> players) {this.players = players;}
 
 	/**
 	 * Ajouter une partie
@@ -46,7 +50,7 @@ public class Model {
 	
 	/**
 	 * Créer un joueur s'il n'existe pas
-	 * @param playerName
+	 * @param playerName, playerToken
 	 * @return Player
 	 */
 	public Player createPlayer(String playerName,String playerToken)
@@ -56,6 +60,58 @@ public class Model {
 			return new Player(playerName,playerToken);
 		}
 		return null;
+	}
+	
+	/**
+	 * Créer un joueur s'il n'existe pas et l'ajoute dans la liste des joueurs
+	 * @param playerName, playerToken
+	 * @return true/false
+	 */
+	public boolean createPlayerBis(String playerName,String playerToken)
+	{
+		if(!playerExists(playerName))
+		{
+			if(!playerExistsInList(playerToken))
+			{
+				players.add(new Player(playerName,playerToken));
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Retourne le player indiqué avec son token
+	 * @param playerToken
+	 * @return Player
+	 */
+	public Player getPlayerFromList(String playerToken)
+	{
+		for(Player player : players)
+		{
+			if(player.getToken().equals(playerToken))
+			{
+				return player;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Vérifie si le player existe dans la liste des joueurs
+	 * @param playerToken
+	 * @return true/false
+	 */
+	public boolean playerExistsInList(String playerToken)
+	{
+		for(Player player : players)
+		{
+			if(player.getToken().equals(playerToken))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
