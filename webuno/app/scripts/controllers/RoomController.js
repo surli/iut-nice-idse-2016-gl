@@ -5,25 +5,37 @@ angular.module('unoApp')
         $scope.gameName = $stateParams.name;
 
         $http.get('/rest/game/' + $scope.gameName)
-            .then(function (data) {
-                $scope.game = data;
-                console.log($scope.game);
-
-                request();
+            .then(function (response) {
+                $scope.game = response.data;
+                console.log("First GameState : ", $scope.game);
+                $scope.requestStateGame();
             }, function (error) {
                 console.log(error);
+                $scope.requestStateGame();
             });
 
-        function request() {
-            $timeout(function() {
+        $scope.requestStateGame = function () {
+            $timeout(function () {
                 $http.get('/rest/game/' + $scope.gameName)
-                    .then(function (data) {
-                        $scope.game = data;
-                        console.log($scope.game);
+                    .then(function (response) {
+                        $scope.game = response.data;
+                        console.log("GameState : ", $scope.game);
+                        $scope.requestStateGame();
                     }, function (error) {
                         console.log(error);
+                        $scope.requestStateGame();
                     });
-                request();
-            }, 5000)
+            }, 5000);
+        };
+
+        $scope.startGameNow = function () {
+            $http.put('/rest/game/' + $scope.gameName + '/command', {
+                    playerName: $scope.user.name
+                })
+                .then(function (data) {
+                    console.log(data);
+                }, function (error) {
+
+                });
         }
     }]);
