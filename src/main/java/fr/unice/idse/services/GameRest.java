@@ -174,7 +174,6 @@ public class GameRest extends OriginRest{
 
         // verification du token
 
-        
         // verification du joueur
         if(!json.has("playerName"))
             return sendResponse(405, "Missing or invalid parameters", "PUT");
