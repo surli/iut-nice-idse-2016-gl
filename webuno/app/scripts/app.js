@@ -97,11 +97,4 @@ angular
             });
 
         $urlRouterProvider.otherwise('/login');
-    })
-    .run(function($http, $location, Auth) {
-        console.log($location);
-
-        if ($location.$$url != '/login' && $location != '/register')  {
-            $http.defaults.headers.common.Authorization = Auth.getUser().token ;
-        }
     });

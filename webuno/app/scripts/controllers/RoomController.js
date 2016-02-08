@@ -19,7 +19,11 @@ angular.module('unoApp')
                 $http.get('/rest/game/' + $scope.gameName)
                     .then(function (response) {
                         $scope.game = response.data;
-                        $scope.requestStateGame();
+                        if ($scope.game.state) {
+                            $state.go('app.game', { name: $scope.gameName });
+                        } else {
+                            $scope.requestStateGame();
+                        }
                     }, function (error) {
                         console.error(error);
                         $scope.requestStateGame();
@@ -31,8 +35,18 @@ angular.module('unoApp')
             $http.put('/rest/game/' + $scope.gameName + '/command', {
                     playerName: $scope.user.name
                 })
-                .then(function (data) {
-                    console.log(data);
+                .then(function (response) {
+                    switch(response.status) {
+                        case 200 :
+                            if (response.data.status) {
+                                $state.go('app.game', { name: $scope.gameName });
+                            } else {
+                                console.error(response);
+                            }
+                            break;
+                        default:
+                            console.error(response);
+                    }
                 }, function (error) {
                     console.error(error);
                 });

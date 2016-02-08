@@ -29,7 +29,6 @@ angular.module('unoApp')
                     }
                 })
                 .then(function (response) {
-                    console.log("Ajout joueur: ", response);
                     switch (response.status) {
                         case 200 :
                             if (response.data.status) {

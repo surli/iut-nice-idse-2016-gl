@@ -1,7 +1,8 @@
-<div class="col-md-12 text-center">
+<div class="col-md-12 text-center" style="padding-bottom: 15px;">
     <h1 class="title">Room {{gameName}}</h1>
     <br />
-    <button data-ng-if="game.players.length == game.maxplayers && game.host == user.name" class="btn btn-success" data-ng-click="startGameNow()">Start game now</button>
+    <button data-ng-if="game.players.length == game.maxplayers && game.host == user.name" class="btn btn-success btn-lg" data-ng-click="startGameNow()">Start game now</button>
+    <br />
 </div>
 <div class="col-md-10 col-md-offset-1">
     <div class="panel panel-default">

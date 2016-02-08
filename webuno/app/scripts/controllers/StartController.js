@@ -6,7 +6,6 @@ angular.module('unoApp')
 
         $scope.goGame = function () {
             if ($scope.game && $scope.game.length > 3 && $scope.user.name) {
-              console.log($scope.game, $scope.user);
                 $http.post('/rest/game', {
                         game:   $scope.game,
                         player: $scope.user.name,
