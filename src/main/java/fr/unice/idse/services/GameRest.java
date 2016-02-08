@@ -3,12 +3,7 @@ package fr.unice.idse.services;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -122,7 +117,7 @@ public class GameRest extends OriginRest{
     @GET
     @Path("{gamename}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response isStarted(@PathParam("gamename") String gamename) throws JSONException {
+    public Response stateGame(@PathParam("gamename") String gamename) throws JSONException {
         Model model = Model.getInstance();
         JSONObject jsonObject = new JSONObject();
         ArrayList<JSONObject> players = new ArrayList<JSONObject>();
@@ -152,6 +147,7 @@ public class GameRest extends OriginRest{
 
         jsonObject.put("state", false);
         jsonObject.put("players", players);
+        jsonObject.put("maxplayers", model.findGameByName(gamename).getNumberPlayers());
         jsonObject.put("host", model.findGameByName(gamename).getHost().getName());
 
         return sendResponse(200, jsonObject.toString(), "GET");
@@ -167,7 +163,7 @@ public class GameRest extends OriginRest{
     @PUT
     @Path("{gamename}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addPlayer(@PathParam("gamename") String gamename, String objJSON) throws JSONException{
+    public Response addPlayer(@HeaderParam("token") String token, @PathParam("gamename") String gamename, String objJSON) throws JSONException{
         // Initialisation des objets
         Model model = Model.getInstance();
         Game game = model.findGameByName(gamename);
@@ -177,17 +173,12 @@ public class GameRest extends OriginRest{
             return sendResponse(404, "Partie inconnu", "PUT");
 
         // verification du token
-        /*
-        if(!json.has("_token"))
-            return Response.status(401).entity("Invalid token").build();
-        if(!Config._token.equals(json.getString("_token")))
-            return Response.status(401).entity("Invalid token").build();
-		*/
+
         
         // verification du joueur
         if(!json.has("playerName"))
             return sendResponse(405, "Missing or invalid parameters", "PUT");
-        Player player = model.createPlayer(json.getString("playerName"),"");
+        Player player = model.createPlayer(json.getString("playerName"), token);
         if(player == null)
             return sendResponse(405, "Missing or invalid parameters", "PUT");
 
