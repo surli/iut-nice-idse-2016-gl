@@ -39,13 +39,15 @@ BEGIN RETURN u_pseudo; END;
 END;
 /
 
-CREATE TYPE hand_t AS OBJECT (
+CREATE TYPE card_t AS OBJECT (
 h_value VARCHAR2(10), 
 h_color VARCHAR2(10)
 ) ;
 /
 
 CREATE TYPE playerslist_t AS VARRAY(4) OF VARCHAR(20);
+/
+CREATE TYPE hand_t AS VARRAY(20) OF card_t;
 /
 CREATE TYPE handslist_t AS VARRAY(4) OF hand_t;
 /
