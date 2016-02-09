@@ -372,7 +372,7 @@ public class GameRestTest extends JerseyTest {
         model.findGameByName("tata").getBoard().getStack().changeColor(Color.Red);
         model.findGameByName("tata").getBoard().getStack().addCard(new Card(Value.Five, Color.Red));
 
-        Response response = target("/game/tata/toto").request().put(Entity.entity("{\"value\":11, \"color\":\"Black\"}", MediaType.APPLICATION_JSON));
+        Response response = target("/game/tata/toto").request().put(Entity.entity("{\"value\":Reverse, \"color\":\"Black\"}", MediaType.APPLICATION_JSON));
     	assertEquals(405, response.getStatus());
         // Parse la reponse en JSON
         JSONObject json = new JSONObject(response.readEntity(String.class));
@@ -396,7 +396,7 @@ public class GameRestTest extends JerseyTest {
 		stack.add(new Card(Value.Eight, Color.Red));
         model.findGameByName("tata").getBoard().getStack().setStack(stack);
 		
-    	Response response = target("/game/tata/toto").request().put(Entity.entity("{\"value\":2, \"color\":\"Blue\"}", MediaType.APPLICATION_JSON));
+    	Response response = target("/game/tata/toto").request().put(Entity.entity("{\"value\":Two, \"color\":\"Blue\"}", MediaType.APPLICATION_JSON));
     	
     	/*
     	assertEquals(405, response.getStatus());
@@ -416,7 +416,7 @@ public class GameRestTest extends JerseyTest {
 
         model.findGameByName("tata").getBoard().getActualPlayer().getCards().add(new Card(Value.Five, Color.Blue));
         model.findGameByName("tata").getBoard().getStack().addCard(new Card(Value.Five, Color.Red));
-    	Response response = target("/game/tata/toto").request().put(Entity.entity("{\"value\":5, \"color\":\"Blue\"}", MediaType.APPLICATION_JSON));
+    	Response response = target("/game/tata/toto").request().put(Entity.entity("{\"value\":Five, \"color\":\"Blue\"}", MediaType.APPLICATION_JSON));
 
     	assertEquals(200, response.getStatus());
         // Parse la reponse en JSON
