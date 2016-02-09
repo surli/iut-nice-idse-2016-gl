@@ -15,6 +15,7 @@ import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.card.Value;
 
 /**
  * /game
@@ -344,7 +345,7 @@ public class GameRest extends OriginRest{
     	
 
     	// Verifie que le joueur possede la carte
-    	Card card = new Card(json.getInt("value"), Color.valueOf(json.getString("color")));
+    	Card card = new Card(Value.valueOf(json.getString("value")), Color.valueOf(json.getString("color")));
     	if(!player.getCards().contains(card)) {
             return sendResponse(405, "{\"error\": \"The player does not possese this card\"}", "PUT");
     	}
