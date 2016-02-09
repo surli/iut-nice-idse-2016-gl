@@ -1,5 +1,6 @@
 package fr.unice.idse.services;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.ws.rs.*;
@@ -9,7 +10,8 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import fr.unice.idse.constante.Config;
+import fr.unice.idse.model.Card;
+import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
@@ -25,14 +27,14 @@ import fr.unice.idse.model.Player;
  * │   │   ├── /command
  * │   │   │   ├── GET     Retourne le joueur courant (Fait)
  * │   │   │   ├── PUT     Lance une partie (Que l'host) (Fait)
- * │   │   ├── /{pseudo}
+ * │   │   ├── /{playerName}
  * │   │   │   ├── GET     Retoune la main du joueur (Fait)
- * │   │   │   ├── POST    Pioche une carte
- * │   │   │   ├── PUT     Joue une carte
+ * │   │   │   ├── POST    Pioche une carte (Fait)
+ * │   │   │   ├── PUT     Joue une carte (Fait)
  */
 
 @Path("/game")
-public class GameRest {
+public class GameRest extends OriginRest{
 
 
     /**
@@ -49,75 +51,109 @@ public class GameRest {
         Model model = Model.getInstance();
         String [] list = new String[model.getGames().size()];
         for (int i = 0; i < model.getGames().size(); i++){
-            list[i] = "{\"name\" : \""+model.getGames().get(i).getGameName()+"\", " +
-                    "\"numberPlayers\" : \""+model.getGames().get(i).numberOfPlayers()+"/"+model.getGames().get(i).getNumberPlayers()+"\"}";
+            list[i] = "{\"gamename\":\""+model.getGames().get(i).getGameName()+"\", " +
+                      "\"state\":\""+ model.getGames().get(i).gameBegin() +"\"," +
+                      "\"numberplayer\":"+ model.getGames().get(i).numberOfPlayers() +"," +
+                      "\"maxplayer\":\"" + model.getGames().get(i).getNumberPlayers() + "\"}";
         }
-        return Response.status(200).entity("{\"games\" : "+ Arrays.toString(list)+"}").build();
+        return sendResponse(200, "{\"games\" : "+ Arrays.toString(list)+"}", "GET");
     }
 
     /**
      * Méthode en POST permettant la création de partie.
-     * Signature : {game: String, player: String(pseudo du joueur)}
+     * Signature : {game: String, player: String(playerName du joueur)}
      * Le nom de la game doit être suppérieur à 3 caractères;
      * Vérifie si la partie existe ou non. Renvoie {message: boolean}
      * @return Response
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createGame(String objJSON) throws JSONException {
+    public Response createGame(String objJSON, @HeaderParam("token") String token) throws JSONException {
         // Cration de tous les objets
         Model model = Model.getInstance();
         JSONObject json = new JSONObject(objJSON);
-
-        // verification du token
-        if(!json.has("_token"))
-            return Response.status(401).entity("{\"error\" : \"Invalid token\"}").build();
-        if(!Config._token.equals(json.getString("_token")))
-            return Response.status(401).entity("{\"error\" : \"Invalid token\"}").build();
-
+        
         // verification du champ game
         if(!json.has("game"))
-            return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
+            return sendResponse(405, "{\"error\" : \"Invalid parameter game\"}", "POST");
+        // verification du token
+        if(token == null)
+            return sendResponse(405, "{\"error\" : \"Missing parameters token\"}", "PUT");
+
         String game = json.getString("game");
         if(game.length() < 3)
-            return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
+            return sendResponse(405, "{\"error\" : \"Invalid parameter game length\"}", "POST");
         if(!json.has("player"))
-            return Response.status(405).entity("{\"error\" : \"Invalid parameter\"}").build();
-        Player player = model.createPlayer(json.getString("player"));
-        if(player == null)
-            return Response.status(405).entity("{\"error\" : \"Joueur existant\"").build();
+            return sendResponse(405, "{\"error\" : \"Invalid parameter player\"}", "POST");
 
+        if(!model.playerExistsInList(json.getString("player")))
+            return sendResponse(405, "{\"error\" : \"Joueur inexistant\"}", "POST");
+        if(!model.getPlayerFromList(token).getName().equals(json.getString("player")))
+            return sendResponse(405, "{\"error\" : \"Token invalid\"}", "POST");
+
+        if(!json.has("numberplayers"))
+            return sendResponse(405, "{\"error\" : \"Invalid parameter numberplayers\"}", "POST");
+        int numberplayers = json.getInt("numberplayers");
+        if(numberplayers<2||numberplayers>6){
+            return sendResponse(405, "{\"error\" : \"Numberplayers must be 2 to 6 numberplayers\"}", "POST");
+        }
+        
         // creation de la game
-        if(!model.addGame(player, game,4))
-            return Response.status(500).entity("{\"message\": false}").build();
+        if(!model.addGame(model.getPlayerFromList(token), game,numberplayers))
+            return sendResponse(500, "{\"message\": false}", "POST");
 
-        return Response.status(200).entity("{\"message\": true}").build();
+        return sendResponse(200, "{\"message\": true}", "POST");
     }
 
     /**
-     * Retourne si la partie a commencée
+     * Retourne l'état de la partie
      * gamename : Nom de la partie
      *
-     * Retourn {state: Boolean}
      * @param gamename Nom de partie
      * @return Response
      */
     @GET
     @Path("{gamename}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response isStarted(@PathParam("gamename") String gamename){
+    public Response stateGame(@PathParam("gamename") String gamename) throws JSONException {
         Model model = Model.getInstance();
-        Game game = model.findGameByName(gamename);
+        JSONObject jsonObject = new JSONObject();
+        ArrayList<JSONObject> players = new ArrayList<JSONObject>();
 
-        if(game == null)
-            return Response.status(404).entity("Partie inconnu").build();
+        if(model.findGameByName(gamename) == null)
+            return sendResponse(404, "Partie inconnu", "GET");
 
-        return Response.status(200).entity("{\"state\": "+game.getBoard().gameBegin()+"}").build();
+        if(model.findGameByName(gamename).getBoard().gameBegin()){
+            jsonObject.put("state", true);
+            jsonObject.put("currentplayer", model.findGameByName(gamename).getBoard().getActualPlayer().getName());
+            for(int i = 0; i < model.findGameByName(gamename).getBoard().getPlayers().size(); i++){
+                JSONObject objFils = new JSONObject();
+                objFils.put("name", model.findGameByName(gamename).getBoard().getPlayers().get(i).getName());
+                objFils.put("cartes", model.findGameByName(gamename).getBoard().getPlayers().get(i).getCards().size());
+                players.add(objFils);
+            }
+            jsonObject.put("players", players);
+            jsonObject.put("stack", model.findGameByName(gamename).getBoard().getStack().topCard());
+            return sendResponse(200, jsonObject.toString(), "GET");
+        }
+
+        for(int i = 0; i < model.findGameByName(gamename).getBoard().getPlayers().size(); i++) {
+            JSONObject objFils = new JSONObject();
+            objFils.put("name", model.findGameByName(gamename).getBoard().getPlayers().get(i).getName());
+            players.add(objFils);
+        }
+
+        jsonObject.put("state", false);
+        jsonObject.put("players", players);
+        jsonObject.put("maxplayers", model.findGameByName(gamename).getNumberPlayers());
+        jsonObject.put("host", model.findGameByName(gamename).getHost().getName());
+
+        return sendResponse(200, jsonObject.toString(), "GET");
     }
 
     /**
      * Méthode en POST permettant l'ajout d'un joueur dans une partie
-     * Signature : {pseudo: String}
+     * Signature : {playerName: String}
      * La partie doit être existante.
      * Renvoie {status: boolean}
      * @return Response
@@ -125,35 +161,33 @@ public class GameRest {
     @PUT
     @Path("{gamename}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addPlayer(@PathParam("gamename") String gamename, String objJSON) throws JSONException{
+    public Response addPlayer(@HeaderParam("token") String token, @PathParam("gamename") String gamename, String objJSON) throws JSONException{
         // Initialisation des objets
         Model model = Model.getInstance();
         Game game = model.findGameByName(gamename);
         JSONObject json = new JSONObject(objJSON);
 
         if(game == null)
-            return Response.status(404).entity("Partie inconnu").build();
+            return sendResponse(404, "Partie inconnu", "PUT");
 
         // verification du token
-        /*
-        if(!json.has("_token"))
-            return Response.status(401).entity("Invalid token").build();
-        if(!Config._token.equals(json.getString("_token")))
-            return Response.status(401).entity("Invalid token").build();
-		*/
-        
+        if(token == null)
+            return sendResponse(405, "Missing parameters token", "PUT");
+
         // verification du joueur
-        if(!json.has("pseudo"))
-            return Response.status(405).entity("Missing or invalid parameters").build();
-        Player player = model.createPlayer(json.getString("pseudo"));
+        if(!json.has("playerName"))
+            return sendResponse(405, "Missing or invalid parameters", "PUT");
+        Player player = model.createPlayer(json.getString("playerName"), token);
         if(player == null)
-            return Response.status(405).entity("Missing or invalid parameters").build();
+            return sendResponse(405, "Missing or invalid parameters", "PUT");
+        if(!player.getToken().equals(token))
+            return sendResponse(405, "Invalid parameters token", "PUT");
 
         // verification game status
         if(game.gameBegin())
-            return Response.status(500).entity("Game started").build();
+            return sendResponse(500, "Game started", "PUT");
 
-        return Response.status(200).entity("{\"status\" : "+model.addPlayerToGame(gamename, player)+"}").build();
+        return sendResponse(200, "{\"status\" : "+model.addPlayerToGame(gamename, player)+"}", "PUT");
     }
 
 
@@ -167,7 +201,7 @@ public class GameRest {
         JSONObject json = new JSONObject(objJSON);
 
         if(game == null)
-            return Response.status(404).entity("Partie inconnu").build();
+            return sendResponse(404, "Partie inconnu", "PUT");
 
         // verification du token
         /*
@@ -177,26 +211,26 @@ public class GameRest {
             return Response.status(401).entity("Invalid token").build();
 		*/
 
-        // verification du pseudo
-        if(!json.has("pseudo"))
-            return Response.status(405).entity("Missing or invalid parameters").build();
-        if(model.findPlayerByName(gamename, json.getString("pseudo")) == null)
-            return Response.status(405).entity("Missing or invalid parameters").build();
+        // verification du playerName
+        if(!json.has("playerName"))
+            return sendResponse(405, "Missing parameters playerName", "PUT");
+        if(model.findPlayerByName(gamename, json.getString("playerName")) == null)
+            return sendResponse(405, "playerName unknown", "PUT");
 
         if(model.findGameByName(gamename).gameBegin())
-            return Response.status(500).entity("Game started").build();
+            return sendResponse(500, "Game started", "PUT");
 
         if(model.findGameByName(gamename).getNumberPlayers() == model.findGameByName(gamename).getBoard().getPlayers().size())
-            if(model.startGame(gamename, json.getString("pseudo")))
-                return Response.status(200).entity("{\"status\": true}").build();
+            if(model.startGame(gamename, json.getString("playerName")))
+                return sendResponse(200, "{\"status\": true}", "PUT");
 
-        return Response.status(500).entity("Game not tucked").build();
+        return sendResponse(500, "Game not tucked", "PUT");
     }
     
     /**
      * Méthode en GET permettant de recuperer le joueur devant jouer
      * La partie doit être existante.
-     * Renvoie {"pseudo": String}
+     * Renvoie {"playerName": String}
      * @return Response
      */
     @GET
@@ -208,36 +242,33 @@ public class GameRest {
         Game game = model.findGameByName(gamename);
         
         // Verifie si le jeu a commencer
-    	if(!game.gameBegin()){
-    		return Response.status(401).entity("{\"error\":\"Game has not begin\"}").build();
-    	}
+    	if(!game.gameBegin())
+            return sendResponse(401, "{\"error\":\"Game has not begin\"}", "GET");
     	
     	// Recherche le joueur actuel
     	Player currentPlayer = model.findGameByName(gamename).getBoard().getActualPlayer();
 
     	// Verifie qu'un joueur courant existe
-    	if(currentPlayer == null) {
-    		return Response.status(422).entity("{\"error\":\"No current player has been set\"}").build();
-    	}
-    	
-    	return Response.status(200).entity("{\"pseudo\":\"" + currentPlayer.getName() + "\"}").build();
+    	if(currentPlayer == null)
+            return sendResponse(422, "{\"error\":\"No current player has been set\"}", "GET");
+
+        return sendResponse(200, "{\"playerName\":\"" + currentPlayer.getName() + "\"}", "GET");
     }
+    
     /*
      * @param playerName
      * @param gameName
-     * @return
+     * @retur
      * @throws JSONException 
      */
-    
     @GET 
-    @Path("/{gameName}/{pseudo}")
+    @Path("/{gameName}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response handplayer(@PathParam("pseudo") String pseudo,@PathParam("gameName") String gameName ) throws JSONException{
+    public Response handplayer(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName ) throws JSONException{
          Model model = Model.getInstance();
-         Player player = model.findPlayerByName(gameName, pseudo);
-         if(player==null){
-             return Response.status(405).entity("No player with : "+pseudo).build();
-         }
+         Player player = model.findPlayerByName(gameName, playerName);
+         if(player==null)
+             return sendResponse(405, "No player with : "+playerName, "GET");
          
         int taille =  player.getCards().size();
 
@@ -245,8 +276,87 @@ public class GameRest {
         for (int i = 0; i < taille; i++){
             list[i] = "{\"number\" : \""+player.getCards().get(i).getValue()+"\", " +
                        "\"familly\" : \""+player.getCards().get(i).getColor()+"\"," +
-                       "\"idcard\" : \""+ i +"\"}";
+                       "\"position\" : \""+ i +"\"}";
         }
-        return Response.status(200).entity("{\"cartes\": "+ Arrays.toString(list)+" }").build();
+        return sendResponse(200, "{\"cartes\": "+ Arrays.toString(list)+" }", "GET");
+    }
+    
+    /**
+     * Methode piocher une carte
+     * Verif user actuel est bien l'utilisateur
+     */
+    
+    @POST
+    @Path("/{gameName}/{playerName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response pickacard(@PathParam("gameName")String gameName,@PathParam("playerName")String playerName) throws JSONException {
+        // Cration de tous les objets
+        Model model = Model.getInstance();
+        Player player = model.findPlayerByName(gameName, playerName);
+        Player verifplayer = model.findGameByName(gameName).getBoard().getActualPlayer();
+
+        if(!player.equals(verifplayer))
+            return sendResponse(405, "Joueur non autorisé à piocher", "POST");
+
+        model.findGameByName(gameName).getBoard().drawCard();
+
+        return sendResponse(200, "carte ajoutée à la main du joueur", "POST");
+    }
+    
+    /**
+     * Méthode en PUT permettant de jouer une carte
+     * La partie doit être existante et commencée.
+     * @param playerName
+     * @param gameName
+     * @param strJSON {"value": int, "color": str, "actionCard": null}
+     * @return Response 200 | 422 | 405
+     * @throws JSONException 
+     */
+    @PUT 
+    @Path("/{gameName}/{playerName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response playCard(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName, String strJSON ) throws JSONException{
+    	Model model = Model.getInstance();      
+    	// Verification que la partie existe et est commencée
+    	if(!model.existsGame(gameName)) {
+            return sendResponse(405, "{\"error\": \"The game does not exist\"}", "PUT");
+    	}
+    	if(!model.findGameByName(gameName).gameBegin()) {
+            return sendResponse(405, "{\"error\": \"The game does hasn't begun\"}", "PUT");
+    	}
+    	
+    	// Verification que le joueur existe et st present dans la partie
+    	Player player = model.findPlayerByName(gameName, playerName);
+    	if(player == null) {
+            return sendResponse(405, "{\"error\": \"The player does not exist\"}", "PUT");
+    	}
+    	
+    	// Verification du JSON
+    	JSONObject json = new JSONObject(strJSON);
+    	if(!json.has("value") || !json.has("color")) {
+            return sendResponse(405, "{\"error\": \"The json object does not follow the rules\"}", "PUT");
+    	}
+    	
+    	// Verifie que le joueur peut jouer
+    	if(!model.findGameByName(gameName).getBoard().askPlayerCanPlay(player)) {
+            return sendResponse(405, "{\"error\": \"The player can't play\"}", "PUT");
+    	}
+    	
+
+    	// Verifie que le joueur possede la carte
+    	Card card = new Card(json.getInt("value"), Color.valueOf(json.getString("color")));
+    	if(!player.getCards().contains(card)) {
+            return sendResponse(405, "{\"error\": \"The player does not possese this card\"}", "PUT");
+    	}
+    	
+    	// Verifie que la carte est jouable
+    	if(!model.findGameByName(gameName).getBoard().askPlayableCard(card)) {
+            return sendResponse(405, "{\"error\": \"The card can't be played\"}", "PUT");
+    	}
+    	
+    	// Finalement la carte est jouer
+        model.findGameByName(gameName).getBoard().poseCard(card);
+
+        return sendResponse(200, "{\"success\":\"The card was succesfully played\"}", "PUT");
     }
 }

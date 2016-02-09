@@ -5,7 +5,6 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-@import url(../../bower_components/components-font-awesome/css/font-awesome.css);
 @import url("https://fonts.googleapis.com/css?family=Lobster");
 @import url("https://fonts.googleapis.com/css?family=Cabin");
 html {
@@ -5835,13 +5834,13 @@ button.close {
   .btn .btn-warning:hover, .btn .btn-warning:active, .btn .btn-warning:visited, .btn .btn-warning:focus {
     background-color: #ffaa00; }
 
-input {
+input, select {
   border: none;
   text-align: center;
   color: #4B4B4B;
   border-radius: 5px;
   font-family: Cabin, Georgia, Times, serif; }
-  input:focus {
+  input:focus, select:focus {
     outline: none;
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2); }
 
@@ -5859,6 +5858,10 @@ input {
     border: none; }
   .panel .panel-body {
     padding: 30px 10px; }
+    .panel .panel-body table {
+      margin: 0; }
+      .panel .panel-body table tr td, .panel .panel-body table tr th {
+        border-top: 1px solid rgba(0, 0, 0, 0.2); }
 
 .jumbotron {
   border: none;
@@ -6126,9 +6129,9 @@ footer {
     top: 0; }
   #loader:before {
     transform: rotate(60deg);
-    background-color: #ffaa00; }
+    background-color: #55aa55; }
   #loader:after {
     transform: rotate(-60deg);
-    background-color: #ffaa00; }
+    background-color: #55aa55; }
 
 /*# sourceMappingURL=main.css.map */

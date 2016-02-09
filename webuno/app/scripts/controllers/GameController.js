@@ -2,9 +2,10 @@
 
 angular.module('unoApp')
     .controller('GameController', ['$rootScope', '$scope', '$http', '$stateParams', function ($rootScope, $scope, $http, $stateParams) {
-        $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name + '/hand')
+        $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name)
             .then(function (data) {
                 $scope.cartes = data.data.cartes;
+                console.log($scope.cartes);
             }, function (error) {
                 $scope.error = "Une erreur est survenue : " + error.toString();
             });
