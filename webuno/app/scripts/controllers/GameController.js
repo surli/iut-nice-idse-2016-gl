@@ -10,7 +10,13 @@ angular.module('unoApp')
                 $scope.error = "Une erreur est survenue : " + error.toString();
             });
 
-        //$scope.fausse = {};
+        $http.get('/rest/game/' + $stateParams.name)
+            .then(function (response) {
+                console.log(response.data);
+                //$scope.fausse = {};
+            }, function (error) {
+                console.error(error);
+            });
 
         $scope.piocherCarte = function () {
             $scope.cartes.push($scope.cartes[$scope.cartes.length % 8]);

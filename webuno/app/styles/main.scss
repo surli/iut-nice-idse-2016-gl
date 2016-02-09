@@ -135,26 +135,32 @@ input, select {
   background-size: $carte-width*14 $carte-height*8;
   transform-origin: left bottom;
 
+
   @for $i from 0 through 12 {
-    &.Trefle-#{$i+1} {
+    &.Red-#{$i} {
       @include sprite-carte($i, 0);
     }
   }
-  @for $i from 0 through 13 {
-    &.Carreau-#{$i+1} {
+  @for $i from 0 through 12 {
+    &.Yellow-#{$i} {
       @include sprite-carte($i, 1);
     }
   }
-
-  @for $i from 0 through 13 {
-    &.Coeur-#{$i+1} {
+  @for $i from 0 through 12 {
+    &.Green-#{$i} {
       @include sprite-carte($i, 2);
     }
   }
-  @for $i from 0 through 13 {
-    &.Pique-#{$i+1} {
+  @for $i from 0 through 12 {
+    &.Blue-#{$i} {
       @include sprite-carte($i, 3);
     }
+  }
+  &.Black-14 {
+    @include sprite-carte(13, 5);
+  }
+  &.Black-13 {
+    @include sprite-carte(13, 0);
   }
 }
 
