@@ -1,6 +1,8 @@
 .DS_Store
+src/main/webapp/
 .idea
 bin
+.metadata
 *.jar
 .settings
 .classpath
