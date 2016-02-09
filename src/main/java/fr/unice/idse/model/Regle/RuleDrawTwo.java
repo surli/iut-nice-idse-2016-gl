@@ -1,4 +1,4 @@
-package fr.unice.idse.model.Regle;
+package fr.unice.idse.model.regle;
 
 import fr.unice.idse.model.*;
 
