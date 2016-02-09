@@ -60,6 +60,7 @@ Dans goals ou Command line : `install test`
 - Pierre-Antoire Charpentier
 - Stéphanie Carrier
 - Nassim Omrani
+- Regis Parpex (Partie IA)
 
 ###IHM
 >Chef de groupe : Jérémy Froment
@@ -75,12 +76,11 @@ Dans goals ou Command line : `install test`
 Lien du README du groupe : `src/main/java/fr/unice/idse/services`
 
 ###Base de donnée
->Chef de groupe : Marina 
+>Chef de groupe : Pierre Echardour 
 
 - Ugo Paneccasio
-- Pierre Echardour
+- Marina Helie-Zadeh
 - Medhi Ibnettalib
-- Regis Parpex
 
 ###Spécification du projet
 - Utilisation de Token pour assurer une sécurité en REST dans le header de la requête.
