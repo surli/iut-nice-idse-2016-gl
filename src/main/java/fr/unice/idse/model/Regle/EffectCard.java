@@ -1,6 +1,7 @@
 package fr.unice.idse.model.regle;
 
 import fr.unice.idse.model.*;
+import fr.unice.idse.model.card.Card;
 
 public class EffectCard 
 {

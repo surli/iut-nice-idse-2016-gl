@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import fr.unice.idse.model.Board;
-import fr.unice.idse.model.Card;
-import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Player;
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
 
 public class BoardTest 
 {

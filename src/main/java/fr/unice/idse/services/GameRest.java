@@ -10,11 +10,11 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import fr.unice.idse.model.Card;
-import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
 
 /**
  * /game

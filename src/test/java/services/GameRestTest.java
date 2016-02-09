@@ -19,12 +19,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.unice.idse.constante.Config;
-import fr.unice.idse.model.Card;
-import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
 import fr.unice.idse.model.Stack;
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
 import fr.unice.idse.services.GameRest;
 
 

@@ -2,6 +2,8 @@ package fr.unice.idse.model;
 
 import java.util.ArrayList;
 
+import fr.unice.idse.model.card.Color;
+
 public class Model {
 	private ArrayList<Game> games;
 	private ArrayList<Player> players;

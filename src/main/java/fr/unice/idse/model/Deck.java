@@ -3,6 +3,9 @@ package fr.unice.idse.model;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
+
 public class Deck {
 	private ArrayList<Card> deck;
 	
