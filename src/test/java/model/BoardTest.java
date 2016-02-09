@@ -5,9 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import fr.unice.idse.model.Board;
-import fr.unice.idse.model.Card;
-import fr.unice.idse.model.Color;
 import fr.unice.idse.model.Player;
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.card.Value;
 
 public class BoardTest 
 {
@@ -29,36 +30,36 @@ public class BoardTest
 	public void testCarteBonneValeurEstJouable()
 	{
 		Board board = new Board();
-		board.getStack().addCard(new Card(8, Color.Black));
+		board.getStack().addCard(new Card(Value.Eight, Color.Black));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertTrue(board.askPlayableCard(new Card(8, Color.Red)));
+		assertTrue(board.askPlayableCard(new Card(Value.Eight, Color.Red)));
 	}
 	
 	@Test
 	public void testCarteMauvaiseValeurEstNonJouable()
 	{
 		Board board = new Board();
-		board.getStack().addCard(new Card(8, Color.Blue));
+		board.getStack().addCard(new Card(Value.Eight, Color.Blue));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertFalse(board.askPlayableCard(new Card(7, Color.Yellow)));
+		assertFalse(board.askPlayableCard(new Card(Value.Seven, Color.Yellow)));
 	}
 	
 	@Test
 	public void testCarteBonneCouleurEtMauvaiseValeurEstJouable()
 	{
 		Board board = new Board();
-		board.getStack().addCard(new Card(8, Color.Red));
+		board.getStack().addCard(new Card(Value.Eight, Color.Red));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertTrue(board.askPlayableCard(new Card(7, Color.Red)));
+		assertTrue(board.askPlayableCard(new Card(Value.Seven, Color.Red)));
 	}
 	
 	@Test
 	public void testCarteMauvaiseCouleurEtMauvaiseValeurEstNonJouable()
 	{
 		Board board = new Board();
-		board.getStack().addCard(new Card(8, Color.Green));
+		board.getStack().addCard(new Card(Value.Eight, Color.Green));
 		board.changeColor(board.getStack().topCard().getColor());
-		assertFalse(board.askPlayableCard(new Card(7, Color.Red)));
+		assertFalse(board.askPlayableCard(new Card(Value.Seven, Color.Red)));
 	}
 	
 	@Test
@@ -66,8 +67,8 @@ public class BoardTest
 	{
 		Board board = new Board();
 		board.getPlayers().add(new Player("toto",""));
-		board.getActualPlayer().getCards().add(new Card(7, Color.Red));
-		board.getStack().addCard(new Card(8, Color.Red));
+		board.getActualPlayer().getCards().add(new Card(Value.Seven, Color.Red));
+		board.getStack().addCard(new Card(Value.Eight, Color.Red));
 		board.changeColor(board.getStack().topCard().getColor());
 		assertTrue(board.askPlayerCanPlay(board.getActualPlayer()));
 	}
@@ -97,9 +98,9 @@ public class BoardTest
 	{
 		Board board = new Board();
 		Player toto = new Player("toto","");
-		Card carteaposer = new Card(0, Color.Red);
+		Card carteaposer = new Card(Value.Zero, Color.Red);
 		toto.getCards().add(carteaposer);
-		board.getStack().getStack().add(new Card(0, Color.Blue));
+		board.getStack().getStack().add(new Card(Value.Zero, Color.Blue));
 		board.getPlayers().add(toto);
 		board.poseCard(toto.getCards().get(0));
 		assertTrue(toto.getCards().isEmpty());
@@ -111,9 +112,9 @@ public class BoardTest
 	{
 		Board board = new Board();
 		Player toto = new Player("toto","");
-		Card carteaposer = new Card(0, Color.Red);
+		Card carteaposer = new Card(Value.Zero, Color.Red);
 		toto.getCards().add(carteaposer);
-		board.getStack().getStack().add(new Card(1, Color.Blue));
+		board.getStack().getStack().add(new Card(Value.One, Color.Blue));
 		board.getPlayers().add(toto);
 		board.poseCard(toto.getCards().get(0));
 		assertFalse(toto.getCards().isEmpty());
@@ -125,7 +126,7 @@ public class BoardTest
 	{
 		Board board = new Board();
 		Player toto = new Player("toto","");
-		board.getStack().getStack().add(new Card(1, Color.Blue));
+		board.getStack().getStack().add(new Card(Value.One, Color.Blue));
 		board.getPlayers().add(toto);
 		board.drawCard();
 		assertFalse(toto.getCards().isEmpty());
@@ -137,9 +138,9 @@ public class BoardTest
 	{
 		Board board = new Board();
 		Player toto = new Player("toto","");
-		board.getStack().getStack().add(new Card(1, Color.Blue));
-		board.getStack().getStack().add(new Card(2, Color.Blue));
-		board.getStack().getStack().add(new Card(3, Color.Blue));
+		board.getStack().getStack().add(new Card(Value.One, Color.Blue));
+		board.getStack().getStack().add(new Card(Value.Two, Color.Blue));
+		board.getStack().getStack().add(new Card(Value.Three, Color.Blue));
 		board.getPlayers().add(toto);
 		board.setCptDrawCard(3);
 		board.drawCard();

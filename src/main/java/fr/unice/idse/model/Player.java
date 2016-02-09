@@ -3,6 +3,8 @@ package fr.unice.idse.model;
 
 import java.util.ArrayList;
 
+import fr.unice.idse.model.card.Card;
+
 public class Player {
 	private String name;
 	private ArrayList<Card> cards;

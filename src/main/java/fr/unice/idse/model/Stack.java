@@ -2,6 +2,9 @@ package fr.unice.idse.model;
 
 import java.util.ArrayList;
 
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
+
 public class Stack {
 	private ArrayList<Card> stack;
 	
