@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('unoApp')
-    .controller('GameController', ['$rootScope', '$scope', '$http', '$stateParams', function ($rootScope, $scope, $http, $stateParams) {
-        $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name)
+    .controller('GameController', ['$rootScope', '$scope', '$http', '$stateParams', 'ENV', function ($rootScope, $scope, $http, $stateParams, ENV) {
+        $http.get(ENV.apiEndpoint + 'rest/game/' + $stateParams.name + '/' + $scope.user.name)
             .then(function (data) {
                 $scope.cartes = data.data.cartes;
                 console.log($scope.cartes);
@@ -10,7 +10,7 @@ angular.module('unoApp')
                 $scope.error = "Une erreur est survenue : " + error.toString();
             });
 
-        $http.get('/rest/game/' + $stateParams.name)
+        $http.get(ENV.apiEndpoint + 'rest/game/' + $stateParams.name)
             .then(function (response) {
                 console.log(response.data);
                 //$scope.fausse = {};

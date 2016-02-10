@@ -16,7 +16,8 @@ module.exports = function (grunt) {
     require('jit-grunt')(grunt, {
         useminPrepare: 'grunt-usemin',
         ngtemplates: 'grunt-angular-templates',
-        cdnify: 'grunt-google-cdn'
+        cdnify: 'grunt-google-cdn',
+        ngconstant: 'grunt-ng-constant'
     });
 
     // Configurable paths for the application
@@ -69,15 +70,6 @@ module.exports = function (grunt) {
 
         // The actual grunt server settings
         connect: {
-            proxies: [
-                {
-                    context: '/rest',
-                    host: 'localhost',
-                    port: 8080,
-                    https: false,
-                    changeOrigin: false
-                }
-            ],
             options: {
                 port: 9000,
                 // Change this to '0.0.0.0' to access the server from outside.
@@ -177,6 +169,38 @@ module.exports = function (grunt) {
                 }]
             },
             server: '.tmp'
+        },
+
+        ngconstant: {
+            // Options for all targets
+            options: {
+                space: '  ',
+                wrap: '"use strict";\n\n {%= __ngModule %}',
+                name: 'config'
+            },
+            // Environment targets
+            development: {
+                options: {
+                    dest: '<%= yeoman.app %>/scripts/config.js'
+                },
+                constants: {
+                    ENV: {
+                        name: 'development',
+                        apiEndpoint: 'http://localhost:8080/'
+                    }
+                }
+            },
+            production: {
+                options: {
+                    dest: '<%= yeoman.dist %>/scripts/config.js'
+                },
+                constants: {
+                    ENV: {
+                        name: 'production',
+                        apiEndpoint: '/'
+                    }
+                }
+            }
         },
 
         // Add vendor prefixed styles
@@ -486,6 +510,7 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
+            'ngconstant:development',
             'wiredep',
             'concurrent:server',
             'postcss:server',
@@ -510,6 +535,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
+        'ngconstant:production',
         'wiredep',
         'useminPrepare',
         'concurrent:dist',

@@ -10,6 +10,7 @@
  */
 angular
     .module('unoApp', [
+        'config',
         'ngAnimate',
         'ngCookies',
         'ngResource',
@@ -66,10 +67,10 @@ angular
                 templateUrl: 'views/home.html',
                 controller: 'HomeController',
                 resolve: {
-                    Games: function ($http, $q) {
+                    Games: function ($http, $q, ENV) {
                         var deferred = $q.defer();
 
-                        $http.get('/rest/game')
+                        $http.get(ENV.apiEndpoint + 'rest/game')
                             .then(function (data) {
                                 deferred.resolve(data);
                             }, function (error) {
