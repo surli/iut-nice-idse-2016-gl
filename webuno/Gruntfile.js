@@ -17,7 +17,7 @@ module.exports = function (grunt) {
         useminPrepare: 'grunt-usemin',
         ngtemplates: 'grunt-angular-templates',
         cdnify: 'grunt-google-cdn',
-        ngconstant: 'grunt-ng-constant'
+        configureProxies: 'grunt-connect-proxy'
     });
 
     // Configurable paths for the application
@@ -76,6 +76,12 @@ module.exports = function (grunt) {
                 hostname: 'localhost',
                 livereload: 35729
             },
+            proxies: [{
+                context: '/rest', // the context of the data service
+                host: 'localhost', // wherever the data service is running
+                port: 8080 // the port that the data service is running on
+            }],
+            /*
             livereload: {
                 options: {
                     open: true,
@@ -92,6 +98,34 @@ module.exports = function (grunt) {
                             ),
                             connect.static(appConfig.app)
                         ];
+                    }
+                }
+            },
+            */
+            livereload: {
+                options: {
+                    open: true,
+                    middleware: function (connect, options) {
+                        var middlewares = [];
+
+                        if (!Array.isArray(options.base)) {
+                            options.base = [options.base];
+                        }
+
+                        options.base.push('.tmp');
+                        options.base.push('/bower_components');
+                        options.base.push('./app/styles');
+                        options.base.push(appConfig.app);
+
+                        // Setup the proxy
+                        middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
+
+                        // Serve static files
+                        options.base.forEach(function(base) {
+                            middlewares.push(connect.static(base));
+                        });
+
+                        return middlewares;
                     }
                 }
             },
@@ -169,38 +203,6 @@ module.exports = function (grunt) {
                 }]
             },
             server: '.tmp'
-        },
-
-        ngconstant: {
-            // Options for all targets
-            options: {
-                space: '  ',
-                wrap: '"use strict";\n\n {%= __ngModule %}',
-                name: 'config'
-            },
-            // Environment targets
-            development: {
-                options: {
-                    dest: '<%= yeoman.app %>/scripts/config.js'
-                },
-                constants: {
-                    ENV: {
-                        name: 'development',
-                        apiEndpoint: 'http://localhost:8080/'
-                    }
-                }
-            },
-            production: {
-                options: {
-                    dest: '<%= yeoman.dist %>/scripts/config.js'
-                },
-                constants: {
-                    ENV: {
-                        name: 'production',
-                        apiEndpoint: '/'
-                    }
-                }
-            }
         },
 
         // Add vendor prefixed styles
@@ -510,10 +512,10 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
-            'ngconstant:development',
             'wiredep',
             'concurrent:server',
             'postcss:server',
+            'configureProxies:server',
             'connect:livereload',
             'watch'
         ]);
@@ -535,7 +537,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        'ngconstant:production',
         'wiredep',
         'useminPrepare',
         'concurrent:dist',

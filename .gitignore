@@ -1,9 +1,10 @@
 .DS_Store
-src/main/webapp/
 .idea
 bin
 .metadata
 *.jar
+!webuno/WEB-INF/lib/*.jar
+!src/main/webapp/WEB-INF/lib/*.jar
 .settings
 .classpath
 .project

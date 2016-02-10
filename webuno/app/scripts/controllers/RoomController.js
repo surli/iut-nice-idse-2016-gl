@@ -5,7 +5,7 @@ angular.module('unoApp')
         $scope.gameName = $stateParams.name;
         var timeoutStateGame;
 
-        $http.get(ENV.apiEndpoint + 'rest/game/' + $scope.gameName)
+        $http.get('/rest/game/' + $scope.gameName)
             .then(function (response) {
                 $scope.game = response.data;
                 $scope.requestStateGame();
@@ -16,7 +16,7 @@ angular.module('unoApp')
 
         $scope.requestStateGame = function () {
             timeoutStateGame = $timeout(function () {
-                $http.get(ENV.apiEndpoint + 'rest/game/' + $scope.gameName)
+                $http.get('/rest/game/' + $scope.gameName)
                     .then(function (response) {
                         $scope.game = response.data;
                         if ($scope.game.state) {
@@ -32,7 +32,7 @@ angular.module('unoApp')
         };
 
         $scope.startGameNow = function () {
-            $http.put(ENV.apiEndpoint + 'rest/game/' + $scope.gameName + '/command', {
+            $http.put('/rest/game/' + $scope.gameName + '/command', {
                     playerName: $scope.user.name
                 })
                 .then(function (response) {
