@@ -65,6 +65,20 @@ angular.module('unoApp')
         return deferred.promise;
       },
 
+        // renvoie toutes les parties en cours
+        getAllGames: function () {
+            var deferred = $q.defer();
+            $http.get('/rest/game')
+                .then(function (response) {
+                    console.log(response);
+                    deferred.resolve(response);
+                }, function (error) {
+                    console.log(error);
+                    deferred.reject(error);
+                });
+            return deferred.promise;
+        },
+
       // renvoie la main d'un joueur
 
       getUserHand: function (gameName, userName) {

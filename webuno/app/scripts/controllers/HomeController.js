@@ -7,6 +7,7 @@ angular.module('unoApp')
 
         $scope.requestListGames = function () {
             timeoutListGames = $timeout(function () {
+                // TODO remplacer par Game.getAllCurrentGames
                 $http.get('/rest/game/')
                     .then(function (data) {
                         $scope.games = data.data.games;
@@ -21,6 +22,7 @@ angular.module('unoApp')
         $scope.requestListGames();
 
         $scope.joinGame = function (gameName) {
+            // TODO remplacer par Game.joinGame(gameName)
             $http.put('/rest/game/' + gameName, {
                     playerName: $scope.user.name
                 }, {
