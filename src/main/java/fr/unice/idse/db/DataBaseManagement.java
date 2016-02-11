@@ -8,8 +8,9 @@ import java.sql.Statement;
 
 public class DataBaseManagement {
 	/*
-	 * need to modify private variables + import external jar library oracle
-	 * database JDBC driver at build path
+	 * need to modify private variables + import external jar library
+	 * mysql-connector-java-5.1.38-bin.jar at build path (this jar is locate in
+	 * this package !)
 	 */
 	private String url = "jdbc:mysql://localhost:81/uno";
 	private String user = "root";
