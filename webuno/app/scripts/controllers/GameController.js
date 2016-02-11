@@ -2,6 +2,8 @@
 
 angular.module('unoApp')
     .controller('GameController', ['$rootScope', '$scope', '$http', '$stateParams', function ($rootScope, $scope, $http, $stateParams) {
+
+      // sera remplacé par Game.getUserHand(name,user.name)
         $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name)
             .then(function (data) {
                 $scope.cartes = data.data.cartes;
@@ -10,6 +12,8 @@ angular.module('unoApp')
                 $scope.error = "Une erreur est survenue : " + error.toString();
             });
 
+
+      // sera remplacé par Game.getGame(name)
         $http.get('/rest/game/' + $stateParams.name)
             .then(function (response) {
                 console.log(response.data);
@@ -17,6 +21,7 @@ angular.module('unoApp')
             }, function (error) {
                 console.error(error);
             });
+
 
         $scope.piocherCarte = function () {
             $scope.cartes.push($scope.cartes[$scope.cartes.length % 8]);
