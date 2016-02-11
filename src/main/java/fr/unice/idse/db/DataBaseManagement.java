@@ -11,7 +11,7 @@ public class DataBaseManagement {
 	 * need to modify private variables + import external jar library oracle
 	 * database JDBC driver at build path
 	 */
-	private String url = "jdbc:oracle:thin:@localhost:1521:uno";
+	private String url = "jdbc:mysql://localhost:81/uno";
 	private String user = "root";
 	private String pass = "root";
 	private Connection con = null;
@@ -22,7 +22,7 @@ public class DataBaseManagement {
 		this.statement = null;
 
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,5 +51,17 @@ public class DataBaseManagement {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public String getPseudoWithEmail(String email) {
+		try {
+			ResultSet resultQuery = this.statement
+					.executeQuery("SELECT u_pseudo FROM users WHERE u_email =" + email + ";");
+			return resultQuery.getString("u_pseudo");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
