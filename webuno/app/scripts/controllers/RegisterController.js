@@ -7,6 +7,7 @@ angular.module('unoApp')
         }
 
         $scope.goRegister = function () {
+            // TODO ajouter fonction Auth.register($scope.email,$scope.name,$scope.password)
             window.alert('Register not available !');
         };
     }]);
