@@ -82,7 +82,7 @@ angular.module('unoApp')
             // renvoie la main d'un joueur
             getUserHand: function (gameName, userName) {
                 var deferred = $q.defer();
-                $http.get('/rest/game/' + gameName + "/" + userName)
+                $http.get('/rest/game/' + gameName + '/' + userName)
                     .then(function (response) {
                         console.log(response);
                         deferred.resolve(response);
@@ -113,7 +113,7 @@ angular.module('unoApp')
                         deferred.reject(error);
                     });
                 return deferred.promise;
-            },
+            }
 
             // Les autres fonctions de ce service se trouverons ici
             // ne pas oublier de mettre une virgule apres l'acolade de chaque fonction (car en réalité le service est un objet de fonctions)

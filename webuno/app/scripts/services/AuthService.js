@@ -30,16 +30,10 @@ angular.module('unoApp')
             registerUser: function (email, name, password) {
                 var deferred = $q.defer();
                 // TODO voir la route pour le register et la méthode
-                $http.put('/rest/game/' + gameName, {
+                $http.put('/rest/game/', {
                         email: email,
                         name: name,
                         password: password
-                    }, {
-                        // L'API REST demande un token dans le header
-                        headers: {
-                            // Donc dans le header on ajoute le token venant de l'utilisateur
-                            token: Auth.getUser().token
-                        }
                     })
                     .then(function (response) {
                         console.log(response);

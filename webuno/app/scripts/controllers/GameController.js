@@ -9,9 +9,8 @@ angular.module('unoApp')
                 $scope.cartes = data.data.cartes;
                 console.log($scope.cartes);
             }, function (error) {
-                $scope.error = "Une erreur est survenue : " + error.toString();
+                $scope.error = 'Une erreur est survenue : ' + error.toString();
             });
-
 
         // TODO remplacer par Game.getGame(name)
         $http.get('/rest/game/' + $stateParams.name)
@@ -21,7 +20,6 @@ angular.module('unoApp')
             }, function (error) {
                 console.error(error);
             });
-
 
         $scope.piocherCarte = function () {
             $scope.cartes.push($scope.cartes[$scope.cartes.length % 8]);
