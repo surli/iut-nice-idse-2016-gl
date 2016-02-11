@@ -3,7 +3,7 @@
 angular.module('unoApp')
     .controller('GameController', ['$rootScope', '$scope', '$http', '$stateParams', function ($rootScope, $scope, $http, $stateParams) {
 
-      // sera remplacé par Game.getUserHand(name,user.name)
+        // TODO remplacer par Game.getUserHand(name,user.name)
         $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name)
             .then(function (data) {
                 $scope.cartes = data.data.cartes;
@@ -13,7 +13,7 @@ angular.module('unoApp')
             });
 
 
-      // sera remplacé par Game.getGame(name)
+        // TODO remplacer par Game.getGame(name)
         $http.get('/rest/game/' + $stateParams.name)
             .then(function (response) {
                 console.log(response.data);

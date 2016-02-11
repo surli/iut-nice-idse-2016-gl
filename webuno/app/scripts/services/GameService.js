@@ -94,10 +94,10 @@ angular.module('unoApp')
             },
 
             // ajoute un joueur à une partie
-            joinGame : function (gameName){
+            joinGame: function (gameName) {
                 var deferred = $q.defer();
-                $http.put('/rest/game/' + gameName,{
-                        player: Auth.getUser().name,
+                $http.put('/rest/game/' + gameName, {
+                        player: Auth.getUser().name
                     }, {
                         // L'API REST demande un token dans le header
                         headers: {
