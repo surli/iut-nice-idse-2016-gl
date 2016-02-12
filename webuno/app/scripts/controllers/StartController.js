@@ -2,7 +2,7 @@
 
 angular.module('unoApp')
     .controller('StartController', ['$rootScope', '$scope', '$state', '$http', 'Game', function ($rootScope, $scope, $state, $http, Game) {
-        $scope.nbPlayers = 2;
+        $scope.nbPlayers = '2';
 
         $scope.goGame = function () {
             if ($scope.game && $scope.game.length > 3 && $scope.user.name) {
