@@ -75,7 +75,7 @@ Dans goals ou Command line : `install test`
 - Jocelin Heinen
 Lien du README du groupe : `src/main/java/fr/unice/idse/services`
 
-###Base de donnée
+###Base de donnÃ©e
 >Chef de groupe : Pierre Echardour 
 
 - Ugo Paneccasio
@@ -88,5 +88,4 @@ Lien du README du groupe : `src/main/java/fr/unice/idse/services`
 - Seulement l'hôte peut lancer la partie.
 - Les parties peuvent être comprises entre 2 et 6 joueurs.
 - Chargement des données sur la vue toutes les 5 secondes.
-
 

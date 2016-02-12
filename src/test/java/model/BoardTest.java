@@ -10,11 +10,11 @@ import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
 
-public class BoardTest 
+public class BoardTest
 {
 
 	@Test
-	public void testInitBoard() 
+	public void testInitBoard()
 	{
 		Board board = new Board();
 		board.getPlayers().add(new Player("toto",""));
@@ -34,7 +34,7 @@ public class BoardTest
 		board.changeColor(board.getStack().topCard().getColor());
 		assertTrue(board.askPlayableCard(new Card(Value.Eight, Color.Red)));
 	}
-	
+
 	@Test
 	public void testCarteMauvaiseValeurEstNonJouable()
 	{
@@ -43,7 +43,7 @@ public class BoardTest
 		board.changeColor(board.getStack().topCard().getColor());
 		assertFalse(board.askPlayableCard(new Card(Value.Seven, Color.Yellow)));
 	}
-	
+
 	@Test
 	public void testCarteBonneCouleurEtMauvaiseValeurEstJouable()
 	{
@@ -52,7 +52,7 @@ public class BoardTest
 		board.changeColor(board.getStack().topCard().getColor());
 		assertTrue(board.askPlayableCard(new Card(Value.Seven, Color.Red)));
 	}
-	
+
 	@Test
 	public void testCarteMauvaiseCouleurEtMauvaiseValeurEstNonJouable()
 	{
@@ -61,7 +61,7 @@ public class BoardTest
 		board.changeColor(board.getStack().topCard().getColor());
 		assertFalse(board.askPlayableCard(new Card(Value.Seven, Color.Red)));
 	}
-	
+
 	@Test
 	public void testJoueurPeutJouer()
 	{
@@ -72,7 +72,7 @@ public class BoardTest
 		board.changeColor(board.getStack().topCard().getColor());
 		assertTrue(board.askPlayerCanPlay(board.getActualPlayer()));
 	}
-	
+
 	@Test
 	public void testChangeDeSens()
 	{
@@ -92,7 +92,7 @@ public class BoardTest
 		board.nextPlayer();
 		assertTrue(board.getActualPlayer().equals(titi));
 	}
-	
+
 	@Test
 	public void testPoseUneBonneCarte()
 	{
@@ -106,7 +106,7 @@ public class BoardTest
 		assertTrue(toto.getCards().isEmpty());
 		assertTrue(carteaposer.equals(board.getStack().topCard()));
 	}
-	
+
 	@Test
 	public void testPoseUneMauvaiseCarte()
 	{
@@ -120,7 +120,7 @@ public class BoardTest
 		assertFalse(toto.getCards().isEmpty());
 		assertFalse(carteaposer.equals(board.getStack().topCard()));
 	}
-	
+
 	@Test
 	public void testPiocheUneCarte()
 	{
@@ -132,7 +132,7 @@ public class BoardTest
 		assertFalse(toto.getCards().isEmpty());
 
 	}
-	
+
 	@Test
 	public void testPiochePlusieursCartes()
 	{
