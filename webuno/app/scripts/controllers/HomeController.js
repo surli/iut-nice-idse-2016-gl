@@ -21,14 +21,7 @@ angular.module('unoApp')
         $scope.requestListGames();
 
         $scope.joinGame = function (gameName) {
-            // TODO remplacer par Game.joinGame(gameName)
-            $http.put('/rest/game/' + gameName, {
-                    playerName: $scope.user.name
-                }, {
-                    headers: {
-                        token: $scope.user.token
-                    }
-                })
+            Game.joinGame(gameName)
                 .then(function (response) {
                     switch (response.status) {
                         case 200 :
