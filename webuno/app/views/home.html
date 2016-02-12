@@ -1,5 +1,6 @@
 <div class="jumbotron">
     <button class="btn btn-success" id="ingage" data-ui-sref="app.start">
+<<<<<<< HEAD
         Start new game
     </button>
 </div>
@@ -50,3 +51,38 @@
     </div>
 </div>
 -->
+=======
+        Commencer une partie
+    </button>
+</div>
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">Toutes les parties</div>
+        <div class="panel-body text-center">
+            <!-- Mettre la liste de toutes les parties ici dans un tableau en bouclant sur les parties pour les afficher -->
+            <table id="allGames">
+                <tr>
+                    <th>Nom du créateur</th>
+                    <th>Nombre de joueurs</th>
+                    <th>Statut de la partie</th>
+                </tr>
+                <!-- foreach(partie in parties){ -->
+                    <tr>
+                        <td>partie["createur"]</td>
+                        <td>partie["nbJoueurs"]</td>
+                        <td>partie["etat"]</td>
+                    </tr>
+                <!-- end foreach -->
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">Mes parties</div>
+        <div class="panel-body text-center">
+            Mettre la liste de mes parties ici dans un tableau en bouclant sur les parties pour les afficher
+        </div>
+    </div>
+</div>
+>>>>>>> 22a48073a7df8087c3a1760052f6808df0f599dd

@@ -144,36 +144,6 @@ public class Game {
 	}
 	
 	/**
-	 * Accès directe à la méthode askPlayerCanPlay de board
-	 * @param player
-	 * @return true si le joueur peu jouer.
-	 */
-	public boolean askPlayerCanPlay(Player player)
-	{
-		return board.askPlayerCanPlay(player);
-	}
-	
-	public void poseCard(Card card)
-	{
-		board.poseCard(card);
-	}
-	
-	public void drawCard()
-	{
-		board.drawCard();
-	}
-	
-	public void nextPlayer()
-	{
-		board.nextPlayer();
-	}
-	
-	public ArrayList<Card> playableCards()
-	{
-		return board.playableCards();
-	}
-	
-	/**
 	 * Supprime joueur de la partie selon son token
 	 * @param playerToken
 	 * @return true/false

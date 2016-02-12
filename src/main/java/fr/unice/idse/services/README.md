@@ -1,4 +1,4 @@
-﻿# UNO Web service
+# UNO Web service
 
 ### Table of contents
 
