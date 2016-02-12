@@ -55,7 +55,7 @@ angular.module('unoApp')
 
         $scope.piocherCarte = function () {
             $http.post('/rest/game/' + $stateParams.name + '/' + $scope.user.name, {})
-                .then(function (response) {
+                .then(function () {
                     $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name)
                         .then(function (response) {
                             $scope.cartes = response.data.cartes;
