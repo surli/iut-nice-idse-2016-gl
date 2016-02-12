@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('unoApp')
-    .controller('GameController', ['$rootScope', '$scope', '$http', '$stateParams', '$timeout', function ($rootScope, $scope, $http, $stateParams, $timeout) {
+    .controller('GameController', ['$rootScope', '$scope', '$http', '$stateParams', '$timeout', 'Game', function ($rootScope, $scope, $http, $stateParams, $timeout, Game) {
         var timeoutStateGame;
 
         // TODO remplacer par Game.getUserHand(name,user.name)
