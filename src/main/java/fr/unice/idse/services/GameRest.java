@@ -134,7 +134,10 @@ public class GameRest extends OriginRest{
                 players.add(objFils);
             }
             jsonObject.put("players", players);
-            jsonObject.put("stack", model.findGameByName(gamename).getBoard().getStack().topCard());
+            JSONObject jsonStack = new JSONObject();
+            jsonStack.put("number", model.findGameByName(gamename).getBoard().getStack().topCard().getValue());
+            jsonStack.put("family", model.findGameByName(gamename).getBoard().getStack().topCard().getColor());
+            jsonObject.put("stack", jsonStack);
             return sendResponse(200, jsonObject.toString(), "GET");
         }
 
