@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('unoApp')
-    .controller('GameController', ['$rootScope', '$scope', '$http', '$stateParams', function ($rootScope, $scope, $http, $stateParams) {
+    .controller('GameController', ['$rootScope', '$scope', '$http', '$stateParams', 'Game', function ($rootScope, $scope, $http, $stateParams, Game) {
 
-        // TODO remplacer par Game.getUserHand(name,user.name)
-        $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name)
+        Game.getUserHand($stateParams.name,$scope.user.name)
             .then(function (data) {
                 $scope.cartes = data.data.cartes;
                 console.log($scope.cartes);
