@@ -16,6 +16,8 @@ cp -rf ../../webuno/dist/ webapp/
 cp -rf ../../webuno/WEB-INF/ webapp/WEB-INF/
 echo "Copie des fichiers terminée."
 
-echo "\n***** MISE EN PRODUCTION OPÉRATIONNELLE *****\n"
+echo "Packaging du projet..."
+mvn package
+echo "Packaging du projet terminé."
 
-#maven package
+echo "\n***** MISE EN PRODUCTION OPÉRATIONNELLE *****\n"
