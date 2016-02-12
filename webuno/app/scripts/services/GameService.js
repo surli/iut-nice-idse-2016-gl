@@ -77,7 +77,7 @@ angular.module('unoApp')
                 var deferred = $q.defer();
 
                 $http.put('/rest/game/' + gameName, {
-                        player: Auth.getUser().name
+                        playerName: Auth.getUser().name
                     }, {
                         headers: {
                             token: Auth.getUser().token

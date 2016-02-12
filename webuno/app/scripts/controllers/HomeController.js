@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('unoApp')
-    .controller('HomeController', ['$scope', '$timeout', '$http', '$state', 'Game', function ($scope, $timeout, $http, $state, Game) {
+    .controller('HomeController', ['$scope', '$timeout', '$http', '$state', 'Games', 'Game', function ($scope, $timeout, $http, $state, Games, Game) {
         $scope.games = Games.data.games;
         var timeoutListGames;
 
