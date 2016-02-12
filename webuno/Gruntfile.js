@@ -81,30 +81,10 @@ module.exports = function (grunt) {
                 host: 'localhost', // wherever the data service is running
                 port: 8080 // the port that the data service is running on
             }],
-            /*
             livereload: {
                 options: {
                     open: true,
-                    middleware: function (connect) {
-                        return [
-                            connect.static('.tmp'),
-                            connect().use(
-                                '/bower_components',
-                                connect.static('./bower_components')
-                            ),
-                            connect().use(
-                                '/app/styles',
-                                connect.static('./app/styles')
-                            ),
-                            connect.static(appConfig.app)
-                        ];
-                    }
-                }
-            },
-            */
-            livereload: {
-                options: {
-                    open: true,
+                    /*
                     middleware: function (connect, options) {
                         var middlewares = [];
 
@@ -124,6 +104,27 @@ module.exports = function (grunt) {
                         options.base.forEach(function(base) {
                             middlewares.push(connect.static(base));
                         });
+
+                        return middlewares;
+                    }
+                    */
+                    middleware: function (connect) {
+                        var middlewares = [];
+
+                        // Setup the proxy
+                        middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
+
+                        // Serve static files
+                        middlewares.push(connect.static('.tmp'));
+                        middlewares.push(connect().use(
+                            '/bower_components',
+                            connect.static('./bower_components')
+                        ));
+                        middlewares.push(connect().use(
+                            '/app/styles',
+                            connect.static('./app/styles')
+                        ));
+                        middlewares.push(connect.static(appConfig.app));
 
                         return middlewares;
                     }
