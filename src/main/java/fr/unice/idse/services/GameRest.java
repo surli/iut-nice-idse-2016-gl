@@ -296,15 +296,17 @@ public class GameRest extends OriginRest{
     public Response pickacard(@PathParam("gameName")String gameName,@PathParam("playerName")String playerName) throws JSONException {
         // Cration de tous les objets
         Model model = Model.getInstance();
+        JSONObject jsonReturn = new JSONObject();
         Player player = model.findPlayerByName(gameName, playerName);
         Player verifplayer = model.findGameByName(gameName).getBoard().getActualPlayer();
 
-        if(!player.equals(verifplayer))
-            return sendResponse(405, "Joueur non autorisé à piocher", "POST");
-
+        if(!player.equals(verifplayer)) {
+            jsonReturn.put("return", false);
+            return sendResponse(405, jsonReturn.toString(), "POST");
+        }
         model.findGameByName(gameName).getBoard().drawCard();
-
-        return sendResponse(200, "carte ajoutée à la main du joueur", "POST");
+        jsonReturn.put("return", true);
+        return sendResponse(200, jsonReturn.toString(), "POST");
     }
     
     /**
