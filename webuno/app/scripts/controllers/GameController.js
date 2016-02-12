@@ -12,7 +12,7 @@ angular.module('unoApp')
             });
 
         // TODO remplacer par Game.getGame(name)
-        $http.get('/rest/game/' + $stateParams.name)
+        Game.getGame($stateParams.name)
             .then(function (response) {
                 console.log(response.data);
                 //$scope.fausse = {};
