@@ -92,6 +92,6 @@ angular.module('unoApp')
         };
 
         $scope.$on('$destroy', function () {
-            $timeout.cancel();
+            $timeout.cancel(timeoutStateGame);
         });
     }]);
