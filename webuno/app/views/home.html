@@ -11,7 +11,7 @@
                 <tr data-ng-repeat="game in games">
                     <td>{{game.gamename}}</td>
                     <td>{{game.numberplayer}}/{{game.maxplayer}}</td>
-                    <td>{{(game.numberplayer == game.maxplayer) ? "Started" : "Waiting for Players"}}</td>
+                    <td>{{(game.state == "true") ? "Started" : ((game.numberplayer == game.maxplayer) ? "Full Players" : "Waiting for Players")}}</td>
                     <td>
                         <button class="btn btn-warning btn-sm"
                                 data-ng-if="game.numberplayer != game.maxplayer"
