@@ -1,14 +1,13 @@
 'use strict';
 
 angular.module('unoApp')
-    .controller('HomeController', ['$scope', '$timeout', '$http', '$state', 'Games', function ($scope, $timeout, $http, $state, Games) {
+    .controller('HomeController', ['$scope', '$timeout', '$http', '$state', 'Game', function ($scope, $timeout, $http, $state, Game) {
         $scope.games = Games.data.games;
         var timeoutListGames;
 
         $scope.requestListGames = function () {
             timeoutListGames = $timeout(function () {
-                // TODO remplacer par Game.getAllCurrentGames
-                $http.get('/rest/game/')
+                Game.getAllGames()
                     .then(function (data) {
                         $scope.games = data.data.games;
                         $scope.requestListGames();
