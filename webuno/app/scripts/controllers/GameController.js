@@ -4,16 +4,14 @@ angular.module('unoApp')
     .controller('GameController', ['$rootScope', '$scope', '$http', '$stateParams', '$timeout', 'Game', function ($rootScope, $scope, $http, $stateParams, $timeout, Game) {
         var timeoutStateGame;
 
-        // TODO remplacer par Game.getUserHand(name,user.name)
-        $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name)
+        Game.getUserHand($stateParams.name, $scope.user.name)
             .then(function (response) {
                 $scope.cartes = response.data.cartes;
             }, function (error) {
                 console.error('Une erreur est survenue : ' + error.toString());
             });
 
-        // TODO remplacer par Game.getGame(name)
-        $http.get('/rest/game/' + $stateParams.name)
+        Game.getGame($stateParams.name)
             .then(function (response) {
                 $scope.game = response.data;
                 $scope.requestStateGame();
@@ -25,7 +23,7 @@ angular.module('unoApp')
         $scope.requestStateGame = function () {
             timeoutStateGame = $timeout(function () {
                 //TODO remplacer par Game.getGame (attention il y a un traitement en plus que faire ?)
-                $http.get('/rest/game/' + $stateParams.name)
+                Game.getGame($stateParams.name)
                     .then(function (response) {
                         $scope.game = response.data;
 
