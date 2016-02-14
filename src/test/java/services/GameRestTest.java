@@ -158,7 +158,7 @@ public class GameRestTest extends JerseyTest {
     }
 
     @Test
-    public void createTest(){
+    public void createGameTest(){
         /**
          * Creation dun tableau formaté JSON avec les 3 parametres
          */
@@ -170,6 +170,68 @@ public class GameRestTest extends JerseyTest {
          */
         Response response = target("/game").request().post(jsonEntity);
         assertEquals(200, response.getStatus());
+    }
+    
+    @Test
+    public void createGameMissingGameTest(){
+        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', player: 'marcel', numberplayers:4}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+
+        /**
+         * on verifie que le code de retour est bien 405/error
+         */
+        Response response = target("/game").request().post(jsonEntity);
+        assertEquals(405, response.getStatus());
+    	
+    }
+
+    @Test
+    public void createGameGameLengthTest(){
+        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', game:'su', player: 'marcel', numberplayers:4}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+
+        /**
+         * on verifie que le code de retour est bien 405/error
+         */
+        Response response = target("/game").request().post(jsonEntity);
+        assertEquals(405, response.getStatus());	
+    }
+    
+    @Test
+    public void createGamePlayerMissingTest(){
+        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', game:'superfly', numberplayers:4}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+
+        /**
+         * on verifie que le code de retour est bien 405/error
+         */
+        Response response = target("/game").request().post(jsonEntity);
+        assertEquals(405, response.getStatus());	
+    }
+    
+    
+    @Test
+    public void createGameNumberplayersMissingTest(){
+        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', game:'superfly', player:''}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+
+        /**
+         * on verifie que le code de retour est bien 405/error
+         */
+        Response response = target("/game").request().post(jsonEntity);
+        assertEquals(405, response.getStatus());	
+    }
+    
+    @Test
+    public void createGameNumberplayersToHighTest(){
+        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', game:'superfly', player:'', numberplayers:8}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+
+        /**
+         * on verifie que le code de retour est bien 405/error
+         */
+        Response response = target("/game").request().post(jsonEntity);
+        assertEquals(405, response.getStatus());	
     }
     
     /*
@@ -211,6 +273,23 @@ public class GameRestTest extends JerseyTest {
         Response response = target("/game/tata/toto").request().post(jsonEntity);
     	assertEquals(200, response.getStatus());
     }
+    
+//    @Test
+//    public void pickacardRightPlayerTest() throws JSONException{
+//       	model.findGameByName("tata").start();
+//    	String json = "{game:'tata', playerName: 'toto'}";
+//        Game game = model.findGameByName("tata");
+//
+//        Player player = model.findPlayerByName("tata", "toto");
+//
+//        Player verifplayer = game.getBoard().getActualPlayer();
+//        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+//        Response response = target("/game/tata/toto").request().post(jsonEntity);
+//
+//        if(!player.equals(verifplayer)){
+//        	assertEquals(405, response.getStatus());
+//        }
+//    }
 
     /*
      * ******************************************************************************************************
