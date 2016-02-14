@@ -49,27 +49,13 @@ public class Model {
 		}
 		return false;
 	}
-	
-	/**
-	 * Créer un joueur s'il n'existe pas
-	 * @param playerName, playerToken
-	 * @return Player
-	 */
-	public Player createPlayer(String playerName,String playerToken)
-	{
-		if(!playerExists(playerName))
-		{
-			return new Player(playerName,playerToken);
-		}
-		return null;
-	}
-	
+
 	/**
 	 * Créer un joueur s'il n'existe pas et l'ajoute dans la liste des joueurs
 	 * @param playerName, playerToken
 	 * @return true/false
 	 */
-	public boolean createPlayerBis(String playerName,String playerToken)
+	public boolean createPlayer(String playerName, String playerToken)
 	{
 		if(!playerExists(playerName))
 		{

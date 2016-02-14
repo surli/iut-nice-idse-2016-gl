@@ -18,11 +18,7 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.unice.idse.constante.Config;
-import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
-import fr.unice.idse.model.Player;
-import fr.unice.idse.model.Stack;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
@@ -44,7 +40,7 @@ public class GameRestTest extends JerseyTest {
         model = Model.getInstance();
         model.setGames(new ArrayList<>());
         model.setPlayers(new ArrayList<>());
-        model.createPlayerBis("toto", "token");
+        model.createPlayer("toto", "token");
         model.addGame(model.getPlayerFromList("token"), "tata", 4);
     }
 
@@ -52,7 +48,7 @@ public class GameRestTest extends JerseyTest {
     public void retourneLeJoueurActuelDeLaPartie() throws JSONException {
         // Init the game
         for(int i = 0; i < 3; i++){
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
         assertTrue(model.findGameByName("tata").start());
@@ -88,7 +84,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void retourneTrueSiLaPartieEstLanceeAvecTousLesJoueurs() throws JSONException{
         for(int i = 0; i < 3; i++){
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
         assertTrue(model.findGameByName("tata").start());
@@ -108,7 +104,7 @@ public class GameRestTest extends JerseyTest {
 
     @Test
     public void ajouteUnJoueurInexistantDansUnePartie() throws JSONException{
-        model.createPlayerBis("titi", "jdqsdhsqd");
+        model.createPlayer("titi", "jdqsdhsqd");
         String json = "{playerName: 'titi'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
         Response response = target("/game/tata").request().header("token", "jdqsdhsqd").put(jsonEntity);
@@ -121,10 +117,10 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void ajouteUnJoueurExistantDansUnePartiePleine() throws JSONException{
         for(int i = 0; i < 3; i++) {
-            assertTrue(model.createPlayerBis("azert" + i, "token" + i));
+            assertTrue(model.createPlayer("azert" + i, "token" + i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
-        model.createPlayerBis("Aladin", "letokendelamort");
+        model.createPlayer("Aladin", "letokendelamort");
         String json = "{playerName : 'Aladin'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
         Response response = target("/game/tata").request().header("token", "letokendelamort").put(jsonEntity);
@@ -137,7 +133,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void getHandDunJoueur() throws JSONException{
         for(int i = 0; i < 3; i++) {
-            assertTrue(model.createPlayerBis("azert" + i, "token" + i));
+            assertTrue(model.createPlayer("azert" + i, "token" + i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
         assertTrue(model.findGameByName("tata").start());
@@ -163,7 +159,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void lancerUnePartieQuiADejaCommencer() throws JSONException{
         for(int i = 0; i < 3; i++) {
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
         assertTrue(model.findGameByName("tata").start());
@@ -180,7 +176,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void lancerUnePartieAvecTousLesJoueurs() throws JSONException{
         for(int i = 0; i < 3; i++) {
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
 
@@ -198,7 +194,7 @@ public class GameRestTest extends JerseyTest {
         /**
          * Creation dun tableau formaté JSON avec les 3 parametres
          */
-        assertTrue(model.createPlayerBis("marcel", "token1233"));
+        assertTrue(model.createPlayer("marcel", "token1233"));
         String json = "{game: 'superfly', player: 'marcel', numberplayers:4}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
 
@@ -286,7 +282,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void retourneUnTableauVideSiAucuneGame() throws JSONException{
         model.setGames(new ArrayList<>());
-        assertTrue(model.createPlayerBis("Aladin", "azertyuiop"));
+        assertTrue(model.createPlayer("Aladin", "azertyuiop"));
         Response response = target("/game").request().header("token", "azertyuiop").get();
         assertEquals(200, response.getStatus());
 
@@ -297,7 +293,7 @@ public class GameRestTest extends JerseyTest {
 
     @Test
     public void retourneUnTableauAvecUneGame() throws JSONException{
-        assertTrue(model.createPlayerBis("Aladin", "azertyuiop"));
+        assertTrue(model.createPlayer("Aladin", "azertyuiop"));
         Response response = target("/game").request().header("token", "azertyuiop").get();
         assertEquals(200, response.getStatus());
 
@@ -309,7 +305,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void pickacardTest() throws JSONException{
         for(int i = 0; i < 3; i++) {
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
         assertTrue(model.findGameByName("tata").start());
@@ -350,7 +346,7 @@ public class GameRestTest extends JerseyTest {
     public void retourne405SiLeJoeurNExistePas() throws JSONException{
         // Init the game
         for(int i = 0; i < 3; i++){
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
         assertTrue(model.findGameByName("tata").start());
@@ -365,10 +361,10 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void retourne405SiLeJoeurNExistePasDansCettePartie() throws JSONException{
         // Init the game
-        assertTrue(model.createPlayerBis("john", "tokenultime"));
+        assertTrue(model.createPlayer("john", "tokenultime"));
         assertTrue(model.addGame(model.getPlayerFromList("tokenultime"), "test", 4));
         for(int i = 0; i < 6; i++){
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             if(i >= 3)
                 assertTrue(model.addPlayerToGame("test", model.getPlayerFromList("token"+i)));
             else
@@ -388,7 +384,7 @@ public class GameRestTest extends JerseyTest {
     public void retourne405SiLeJSONEnvoyerEstInvalide() throws JSONException{
         // Init the game
         for(int i = 0; i < 3; i++){
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
         assertTrue(model.findGameByName("tata").start());
@@ -404,7 +400,7 @@ public class GameRestTest extends JerseyTest {
     public void retourne405SiLeJSONEnvoyerEstInvalideDusALaValueManquante() throws JSONException{
         // Init the game
         for(int i = 0; i < 3; i++){
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
         assertTrue(model.findGameByName("tata").start());
@@ -421,7 +417,7 @@ public class GameRestTest extends JerseyTest {
     public void retourne405SiLeJSONEnvoyerEstInvalideDusALaColorManquante() throws JSONException{
         // Init the game
         for(int i = 0; i < 3; i++){
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
         assertTrue(model.findGameByName("tata").start());
@@ -439,7 +435,7 @@ public class GameRestTest extends JerseyTest {
     public void retourne405SiLeJoeurNePeutPasJouer() throws JSONException{
         // Init the game
         for(int i = 0; i < 3; i++){
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
         assertTrue(model.findGameByName("tata").start());
@@ -457,7 +453,7 @@ public class GameRestTest extends JerseyTest {
     public void retourne405SiLeJoueurNePossedePasLaCarte() throws JSONException{
         // Init the game
         for(int i = 0; i < 3; i++){
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
         assertTrue(model.findGameByName("tata").start());
@@ -479,7 +475,7 @@ public class GameRestTest extends JerseyTest {
     public void retourne405SiLaCarteNEstPasJouable() throws JSONException {
         // Init the game
         for(int i = 0; i < 3; i++){
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
         assertTrue(model.findGameByName("tata").start());
@@ -512,7 +508,7 @@ public class GameRestTest extends JerseyTest {
     public void retourne200SiTouteLesConditionSontValider() throws JSONException{
         // Init the game
         for(int i = 0; i < 3; i++){
-            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
         }
         assertTrue(model.findGameByName("tata").start());
