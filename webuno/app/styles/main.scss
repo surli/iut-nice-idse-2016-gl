@@ -23,8 +23,7 @@ $carte-height: 360px*0.3;
   background-position: ($left*$col) ($top*$line) !important;
 }
 
-//Bouton responsive Commencer partie
-<<<<<<< HEAD:webuno/app/styles/main.scss
+// Bouton responsive Commencer partie
 #ingage {
   font-size: 2vw;
 }
@@ -35,16 +34,6 @@ $carte-height: 360px*0.3;
   }
 }
 
-=======
-#ingage{
-  font-size: 2vw;
-}
-@media screen and (min-width: 200px) and (max-width: 640px){
-  #ingage{
-    font-size: 7vw;
-  }
-}
->>>>>>> 22a48073a7df8087c3a1760052f6808df0f599dd:webuno/app/styles/main.scss
 .btn {
   color: #FFF;
   border: none;
