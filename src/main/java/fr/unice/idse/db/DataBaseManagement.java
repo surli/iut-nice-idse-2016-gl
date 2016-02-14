@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 public class DataBaseManagement {
 	/*
@@ -16,12 +16,12 @@ public class DataBaseManagement {
 	private String user = "root";
 	private String pass = "root";
 	private Connection con = null;
-	private Statement statement = null;
-	private ResultSet resultQuery = null;
+	private PreparedStatement ps = null;
+	private ResultSet rs = null;
 
 	public void connect() throws SQLException {
-		resultQuery = null;
-		statement = null;
+		rs = null;
+		ps = null;
 		con = null;
 
 		try {
@@ -31,39 +31,43 @@ public class DataBaseManagement {
 			e.printStackTrace();
 		}
 		con = DriverManager.getConnection(url, user, pass);
-		statement = con.createStatement();
 	}
 
 	public void end() {
 		try {
-			resultQuery.close();
-			statement.close();
+			rs.close();
+			ps.close();
 			con.close();
 		} catch (SQLException ignore) {
 		}
 	}
 
 	public boolean userLoginIsCorrect(String email, String password) {
+		String query = "SELECT u_email, u_password FROM users WHERE u_email = ? AND u_password = ?";
 		try {
-			resultQuery = statement.executeQuery("SELECT u_email, u_password FROM users WHERE u_email = \""
-					+ email + "\" AND u_password = \"" + password + "\"");
-			if (resultQuery.next()) {
-				if (resultQuery.getString("u_email").equals(email) && resultQuery.getString("u_password").equals(password))
+			ps = con.prepareStatement(query);
+			ps.setString(1, email);
+			ps.setString(2, password);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				if (rs.getString("u_email").equals(email) && rs.getString("u_password").equals(password))
 					return true;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return false;
 	}
 
 	public String getPseudoWithEmail(String email) {
+		String query = "SELECT u_pseudo FROM users WHERE u_email = ?";
 		try {
-			resultQuery = statement.executeQuery("SELECT u_pseudo FROM users WHERE u_email = \"" + email + "\"");
-			if (resultQuery.next()) {
-				return resultQuery.getString("u_pseudo");
+			ps = con.prepareStatement(query);
+			ps.setString(1, email);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				return rs.getString("u_pseudo");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
