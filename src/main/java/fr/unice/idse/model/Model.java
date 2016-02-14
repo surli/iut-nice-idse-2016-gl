@@ -2,6 +2,8 @@ package fr.unice.idse.model;
 
 import java.util.ArrayList;
 
+import fr.unice.idse.model.card.Color;
+
 public class Model {
 	private ArrayList<Game> games;
 	private ArrayList<Player> players;
@@ -71,7 +73,7 @@ public class Model {
 	{
 		if(!playerExists(playerName))
 		{
-			if(!playerExistsInList(playerToken))
+			if(!playerExistsInList(playerName))
 			{
 				players.add(new Player(playerName,playerToken));
 				return true;
@@ -99,14 +101,14 @@ public class Model {
 	
 	/**
 	 * Vérifie si le player existe dans la liste des joueurs
-	 * @param playerToken
+	 * @param playerName
 	 * @return true/false
 	 */
-	public boolean playerExistsInList(String playerToken)
+	public boolean playerExistsInList(String playerName)
 	{
 		for(Player player : players)
 		{
-			if(player.getToken().equals(playerToken))
+			if(player.getName().equals(playerName))
 			{
 				return true;
 			}
@@ -179,6 +181,7 @@ public class Model {
 		Game game = findGameByName(gameName);
 		if(game != null)
 		{
+			players.remove(player);
 			return game.addPlayer(player);
 		}
 		return false;
@@ -253,9 +256,7 @@ public class Model {
 	/**
 	 * Le joueur désigné joue une carte en fonction de la position de la carte
 	 * (cardPosition)dans la main du joueur, dans la partie indiquée  
-	 * @param game
 	 * @param playerName
-	 * @param colorNumber
 	 * @param cardPosition
 	 * @return true/false
 	 */
@@ -272,7 +273,6 @@ public class Model {
 	 * Le joueur désigné joue une carte en fonction de la position de la carte
 	 * (cardPosition)dans la main du joueur, dans la partie indiquée et change de
 	 * couleur selon la couleur indiquée (0 -> Bleu, 1 -> Jaune, 2 -> Rouge, 3 -> Vert)
-	 * @param game
 	 * @param playerName
 	 * @param colorNumber
 	 * @return true/false

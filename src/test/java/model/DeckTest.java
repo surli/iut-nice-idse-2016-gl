@@ -1,6 +1,9 @@
 package model;
 
 import fr.unice.idse.model.*;
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
+
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;

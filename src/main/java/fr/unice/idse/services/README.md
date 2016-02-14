@@ -56,8 +56,9 @@ jetty:run
 │   │   │   ├── POST    Pioche une carte
 │   │   │   ├── PUT     Joue une carte
 ├── /player 
+│   ├── GET             Retourne la liste des joueurs
 │   ├── /{playerName} 
-│   │   ├── GET         Retourne la liste des joueurs
+│   │   ├── GET         Retourne les informations du joueur
 ├── /auth
 │   ├── POST            Authentifie un Guest en renvoyant un token
 ```
@@ -199,7 +200,7 @@ __GET /uno/player__ GetListPlayers
 {
     "players": [
         {
-            "playerName":"john",
+            "pseudo":"john",
             "email":"john@mail.com",
         }
     ]

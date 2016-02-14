@@ -24,6 +24,18 @@ $carte-height: 360px*0.3;
 }
 
 //Bouton responsive Commencer partie
+<<<<<<< HEAD:webuno/app/styles/main.scss
+#ingage {
+  font-size: 2vw;
+}
+
+@media screen and (min-width: 200px) and (max-width: 640px) {
+  #ingage {
+    font-size: 7vw;
+  }
+}
+
+=======
 #ingage{
   font-size: 2vw;
 }
@@ -32,6 +44,7 @@ $carte-height: 360px*0.3;
     font-size: 7vw;
   }
 }
+>>>>>>> 22a48073a7df8087c3a1760052f6808df0f599dd:webuno/app/styles/main.scss
 .btn {
   color: #FFF;
   border: none;
@@ -70,7 +83,7 @@ $carte-height: 360px*0.3;
   }
 }
 
-input {
+input, select {
   border: none;
   text-align: center;
   color: $gris;
@@ -104,6 +117,16 @@ input {
 
   .panel-body {
     padding: 30px 10px;
+
+    table {
+      margin: 0;
+
+      tr {
+        td, th {
+          border-top: 1px solid rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
   }
 }
 
@@ -123,26 +146,32 @@ input {
   background-size: $carte-width*14 $carte-height*8;
   transform-origin: left bottom;
 
+
   @for $i from 0 through 12 {
-    &.Trefle-#{$i+1} {
+    &.Red-#{$i} {
       @include sprite-carte($i, 0);
     }
   }
-  @for $i from 0 through 13 {
-    &.Carreau-#{$i+1} {
+  @for $i from 0 through 12 {
+    &.Yellow-#{$i} {
       @include sprite-carte($i, 1);
     }
   }
-
-  @for $i from 0 through 13 {
-    &.Coeur-#{$i+1} {
+  @for $i from 0 through 12 {
+    &.Green-#{$i} {
       @include sprite-carte($i, 2);
     }
   }
-  @for $i from 0 through 13 {
-    &.Pique-#{$i+1} {
+  @for $i from 0 through 12 {
+    &.Blue-#{$i} {
       @include sprite-carte($i, 3);
     }
+  }
+  &.Black-14 {
+    @include sprite-carte(13, 5);
+  }
+  &.Black-13 {
+    @include sprite-carte(13, 0);
   }
 }
 
@@ -314,18 +343,22 @@ footer {
 
 /* Rotation */
 @keyframes rotate {
-  from {transform: rotate(0deg);}
-  to {transform: rotate(360deg);}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 #loader {
   width: 4em;
   height: 4em;
   position: fixed;
-  left:50%;
-  right:50%;
-  top:50%;
-  bottom:50%;
+  left: 50%;
+  right: 50%;
+  top: 50%;
+  bottom: 50%;
   margin-left: -2em;
   margin-top: -2em;
   content: "";
@@ -347,11 +380,11 @@ footer {
 
   &:before {
     transform: rotate(60deg);
-    background-color: $orange;
+    background-color: $vert;
   }
 
   &:after {
     transform: rotate(-60deg);
-    background-color: $orange;
+    background-color: $vert;
   }
 }

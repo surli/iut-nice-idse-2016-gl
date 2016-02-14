@@ -1,0 +1,25 @@
+<div class="col-md-12 text-center" style="padding-bottom: 15px;">
+    <h1 class="title">Room {{gameName}}</h1>
+    <br />
+    <button data-ng-if="game.players.length == game.maxplayers && game.host == user.name" class="btn btn-success btn-lg" data-ng-click="startGameNow()">Start game now</button>
+    <br />
+</div>
+<div class="col-md-10 col-md-offset-1">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Waiting for players...
+            <span style="float: right">{{game.players.length}}/{{game.maxplayers}} joined</span>
+        </div>
+        <div class="panel-body" style="padding: 0;">
+            <table class="table">
+                <tr data-ng-repeat="player in game.players">
+                    <td width="15">
+                        <i data-ng-if="game.host == player.name" class="fa fa-bookmark-o" style="color: #f55; font-weight: bolder;"></i>
+                        <i data-ng-if="game.host != player.name" class="fa fa-child" style="color: #fa0;"></i>
+                    </td>
+                    <td class="text-center">{{player.name}} join the game</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
