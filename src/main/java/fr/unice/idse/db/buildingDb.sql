@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Jeu 11 Février 2016 à 15:35
+-- Généré le :  Dim 14 Février 2016 à 16:42
 -- Version du serveur :  5.6.20-log
 -- Version de PHP :  5.5.15
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `uno`
 --
+CREATE DATABASE IF NOT EXISTS `uno` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `uno`;
 
 -- --------------------------------------------------------
 
@@ -112,7 +114,7 @@ ALTER TABLE `hands_players_in_game`
 -- Index pour la table `users`
 --
 ALTER TABLE `users`
- ADD PRIMARY KEY (`u_id`,`u_pseudo`,`u_email`);
+ ADD PRIMARY KEY (`u_id`,`u_pseudo`,`u_email`), ADD UNIQUE KEY `u_id` (`u_id`), ADD UNIQUE KEY `u_pseudo` (`u_pseudo`), ADD UNIQUE KEY `u_email` (`u_email`);
 
 --
 -- AUTO_INCREMENT pour les tables exportées
