@@ -20,9 +20,9 @@ public class DataBaseManagement {
 	private ResultSet resultQuery = null;
 
 	public void connect() throws SQLException {
-		this.resultQuery = null;
-		this.statement = null;
-		this.con = null;
+		resultQuery = null;
+		statement = null;
+		con = null;
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -30,37 +30,41 @@ public class DataBaseManagement {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.con = (Connection) DriverManager.getConnection(url, user, pass);
-		this.statement = con.createStatement();
+		con = DriverManager.getConnection(url, user, pass);
+		statement = con.createStatement();
 	}
 
 	public void end() {
 		try {
-			this.resultQuery.close();
-			this.statement.close();
-			this.con.close();
+			resultQuery.close();
+			statement.close();
+			con.close();
 		} catch (SQLException ignore) {
 		}
 	}
 
 	public boolean userLoginIsCorrect(String email, String password) {
 		try {
-			this.resultQuery = this.statement.executeQuery("SELECT u_email, u_password FROM users WHERE u_email = \""
+			resultQuery = statement.executeQuery("SELECT u_email, u_password FROM users WHERE u_email = \""
 					+ email + "\" AND u_password = \"" + password + "\"");
-			if (resultQuery.getString("u_email") == email && resultQuery.getString("u_password") == password)
-				return true;
+			if (resultQuery.next()) {
+				if (resultQuery.getString("u_email").equals(email) && resultQuery.getString("u_password").equals(password))
+					return true;
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		return false;
 	}
 
 	public String getPseudoWithEmail(String email) {
 		try {
-			this.resultQuery = this.statement
-					.executeQuery("SELECT u_pseudo FROM users WHERE u_email = \"" + email + "\"");
-			return resultQuery.getString("u_pseudo");
+			resultQuery = statement.executeQuery("SELECT u_pseudo FROM users WHERE u_email = \"" + email + "\"");
+			if (resultQuery.next()) {
+				return resultQuery.getString("u_pseudo");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

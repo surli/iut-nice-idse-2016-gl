@@ -19,7 +19,7 @@ public class DataBaseManagementTest {
 	@Test
 	public void getPseudoWithEmailIsCorrect() throws SQLException {
 		dataBaseManagement.connect();
-		assertEquals(dataBaseManagement.getPseudoWithEmail("test@gmail.com"), "test");
+		assertTrue(dataBaseManagement.getPseudoWithEmail("test@gmail.com").equals("test"));
 		dataBaseManagement.end();
 	}
 }
