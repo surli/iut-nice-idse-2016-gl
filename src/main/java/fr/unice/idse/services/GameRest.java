@@ -65,8 +65,9 @@ public class GameRest extends OriginRest{
 
     /**
      * Méthode en POST permettant la création de partie.
-     * Signature : {game: String, player: String(playerName du joueur)}
+     * Signature : {game: String, player: String(playerName du joueur), numberplayers:Int}
      * Le nom de la game doit être suppérieur à 3 caractères;
+     * Numberplayers doit être entre 2 et 6;
      * Vérifie si la partie existe ou non. Renvoie {message: boolean}
      * @return Response
      */
