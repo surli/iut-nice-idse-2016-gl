@@ -48,16 +48,33 @@ public class GameRest extends OriginRest{
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listGame(){
+    public Response listGame(@HeaderParam("token") String token) throws JSONException{
+        // Initialisation des variables
         Model model = Model.getInstance();
-        String [] list = new String[model.getGames().size()];
-        for (int i = 0; i < model.getGames().size(); i++){
-            list[i] = "{\"gamename\":\""+model.getGames().get(i).getGameName()+"\", " +
-                    "\"state\":\""+ model.getGames().get(i).gameBegin() +"\"," +
-                    "\"numberplayer\":"+ model.getGames().get(i).numberOfPlayers() +"," +
-                    "\"maxplayer\":\"" + model.getGames().get(i).getNumberPlayers() + "\"}";
+        JSONObject jsonObject = new JSONObject();
+        ArrayList<JSONObject> games = new ArrayList<JSONObject>();
+
+        // verification du token
+        if(token == null) {
+            jsonObject.put("error", "No token found");
+            return sendResponse(500, jsonObject.toString(), "GET");
         }
-        return sendResponse(200, "{\"games\" : "+ Arrays.toString(list)+"}", "GET");
+        if(model.getPlayerFromList(token) == null){
+            jsonObject.put("error", "No player found with this token");
+            return sendResponse(500, jsonObject.toString(), "GET");
+        }
+
+        // Ajout des games dans la liste
+        for (int i = 0; i < model.getGames().size(); i++){
+            JSONObject jsonFils = new JSONObject();
+            jsonFils.put("gamename", model.getGames().get(i).getGameName());
+            jsonFils.put("state", model.getGames().get(i).gameBegin());
+            jsonFils.put("numberplayer", model.getGames().get(i).numberOfPlayers());
+            jsonFils.put("maxplayer", model.getGames().get(i).getNumberPlayers());
+            games.add(jsonFils);
+        }
+        jsonObject.put("games", games);
+        return sendResponse(200, jsonObject.toString(), "GET");
     }
 
     /**

@@ -268,8 +268,9 @@ public class GameRestTest extends JerseyTest {
      */
     @Test
     public void retourneUnTableauVideSiAucuneGame() throws JSONException{
-        model.setGames(new ArrayList<Game>());
-        Response response = target("/game").request().get();
+        model.setGames(new ArrayList<>());
+        assertTrue(model.createPlayerBis("Aladin", "azertyuiop"));
+        Response response = target("/game").request().header("token", "azertyuiop").get();
         assertEquals(200, response.getStatus());
 
         // Parse la reponse en JSON
@@ -279,7 +280,8 @@ public class GameRestTest extends JerseyTest {
 
     @Test
     public void retourneUnTableauAvecUneGame() throws JSONException{
-        Response response = target("/game").request().get();
+        assertTrue(model.createPlayerBis("Aladin", "azertyuiop"));
+        Response response = target("/game").request().header("token", "azertyuiop").get();
         assertEquals(200, response.getStatus());
 
         // Parse la reponse en JSON
