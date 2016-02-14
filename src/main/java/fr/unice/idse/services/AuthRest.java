@@ -2,12 +2,9 @@ package fr.unice.idse.services;
 
 
 import fr.unice.idse.model.Model;
-import jersey.repackaged.com.google.common.hash.HashCode;
-import jersey.repackaged.com.google.common.hash.Hashing;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import javax.crypto.SecretKeyFactory;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -40,7 +37,7 @@ public class AuthRest extends OriginRest{
 
         // Génération du token
         String token = generateToken(jsonObject.getString("playername"));
-        if(model.createPlayerBis(jsonObject.getString("playername"), token)){
+        if(model.createPlayer(jsonObject.getString("playername"), token)){
             jsonReturn.put("token", token);
             return sendResponse(200, jsonReturn.toString(), "POST");
         }

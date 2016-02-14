@@ -5,12 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
-import fr.unice.idse.model.Player;
-import fr.unice.idse.services.GameRest;
 import fr.unice.idse.services.PlayerRest;
-import groovy.lang.DelegatesTo.Target;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
@@ -55,8 +51,8 @@ public class PlayerRestTest extends JerseyTest {
 	@Test
 	public void retourneLaListeDeJoueur() throws JSONException {
 		Model model = Model.getInstance();
-		model.getPlayers().add(model.createPlayer("John", "dunnowhatitis"));
-		model.getPlayers().add(model.createPlayer("Marcel", "wellexplain"));
+		model.createPlayer("John", "dunnowhatitis");
+		model.createPlayer("Marcel", "wellexplain");
 		
 		Response response = target("/player").request().get();
 		JSONObject json = new JSONObject(response.readEntity(String.class));
