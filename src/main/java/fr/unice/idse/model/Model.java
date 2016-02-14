@@ -248,7 +248,7 @@ public class Model {
 		Game game = findGameByName(gameName);
 		if(game != null)
 		{
-			return game.findPlayerByName(playerToken);
+			return game.findPlayerByToken(playerToken);
 		}
 		return null;
 	}

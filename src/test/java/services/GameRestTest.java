@@ -78,7 +78,7 @@ public class GameRestTest extends JerseyTest {
 
     @Test
     public void retourneFalseSiLaPartieExisteMaisPasCommencer() throws JSONException{
-        Response response = target("/game/tata").request().get();
+        Response response = target("/game/tata").request().header("token", "token").get();
         assertEquals(200, response.getStatus());
         JSONObject json = new JSONObject(response.readEntity(String.class));
         assertFalse(json.getBoolean("state"));
@@ -90,7 +90,7 @@ public class GameRestTest extends JerseyTest {
             model.addPlayerToGame("tata", model.createPlayer("azert"+i, "token"+i));
         assertTrue(model.findGameByName("tata").start());
 
-        Response response = target("/game/tata").request().get();
+        Response response = target("/game/tata").request().header("token", "token").get();
         assertEquals(200, response.getStatus());
         JSONObject json = new JSONObject(response.readEntity(String.class));
         assertTrue(json.getBoolean("state"));
@@ -99,7 +99,7 @@ public class GameRestTest extends JerseyTest {
 
     @Test
     public void retourneUneErreur404SiPartieNexistePas() {
-        Response response = target("/game/sdsdsdss").request().get();
+        Response response = target("/game/sdsdsdss").request().header("token", "token").get();
         assertEquals(404, response.getStatus());
     }
 
@@ -172,7 +172,6 @@ public class GameRestTest extends JerseyTest {
 
         assertEquals(200, response.getStatus());
         JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
-        System.out.println(jsonresponse);
         assertTrue(jsonresponse.getBoolean("status"));
     }
 

@@ -97,7 +97,7 @@ public class GameRest extends OriginRest{
             return sendResponse(405, "{\"error\" : \"Invalid parameter game\"}", "POST");
         // verification du token
         if(token == null)
-            return sendResponse(405, "{\"error\" : \"Missing parameters token\"}", "PUT");
+            return sendResponse(405, "{\"error\" : \"Missing parameters token\"}", "POST");
 
         String game = json.getString("game");
         if(game.length() < 3)
@@ -134,13 +134,25 @@ public class GameRest extends OriginRest{
     @GET
     @Path("{gamename}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response stateGame(@PathParam("gamename") String gamename) throws JSONException {
+    public Response stateGame(@PathParam("gamename") String gamename, @HeaderParam("token") String token) throws JSONException {
         Model model = Model.getInstance();
         JSONObject jsonObject = new JSONObject();
         ArrayList<JSONObject> players = new ArrayList<JSONObject>();
 
-        if(model.findGameByName(gamename) == null)
-            return sendResponse(404, "Partie inconnu", "GET");
+        if(token == null){
+            jsonObject.put("error", "Missing token");
+            return sendResponse(500, jsonObject.toString(), "GET");
+        }
+
+        if(model.findGameByName(gamename) == null) {
+            jsonObject.put("error", "Partie inconnue");
+            return sendResponse(404, jsonObject.toString(), "GET");
+        }
+
+        if(model.findPlayerByToken(gamename, token) == null){
+            jsonObject.put("error", "Token invalid for this player");
+            return sendResponse(405, jsonObject.toString(), "GET");
+        }
 
         if(model.findGameByName(gamename).getBoard().gameBegin()){
             jsonObject.put("state", true);
