@@ -148,38 +148,44 @@ public class GameRestTest extends JerseyTest {
     public void lancerUnePartieSansTousLesJoueurs() throws JSONException{
         String json = "{playerName: 'toto'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata/command").request().put(jsonEntity);
+        Response response = target("/game/tata/command").request().header("token", "token").put(jsonEntity);
 
         assertEquals(500, response.getStatus());
-        assertEquals("Game not tucked", response.readEntity(String.class));
+        JSONObject reponse = new JSONObject(response.readEntity(String.class));
+        assertEquals("Game not tucked", reponse.getString("error"));
     }
 
     @Test
     public void lancerUnePartieQuiADejaCommencer() throws JSONException{
-        for(int i = 0; i < 3; i++)
-            model.addPlayerToGame("tata", model.createPlayer("azert"+i,"token"+i));
-        model.findGameByName("tata").start();
+        for(int i = 0; i < 3; i++) {
+            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
+        }
+        assertTrue(model.findGameByName("tata").start());
 
         String json = "{playerName: 'toto'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata/command").request().put(jsonEntity);
+        Response response = target("/game/tata/command").request().header("token", "token").put(jsonEntity);
 
         assertEquals(500, response.getStatus());
-        assertEquals("Game started", response.readEntity(String.class));
+        JSONObject reponse = new JSONObject(response.readEntity(String.class));
+        assertEquals("Game started", reponse.getString("error"));
     }
 
     @Test
     public void lancerUnePartieAvecTousLesJoueurs() throws JSONException{
-        for(int i = 0; i < 3; i++)
-            model.addPlayerToGame("tata", model.createPlayer("azert"+i, "token"+i));
+        for(int i = 0; i < 3; i++) {
+            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
+        }
 
         String json = "{playerName: 'toto'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata/command").request().put(jsonEntity);
+        Response response = target("/game/tata/command").request().header("token", "token").put(jsonEntity);
 
         assertEquals(200, response.getStatus());
-        JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
-        assertTrue(jsonresponse.getBoolean("status"));
+        JSONObject reponse = new JSONObject(response.readEntity(String.class));
+        assertTrue(reponse.getBoolean("status"));
     }
 
     @Test

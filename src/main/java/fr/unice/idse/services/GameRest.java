@@ -251,29 +251,38 @@ public class GameRest extends OriginRest{
         }
 
         // verification du token
-        /*
-        if(!json.has("_token"))
-            return Response.status(401).entity("Invalid token").build();
-        if(!Config._token.equals(json.getString("_token")))
-            return Response.status(401).entity("Invalid token").build();
-		*/
+        if(token == null){
+            jsonObject.put("error", "Token not found");
+            return sendResponse(405, jsonObject.toString(), "PUT");
+        }
 
         // verification du playerName
         if(!json.has("playerName")) {
             jsonObject.put("error", "Missing parameters playerName");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
-        if(model.findPlayerByName(gamename, json.getString("playerName")) == null)
-            return sendResponse(405, "playerName unknown", "PUT");
+        if(model.findPlayerByName(gamename, json.getString("playerName")) == null) {
+            jsonObject.put("error", "playerName unknow");
+            return sendResponse(405, jsonObject.toString(), "PUT");
+        }
+        if(!model.findPlayerByName(gamename, json.getString("playerName")).getToken().equals(token)){
+            jsonObject.put("error", "Token invalid for this player");
+            return sendResponse(405, jsonObject.toString(), "PUT");
+        }
 
-        if(model.findGameByName(gamename).gameBegin())
-            return sendResponse(500, "Game started", "PUT");
+        if(model.findGameByName(gamename).gameBegin()) {
+            jsonObject.put("error", "Game started");
+            return sendResponse(500, jsonObject.toString(), "PUT");
+        }
 
         if(model.findGameByName(gamename).getNumberPlayers() == model.findGameByName(gamename).getBoard().getPlayers().size())
-            if(model.startGame(gamename, json.getString("playerName")))
-                return sendResponse(200, "{\"status\": true}", "PUT");
+            if(model.startGame(gamename, json.getString("playerName"))) {
+                jsonObject.put("status", true);
+                return sendResponse(200, jsonObject.toString(), "PUT");
+            }
 
-        return sendResponse(500, "Game not tucked", "PUT");
+        jsonObject.put("error", "Game not tucked");
+        return sendResponse(500, jsonObject.toString(), "PUT");
     }
 
     /**
