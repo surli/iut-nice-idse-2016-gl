@@ -213,13 +213,13 @@ public class GameRest extends OriginRest{
         }
 
         // verification du joueur
-        if(!json.has("playername"))
+        if(!json.has("playerName"))
             return sendResponse(405, "Missing or invalid parameters", "PUT");
         if(model.getPlayerFromList(token) == null){
             jsonObject.put("error", "Player not found with this token");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
-        if(!model.getPlayerFromList(token).getName().equals(json.getString("playername"))){
+        if(!model.getPlayerFromList(token).getName().equals(json.getString("playerName"))){
             jsonObject.put("error", "Token invalid for this player");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
@@ -238,14 +238,17 @@ public class GameRest extends OriginRest{
     @PUT
     @Path("{gamename}/command")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response beginGame(@PathParam("gamename") String gamename, String objJSON) throws JSONException{
+    public Response beginGame(@HeaderParam("token") String token, @PathParam("gamename") String gamename, String objJSON) throws JSONException{
         // Initialisation des objets
         Model model = Model.getInstance();
-        Game game = model.findGameByName(gamename);
         JSONObject json = new JSONObject(objJSON);
+        JSONObject jsonObject = new JSONObject();
 
-        if(game == null)
-            return sendResponse(404, "Partie inconnu", "PUT");
+        // Verification de la game
+        if(model.findGameByName(gamename) == null) {
+            jsonObject.put("error", "Partie inconnue");
+            return sendResponse(404, jsonObject.toString(), "PUT");
+        }
 
         // verification du token
         /*
@@ -256,8 +259,10 @@ public class GameRest extends OriginRest{
 		*/
 
         // verification du playerName
-        if(!json.has("playerName"))
-            return sendResponse(405, "Missing parameters playerName", "PUT");
+        if(!json.has("playerName")) {
+            jsonObject.put("error", "Missing parameters playerName");
+            return sendResponse(405, jsonObject.toString(), "PUT");
+        }
         if(model.findPlayerByName(gamename, json.getString("playerName")) == null)
             return sendResponse(405, "playerName unknown", "PUT");
 
