@@ -7,6 +7,7 @@ import fr.unice.idse.db.DataBaseManagement;;
 
 public class DataBaseManagementTest {
 
+	/*
 	DataBaseManagement dataBaseManagement = new DataBaseManagement();
 
 	@Test
@@ -22,4 +23,5 @@ public class DataBaseManagementTest {
 		assertTrue(dataBaseManagement.getPseudoWithEmail("test@gmail.com").equals("test"));
 		dataBaseManagement.end();
 	}
+	*/
 }
