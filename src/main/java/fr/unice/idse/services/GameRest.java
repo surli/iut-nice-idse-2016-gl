@@ -294,23 +294,33 @@ public class GameRest extends OriginRest{
     @GET
     @Path("{gamename}/command")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response actualPlayer(@PathParam("gamename") String gamename) {
+    public Response actualPlayer(@HeaderParam("token") String token, @PathParam("gamename") String gamename) throws JSONException{
         // Initialisation des objets
         Model model = Model.getInstance();
-        Game game = model.findGameByName(gamename);
+        JSONObject jsonObject = new JSONObject();
 
         // Verifie si le jeu a commencer
-        if(!game.gameBegin())
-            return sendResponse(401, "{\"error\":\"Game has not begin\"}", "GET");
+        if(!model.findGameByName(gamename).gameBegin()) {
+            jsonObject.put("error", "Game has not begin");
+            return sendResponse(401, jsonObject.toString(), "GET");
+        }
+
+        if(model.findPlayerByToken(gamename, token) == null){
+            jsonObject.put("error", "Invalid token");
+            return sendResponse(405, jsonObject.toString(), "GET");
+        }
 
         // Recherche le joueur actuel
         Player currentPlayer = model.findGameByName(gamename).getBoard().getActualPlayer();
 
         // Verifie qu'un joueur courant existe
-        if(currentPlayer == null)
-            return sendResponse(422, "{\"error\":\"No current player has been set\"}", "GET");
+        if(currentPlayer == null) {
+            jsonObject.put("error", "No current player has been set");
+            return sendResponse(422, jsonObject.toString(), "GET");
+        }
 
-        return sendResponse(200, "{\"playerName\":\"" + currentPlayer.getName() + "\"}", "GET");
+        jsonObject.put("playerName", currentPlayer.getName());
+        return sendResponse(200, jsonObject.toString(), "GET");
     }
 
     /*

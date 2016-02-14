@@ -51,13 +51,14 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void retourneLeJoueurActuelDeLaPartie() throws JSONException {
         // Init the game
-        model.findGameByName("tata").addPlayer(model.createPlayer("marcel", "token2"));
-        model.findGameByName("tata").addPlayer(model.createPlayer("chris", "token3"));
-        model.findGameByName("tata").addPlayer(model.createPlayer("maurice", "token4"));
-        model.findGameByName("tata").start();
+        for(int i = 0; i < 3; i++){
+            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
+        }
+        assertTrue(model.findGameByName("tata").start());
 
         // Test the methods
-        Response response = target("/game/tata/command").request().get();
+        Response response = target("/game/tata/command").request().header("token", "token").get();
         JSONObject json = new JSONObject(response.readEntity(String.class));
 
         // Assert
@@ -441,13 +442,14 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void retourne405SiLeJoeurNePeutPasJouer() throws JSONException{
         // Init the game
-        model.findGameByName("tata").addPlayer(model.createPlayer("marcel", "token1"));
-        model.findGameByName("tata").addPlayer(model.createPlayer("chris", "token2"));
-        model.findGameByName("tata").addPlayer(model.createPlayer("maurice", "token3"));
-        model.findGameByName("tata").start();
+        for(int i = 0; i < 3; i++){
+            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
+        }
+        assertTrue(model.findGameByName("tata").start());
 
 
-        Response response = target("/game/tata/marcel").request().put(Entity.entity("{\"value\":6, \"color\":\"Blue\"}", MediaType.APPLICATION_JSON));
+        Response response = target("/game/tata/azert2").request().put(Entity.entity("{\"value\":6, \"color\":\"Blue\"}", MediaType.APPLICATION_JSON));
         assertEquals(405, response.getStatus());
         // Parse la reponse en JSON
         JSONObject json = new JSONObject(response.readEntity(String.class));
