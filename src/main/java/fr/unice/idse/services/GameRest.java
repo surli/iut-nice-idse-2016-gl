@@ -332,21 +332,36 @@ public class GameRest extends OriginRest{
     @GET
     @Path("/{gameName}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response handplayer(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName ) throws JSONException{
+    public Response handplayer(@HeaderParam("token") String token, @PathParam("playerName") String playerName, @PathParam("gameName") String gameName) throws JSONException{
         Model model = Model.getInstance();
         Player player = model.findPlayerByName(gameName, playerName);
-        if(player==null)
-            return sendResponse(405, "No player with : "+playerName, "GET");
+        JSONObject jsonObject = new JSONObject();
+        ArrayList<JSONObject> cartes = new ArrayList<>();
 
-        int taille =  player.getCards().size();
-
-        String [] list = new String[taille];
-        for (int i = 0; i < taille; i++){
-            list[i] = "{\"number\" : \""+player.getCards().get(i).getValue()+"\", " +
-                    "\"familly\" : \""+player.getCards().get(i).getColor()+"\"," +
-                    "\"position\" : \""+ i +"\"}";
+        if(token == null){
+            jsonObject.put("error", "Token not found");
+            return sendResponse(405, jsonObject.toString(), "GET");
         }
-        return sendResponse(200, "{\"cartes\": "+ Arrays.toString(list)+" }", "GET");
+        if(model.findPlayerByName(gameName, playerName) == null) {
+            jsonObject.put("error", "No player found");
+            return sendResponse(405, jsonObject.toString(), "GET");
+        }
+        if(!model.findPlayerByName(gameName, playerName).getToken().equals(token)){
+            jsonObject.put("error", "Token invalid for this player");
+            return sendResponse(405, jsonObject.toString(), "GET");
+        }
+
+
+        for (int i = 0; i < player.getCards().size(); i++){
+            JSONObject jsonFils = new JSONObject();
+            jsonFils.put("number", player.getCards().get(i).getValue());
+            jsonFils.put("family", player.getCards().get(i).getColor());
+            jsonFils.put("position", i);
+            cartes.add(jsonFils);
+        }
+        jsonObject.put("cartes", cartes);
+
+        return sendResponse(200, jsonObject.toString(), "GET");
     }
 
     /**
