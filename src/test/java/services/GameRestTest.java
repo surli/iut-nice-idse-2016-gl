@@ -106,7 +106,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void ajouteUnJoueurInexistantDansUnePartie() throws JSONException{
         model.createPlayerBis("titi", "jdqsdhsqd");
-        String json = "{playerName: 'titi'}";
+        String json = "{playername: 'titi'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
         Response response = target("/game/tata").request().header("token", "jdqsdhsqd").put(jsonEntity);
 
@@ -116,12 +116,19 @@ public class GameRestTest extends JerseyTest {
     }
 
     @Test
-    public void ajouterUnJoueurExistantDansUnePartie() throws JSONException{
-        String json = "{playerName: 'toto'}";
+    public void ajouteUnJoueurExistantDansUnePartiePleine() throws JSONException{
+        for(int i = 0; i < 3; i++) {
+            assertTrue(model.createPlayerBis("toto" + i, "token" + i));
+            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
+        }
+        model.createPlayerBis("Aladin", "letokendelamort");
+        String json = "{playername : 'Aladin'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata/toto").request().put(jsonEntity);
+        Response response = target("/game/tata").request().header("token", "letokendelamort").put(jsonEntity);
 
-        assertEquals(405, response.getStatus());
+        JSONObject lareponsejson = new JSONObject(response.readEntity(String.class));
+        assertEquals(200, response.getStatus());
+        assertFalse(lareponsejson.getBoolean("status"));
     }
 
     @Test

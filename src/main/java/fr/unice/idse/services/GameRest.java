@@ -198,30 +198,40 @@ public class GameRest extends OriginRest{
     public Response addPlayer(@HeaderParam("token") String token, @PathParam("gamename") String gamename, String objJSON) throws JSONException{
         // Initialisation des objets
         Model model = Model.getInstance();
-        Game game = model.findGameByName(gamename);
         JSONObject json = new JSONObject(objJSON);
+        JSONObject jsonObject = new JSONObject();
 
-        if(game == null)
-            return sendResponse(404, "Partie inconnu", "PUT");
+        if(model.findGameByName(gamename) == null) {
+            jsonObject.put("error", "Partie inconnue");
+            return sendResponse(404, jsonObject.toString(), "PUT");
+        }
 
         // verification du token
-        if(token == null)
-            return sendResponse(405, "Missing parameters token", "PUT");
+        if(token == null) {
+            jsonObject.put("error", "Missing parameters token");
+            return sendResponse(405, jsonObject.toString(), "PUT");
+        }
 
         // verification du joueur
-        if(!json.has("playerName"))
+        if(!json.has("playername"))
             return sendResponse(405, "Missing or invalid parameters", "PUT");
-        Player player = model.createPlayer(json.getString("playerName"), token);
-        if(player == null)
-            return sendResponse(405, "Missing or invalid parameters", "PUT");
-        if(!player.getToken().equals(token))
-            return sendResponse(405, "Invalid parameters token", "PUT");
+        if(model.getPlayerFromList(token) == null){
+            jsonObject.put("error", "Player not found with this token");
+            return sendResponse(405, jsonObject.toString(), "PUT");
+        }
+        if(!model.getPlayerFromList(token).getName().equals(json.getString("playername"))){
+            jsonObject.put("error", "Token invalid for this player");
+            return sendResponse(405, jsonObject.toString(), "PUT");
+        }
 
         // verification game status
-        if(game.gameBegin())
-            return sendResponse(500, "Game started", "PUT");
+        if(model.findGameByName(gamename).gameBegin()) {
+            jsonObject.put("error", "Game started");
+            return sendResponse(500, jsonObject.toString(), "PUT");
+        }
 
-        return sendResponse(200, "{\"status\" : "+model.addPlayerToGame(gamename, player)+"}", "PUT");
+        jsonObject.put("status", model.addPlayerToGame(gamename, model.getPlayerFromList(token)));
+        return sendResponse(200, jsonObject.toString(), "PUT");
     }
 
 
