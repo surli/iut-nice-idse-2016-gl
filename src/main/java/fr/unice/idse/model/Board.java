@@ -33,7 +33,8 @@ public class Board
 		effect = false;
 		cptDrawCard = 1;
 	}	
-	
+
+	public void setActualColor(Color actualColor){ this.actualColor = actualColor; }
 	/**
 	 * Change le sens de la partie.
 	 */

@@ -438,48 +438,65 @@ public class GameRest extends OriginRest{
     @PUT
     @Path("/{gameName}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response playCard(@PathParam("playerName") String playerName,@PathParam("gameName") String gameName, String strJSON ) throws JSONException{
+    public Response playCard(@HeaderParam("token") String token, @PathParam("playerName") String playerName, @PathParam("gameName") String gameName, String strJSON ) throws JSONException{
         Model model = Model.getInstance();
+        JSONObject jsonObject = new JSONObject();
+
         // Verification que la partie existe et est commencée
         if(!model.existsGame(gameName)) {
-            return sendResponse(405, "{\"error\": \"The game does not exist\"}", "PUT");
+            jsonObject.put("error", "The game does not exist");
+            return sendResponse(405, jsonObject.toString(), "PUT");
         }
         if(!model.findGameByName(gameName).gameBegin()) {
-            return sendResponse(405, "{\"error\": \"The game does hasn't begun\"}", "PUT");
+            jsonObject.put("error", "The game does hasn't begun");
+            return sendResponse(405, jsonObject.toString(), "PUT");
         }
 
-        // Verification que le joueur existe et st present dans la partie
-        Player player = model.findPlayerByName(gameName, playerName);
-        if(player == null) {
-            return sendResponse(405, "{\"error\": \"The player does not exist\"}", "PUT");
+        // Verification de l'authentification
+        if(token == null){
+            jsonObject.put("error", "Token not found");
+            return sendResponse(405, jsonObject.toString(), "PUT");
+        }
+        if(model.findPlayerByName(gameName, playerName) == null) {
+            jsonObject.put("error", "The player does not exist");
+            return sendResponse(405, jsonObject.toString(), "PUT");
+        }
+        if(!model.findPlayerByName(gameName, playerName).getToken().equals(token)){
+            jsonObject.put("error", "Invalid token for this player");
+            return sendResponse(405, jsonObject.toString(), "PUT");
         }
 
         // Verification du JSON
         JSONObject json = new JSONObject(strJSON);
         if(!json.has("value") || !json.has("color")) {
-            return sendResponse(405, "{\"error\": \"The json object does not follow the rules\"}", "PUT");
+            jsonObject.put("error", "The json object does not follow the rules");
+            return sendResponse(405, jsonObject.toString(), "PUT");
         }
 
         // Verifie que le joueur peut jouer
-        if(!model.findGameByName(gameName).getBoard().askPlayerCanPlay(player)) {
-            return sendResponse(405, "{\"error\": \"The player can't play\"}", "PUT");
+        if(!model.findGameByName(gameName).getBoard().getActualPlayer().getToken().equals(token)) {
+            jsonObject.put("error", "The player can't play");
+            return sendResponse(405, jsonObject.toString(), "PUT");
         }
 
 
         // Verifie que le joueur possede la carte
         Card card = new Card(Value.valueOf(json.getString("value")), Color.valueOf(json.getString("color")));
-        if(!player.getCards().contains(card)) {
-            return sendResponse(405, "{\"error\": \"The player does not possese this card\"}", "PUT");
+        if(!model.findPlayerByToken(gameName, token).getCards().contains(card)) {
+            jsonObject.put("error", "The player does not possese this card");
+            return sendResponse(405, jsonObject.toString(), "PUT");
         }
 
         // Verifie que la carte est jouable
         if(!model.findGameByName(gameName).getBoard().askPlayableCard(card)) {
-            return sendResponse(405, "{\"error\": \"The card can't be played\"}", "PUT");
+            jsonObject.put("error", "The card can't be played");
+            return sendResponse(405, jsonObject.toString(), "PUT");
         }
 
         // Finalement la carte est jouer
         model.findGameByName(gameName).getBoard().poseCard(card);
 
-        return sendResponse(200, "{\"success\":\"The card was succesfully played\"}", "PUT");
+        jsonObject.put("success", true);
+        return sendResponse(200, jsonObject.toString(), "PUT");
     }
 }
