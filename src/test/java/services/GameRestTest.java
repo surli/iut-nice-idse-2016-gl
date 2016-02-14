@@ -306,10 +306,14 @@ public class GameRestTest extends JerseyTest {
 
     @Test
     public void pickacardTest() throws JSONException{
-        model.findGameByName("tata").start();
-        String json = "{game:'tata', playerName: 'toto'}";
-        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata/toto").request().post(jsonEntity);
+        for(int i = 0; i < 3; i++) {
+            assertTrue(model.createPlayerBis("azert"+i, "token"+i));
+            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
+        }
+        assertTrue(model.findGameByName("tata").start());
+
+        Entity<String> jsonEntity = Entity.entity(null, MediaType.APPLICATION_JSON);
+        Response response = target("/game/tata/toto").request().header("token", "token").post(jsonEntity);
         assertEquals(200, response.getStatus());
     }
     

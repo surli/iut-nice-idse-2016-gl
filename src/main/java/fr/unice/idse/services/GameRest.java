@@ -372,20 +372,58 @@ public class GameRest extends OriginRest{
     @POST
     @Path("/{gameName}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response pickacard(@PathParam("gameName")String gameName,@PathParam("playerName")String playerName) throws JSONException {
+    public Response pickacard(@HeaderParam("token") String token, @PathParam("gameName") String gameName,@PathParam("playerName") String playerName) throws JSONException {
         // Cration de tous les objets
         Model model = Model.getInstance();
         JSONObject jsonReturn = new JSONObject();
         Player player = model.findPlayerByName(gameName, playerName);
         Player verifplayer = model.findGameByName(gameName).getBoard().getActualPlayer();
 
-        if(!player.equals(verifplayer)) {
-            jsonReturn.put("return", false);
+        // verification de l'existance de la game
+        if(model.findGameByName(gameName) == null) {
+            jsonReturn.put("error", "Partie inconnue");
+            return sendResponse(404, jsonReturn.toString(), "POST");
+        }
+
+        // Vérification de l'authentification
+        if(token == null){
+            jsonReturn.put("error", "Token not found");
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
+
+        if(model.findPlayerByToken(gameName, token) == null){
+            jsonReturn.put("error", "Player not found with this token");
+            return sendResponse(405, jsonReturn.toString(), "POST");
+        }
+
+        if(!model.findPlayerByToken(gameName, token).getName().equals(playerName)){
+            jsonReturn.put("error", "Invalid token for this player");
+            return sendResponse(405, jsonReturn.toString(), "POST");
+        }
+
+        // verifie que la partie est bien lancée
+        if(!model.findGameByName(gameName).gameBegin()){
+            jsonReturn.put("error", "Game no started");
+            return sendResponse(405, jsonReturn.toString(), "POST");
+        }
+
+        // Verifcation du joueur actuel
+        if(!model.findGameByName(gameName).getBoard().getActualPlayer().getToken().equals(token)){
+            jsonReturn.put("error", "It's not this player to play");
+            return sendResponse(405, jsonReturn.toString(), "POST");
+        }
+
+        int cartes = model.findGameByName(gameName).getBoard().getActualPlayer().getCards().size();
         model.findGameByName(gameName).getBoard().drawCard();
-        jsonReturn.put("return", true);
-        return sendResponse(200, jsonReturn.toString(), "POST");
+
+        if(model.findGameByName(gameName).getBoard().getActualPlayer().getCards().size() == cartes+1){
+            jsonReturn.put("return", true);
+            return sendResponse(200, jsonReturn.toString(), "POST");
+        }
+
+        jsonReturn.put("return", false);
+        return sendResponse(405, jsonReturn.toString(), "POST");
+
     }
 
     /**
