@@ -7,11 +7,13 @@ public class EffectCard
 {
 	private Value value;
 	private Board board;
+	private boolean effect;
 	
 	public EffectCard(Board board, Value value)
 	{
 		this.value = value;
 		this.board = board;
+		effect = false;
 	}
 	
 	public Value getValue()
@@ -32,6 +34,20 @@ public class EffectCard
 	public boolean isEffect(Card card)
 	{
 		return card.getValue() == getValue();	
+	}
+	
+	/**
+	 * Pour savoir si on a affaire à une regle contrable
+	 * @return
+	 */
+	public boolean getEffect()
+	{
+		return effect;
+	}
+	
+	public void setEffect()
+	{
+		effect = !effect;
 	}
 	
 	/**

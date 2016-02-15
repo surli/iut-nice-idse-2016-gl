@@ -36,6 +36,9 @@ public class Game {
 	public Board getBoard() { return board; }
 	public void setBoard(Board board) {	this.board = board;	}
 	
+	public Alternative getAlternative() {return board.getAlternative();};
+	public void setAlternative(Alternative alternative) { board.setAlternative(alternative);}
+	
 	public int getNumberPlayers() { return numberPlayers; }
 	public void setNumberPlayers(int numberPlayers) { this.numberPlayers = numberPlayers; }
 	

@@ -3,6 +3,7 @@ package fr.unice.idse.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Value;
 import fr.unice.idse.model.regle.*;
 
@@ -32,5 +33,29 @@ public class Alternative
 	public void addActionToCard(EffectCard action)
 	{
 		actions.add(action);
+	}
+	
+	public EffectCard isEffectCardAfterPose(Card card)
+	{
+		for (EffectCard rule : actions)
+		{
+			if (rule.isEffect(card)) 
+			{
+				return rule;
+			}
+		}
+		return null;
+	}
+	
+	public EffectCard isEffectCardBeforePlay(Card card)
+	{
+		for (EffectCard rule : actions)
+		{
+			if (rule.isEffect(card) && rule.getEffect()) 
+			{
+				return rule;
+			}
+		}
+		return null;
 	}
 }

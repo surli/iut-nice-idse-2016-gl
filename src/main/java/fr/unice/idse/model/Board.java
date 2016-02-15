@@ -30,7 +30,17 @@ public class Board
 		gameBegin = false;
 		gameEnd = false;
 		cptDrawCard = 1;
-	}	
+	}
+	
+	public Alternative getAlternative()
+	{
+		return variante;
+	}
+	
+	public void setAlternative(Alternative newVariante)
+	{
+		variante = newVariante;
+	}
 	
 	/**
 	 * Change le sens de la partie.
