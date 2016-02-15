@@ -290,6 +290,60 @@ public class GameRestTest extends JerseyTest {
 
     }
     
+    @Test
+    public void createGameTokenMissingTest() throws JSONException{
+    	assertTrue(model.createPlayer("marcel", "token1223"));
+
+        String json = "{game:'superfly', player:'marcel', numberplayers:4}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+
+        /**
+         * on verifie que le code de retour est bien 405/error
+         */
+        Response response = target("/game").request().header("", "").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
+        assertEquals(405, response.getStatus());	
+        assertEquals("Missing parameters token", jsonObject.getString("error"));
+
+    }
+    
+    @Test
+    public void createGameExistInListTest() throws JSONException{
+
+        String json = "{game:'superfly', player:'marcel', numberplayers:4}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+
+        /**
+         * on verifie que le code de retour est bien 405/error
+         */
+        Response response = target("/game").request().header("token", "token1223").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
+        assertEquals(405, response.getStatus());	
+        assertEquals("Joueur inexistant", jsonObject.getString("error"));
+
+    }
+    
+    @Test
+    public void createGameTokenInvalidTest() throws JSONException{
+    	assertTrue(model.createPlayer("marcel", "token1223"));
+    	
+    	
+        String json = "{game:'superfly', player:'paul', numberplayers:4}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+
+        /**
+         * on verifie que le code de retour est bien 405/error
+         */
+        Response response = target("/game").request().header("token", "token1223").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
+        assertEquals(405, response.getStatus());	
+        assertEquals("Token invalid", jsonObject.getString("error"));
+
+    }
+    
 
 
     /*
