@@ -5,7 +5,11 @@ angular.module('unoApp')
         $scope.gameName = $stateParams.name;
         var timeoutStateGame;
         // TODO remplacer par Game.getGame
-        $http.get('/rest/game/' + $scope.gameName)
+        $http.get('/rest/game/' + $scope.gameName, {
+                headers: {
+                    token: Auth.getUser().token
+                }
+            })
             .then(function (response) {
                 $scope.game = response.data;
                 $scope.requestStateGame();
@@ -17,7 +21,11 @@ angular.module('unoApp')
         $scope.requestStateGame = function () {
             timeoutStateGame = $timeout(function () {
                 //TODO remplacer par Game.getGame (attention il y a un traitement en plus que faire ?)
-                $http.get('/rest/game/' + $scope.gameName)
+                $http.get('/rest/game/' + $scope.gameName, {
+                        headers: {
+                            token: Auth.getUser().token
+                        }
+                    })
                     .then(function (response) {
                         $scope.game = response.data;
                         if ($scope.game.state) {
@@ -36,6 +44,10 @@ angular.module('unoApp')
             // TODO remplacer par ****
             $http.put('/rest/game/' + $scope.gameName + '/command', {
                     playerName: $scope.user.name
+                }, {
+                    headers: {
+                        token: Auth.getUser().token
+                    }
                 })
                 .then(function (response) {
                     switch (response.status) {

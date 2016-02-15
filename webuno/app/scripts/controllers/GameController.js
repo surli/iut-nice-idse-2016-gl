@@ -27,7 +27,11 @@ angular.module('unoApp')
                     .then(function (response) {
                         $scope.game = response.data;
 
-                        $http.get('/rest/game/' + $stateParams.name + '/command')
+                        $http.get('/rest/game/' + $stateParams.name + '/command', {
+                                headers: {
+                                    token: Auth.getUser().token
+                                }
+                            })
                             .then(function (response) {
                                 if (response.data.playerName === $scope.user.name) {
                                     console.log('à moi de jouer !');
@@ -38,7 +42,11 @@ angular.module('unoApp')
 
                         $scope.requestStateGame();
 
-                        $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name)
+                        $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name, {
+                                headers: {
+                                    token: Auth.getUser().token
+                                }
+                            })
                             .then(function (response) {
                                 $scope.cartes = response.data.cartes;
                             }, function (error) {
@@ -52,9 +60,17 @@ angular.module('unoApp')
         };
 
         $scope.piocherCarte = function () {
-            $http.post('/rest/game/' + $stateParams.name + '/' + $scope.user.name, {})
+            $http.post('/rest/game/' + $stateParams.name + '/' + $scope.user.name, {}, {
+                    headers: {
+                        token: Auth.getUser().token
+                    }
+                })
                 .then(function () {
-                    $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name)
+                    $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name, {
+                            headers: {
+                                token: Auth.getUser().token
+                            }
+                        })
                         .then(function (response) {
                             $scope.cartes = response.data.cartes;
                         }, function (error) {
@@ -69,16 +85,28 @@ angular.module('unoApp')
             $http.put('/rest/game/' + $stateParams.name + '/' + $scope.user.name, {
                     value: carte.number,
                     color: carte.familly
+                }, {
+                    headers: {
+                        token: Auth.getUser().token
+                    }
                 })
                 .then(function (response) {
                     console.log(response);
-                    $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name)
+                    $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name, {
+                            headers: {
+                                token: Auth.getUser().token
+                            }
+                        })
                         .then(function (response) {
                             $scope.cartes = response.data.cartes;
                         }, function (error) {
                             console.error('Une erreur est survenue : ' + error.toString());
                         });
-                    $http.get('/rest/game/' + $stateParams.name)
+                    $http.get('/rest/game/' + $stateParams.name, {
+                            headers: {
+                                token: Auth.getUser().token
+                            }
+                        })
                         .then(function (response) {
                             $scope.game = response.data;
                         }, function (error) {

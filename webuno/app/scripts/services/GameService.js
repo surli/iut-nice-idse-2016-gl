@@ -31,7 +31,11 @@ angular.module('unoApp')
             // renvoie les data de la partie
             getGame: function (gameName) {
                 var deferred = $q.defer();
-                $http.get('/rest/game/' + gameName)
+                $http.get('/rest/game/' + gameName, {
+                        headers: {
+                            token: Auth.getUser().token
+                        }
+                    })
                     .then(function (response) {
                         console.log(response);
                         deferred.resolve(response);
@@ -45,7 +49,11 @@ angular.module('unoApp')
             // renvoie toutes les parties en cours
             getAllGames: function () {
                 var deferred = $q.defer();
-                $http.get('/rest/game')
+                $http.get('/rest/game', {
+                        headers: {
+                            token: Auth.getUser().token
+                        }
+                    })
                     .then(function (response) {
                         console.log(response);
                         deferred.resolve(response);
@@ -60,7 +68,11 @@ angular.module('unoApp')
             getUserHand: function (gameName, userName) {
                 var deferred = $q.defer();
 
-                $http.get('/rest/game/' + gameName + '/' + userName)
+                $http.get('/rest/game/' + gameName + '/' + userName, {
+                        headers: {
+                            token: Auth.getUser().token
+                        }
+                    })
                     .then(function (response) {
                         console.log(response);
                         deferred.resolve(response);

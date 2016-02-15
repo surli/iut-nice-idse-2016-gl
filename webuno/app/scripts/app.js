@@ -69,7 +69,11 @@ angular
                     Games: function ($http, $q) {
                         var deferred = $q.defer();
 
-                        $http.get('/rest/game')
+                        $http.get('/rest/game', {
+                                headers: {
+                                    token: Auth.getUser().token
+                                }
+                            })
                             .then(function (data) {
                                 deferred.resolve(data);
                             }, function (error) {
