@@ -34,8 +34,26 @@ public class EffectCard
 		return card.getValue() == getValue();	
 	}
 	
-	//Methode à override
+	/**
+	 * A apellé pour change couleur et pioche 4 cartes
+	 * @param color
+	 */
+	public void changeColor(Color color)
+	{
+		if(board.getStack().topCard().getColor().equals(Color.Black))
+		{
+			board.changeColor(color);
+		}
+	}
+	
+	//Methode à override pour les effets immediat
 	public void action()
+	{
+		
+	}
+	
+	//Methode à override pour les effets contrable
+	public void effect()
 	{
 		
 	}
