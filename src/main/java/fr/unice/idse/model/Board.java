@@ -22,7 +22,7 @@ public class Board
 	public Board()
 	{
 		this.players = new ArrayList<Player>();
-		variante = new Alternative();
+		variante = new Alternative(this, true);
 		deck = new Deck();
 		stack = new Stack();
 		actualPlayer = 0;
