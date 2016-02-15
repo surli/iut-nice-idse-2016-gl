@@ -66,7 +66,7 @@ angular
                 templateUrl: 'views/home.html',
                 controller: 'HomeController',
                 resolve: {
-                    Games: function ($http, $q) {
+                    Games: function ($http, $q, Auth) {
                         var deferred = $q.defer();
 
                         $http.get('/rest/game', {

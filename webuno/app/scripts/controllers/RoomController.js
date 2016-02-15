@@ -7,7 +7,7 @@ angular.module('unoApp')
         // TODO remplacer par Game.getGame
         $http.get('/rest/game/' + $scope.gameName, {
                 headers: {
-                    token: Auth.getUser().token
+                    token: $scope.user.token
                 }
             })
             .then(function (response) {
@@ -23,7 +23,7 @@ angular.module('unoApp')
                 //TODO remplacer par Game.getGame (attention il y a un traitement en plus que faire ?)
                 $http.get('/rest/game/' + $scope.gameName, {
                         headers: {
-                            token: Auth.getUser().token
+                            token: $scope.user.token
                         }
                     })
                     .then(function (response) {
@@ -46,7 +46,7 @@ angular.module('unoApp')
                     playerName: $scope.user.name
                 }, {
                     headers: {
-                        token: Auth.getUser().token
+                        token: $scope.user.token
                     }
                 })
                 .then(function (response) {

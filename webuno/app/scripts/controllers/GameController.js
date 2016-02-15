@@ -29,7 +29,7 @@ angular.module('unoApp')
 
                         $http.get('/rest/game/' + $stateParams.name + '/command', {
                                 headers: {
-                                    token: Auth.getUser().token
+                                    token: $scope.user.token
                                 }
                             })
                             .then(function (response) {
@@ -44,7 +44,7 @@ angular.module('unoApp')
 
                         $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name, {
                                 headers: {
-                                    token: Auth.getUser().token
+                                    token: $scope.user.token
                                 }
                             })
                             .then(function (response) {
@@ -62,13 +62,13 @@ angular.module('unoApp')
         $scope.piocherCarte = function () {
             $http.post('/rest/game/' + $stateParams.name + '/' + $scope.user.name, {}, {
                     headers: {
-                        token: Auth.getUser().token
+                        token: $scope.user.token
                     }
                 })
                 .then(function () {
                     $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name, {
                             headers: {
-                                token: Auth.getUser().token
+                                token: $scope.user.token
                             }
                         })
                         .then(function (response) {
@@ -87,14 +87,14 @@ angular.module('unoApp')
                     color: carte.familly
                 }, {
                     headers: {
-                        token: Auth.getUser().token
+                        token: $scope.user.token
                     }
                 })
                 .then(function (response) {
                     console.log(response);
                     $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name, {
                             headers: {
-                                token: Auth.getUser().token
+                                token: $scope.user.token
                             }
                         })
                         .then(function (response) {
@@ -104,7 +104,7 @@ angular.module('unoApp')
                         });
                     $http.get('/rest/game/' + $stateParams.name, {
                             headers: {
-                                token: Auth.getUser().token
+                                token: $scope.user.token
                             }
                         })
                         .then(function (response) {
