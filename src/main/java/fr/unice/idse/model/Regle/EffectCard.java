@@ -1,19 +1,20 @@
-package fr.unice.idse.model.Regle;
+package fr.unice.idse.model.regle;
 
 import fr.unice.idse.model.*;
+import fr.unice.idse.model.card.*;
 
 public class EffectCard 
 {
-	private int value;
+	private Value value;
 	private Board board;
 	
-	public EffectCard(Board board, int value)
+	public EffectCard(Board board, Value value)
 	{
 		this.value = value;
 		this.board = board;
 	}
 	
-	public int getValue()
+	public Value getValue()
 	{
 		return value;
 	}

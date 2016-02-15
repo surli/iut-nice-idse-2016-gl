@@ -3,6 +3,10 @@ package fr.unice.idse.model;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.card.Value;
+
 public class Deck {
 	private ArrayList<Card> deck;
 	
@@ -40,33 +44,88 @@ public class Deck {
 	 *  - 4 cartes "+4"
 	 */
 	public void fillDeck() {
-		for(int i=0;i<=14;i++)
-		{
-			if(i==0){
-				// Création d'une carte 0 par couleur
-				deck.add(new Card(i,Color.Blue));
-				deck.add(new Card(i,Color.Red));
-				deck.add(new Card(i,Color.Yellow));
-				deck.add(new Card(i,Color.Green));
-			}
-			else if (i==13 || i==14){
-				// Création de 4 cartes joker et +4
-				deck.add(new Card(i,Color.Black));
-				deck.add(new Card(i,Color.Black));
-				deck.add(new Card(i,Color.Black));
-				deck.add(new Card(i,Color.Black));
-			}
-			else{
-				// Création de 2 cartes de chaque couleur
-				deck.add(new Card(i,Color.Blue));
-				deck.add(new Card(i,Color.Blue));
-				deck.add(new Card(i,Color.Red));
-				deck.add(new Card(i,Color.Red));
-				deck.add(new Card(i,Color.Yellow));
-				deck.add(new Card(i,Color.Yellow));
-				deck.add(new Card(i,Color.Green));
-				deck.add(new Card(i,Color.Green));
-			}
+		
+		deck.add(new Card(Value.Zero,Color.Blue));
+		deck.add(new Card(Value.Zero,Color.Red));
+		deck.add(new Card(Value.Zero,Color.Green));
+		deck.add(new Card(Value.Zero,Color.Yellow));
+		for(int i=0; i<2;i++){
+			deck.add(new Card(Value.One,Color.Blue));
+			deck.add(new Card(Value.One,Color.Red));
+			deck.add(new Card(Value.One,Color.Green));
+			deck.add(new Card(Value.One,Color.Yellow));
+		}
+		for(int i=0; i<2;i++){
+			deck.add(new Card(Value.Two,Color.Blue));
+			deck.add(new Card(Value.Two,Color.Red));
+			deck.add(new Card(Value.Two,Color.Green));
+			deck.add(new Card(Value.Two,Color.Yellow));
+		}
+		for(int i=0; i<2;i++){
+			deck.add(new Card(Value.Three,Color.Blue));
+			deck.add(new Card(Value.Three,Color.Red));
+			deck.add(new Card(Value.Three,Color.Green));
+			deck.add(new Card(Value.Three,Color.Yellow));
+		}
+		for(int i=0; i<2;i++){
+			deck.add(new Card(Value.Four,Color.Blue));
+			deck.add(new Card(Value.Four,Color.Red));
+			deck.add(new Card(Value.Four,Color.Green));
+			deck.add(new Card(Value.Four,Color.Yellow));
+		}
+		for(int i=0; i<2;i++){
+			deck.add(new Card(Value.Five,Color.Blue));
+			deck.add(new Card(Value.Five,Color.Red));
+			deck.add(new Card(Value.Five,Color.Green));
+			deck.add(new Card(Value.Five,Color.Yellow));
+		}
+		for(int i=0; i<2;i++){
+			deck.add(new Card(Value.Six,Color.Blue));
+			deck.add(new Card(Value.Six,Color.Red));
+			deck.add(new Card(Value.Six,Color.Green));
+			deck.add(new Card(Value.Six,Color.Yellow));
+		}
+		for(int i=0; i<2;i++){
+			deck.add(new Card(Value.Seven,Color.Blue));
+			deck.add(new Card(Value.Seven,Color.Red));
+			deck.add(new Card(Value.Seven,Color.Green));
+			deck.add(new Card(Value.Seven,Color.Yellow));
+		}
+		for(int i=0; i<2;i++){
+			deck.add(new Card(Value.Eight,Color.Blue));
+			deck.add(new Card(Value.Eight,Color.Red));
+			deck.add(new Card(Value.Eight,Color.Green));
+			deck.add(new Card(Value.Eight,Color.Yellow));
+		}
+		for(int i=0; i<2;i++){
+			deck.add(new Card(Value.Nine,Color.Blue));
+			deck.add(new Card(Value.Nine,Color.Red));
+			deck.add(new Card(Value.Nine,Color.Green));
+			deck.add(new Card(Value.Nine,Color.Yellow));
+		}
+		for(int i=0; i<2;i++){
+			deck.add(new Card(Value.Skip,Color.Blue));
+			deck.add(new Card(Value.Skip,Color.Red));
+			deck.add(new Card(Value.Skip,Color.Green));
+			deck.add(new Card(Value.Skip,Color.Yellow));
+		}
+		for(int i=0; i<2;i++){
+			deck.add(new Card(Value.Reverse,Color.Blue));
+			deck.add(new Card(Value.Reverse,Color.Red));
+			deck.add(new Card(Value.Reverse,Color.Green));
+			deck.add(new Card(Value.Reverse,Color.Yellow));
+		}
+		for(int i=0; i<2;i++){
+			deck.add(new Card(Value.DrawTwo,Color.Blue));
+			deck.add(new Card(Value.DrawTwo,Color.Red));
+			deck.add(new Card(Value.DrawTwo,Color.Green));
+			deck.add(new Card(Value.DrawTwo,Color.Yellow));
+		}
+		for(int i=0; i<4;i++){
+			deck.add(new Card(Value.Wild,Color.Black));
+		}
+		for(int i=0; i<4;i++){
+			deck.add(new Card(Value.DrawFour,Color.Black));
 		}
 	}
 	
