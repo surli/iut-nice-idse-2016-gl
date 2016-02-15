@@ -14,7 +14,6 @@ public class Board
 	private boolean meaning;
 	private boolean gameBegin;
 	private boolean gameEnd;
-	private boolean effect;
 	private int cptDrawCard;
 	
 	public Board()
@@ -27,7 +26,6 @@ public class Board
 		meaning = true;
 		gameBegin = false;
 		gameEnd = false;
-		effect = false;
 		cptDrawCard = 1;
 	}	
 	
@@ -37,23 +35,6 @@ public class Board
 	public void changeMeaning()
 	{
 		meaning = !meaning;
-	}
-	
-	/**
-	 * Change l'état d'effet.
-	 */
-	public void setEffect()
-	{
-		effect = !effect;
-	}
-	
-	/**
-	 * Retourne si on est dans le cas d'une carte à effet.
-	 * @return
-	 */
-	public boolean getEffect()
-	{
-		return effect;
 	}
 	
 	/**

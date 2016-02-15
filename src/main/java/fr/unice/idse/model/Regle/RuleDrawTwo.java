@@ -13,13 +13,12 @@ public class RuleDrawTwo extends EffectCard
 	@Override
 	public void action()
 	{
-		if(getBoard().getEffect())
+		if(getBoard().getCptDrawCard()>1)
 		{
 			getBoard().setCptDrawCard(getBoard().getCptDrawCard() + 2);
 		}
 		else
 		{
-			getBoard().setEffect();
 			getBoard().setCptDrawCard(2);
 		}
 	}
@@ -27,6 +26,7 @@ public class RuleDrawTwo extends EffectCard
 	public void inEffect()
 	{
 		getBoard().drawCard();
+		getBoard().setCptDrawCard(1);
 	}
 
 }
