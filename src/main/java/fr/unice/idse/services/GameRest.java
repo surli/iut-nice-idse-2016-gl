@@ -98,17 +98,19 @@ public class GameRest extends OriginRest{
         // verification du token
         if(token == null)
             return sendResponse(405, "{\"error\" : \"Missing parameters token\"}", "POST");
-
         String game = json.getString("game");
         if(game.length() < 3)
             return sendResponse(405, "{\"error\" : \"Invalid parameter game length\"}", "POST");
         if(!json.has("player"))
+        	
             return sendResponse(405, "{\"error\" : \"Invalid parameter player\"}", "POST");
 
-        if(!model.playerExistsInList(json.getString("player")))
+        if(model.getPlayerFromList(token)==null)
             return sendResponse(405, "{\"error\" : \"Joueur inexistant\"}", "POST");
+       
         if(!model.getPlayerFromList(token).getName().equals(json.getString("player")))
             return sendResponse(405, "{\"error\" : \"Token invalid\"}", "POST");
+
 
         if(!json.has("numberplayers"))
             return sendResponse(405, "{\"error\" : \"Invalid parameter numberplayers\"}", "POST");

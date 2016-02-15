@@ -206,65 +206,142 @@ public class GameRestTest extends JerseyTest {
     }
     
     @Test
-    public void createGameMissingGameTest(){
-        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', player: 'marcel', numberplayers:4}";
+    public void createGameMissingGameTest() throws JSONException{
+    	
+    	assertTrue(model.createPlayer("marcel", "token1223"));
+        String json = "{ player: 'marcel', numberplayers:4}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
 
         /**
          * on verifie que le code de retour est bien 405/error
          */
-        Response response = target("/game").request().post(jsonEntity);
+        Response response = target("/game").request().header("token", "token1223").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
         assertEquals(405, response.getStatus());
+        assertEquals("Invalid parameter game", jsonObject.getString("error"));
     	
     }
 
     @Test
-    public void createGameGameLengthTest(){
-        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', game:'su', player: 'marcel', numberplayers:4}";
+    public void createGameGameLengthTest() throws JSONException{
+    	assertTrue(model.createPlayer("marcel", "token1223"));
+        String json = "{game:'su', player: 'marcel', numberplayers:4}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
 
         /**
          * on verifie que le code de retour est bien 405/error
          */
-        Response response = target("/game").request().post(jsonEntity);
-        assertEquals(405, response.getStatus());	
+        Response response = target("/game").request().header("token", "token1223").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
+        assertEquals(405, response.getStatus());
+        assertEquals("Invalid parameter game length", jsonObject.getString("error"));
+
     }
     
     @Test
-    public void createGamePlayerMissingTest(){
-        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', game:'superfly', numberplayers:4}";
+    public void createGamePlayerMissingTest() throws JSONException{
+        String json = "{ game:'superfly', numberplayers:4}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
 
         /**
          * on verifie que le code de retour est bien 405/error
          */
-        Response response = target("/game").request().post(jsonEntity);
+        Response response = target("/game").request().header("token", "token1223").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
         assertEquals(405, response.getStatus());	
+        assertEquals("Invalid parameter player", jsonObject.getString("error"));
     }
     
     
     @Test
-    public void createGameNumberplayersMissingTest(){
-        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', game:'superfly', player:''}";
+    public void createGameNumberplayersMissingTest() throws JSONException{
+    	assertTrue(model.createPlayer("marcel", "token1223"));
+        String json = "{game:'superfly', player:'marcel'}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
 
         /**
          * on verifie que le code de retour est bien 405/error
          */
-        Response response = target("/game").request().post(jsonEntity);
-        assertEquals(405, response.getStatus());	
+        Response response = target("/game").request().header("token", "token1223").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+        assertEquals(405, response.getStatus());
+        assertEquals("Invalid parameter numberplayers", jsonObject.getString("error"));
+        
     }
     
     @Test
-    public void createGameNumberplayersToHighTest(){
-        String json = "{_token: 'hbj7BB7Y6B87T282B87T27N90A098', game:'superfly', player:'', numberplayers:8}";
+    public void createGameNumberplayersToHighTest() throws JSONException{
+    	assertTrue(model.createPlayer("marcel", "token1223"));
+
+        String json = "{game:'superfly', player:'marcel', numberplayers:8}";
         Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
 
         /**
          * on verifie que le code de retour est bien 405/error
          */
-        Response response = target("/game").request().post(jsonEntity);
+        Response response = target("/game").request().header("token", "token1223").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
         assertEquals(405, response.getStatus());	
+        assertEquals("Numberplayers must be 2 to 6 numberplayers", jsonObject.getString("error"));
+
+    }
+    
+    @Test
+    public void createGameTokenMissingTest() throws JSONException{
+    	assertTrue(model.createPlayer("marcel", "token1223"));
+
+        String json = "{game:'superfly', player:'marcel', numberplayers:4}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+
+        /**
+         * on verifie que le code de retour est bien 405/error
+         */
+        Response response = target("/game").request().header("", "").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
+        assertEquals(405, response.getStatus());	
+        assertEquals("Missing parameters token", jsonObject.getString("error"));
+
+    }
+    
+    @Test
+    public void createGameExistInListTest() throws JSONException{
+
+        String json = "{game:'superfly', player:'marcel', numberplayers:4}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+
+        /**
+         * on verifie que le code de retour est bien 405/error
+         */
+        Response response = target("/game").request().header("token", "token1223").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
+        assertEquals(405, response.getStatus());	
+        assertEquals("Joueur inexistant", jsonObject.getString("error"));
+
+    }
+    
+    @Test
+    public void createGameTokenInvalidTest() throws JSONException{
+    	assertTrue(model.createPlayer("marcel", "token1223"));
+    	
+    	
+        String json = "{game:'superfly', player:'paul', numberplayers:4}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+
+        /**
+         * on verifie que le code de retour est bien 405/error
+         */
+        Response response = target("/game").request().header("token", "token1223").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
+        assertEquals(405, response.getStatus());	
+        assertEquals("Token invalid", jsonObject.getString("error"));
+
     }
     
 
