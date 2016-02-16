@@ -22,32 +22,34 @@ public class DataBaseManagementTest {
 		assertTrue(dataBaseManagement.getPseudoWithEmail("test@gmail.com").equals("test"));
 		dataBaseManagement.end();
 	}
-	
+
 	@Test
 	public void ifUserAlreadyExistPseudoEmailIsCorrect() throws SQLException {
 		dataBaseManagement.connect();
 		assertFalse(dataBaseManagement.ifUserAlreadyExistPseudoEmail("toto@gmail.com", "toto"));
 		dataBaseManagement.end();
 	}
-	
+
 	@Test
 	public void ifUserAlreadyExistPseudoIsCorrect() throws SQLException {
 		dataBaseManagement.connect();
 		assertFalse(dataBaseManagement.ifUserAlreadyExistPseudo("toto@gmail.com"));
 		dataBaseManagement.end();
 	}
-	
+
 	@Test
-	public void createUserIsCorrect() throws SQLException {
+	public void addDeleteUserIsCorrect() throws SQLException {
 		dataBaseManagement.connect();
-		assertTrue(dataBaseManagement.createUser("titi", "titi@gmail.com", "mypass"));
+		assertTrue(dataBaseManagement.addUser("titi", "titi@gmail.com", "mypass"));
+		assertTrue(dataBaseManagement.deleteUserWithPseudo("titi"));
 		dataBaseManagement.end();
 	}
-	
+
 	@Test
-	public void deleteUserWithPseudoIsCorrect() throws SQLException {
+	public void addDeleteCardIsCorrect() throws SQLException {
 		dataBaseManagement.connect();
-		assertTrue(dataBaseManagement.deleteUserWithPseudo("titi"));
+		assertTrue(dataBaseManagement.addCard("7", "red"));
+		assertTrue(dataBaseManagement.deleteCard("7", "red"));
 		dataBaseManagement.end();
 	}*/
 }

@@ -99,7 +99,7 @@ public class DataBaseManagement {
 		}
 		return false;
 	}
-	
+
 	public boolean ifUserAlreadyExistPseudo(String pseudo) {
 		String query1 = "SELECT u_pseudo FROM users WHERE u_pseudo = ?";
 		try {
@@ -115,7 +115,7 @@ public class DataBaseManagement {
 		return false;
 	}
 
-	public boolean createUser(String pseudo, String email, String password) {
+	public boolean addUser(String pseudo, String email, String password) {
 		if (!ifUserAlreadyExistPseudoEmail(pseudo, email)) {
 			String query = "INSERT INTO users (u_pseudo, u_email, u_password) VALUES (?, ?, ?)";
 			try {
@@ -129,13 +129,12 @@ public class DataBaseManagement {
 				e.printStackTrace();
 			}
 			return true;
-		}
-		else
+		} else
 			return false;
 	}
-	
-	public boolean deleteUserWithPseudo(String pseudo){
-		if(ifUserAlreadyExistPseudo(pseudo)){
+
+	public boolean deleteUserWithPseudo(String pseudo) {
+		if (ifUserAlreadyExistPseudo(pseudo)) {
 			String query = "DELETE FROM users WHERE users.u_pseudo = ?";
 			try {
 				ps = con.prepareStatement(query);
@@ -146,7 +145,80 @@ public class DataBaseManagement {
 				e.printStackTrace();
 			}
 			return true;
+		} else
+			return false;
+	}
+
+	public int countCardsWithThisValueAndThisColor(String value, String color) {
+		String query = "SELECT COUNT(*) FROM cards WHERE c_value = ? AND c_color = ?";
+		int result = 0;
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, value);
+			ps.setString(2, color);
+			rs = ps.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return result;
+	}
+
+	public int getIdCard(String value, String color) {
+		String query = "SELECT c_id FROM cards WHERE c_value = ? AND c_color = ?";
+		int result = 0;
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, value);
+			ps.setString(2, color);
+			rs = ps.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public boolean addCard(String value, String color) {
+		int nbCards = countCardsWithThisValueAndThisColor(value, color);
+		String query = "INSERT INTO cards (c_value, c_color) VALUES (?, ?)";
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, value);
+			ps.setString(2, color);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (countCardsWithThisValueAndThisColor(value, color) == nbCards + 1)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean deleteCard(String value, String color) {
+		int nbCards = countCardsWithThisValueAndThisColor(value, color);
+		if (nbCards == 0)
+			return false;
+		int id = getIdCard(value, color);
+		if (id == 0)
+			return false;
+		String query = "DELETE FROM uno.cards WHERE cards.c_id = ?";
+		try {
+			ps = con.prepareStatement(query);
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (countCardsWithThisValueAndThisColor(value, color) == nbCards - 1)
+			return true;
 		else
 			return false;
 	}
