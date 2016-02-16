@@ -77,6 +77,22 @@ CREATE TABLE IF NOT EXISTS `hands_players_in_game` (
         REFERENCES cards(c_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Structure de la table 'players_in_game'
+-- Création de la table
+CREATE TABLE IF NOT EXISTS `players_in_game` (
+  `p_g_id` int(5) NOT NULL,
+  `p_id_user` int(5) NOT NULL,
+  
+  -- Ajout de la clé primaire composite 
+  PRIMARY KEY (p_g_id,p_id_user),
+   -- Ajout des contraintes des clés étrangère 
+  CONSTRAINT fk_game_player          
+        FOREIGN KEY (p_g_id)            
+        REFERENCES games(g_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_user_in_game          
+        FOREIGN KEY (p_id_user)            
+        REFERENCES users(u_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
