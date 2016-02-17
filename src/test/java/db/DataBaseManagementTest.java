@@ -38,18 +38,21 @@ public class DataBaseManagementTest {
 	}
 
 	@Test
-	public void addDeleteUserIsCorrect() throws SQLException {
+	public void addDeleteUpdateUserIsCorrect() throws SQLException {
 		dataBaseManagement.connect();
 		assertTrue(dataBaseManagement.addUser("titi", "titi@gmail.com", "mypass"));
-		assertTrue(dataBaseManagement.deleteUserWithPseudo("titi"));
+		assertTrue(dataBaseManagement.updateUserPseudo( "titi@gmail.com", "mypass", "newtiti"));
+		assertTrue(dataBaseManagement.updateUserEmail( "titi@gmail.com", "mypass", "newtiti@gmail.com"));
+		assertTrue(dataBaseManagement.updateUserPassword( "newtiti@gmail.com", "mypass", "mynewpass"));
+		assertTrue(dataBaseManagement.deleteUserWithPseudo("newtiti"));
 		dataBaseManagement.end();
 	}
 
 	@Test
 	public void addDeleteCardIsCorrect() throws SQLException {
 		dataBaseManagement.connect();
-		assertTrue(dataBaseManagement.addCard("7", "red"));
-		assertTrue(dataBaseManagement.deleteCard("7", "red"));
+		assertTrue(dataBaseManagement.addCard("zero", "blue"));
+		assertTrue(dataBaseManagement.deleteCard("zero", "blue"));
 		dataBaseManagement.end();
 	}*/
 }

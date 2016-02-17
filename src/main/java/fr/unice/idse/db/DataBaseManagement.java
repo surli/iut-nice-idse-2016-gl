@@ -114,6 +114,21 @@ public class DataBaseManagement {
 		}
 		return false;
 	}
+	
+	public boolean ifUserAlreadyExistEmail(String email) {
+		String query1 = "SELECT u_email FROM users WHERE u_email = ?";
+		try {
+			ps = con.prepareStatement(query1);
+			ps.setString(1, email);
+			rs = ps.executeQuery();
+			if (rs.next())
+				return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	public boolean addUser(String pseudo, String email, String password) {
 		if (!ifUserAlreadyExistPseudoEmail(pseudo, email)) {
@@ -135,7 +150,7 @@ public class DataBaseManagement {
 
 	public boolean deleteUserWithPseudo(String pseudo) {
 		if (ifUserAlreadyExistPseudo(pseudo)) {
-			String query = "DELETE FROM users WHERE users.u_pseudo = ?";
+			String query = "DELETE FROM users WHERE u_pseudo = ?";
 			try {
 				ps = con.prepareStatement(query);
 				ps.setString(1, pseudo);
@@ -183,6 +198,11 @@ public class DataBaseManagement {
 		return result;
 	}
 
+	/*
+	 * Possible value : zero, one, two, three, four, five, six, seven, eight,
+	 * nine, skip, reverse, drawtwo, drawfour, wild && Possible color :
+	 * blue,green, red, yellow, black
+	 */
 	public boolean addCard(String value, String color) {
 		int nbCards = countCardsWithThisValueAndThisColor(value, color);
 		String query = "INSERT INTO cards (c_value, c_color) VALUES (?, ?)";
@@ -208,7 +228,7 @@ public class DataBaseManagement {
 		int id = getIdCard(value, color);
 		if (id == 0)
 			return false;
-		String query = "DELETE FROM uno.cards WHERE cards.c_id = ?";
+		String query = "DELETE FROM cards WHERE c_id = ?";
 		try {
 			ps = con.prepareStatement(query);
 			ps.setInt(1, id);
@@ -219,6 +239,69 @@ public class DataBaseManagement {
 		}
 		if (countCardsWithThisValueAndThisColor(value, color) == nbCards - 1)
 			return true;
+		else
+			return false;
+	}
+	
+	public boolean updateUserEmail(String oldEmail, String password, String newEmail) {
+		if (userLoginIsCorrect(oldEmail, password) && !ifUserAlreadyExistEmail(newEmail)) {
+			String query = "UPDATE users SET u_email = ? WHERE u_email = ?";
+			try {
+				ps = con.prepareStatement(query);
+				ps.setString(1, newEmail);
+				ps.setString(2, oldEmail);
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(userLoginIsCorrect(newEmail, password))
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	}
+	
+	public boolean updateUserPseudo(String email, String password, String newPseudo) {
+		if (userLoginIsCorrect(email, password) && !ifUserAlreadyExistPseudo(newPseudo)) {
+			String query = "UPDATE users SET u_pseudo = ? WHERE u_email = ?";
+			try {
+				ps = con.prepareStatement(query);
+				ps.setString(1, newPseudo);
+				ps.setString(2, email);
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(getPseudoWithEmail(email).equals(newPseudo))
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	}
+
+	public boolean updateUserPassword(String email, String oldPassword, String newPassword) {
+		if (userLoginIsCorrect(email, oldPassword)) {
+			String query = "UPDATE users SET u_password = ? WHERE u_email = ?";
+			try {
+				ps = con.prepareStatement(query);
+				ps.setString(1, newPassword);
+				ps.setString(2, email);
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(userLoginIsCorrect(email, newPassword))
+				return true;
+			else
+				return false;
+		}
 		else
 			return false;
 	}
