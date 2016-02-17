@@ -29,7 +29,6 @@ angular.module('unoApp')
                         Game.getCurrentPlayer($stateParams.name)
                             .then(function (response) {
                                 $scope.currentPlayer = response.data.playerName;
-                                $scope.currentPlayer = "Anonyme247";
                                 if (response.data.playerName === $scope.user.name) {
                                     console.log('à moi de jouer !');
                                 }

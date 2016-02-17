@@ -6097,12 +6097,16 @@ footer {
           cursor: pointer;
           z-index: 9999; }
 
-/* Rotation */
+/* OLD LOADER
 @keyframes rotate {
   from {
-    transform: rotate(0deg); }
+    transform: rotate(0deg);
+  }
   to {
-    transform: rotate(360deg); } }
+    transform: rotate(360deg);
+  }
+}
+
 #loader {
   width: 4em;
   height: 4em;
@@ -6115,25 +6119,32 @@ footer {
   margin-top: -2em;
   content: "";
   color: #FFF;
-  background-color: #ff5555;
+  background-color: $rouge;
   animation: rotate 2.5s infinite linear;
   z-index: 9999;
   transition: ease-out;
-  transition-duration: 2s; }
-  #loader:before, #loader:after {
+  transition-duration: 2s;
+
+  &:before, &:after {
     width: 4em;
     height: 4em;
     content: "";
     position: absolute;
     left: 0;
-    top: 0; }
-  #loader:before {
-    transform: rotate(60deg);
-    background-color: #55aa55; }
-  #loader:after {
-    transform: rotate(-60deg);
-    background-color: #55aa55; }
+    top: 0;
+  }
 
+  &:before {
+    transform: rotate(60deg);
+    background-color: $vert;
+  }
+
+  &:after {
+    transform: rotate(-60deg);
+    background-color: $vert;
+  }
+}
+*/
 .players {
   padding: 10px; }
   .players .player {
