@@ -6134,4 +6134,26 @@ footer {
     transform: rotate(-60deg);
     background-color: #55aa55; }
 
+.players {
+  padding: 10px; }
+  .players .player {
+    text-align: center;
+    padding: 15px 10px; }
+    .players .player .player-name {
+      border-radius: 50%;
+      padding: 25px 15px;
+      background: rgba(0, 0, 0, 0.7); }
+    .players .player .player-cartes {
+      z-index: 99999;
+      background: #285e67;
+      border: 5px solid #163439;
+      padding: 3px 10px;
+      border-radius: 15px;
+      font-size: 9pt; }
+    .players .player.current-player {
+      transform: scale(1.1); }
+      .players .player.current-player .player-name {
+        background: black;
+        border: 10px solid #FFF; }
+
 /*# sourceMappingURL=main.css.map */
