@@ -52,7 +52,13 @@ CREATE TABLE IF NOT EXISTS `users`(
 `u_email` VARCHAR (50),
 `u_password` VARCHAR (64),
 `u_statut` INT (2),
-UNIQUE (u_pseudo,u_email)
+-- Ajout champ unique 
+UNIQUE (u_pseudo,u_email),
+-- Ajout des contraintes des clés étrangère 
+ CONSTRAINT fk_statut_users          
+        FOREIGN KEY (u_statut)            
+        REFERENCES statut_users(su_id) ON DELETE CASCADE ON UPDATE CASCADE
+
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- Structure de la table 'CARDS'
