@@ -54,5 +54,17 @@ public class DataBaseManagementTest {
 		assertTrue(dataBaseManagement.addCard("zero", "blue"));
 		assertTrue(dataBaseManagement.deleteCard("zero", "blue"));
 		dataBaseManagement.end();
+	}
+	@Test
+	public void ifgameAlreadyExistNameIsCorrect() throws SQLException {
+		dataBaseManagement.connect();
+		assertFalse(dataBaseManagement.fgameAlreadyExistName("Game idse"));
+		dataBaseManagement.end();
+	}
+	@Test
+	public void addGameCorrect() throws SQLException {
+		dataBaseManagement.connect();
+		assertTrue(dataBaseManagement.addGames("GameStatsIdse", "4", "0"));
+		dataBaseManagement.end();
 	}*/
 }
