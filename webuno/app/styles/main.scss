@@ -219,7 +219,9 @@ header {
   .navbar-brand {
     font-size: 30pt;
 
-    &:hover {
+    &.loader {
+      transition: ease-out;
+      transition-duration: 1s;
       text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
     }
   }

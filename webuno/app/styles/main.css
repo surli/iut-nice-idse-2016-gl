@@ -6023,7 +6023,9 @@ header .navbar {
   margin-bottom: 0; }
 header .navbar-brand {
   font-size: 30pt; }
-  header .navbar-brand:hover {
+  header .navbar-brand.loader {
+    transition: ease-out;
+    transition-duration: 1s;
     text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff; }
 header .navbar-toggle {
   background-color: rgba(0, 0, 0, 0.2); }

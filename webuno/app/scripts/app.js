@@ -64,25 +64,7 @@ angular
             .state('app.home', {
                 url: '/home',
                 templateUrl: 'views/home.html',
-                controller: 'HomeController',
-                resolve: {
-                    Games: function ($http, $q, Auth) {
-                        var deferred = $q.defer();
-
-                        $http.get('/rest/game', {
-                                headers: {
-                                    token: Auth.getUser().token
-                                }
-                            })
-                            .then(function (data) {
-                                deferred.resolve(data);
-                            }, function (error) {
-                                deferred.reject(error);
-                            });
-
-                        return deferred.promise;
-                    }
-                }
+                controller: 'HomeController'
             })
             .state('app.start', {
                 url: '/start',
