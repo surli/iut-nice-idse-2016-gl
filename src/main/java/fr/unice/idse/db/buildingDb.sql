@@ -57,6 +57,20 @@ CREATE TABLE IF NOT EXISTS `cards`(
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
+-- Structure de la table 'MATCH'
+-- Création de la table 
+
+CREATE TABLE IF NOT EXISTS `matchs`(
+`m_id` INT (7) AUTO_INCREMENT PRIMARY KEY  NOT NULL,
+`m_g_id`INT (5) NOT NULL,
+-- Ajout des contraintes des clés étrangère 
+ CONSTRAINT fk_matchs_game          
+        FOREIGN KEY (m_g_id)            
+        REFERENCES games(g_id) ON DELETE CASCADE ON UPDATE CASCADE,
+
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
 -- Structure de la table 'hands_players_in_game'
 -- Création de la table
 CREATE TABLE IF NOT EXISTS `hands_players_in_game` (
