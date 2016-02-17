@@ -35,6 +35,14 @@ CREATE TABLE IF NOT EXISTS `games`(
 UNIQUE (g_nom)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+
+-- Structure de la table 'STATUT_USERS'
+-- Création de la table 
+CREATE TABLE IF NOT EXISTS `statut_users`(
+`su_id` INT (5) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+`su_libelle` VARCHAR (25) NOT NULL
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
 -- Structure de la table 'USERS'
 -- Création de la table 
 
