@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS `hands_players_in_game` (
   `h_id_match` int(5) NOT NULL,
   `h_id_user` int(5) NOT NULL,
   `h_id_card` int(5) NOT NULL,
+  `h_tour` int (5) NOT NULL,
   -- Ajout de la clé primaire composite 
   PRIMARY KEY (h_id_match,h_id_user,h_id_card),
   -- Ajout des contraintes des clés étrangère 
