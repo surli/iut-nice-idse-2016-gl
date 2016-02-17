@@ -1,9 +1,17 @@
 'use strict';
 
 angular.module('unoApp')
-    .controller('HomeController', ['$scope', '$timeout', '$http', '$state', 'Games', 'Game', function ($scope, $timeout, $http, $state, Games, Game) {
-        $scope.games = Games.data.games;
+    .controller('HomeController', ['$scope', '$timeout', '$http', '$state', 'Game', function ($scope, $timeout, $http, $state, Game) {
         var timeoutListGames;
+
+        Game.getAllGames()
+            .then(function (data) {
+                $scope.games = data.data.games;
+                $scope.requestListGames();
+            }, function (error) {
+                console.error(error);
+                $scope.requestListGames();
+            });
 
         $scope.requestListGames = function () {
             timeoutListGames = $timeout(function () {
@@ -17,8 +25,6 @@ angular.module('unoApp')
                     });
             }, 5000);
         };
-
-        $scope.requestListGames();
 
         $scope.joinGame = function (gameName) {
             Game.joinGame(gameName)
