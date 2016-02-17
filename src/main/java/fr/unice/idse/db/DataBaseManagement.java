@@ -306,38 +306,5 @@ public class DataBaseManagement {
 			return false;
 	}
 
-	public boolean ifGameAlreadyExistName(String name) {
-		String query1 = "SELECT g_nom FROM games WHERE g_nom = ?";
-		try {
-			ps = con.prepareStatement(query1);
-			ps.setString(1,name);
-			rs = ps.executeQuery();
-			if (rs.next())
-				return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-
-
-public boolean addGames(String name, int nbrMaxJoueur, int nbrMaxIA) {
-		if (!ifGameAlreadyExistName(name)) {
-			String query = "INSERT INTO games (g_nom,g_nbr_max_joueur,g_nbr_max_ia) VALUES (?,?, ?)";
-			try {
-				ps = con.prepareStatement(query);
-				ps.setString(1, name);
-				ps.setInt(2, nbrMaxJoueur);
-				ps.setInt(3, nbrMaxIA )
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		return true;
-		} else
-			return false;
-	}
+	
 }
