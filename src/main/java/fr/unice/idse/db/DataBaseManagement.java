@@ -38,6 +38,23 @@ public class DataBaseManagement {
 		}
 	}
 
+	public int getCurrentAutoIncrementValueWithTableName(String tableName) {
+		String query = "SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
+		int result = 0;
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, "uno");
+			ps.setString(2, tableName);
+			rs = ps.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	public boolean userLoginIsCorrect(String email, String password) {
 		String query = "SELECT u_email, u_password FROM users WHERE u_email = ? AND u_password = ?";
 		try {
@@ -73,6 +90,23 @@ public class DataBaseManagement {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public int getIdUserWithPseudo(String pseudo) {
+		String query = "SELECT u_id FROM users WHERE u_pseudo = ?";
+		int result = 0;
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, pseudo);
+			rs = ps.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+
 	}
 
 	public boolean ifUserAlreadyExistPseudoEmail(String pseudo, String email) {
@@ -114,7 +148,7 @@ public class DataBaseManagement {
 		}
 		return false;
 	}
-	
+
 	public boolean ifUserAlreadyExistEmail(String email) {
 		String query1 = "SELECT u_email FROM users WHERE u_email = ?";
 		try {
@@ -242,7 +276,7 @@ public class DataBaseManagement {
 		else
 			return false;
 	}
-	
+
 	public boolean updateUserEmail(String oldEmail, String password, String newEmail) {
 		if (userLoginIsCorrect(oldEmail, password) && !ifUserAlreadyExistEmail(newEmail)) {
 			String query = "UPDATE users SET u_email = ? WHERE u_email = ?";
@@ -255,15 +289,14 @@ public class DataBaseManagement {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if(userLoginIsCorrect(newEmail, password))
+			if (userLoginIsCorrect(newEmail, password))
 				return true;
 			else
 				return false;
-		}
-		else
+		} else
 			return false;
 	}
-	
+
 	public boolean updateUserPseudo(String email, String password, String newPseudo) {
 		if (userLoginIsCorrect(email, password) && !ifUserAlreadyExistPseudo(newPseudo)) {
 			String query = "UPDATE users SET u_pseudo = ? WHERE u_email = ?";
@@ -276,12 +309,11 @@ public class DataBaseManagement {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if(getPseudoWithEmail(email).equals(newPseudo))
+			if (getPseudoWithEmail(email).equals(newPseudo))
 				return true;
 			else
 				return false;
-		}
-		else
+		} else
 			return false;
 	}
 
@@ -297,47 +329,61 @@ public class DataBaseManagement {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if(userLoginIsCorrect(email, newPassword))
+			if (userLoginIsCorrect(email, newPassword))
 				return true;
 			else
 				return false;
-		}
-		else
+		} else
 			return false;
 	}
-public boolean ifGameAlreadyExistName(String name) {
-    String query1 = "SELECT g_nom FROM games WHERE g_nom = ?";
-    try {
-      ps = con.prepareStatement(query1);
-      ps.setString(1,name);
-      rs = ps.executeQuery();
-      if (rs.next())
-        return true;
-    } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    return false;
-  }
 
+	public boolean ifGameAlreadyExistName(String name) {
+		String query1 = "SELECT g_nom FROM games WHERE g_nom = ?";
+		try {
+			ps = con.prepareStatement(query1);
+			ps.setString(1, name);
+			rs = ps.executeQuery();
+			if (rs.next())
+				return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 
+	public boolean addGame(String name, int nbrMaxJoueur, int nbrMaxIA) {
+		if (!ifGameAlreadyExistName(name)) {
+			String query = "INSERT INTO games (g_nom,g_nbr_max_joueur,g_nbr_max_ia) VALUES (?,?, ?)";
+			try {
+				ps = con.prepareStatement(query);
+				ps.setString(1, name);
+				ps.setInt(2, nbrMaxJoueur);
+				ps.setInt(3, nbrMaxIA);
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return true;
+		} else
+			return false;
+	}
 
-public boolean addGames(String name, int nbrMaxJoueur, int nbrMaxIA) {
-    if (!ifGameAlreadyExistName(name)) {
-      String query = "INSERT INTO games (g_nom,g_nbr_max_joueur,g_nbr_max_ia) VALUES (?,?, ?)";
-      try {
-        ps = con.prepareStatement(query);
-        ps.setString(1, name);
-        ps.setInt(2, nbrMaxJoueur);
-        ps.setInt(3, nbrMaxIA );
-        ps.executeUpdate();
-      } catch (SQLException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    return true;
-    } else
-      return false;
-  }
-	
+	public boolean deleteGameWithName(String nameOfTheGame) {
+		if (ifGameAlreadyExistName(nameOfTheGame)) {
+			String query = "DELETE FROM games WHERE g_nom = ?";
+			try {
+				ps = con.prepareStatement(query);
+				ps.setString(1, nameOfTheGame);
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return true;
+		} else
+			return false;
+	}
+
 }
