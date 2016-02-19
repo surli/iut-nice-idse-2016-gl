@@ -412,18 +412,20 @@ public class GameRestTest extends JerseyTest {
     }
 
 
+
+
     @Test
     public void pickacardGameNullTest() throws JSONException{
-        for(int i = 0; i < 3; i++) {
-            assertTrue(model.createPlayer("azert"+i, "token"+i));
-            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
-        }
-        assertTrue(model.findGameByName("tata").start());
 
         Entity<String> jsonEntity = Entity.entity(null, MediaType.APPLICATION_JSON);
+
         Response response = target("/game//azert1").request().header("token", "token").post(jsonEntity);
+
         assertEquals(404, response.getStatus()); 
+
     }
+
+
     
     @Test
     public void pickacardTokenNullTest() throws JSONException{
@@ -434,10 +436,33 @@ public class GameRestTest extends JerseyTest {
         assertTrue(model.findGameByName("tata").start());
 
         Entity<String> jsonEntity = Entity.entity(null, MediaType.APPLICATION_JSON);
+        Response response = target("/game/tata/azert1").request().header("", "").post(jsonEntity);
+        assertEquals(405, response.getStatus()); 
+        
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("Token not found", json.getString("error"));
+
+    }
+    
+    @Test
+    public void pickacardPlayerNullTest() throws JSONException{
+        for(int i = 0; i < 3; i++) {
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
+            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
+        }
+        assertTrue(model.findGameByName("tata").start());
+
+        Entity<String> jsonEntity = Entity.entity(null, MediaType.APPLICATION_JSON);
         Response response = target("/game/tata/azert1").request().header("token", "").post(jsonEntity);
         assertEquals(405, response.getStatus()); 
+        
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("Player not found with this token", json.getString("error"));
+
     }
 
+    
+    
     /*
      * ******************************************************************************************************
      * ***************************************** List card end test *****************************************
