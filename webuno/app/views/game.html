@@ -1,12 +1,20 @@
+<div class="players">
+    <div data-ng-repeat="player in game.players" data-ng-if="player.name != user.name" class="text-center">
+        <span>{{player.name}}</span>
+        <br />
+        <span>{{player.cartes}} cartes</span>
+    </div>
+</div>
+
 <div id="table-game">
-  <div id="pioche" data-ng-click="piocherCarte()"></div>
-  <div id="fausse" class="carte {{fausse.famille}}-{{fausse.nombre}}"></div>
+    <div id="pioche" data-ng-click="piocherCarte()"></div>
+    <div id="fausse" class="carte {{game.stack.family}}-{{game.stack.number | WordToNumber}}"></div>
 </div>
 
 <div id="main">
-  <ul>
-    <li data-ng-repeat="carte in cartes track by $index"
-        data-ng-click="jouerCarte(carte)"
-        class="carte {{carte.famille}}-{{carte.nombre}}"></li>
-  </ul>
+    <ul>
+        <li data-ng-repeat="carte in cartes track by $index"
+            data-ng-click="jouerCarte(carte)"
+            class="carte {{carte.familly}}-{{carte.number | WordToNumber}}"></li>
+    </ul>
 </div>

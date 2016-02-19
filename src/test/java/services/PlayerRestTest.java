@@ -5,7 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
+import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
+import fr.unice.idse.model.Player;
 import fr.unice.idse.services.PlayerRest;
 
 import javax.ws.rs.core.Application;
@@ -29,8 +31,8 @@ public class PlayerRestTest extends JerseyTest {
 	@Before
 	public void init() {
 		model = Model.getInstance();
-		model.setPlayers(new ArrayList<>());
-		model.setGames(new ArrayList<>());
+		model.setPlayers(new ArrayList<Player>());
+		model.setGames(new ArrayList<Game>());
 	}
 	
     /*
@@ -59,6 +61,36 @@ public class PlayerRestTest extends JerseyTest {
 		
 	    assertEquals(200, response.getStatus());
 	    assertEquals(2, json.getJSONArray("players").length());
+	}
+	
+    /*
+     * ******************************************************************************************************
+     * *************************************** get player test **********************************************
+     * ******************************************************************************************************
+     */
+	
+	@Test
+	public void retourneErreur405SiLePlayerNExistePasDansLeModel() throws JSONException {
+		Model model = Model.getInstance();
+		
+		Response response = target("/player/John").request().get();
+		JSONObject json = new JSONObject(response.readEntity(String.class));
+		
+	    assertEquals(405, response.getStatus());
+	    assertEquals("This player does not exist or is not connected", json.getString("error"));
+	}
+	
+	@Test
+	public void retourneLesDonneesDuJoueur() throws JSONException {
+		Model model = Model.getInstance();
+		model.createPlayer("John", "dunnowhatitis");
+		
+		Response response = target("/player/John").request().get();
+		String tmp = response.readEntity(String.class);
+		JSONObject json = new JSONObject(tmp);
+		
+	    assertEquals(200, response.getStatus());
+	    assertEquals("John", json.getString("pseudo"));
 	}
 
 }

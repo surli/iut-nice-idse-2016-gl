@@ -498,6 +498,7 @@ public class GameRest extends OriginRest{
 
         // Finalement la carte est jouer
         model.findGameByName(gameName).getBoard().poseCard(card);
+        model.findGameByName(gameName).getBoard().nextPlayer();
 
         jsonObject.put("success", true);
         return sendResponse(200, jsonObject.toString(), "PUT");

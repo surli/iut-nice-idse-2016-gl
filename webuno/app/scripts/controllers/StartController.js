@@ -7,7 +7,6 @@ angular.module('unoApp')
         $scope.goGame = function () {
             if ($scope.game && $scope.game.length > 3 && $scope.user.name) {
 
-                //TODO remplacer par Game.createGame($scope.game,$scope.user.name,$scope.nbPlayers)
                 Game.createGame($scope.game, $scope.nbPlayers)
                     .then(function(data) {
                         switch (data.status) {
