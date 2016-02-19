@@ -18,7 +18,9 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
+import fr.unice.idse.model.Player;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
@@ -38,8 +40,8 @@ public class GameRestTest extends JerseyTest {
     @Before
     public void init() {
         model = Model.getInstance();
-        model.setGames(new ArrayList<>());
-        model.setPlayers(new ArrayList<>());
+        model.setGames(new ArrayList<Game>());
+        model.setPlayers(new ArrayList<Player>());
         model.createPlayer("toto", "token");
         model.addGame(model.getPlayerFromList("token"), "tata", 4);
     }
@@ -358,7 +360,7 @@ public class GameRestTest extends JerseyTest {
      */
     @Test
     public void retourneUnTableauVideSiAucuneGame() throws JSONException{
-        model.setGames(new ArrayList<>());
+        model.setGames(new ArrayList<Game>());
         assertTrue(model.createPlayer("Aladin", "azertyuiop"));
         Response response = target("/game").request().header("token", "azertyuiop").get();
         assertEquals(200, response.getStatus());
@@ -535,7 +537,7 @@ public class GameRestTest extends JerseyTest {
         }
         assertTrue(model.findGameByName("tata").start());
 
-        model.findGameByName("tata").getBoard().getActualPlayer().setCards(new ArrayList<>());
+        model.findGameByName("tata").getBoard().getActualPlayer().setCards(new ArrayList<Card>());
         model.findGameByName("tata").getBoard().getActualPlayer().getCards().add(new Card(Value.Five, Color.Blue));
         model.findGameByName("tata").getBoard().getActualPlayer().getCards().add(new Card(Value.Three, Color.Blue));
         model.findGameByName("tata").getBoard().getStack().changeColor(Color.Red);
