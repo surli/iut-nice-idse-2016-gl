@@ -84,6 +84,19 @@ CREATE TABLE IF NOT EXISTS `matchs`(
 
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+
+-- Structure de la table 'TURN'
+-- Création de la table 
+
+CREATE TABLE IF NOT EXISTS `TURNS`(
+`t_id` INT (7) AUTO_INCREMENT PRIMARY KEY  NOT NULL,
+`t_m_id`INT (7) NOT NULL,
+`sens` bool, 
+`id_user_ready` INT (5)
+
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
 -- Structure de la table 'hands_players_in_game'
 -- Création de la table
 
