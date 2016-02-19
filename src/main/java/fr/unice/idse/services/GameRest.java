@@ -396,6 +396,7 @@ public class GameRest extends OriginRest{
         if(model.findPlayerByToken(gameName, token) == null){
             jsonReturn.put("error", "Player not found with this token");
             return sendResponse(405, jsonReturn.toString(), "POST");
+            
         }
 
         if(!model.findPlayerByToken(gameName, token).getName().equals(playerName)){
