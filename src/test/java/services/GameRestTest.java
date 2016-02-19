@@ -344,6 +344,25 @@ public class GameRestTest extends JerseyTest {
 
     }
     
+    @Test
+    public void createGameAddTest() throws JSONException{
+    	assertTrue(model.createPlayer("marcel", "token1223"));
+    	assertTrue(model.addGame(model.getPlayerFromList("token1223"), "superfly", 4));
+    	
+        String json = "{game:'superfly', player:'marcel', numberplayers:4}";
+        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
+
+        /**
+         * on verifie que le code de retour est bien 405/error
+         */
+        Response response = target("/game").request().header("token", "token1223").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
+        assertEquals(500, response.getStatus());	
+        assertEquals("false", jsonObject.getString("message"));
+
+    }
+    
 
 
     /*
@@ -392,6 +411,32 @@ public class GameRestTest extends JerseyTest {
         assertEquals(200, response.getStatus());
     }
 
+
+    @Test
+    public void pickacardGameNullTest() throws JSONException{
+        for(int i = 0; i < 3; i++) {
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
+            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
+        }
+        assertTrue(model.findGameByName("tata").start());
+
+        Entity<String> jsonEntity = Entity.entity(null, MediaType.APPLICATION_JSON);
+        Response response = target("/game//azert1").request().header("token", "token").post(jsonEntity);
+        assertEquals(404, response.getStatus()); 
+    }
+    
+    @Test
+    public void pickacardTokenNullTest() throws JSONException{
+        for(int i = 0; i < 3; i++) {
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
+            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
+        }
+        assertTrue(model.findGameByName("tata").start());
+
+        Entity<String> jsonEntity = Entity.entity(null, MediaType.APPLICATION_JSON);
+        Response response = target("/game/tata/azert1").request().header("token", "").post(jsonEntity);
+        assertEquals(405, response.getStatus()); 
+    }
 
     /*
      * ******************************************************************************************************
