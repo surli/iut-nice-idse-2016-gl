@@ -92,7 +92,15 @@ CREATE TABLE IF NOT EXISTS `TURNS`(
 `t_id` INT (7) AUTO_INCREMENT PRIMARY KEY  NOT NULL,
 `t_m_id`INT (7) NOT NULL,
 `sens` bool, 
-`id_user_ready` INT (5)
+`id_user_ready` INT (5),
+
+-- Ajout des contraintes des clés étrangère 
+ CONSTRAINT fk_match_turns          
+        FOREIGN KEY (t_m_id)            
+        REFERENCES match(m_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_user_turns
+  		FOREIGN KEY (id_user_ready)
+  		REFERENCES users(u_id)
 
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
