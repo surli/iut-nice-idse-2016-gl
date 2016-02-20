@@ -403,10 +403,11 @@ public class GameRest extends OriginRest{
             jsonReturn.put("error", "Invalid token for this player");
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
+        
 
         // verifie que la partie est bien lancée
         if(!model.findGameByName(gameName).gameBegin()){
-            jsonReturn.put("error", "Game no started");
+            jsonReturn.put("error", "Game not started");
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
 
