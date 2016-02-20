@@ -23,7 +23,7 @@ CREATE DATABASE IF NOT EXISTS `uno` DEFAULT CHARACTER SET utf8 COLLATE utf8_gene
 USE `uno`;
 
 --
--- Structure de la table 'GAMES'
+-- Structure de la table 'games'
 -- Création de la table 
 --
 CREATE TABLE IF NOT EXISTS `games`(
@@ -36,14 +36,14 @@ UNIQUE (g_nom)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
--- Structure de la table 'STATUT_USERS'
+-- Structure de la table 'statut_users'
 -- Création de la table 
 CREATE TABLE IF NOT EXISTS `statut_users`(
 `su_id` INT (5) AUTO_INCREMENT PRIMARY KEY NOT NULL,
 `su_libelle` VARCHAR (25) NOT NULL
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
--- Structure de la table 'USERS'
+-- Structure de la table 'users'
 -- Création de la table 
 
 CREATE TABLE IF NOT EXISTS `users`(
@@ -61,17 +61,17 @@ UNIQUE (u_pseudo,u_email),
 
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
--- Structure de la table 'CARDS'
+-- Structure de la table 'cards'
 -- Création de la table 
 
 CREATE TABLE IF NOT EXISTS `cards`(
 `c_id` INT (5) AUTO_INCREMENT PRIMARY KEY NOT NULL,
-`c_value` ENUM ('zero','one','two','three','four','five','six','seven','eight','nine','skip', 'reverse','drawtwo','drawfour','wild'), 
-`c_color` ENUM ('blue','green', 'red', 'yellow', 'black')
+`c_value` ENUM ('zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'skip', 'reverse', 'drawtwo', 'drawfour', 'wild'), 
+`c_color` ENUM ('blue', 'green', 'red', 'yellow', 'black')
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
--- Structure de la table 'MATCH'
+-- Structure de la table 'matchs'
 -- Création de la table 
 
 CREATE TABLE IF NOT EXISTS `matchs`(
@@ -85,19 +85,18 @@ CREATE TABLE IF NOT EXISTS `matchs`(
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
--- Structure de la table 'TURN'
+-- Structure de la table 'turns'
 -- Création de la table 
 
-CREATE TABLE IF NOT EXISTS `TURNS`(
+CREATE TABLE IF NOT EXISTS `turns`(
 `t_id` INT (7) AUTO_INCREMENT PRIMARY KEY  NOT NULL,
 `t_m_id`INT (7) NOT NULL,
-`sens` bool, 
+`sens` ENUM ('normal', 'reverse'), 
 `id_user_ready` INT (5),
-
 -- Ajout des contraintes des clés étrangère 
  CONSTRAINT fk_match_turns          
         FOREIGN KEY (t_m_id)            
-        REFERENCES match(m_id) ON DELETE CASCADE ON UPDATE CASCADE,
+        REFERENCES matchs(m_id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT fk_user_turns
   		FOREIGN KEY (id_user_ready)
   		REFERENCES users(u_id)
@@ -130,10 +129,10 @@ CREATE TABLE IF NOT EXISTS `hands_players_in_game` (
 
 -- Structure de la table 'players_in_game'
 -- Création de la table
+
 CREATE TABLE IF NOT EXISTS `players_in_game` (
   `p_g_id` int(5) NOT NULL,
   `p_id_user` int(5) NOT NULL,
-  
   -- Ajout de la clé primaire composite 
   PRIMARY KEY (p_g_id,p_id_user),
    -- Ajout des contraintes des clés étrangère 
@@ -145,13 +144,15 @@ CREATE TABLE IF NOT EXISTS `players_in_game` (
         REFERENCES users(u_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `statistiques`(
+-- Structure de la table 'stats'
+-- Création de la table
+
+CREATE TABLE IF NOT EXISTS `stats`(
 `s_g_id` INT (5) NOT NULL,
 `s_u_id` INT (5) NOT NULL,
-`nbr_carte_main` INT (3) ,
-`nbr_coup_jouer` INT (5),
-`score` INT (7),
-
+`nb_of_cards_in_hand` INT (3) NOT NULL,
+`nb_of_strokes` INT (5) NOT NULL,
+`score` INT (7) NOT NULL,
 -- Ajout de la clé primaire composite 
 PRIMARY KEY (s_g_id,s_u_id),
  -- Ajout des contraintes des clés étrangère 
