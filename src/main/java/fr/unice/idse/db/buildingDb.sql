@@ -40,7 +40,7 @@ UNIQUE (g_nom)
 -- Création de la table 
 CREATE TABLE IF NOT EXISTS `statut_users`(
 `su_id` INT (5) AUTO_INCREMENT PRIMARY KEY NOT NULL,
-`su_libelle` VARCHAR (25) NOT NULL
+`su_wording` VARCHAR (25) NOT NULL
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- Structure de la table 'users'
@@ -49,14 +49,14 @@ CREATE TABLE IF NOT EXISTS `statut_users`(
 CREATE TABLE IF NOT EXISTS `users`(
 `u_id` INT (5) AUTO_INCREMENT PRIMARY KEY NOT NULL,
 `u_pseudo` VARCHAR (30) NOT NULL,
-`u_email` VARCHAR (50),
-`u_password` VARCHAR (64),
-`u_statut` INT (2),
+`u_email` VARCHAR (50) NOT NULL,
+`u_password` VARCHAR (64) NOT NULL,
+`u_su_id` INT (5),
 -- Ajout champ unique 
-UNIQUE (u_pseudo,u_email),
+UNIQUE (u_pseudo, u_email),
 -- Ajout des contraintes des clés étrangère 
  CONSTRAINT fk_statut_users          
-        FOREIGN KEY (u_statut)            
+        FOREIGN KEY (u_su_id)            
         REFERENCES statut_users(su_id) ON DELETE CASCADE ON UPDATE CASCADE
 
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
