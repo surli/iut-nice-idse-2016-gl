@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.regex.Pattern;
 
 @Path("auth")
 public class AuthRest extends OriginRest{
@@ -62,6 +63,7 @@ public class AuthRest extends OriginRest{
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
         DataBaseManagement dataBase = new DataBaseManagement();
+        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         if(!jsonObject.has("email")){
             jsonResult.put("error", "Missing parameter email");
@@ -70,6 +72,11 @@ public class AuthRest extends OriginRest{
 
         if(!jsonObject.has("password")){
             jsonResult.put("error", "Missing parameter password");
+            return sendResponse(405, jsonResult.toString(), "PUT");
+        }
+
+        if(!pattern.matcher(jsonResult.getString("email")).matches()){
+            jsonResult.put("error", "Email invalid");
             return sendResponse(405, jsonResult.toString(), "PUT");
         }
 
@@ -88,5 +95,57 @@ public class AuthRest extends OriginRest{
         return sendResponse(405, jsonResult.toString(), "PUT");
     }
 
+
+    @POST
+    @Path("/signup")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response signup(String json) throws JSONException {
+        // Initialisation des variables
+        JSONObject jsonObject = new JSONObject(json);
+        JSONObject jsonResult = new JSONObject();
+        Model model = Model.getInstance();
+        DataBaseManagement dataBase = new DataBaseManagement();
+        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+
+        // Verification de l'existante des variables
+        if(!jsonObject.has("email")){
+            jsonResult.put("error", "Missing parameter email");
+            return sendResponse(405, jsonResult.toString(), "PUT");
+        }
+        if(!jsonObject.has("playerName")){
+            jsonResult.put("error", "Missing parameter playerName");
+            return sendResponse(405, jsonResult.toString(), "PUT");
+        }
+        if(!jsonObject.has("password")){
+            jsonResult.put("error", "Missing parameter password");
+            return sendResponse(405, jsonResult.toString(), "PUT");
+        }
+
+        // Vérification des variables
+        if(!pattern.matcher(jsonResult.getString("email")).matches()){
+            jsonResult.put("error", "Email invalid");
+            return sendResponse(405, jsonResult.toString(), "PUT");
+        }
+        if(jsonObject.getString("playerName").length() < 3) {
+            jsonResult.put("error", "playerName invalid size");
+            return sendResponse(405, jsonResult.toString(), "PUT");
+        }
+
+        // Insertion dans la bdd
+        if(!dataBase.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")))){
+            jsonResult.put("error", "Player already exist");
+            return sendResponse(405, jsonResult.toString(), "PUT");
+        }
+
+        // Ajout dans le model
+        String token = generateToken(jsonResult.getString("playerName"));
+        if(model.createPlayer(jsonObject.getString("playerName"), token)){
+            jsonResult.put("token", token);
+            return sendResponse(200, jsonResult.toString(), "PUT");
+        }
+
+        jsonResult.put("error", "Player already exist");
+        return sendResponse(405, jsonResult.toString(), "PUT");
+    }
 
 }
