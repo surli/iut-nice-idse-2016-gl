@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `uno`
+-- Base de données :  `UNO`
 --
 CREATE DATABASE IF NOT EXISTS `uno` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `uno`;
 
 --
--- Structure de la table 'games'
+-- Structure de la table 'GAMES'
 -- Création de la table 
 --
 CREATE TABLE IF NOT EXISTS `games`(
@@ -36,32 +36,34 @@ UNIQUE (g_nom)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
--- Structure de la table 'statut_users'
+-- Structure de la table 'STATUT_USERS'
 -- Création de la table 
+
 CREATE TABLE IF NOT EXISTS `statut_users`(
 `su_id` INT (2) AUTO_INCREMENT PRIMARY KEY NOT NULL,
 `su_wording` VARCHAR (25) NOT NULL
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
--- Structure de la table 'users'
+
+-- Structure de la table 'USERS'
 -- Création de la table 
 
 CREATE TABLE IF NOT EXISTS `users`(
 `u_id` INT (5) AUTO_INCREMENT PRIMARY KEY NOT NULL,
 `u_pseudo` VARCHAR (30) NOT NULL,
-`u_email` VARCHAR (50) NOT NULL,
-`u_password` VARCHAR (64) NOT NULL,
+`u_email` VARCHAR (50),
+`u_password` VARCHAR (64),
 `u_su_id` INT (2),
 -- Ajout champ unique 
 UNIQUE (u_pseudo, u_email),
 -- Ajout des contraintes des clés étrangère 
- CONSTRAINT fk_statut_users          
-        FOREIGN KEY (u_su_id)            
-        REFERENCES statut_users(su_id) ON DELETE CASCADE ON UPDATE CASCADE
-
+CONSTRAINT fk_statut_users          
+		FOREIGN KEY (u_su_id)            
+		REFERENCES statut_users(su_id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
--- Structure de la table 'cards'
+
+-- Structure de la table 'CARDS'
 -- Création de la table 
 
 CREATE TABLE IF NOT EXISTS `cards`(
@@ -71,21 +73,20 @@ CREATE TABLE IF NOT EXISTS `cards`(
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
--- Structure de la table 'matchs'
+-- Structure de la table 'MATCHS'
 -- Création de la table 
 
 CREATE TABLE IF NOT EXISTS `matchs`(
 `m_id` INT (7) AUTO_INCREMENT PRIMARY KEY  NOT NULL,
 `m_g_id`INT (5) NOT NULL,
 -- Ajout des contraintes des clés étrangère 
- CONSTRAINT fk_matchs_game          
-        FOREIGN KEY (m_g_id)            
-        REFERENCES games(g_id) ON DELETE CASCADE ON UPDATE CASCADE
-
+CONSTRAINT fk_matchs_game          
+		FOREIGN KEY (m_g_id)            
+		REFERENCES games(g_id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
--- Structure de la table 'turns'
+-- Structure de la table 'TURNS'
 -- Création de la table 
 
 CREATE TABLE IF NOT EXISTS `turns`(
@@ -100,55 +101,54 @@ CREATE TABLE IF NOT EXISTS `turns`(
   CONSTRAINT fk_user_turns
   		FOREIGN KEY (id_user_ready)
   		REFERENCES users(u_id)
-
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
--- Structure de la table 'hands_players_in_game'
+-- Structure de la table 'HANDS_PLAYER_IN_GAME'
 -- Création de la table
 
 CREATE TABLE IF NOT EXISTS `hands_players_in_game` (
-  `h_id_match` int(5) NOT NULL,
-  `h_id_user` int(5) NOT NULL,
-  `h_id_card` int(5) NOT NULL,
-  `h_tour` int (5) NOT NULL,
-  -- Ajout de la clé primaire composite 
-  PRIMARY KEY (h_id_match,h_id_user,h_id_card),
-  -- Ajout des contraintes des clés étrangère 
-  CONSTRAINT fk_match_hand          
-        FOREIGN KEY (h_id_match)            
-        REFERENCES matchs(m_id) ON DELETE CASCADE ON UPDATE CASCADE,
-   CONSTRAINT fk_user_hand          
-        FOREIGN KEY (h_id_user)            
-        REFERENCES users(u_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_card_hand          
-        FOREIGN KEY (h_id_card)            
-        REFERENCES cards(c_id) ON DELETE CASCADE ON UPDATE CASCADE
-
+`h_id_match` int(5) NOT NULL,
+`h_id_user` int(5) NOT NULL,
+`h_id_card` int(5) NOT NULL,
+`h_tour` int (5) NOT NULL,
+-- Ajout de la clé primaire composite 
+PRIMARY KEY (h_id_match,h_id_user,h_id_card),
+-- Ajout des contraintes des clés étrangère 
+CONSTRAINT fk_match_hand          
+		FOREIGN KEY (h_id_match)            
+		REFERENCES matchs(m_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT fk_user_hand          
+		FOREIGN KEY (h_id_user)            
+		REFERENCES users(u_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT fk_card_hand          
+		FOREIGN KEY (h_id_card)            
+		REFERENCES cards(c_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Structure de la table 'players_in_game'
+
+-- Structure de la table 'PLAYER_IN_GAME'
 -- Création de la table
 
 CREATE TABLE IF NOT EXISTS `players_in_game` (
-  `p_g_id` int(5) NOT NULL,
-  `p_id_user` int(5) NOT NULL,
-  `p_position` int (1) Not NULL,
-  -- Ajout de la clé primaire composite 
-  PRIMARY KEY (p_g_id,p_id_user),
-   -- Ajout des contraintes des clés étrangère 
-  CONSTRAINT fk_game_player          
-        FOREIGN KEY (p_g_id)            
-        REFERENCES games(g_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_user_in_game          
-        FOREIGN KEY (p_id_user)            
-        REFERENCES users(u_id) ON DELETE CASCADE ON UPDATE CASCADE
+`p_g_id` int(5) NOT NULL,
+`p_id_user` int(5) NOT NULL,
+`p_position` int (1) Not NULL,
+-- Ajout de la clé primaire composite 
+PRIMARY KEY (p_g_id,p_id_user),
+-- Ajout des contraintes des clés étrangère 
+CONSTRAINT fk_game_player          
+		FOREIGN KEY (p_g_id)            
+		REFERENCES games(g_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT fk_user_in_game          
+		FOREIGN KEY (p_id_user)            
+		REFERENCES users(u_id) ON DELETE CASCADE ON UPDATE CASCADE	
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 
 -- Structure de la table 'DECK'
 -- Création de la table 
+
 CREATE TABLE IF NOT EXISTS `deck`(
 `d_t_id` int(5) NOT NULL,
 `d_m_id` int(5) NOT NULL,
@@ -167,6 +167,7 @@ CONSTRAINT FK_deck_match
 
 -- Structure de la table 'STACK'
 -- Création de la table 
+
 CREATE TABLE IF NOT EXISTS `stack`(
 `s_t_id` int(5) NOT NULL,
 `s_m_id` int(5) NOT NULL,
@@ -182,7 +183,8 @@ CONSTRAINT FK_stack_match
 		REFERENCES matchs(m_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Structure de la table 'stats'
+
+-- Structure de la table 'STATS'
 -- Création de la table
 
 CREATE TABLE IF NOT EXISTS `stats`(
@@ -195,11 +197,11 @@ CREATE TABLE IF NOT EXISTS `stats`(
 PRIMARY KEY (st_g_id,st_u_id),
  -- Ajout des contraintes des clés étrangère 
   CONSTRAINT fk_score_game          
-        FOREIGN KEY (st_g_id)            
-        REFERENCES games(g_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_score_user          
-        FOREIGN KEY (st_u_id)            
-        REFERENCES users(u_id) ON DELETE CASCADE ON UPDATE CASCADE
+		FOREIGN KEY (st_g_id)            
+		REFERENCES games(g_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT fk_score_user          
+		FOREIGN KEY (st_u_id)            
+		REFERENCES users(u_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
