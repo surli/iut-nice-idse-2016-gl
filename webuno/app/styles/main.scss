@@ -219,7 +219,9 @@ header {
   .navbar-brand {
     font-size: 30pt;
 
-    &:hover {
+    &.loader {
+      transition: ease-out;
+      transition-duration: 1s;
       text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
     }
   }
@@ -326,11 +328,7 @@ footer {
   }
 }
 
-#login {
-
-}
-
-/* Rotation */
+/* OLD LOADER
 @keyframes rotate {
   from {
     transform: rotate(0deg);
@@ -375,5 +373,39 @@ footer {
   &:after {
     transform: rotate(-60deg);
     background-color: $vert;
+  }
+}
+*/
+
+.players {
+  padding: 10px;
+
+  .player {
+    text-align: center;
+    padding: 15px 10px;
+
+    .player-name {
+      border-radius: 50%;
+      padding: 25px 15px;
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .player-cartes {
+      z-index: 99999;
+      background: rgb(40, 94, 103);
+      border: 5px solid rgb(22, 52, 57);
+      padding: 3px 10px;
+      border-radius: 15px;
+      font-size: 9pt;
+    }
+
+    &.current-player {
+      transform: scale(1.1);
+
+      .player-name {
+        background: rgba(0, 0, 0, 1);
+        border: 10px solid #FFF;
+      }
+    }
   }
 }
