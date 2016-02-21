@@ -10,3 +10,4 @@ bin
 .project
 target
 *.iml
+npm-debug.log
