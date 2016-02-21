@@ -135,7 +135,6 @@ input, select {
   background-size: $carte-width*14 $carte-height*8;
   transform-origin: left bottom;
 
-
   @for $i from 0 through 12 {
     &.Red-#{$i} {
       @include sprite-carte($i, 0);
@@ -408,4 +407,34 @@ footer {
       }
     }
   }
+}
+
+.modal-dialog {
+  position: absolute;
+  top: 50% !important;
+  transform: translate(0, -50%) !important;
+  -ms-transform: translate(0, -50%) !important;
+  -webkit-transform: translate(0, -50%) !important;
+  left: 50%;
+  margin-left: -150px;
+  margin-top: -50px;
+  width: 300px;
+  height: 100px;
+  border: none;
+}
+
+.modal-content {
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: $blanc;
+  text-align: center;
+  line-height: 100px;
+  background: $vert;
+  box-shadow: 0 0 5px 0 $vert;
+  font-size: 18pt;
+  border: none;
 }

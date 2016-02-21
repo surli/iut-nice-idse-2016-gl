@@ -3,6 +3,7 @@
 angular.module('unoApp')
     .controller('GameController', ['$rootScope', '$scope', '$http', '$stateParams', '$timeout', 'Game', function ($rootScope, $scope, $http, $stateParams, $timeout, Game) {
         var timeoutStateGame;
+        $scope.currentPlayer = '';
 
         Game.getUserHand($stateParams.name)
             .then(function (response) {
@@ -28,7 +29,14 @@ angular.module('unoApp')
 
                         Game.getCurrentPlayer($stateParams.name)
                             .then(function (response) {
-                                $scope.currentPlayer = response.data.playerName;
+                                if ($scope.currentPlayer !== response.data.playerName) {
+                                    $scope.currentPlayer = response.data.playerName;
+                                    jQuery('.myModalCurrentPlayer').modal();
+                                    $timeout(function() {
+                                        jQuery('.myModalCurrentPlayer').modal('hide');
+                                    }, 2000);
+                                }
+
                                 if (response.data.playerName === $scope.user.name) {
                                     console.log('à moi de jouer !');
                                 }
