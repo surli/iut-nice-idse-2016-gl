@@ -11,3 +11,6 @@ bin
 target
 *.iml
 npm-debug.log
+
+src/main/webapp/*
+!src/main/webapp/WEB-INF
