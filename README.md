@@ -45,6 +45,8 @@ Tous les documents de chaque groupe se trouve dans le repertoire doc à la racin
     - Action du stop
     - Changement de sens
     - Changement de couleur
+- Se connecter avec ses identifiants sur l'ihm
+- Pouvoir s'inscrire
 
 >######Version 0.2
 
