@@ -6,7 +6,8 @@ angular.module('unoApp')
             $state.go('app.home');
         }
 
-        $scope.newUser = '';
+        $scope.newUser  = {};
+        $scope.error    = '';
 
         $scope.goRegister = function () {
             console.log($scope.newUser);
