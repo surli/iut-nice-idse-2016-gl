@@ -8,7 +8,8 @@ import java.sql.PreparedStatement;
 
 public class DataBaseManagement {
 
-	private String url = "jdbc:mysql://localhost/uno";
+	private String port = "8889";
+	private String url = "jdbc:mysql://localhost:" + port + "/uno";
 	private String user = "root";
 	private String pass = "root";
 	private Connection con = null;
