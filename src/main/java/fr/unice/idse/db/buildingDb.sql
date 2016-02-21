@@ -165,7 +165,15 @@ CONSTRAINT FK_deck_match
  )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-
+-- Structure de la table 'STACK'
+-- Création de la table 
+CREATE TABLE IF NOT EXISTS `stack`(
+`s_t_id` int(5) NOT NULL,
+`s_m_id` int(5) NOT NULL,
+`s_c_id` INT (5),
+-- Ajout de la clé primaire composite  
+PRIMARY KEY (d_t_id,d_m_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Structure de la table 'stats'
 -- Création de la table
