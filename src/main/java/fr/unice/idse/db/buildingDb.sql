@@ -176,7 +176,7 @@ PRIMARY KEY (s_t_id,s_m_id),
 -- Ajout des contraites des clés étrangère 
 CONSTRAINT FK_stack_turn
 		FOREIGN kEY (s_t_id)
-		REFERENCES turns (_id) ON DELETE CASCADE ON UPDATE CASCADE,
+		REFERENCES turns (t_id) ON DELETE CASCADE ON UPDATE CASCADE,
 CONSTRAINT FK_stack_match
 		FOREIGN KEY (s_m_id)
 		REFERENCES matchs(m_id)
