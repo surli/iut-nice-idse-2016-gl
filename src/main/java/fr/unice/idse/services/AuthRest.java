@@ -138,7 +138,7 @@ public class AuthRest extends OriginRest{
         }
 
         // Ajout dans le model
-        String token = generateToken(jsonResult.getString("playerName");
+        String token = generateToken(jsonResult.getString("playerName"));
         if(model.createPlayer(jsonObject.getString("playerName"), token)){
             jsonResult.put("token", token);
             return sendResponse(200, jsonResult.toString(), "PUT");
