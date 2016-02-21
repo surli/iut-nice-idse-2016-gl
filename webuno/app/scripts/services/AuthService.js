@@ -20,6 +20,19 @@ angular.module('unoApp')
 
                 return deferred.promise;
             },
+            setUserGuess: function (playername) {
+                var deferred = $q.defer();
+
+                $http.post('/rest/auth', {
+                    playername: playername
+                }).then(function (response) {
+                    deferred.resolve(response);
+                }, function (error) {
+                    deferred.reject(error);
+                });
+
+                return deferred.promise;
+            },
             connectUser: function (newUser) {
                 localStorageService.set('user', newUser);
             },
