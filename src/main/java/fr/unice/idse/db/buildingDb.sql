@@ -39,7 +39,7 @@ UNIQUE (g_nom)
 -- Structure de la table 'statut_users'
 -- Création de la table 
 CREATE TABLE IF NOT EXISTS `statut_users`(
-`su_id` INT (5) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+`su_id` INT (2) AUTO_INCREMENT PRIMARY KEY NOT NULL,
 `su_wording` VARCHAR (25) NOT NULL
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `users`(
 `u_pseudo` VARCHAR (30) NOT NULL,
 `u_email` VARCHAR (50) NOT NULL,
 `u_password` VARCHAR (64) NOT NULL,
-`u_su_id` INT (5),
+`u_su_id` INT (2),
 -- Ajout champ unique 
 UNIQUE (u_pseudo, u_email),
 -- Ajout des contraintes des clés étrangère 
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `matchs`(
 CREATE TABLE IF NOT EXISTS `turns`(
 `t_id` INT (7) AUTO_INCREMENT PRIMARY KEY  NOT NULL,
 `t_m_id`INT (7) NOT NULL,
-`t_sens` , 
+`t_sens` ENUM ('normal', 'reverse'),
 `id_user_ready` INT (5),
 -- Ajout des contraintes des clés étrangère 
  CONSTRAINT fk_match_turns          
@@ -152,8 +152,18 @@ CREATE TABLE IF NOT EXISTS `players_in_game` (
 CREATE TABLE IF NOT EXISTS `deck`(
 `d_t_id` int(5) NOT NULL,
 `d_m_id` int(5) NOT NULL,
-`d_c_id` INT (5)
-  )
+`d_c_id` INT (5),
+-- Ajout de la clé primaire composite  
+PRIMARY KEY (d_t_id,d_m_id),
+-- Ajout des contraites des clés étrangère 
+CONSTRAINT FK_deck_turn
+		FOREIGN kEY (d_t_id)
+		REFERENCES turns (t_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT FK_deck_match
+		FOREIGN KEY (d_m_id)
+		REFERENCES matchs(m_id)
+ )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 
