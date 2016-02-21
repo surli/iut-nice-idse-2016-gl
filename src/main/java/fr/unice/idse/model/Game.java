@@ -2,6 +2,8 @@ package fr.unice.idse.model;
 
 import java.util.ArrayList;
 
+import fr.unice.idse.model.card.Card;
+
 public class Game {
 	
 	private Player host;
@@ -33,6 +35,9 @@ public class Game {
 	
 	public Board getBoard() { return board; }
 	public void setBoard(Board board) {	this.board = board;	}
+	
+	public Alternative getAlternative() {return board.getAlternative();};
+	public void setAlternative(Alternative alternative) { board.setAlternative(alternative);}
 	
 	public int getNumberPlayers() { return numberPlayers; }
 	public void setNumberPlayers(int numberPlayers) { this.numberPlayers = numberPlayers; }
@@ -139,36 +144,6 @@ public class Game {
 				return player;
 		}
 		return null;
-	}
-	
-	/**
-	 * Accès directe à la méthode askPlayerCanPlay de board
-	 * @param player
-	 * @return true si le joueur peu jouer.
-	 */
-	public boolean askPlayerCanPlay(Player player)
-	{
-		return board.askPlayerCanPlay(player);
-	}
-	
-	public void poseCard(Card card)
-	{
-		board.poseCard(card);
-	}
-	
-	public void drawCard()
-	{
-		board.drawCard();
-	}
-	
-	public void nextPlayer()
-	{
-		board.nextPlayer();
-	}
-	
-	public ArrayList<Card> playableCards()
-	{
-		return board.playableCards();
 	}
 	
 	/**

@@ -1,4 +1,4 @@
-﻿# UNO Web service
+# UNO Web service
 
 ### Table of contents
 
@@ -61,6 +61,7 @@ jetty:run
 │   │   ├── GET         Retourne les informations du joueur
 ├── /auth
 │   ├── POST            Authentifie un Guest en renvoyant un token
+│   ├── PUT             Authentifie un joueur avec ses identifiants
 ```
 
 Chaque route doit posseder un Token dans le header pour nom _token

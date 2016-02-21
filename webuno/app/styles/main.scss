@@ -23,15 +23,17 @@ $carte-height: 360px*0.3;
   background-position: ($left*$col) ($top*$line) !important;
 }
 
-//Bouton responsive Commencer partie
-#ingage{
+// Bouton responsive Commencer partie
+#ingage {
   font-size: 2vw;
 }
-@media screen and (min-width: 200px) and (max-width: 640px){
-  #ingage{
+
+@media screen and (min-width: 200px) and (max-width: 640px) {
+  #ingage {
     font-size: 7vw;
   }
 }
+
 .btn {
   color: #FFF;
   border: none;
@@ -70,7 +72,7 @@ $carte-height: 360px*0.3;
   }
 }
 
-input {
+input, select {
   border: none;
   text-align: center;
   color: $gris;
@@ -104,6 +106,16 @@ input {
 
   .panel-body {
     padding: 30px 10px;
+
+    table {
+      margin: 0;
+
+      tr {
+        td, th {
+          border-top: 1px solid rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
   }
 }
 
@@ -124,25 +136,30 @@ input {
   transform-origin: left bottom;
 
   @for $i from 0 through 12 {
-    &.Trefle-#{$i+1} {
+    &.Red-#{$i} {
       @include sprite-carte($i, 0);
     }
   }
-  @for $i from 0 through 13 {
-    &.Carreau-#{$i+1} {
+  @for $i from 0 through 12 {
+    &.Yellow-#{$i} {
       @include sprite-carte($i, 1);
     }
   }
-
-  @for $i from 0 through 13 {
-    &.Coeur-#{$i+1} {
+  @for $i from 0 through 12 {
+    &.Green-#{$i} {
       @include sprite-carte($i, 2);
     }
   }
-  @for $i from 0 through 13 {
-    &.Pique-#{$i+1} {
+  @for $i from 0 through 12 {
+    &.Blue-#{$i} {
       @include sprite-carte($i, 3);
     }
+  }
+  &.Black-14 {
+    @include sprite-carte(13, 5);
+  }
+  &.Black-13 {
+    @include sprite-carte(13, 0);
   }
 }
 
@@ -201,7 +218,9 @@ header {
   .navbar-brand {
     font-size: 30pt;
 
-    &:hover {
+    &.loader {
+      transition: ease-out;
+      transition-duration: 1s;
       text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
     }
   }
@@ -308,24 +327,24 @@ footer {
   }
 }
 
-#login {
-
-}
-
-/* Rotation */
+/* OLD LOADER
 @keyframes rotate {
-  from {transform: rotate(0deg);}
-  to {transform: rotate(360deg);}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 #loader {
   width: 4em;
   height: 4em;
   position: fixed;
-  left:50%;
-  right:50%;
-  top:50%;
-  bottom:50%;
+  left: 50%;
+  right: 50%;
+  top: 50%;
+  bottom: 50%;
   margin-left: -2em;
   margin-top: -2em;
   content: "";
@@ -347,11 +366,75 @@ footer {
 
   &:before {
     transform: rotate(60deg);
-    background-color: $orange;
+    background-color: $vert;
   }
 
   &:after {
     transform: rotate(-60deg);
-    background-color: $orange;
+    background-color: $vert;
   }
+}
+*/
+
+.players {
+  padding: 10px;
+
+  .player {
+    text-align: center;
+    padding: 15px 10px;
+
+    .player-name {
+      border-radius: 50%;
+      padding: 25px 15px;
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .player-cartes {
+      z-index: 99999;
+      background: rgb(40, 94, 103);
+      border: 5px solid rgb(22, 52, 57);
+      padding: 3px 10px;
+      border-radius: 15px;
+      font-size: 9pt;
+    }
+
+    &.current-player {
+      transform: scale(1.1);
+
+      .player-name {
+        background: rgba(0, 0, 0, 1);
+        border: 10px solid #FFF;
+      }
+    }
+  }
+}
+
+.modal-dialog {
+  position: absolute;
+  top: 50% !important;
+  transform: translate(0, -50%) !important;
+  -ms-transform: translate(0, -50%) !important;
+  -webkit-transform: translate(0, -50%) !important;
+  left: 50%;
+  margin-left: -150px;
+  margin-top: -50px;
+  width: 300px;
+  height: 100px;
+  border: none;
+}
+
+.modal-content {
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: $blanc;
+  text-align: center;
+  line-height: 100px;
+  background: $vert;
+  box-shadow: 0 0 5px 0 $vert;
+  font-size: 18pt;
+  border: none;
 }

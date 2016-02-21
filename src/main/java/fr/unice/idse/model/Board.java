@@ -2,6 +2,9 @@ package fr.unice.idse.model;
 
 import java.util.ArrayList;
 
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
+
 public class Board 
 {
 	
@@ -14,22 +17,33 @@ public class Board
 	private boolean meaning;
 	private boolean gameBegin;
 	private boolean gameEnd;
-	private boolean effect;
 	private int cptDrawCard;
 	
 	public Board()
 	{
 		this.players = new ArrayList<Player>();
-		variante = new Alternative();
+		variante = new Alternative(this, true);
 		deck = new Deck();
 		stack = new Stack();
 		actualPlayer = 0;
 		meaning = true;
 		gameBegin = false;
 		gameEnd = false;
-		effect = false;
 		cptDrawCard = 1;
 	}	
+
+	public void setActualColor(Color actualColor){ this.actualColor = actualColor; }
+
+	
+	public Alternative getAlternative()
+	{
+		return variante;
+	}
+	
+	public void setAlternative(Alternative newVariante)
+	{
+		variante = newVariante;
+	}
 	
 	/**
 	 * Change le sens de la partie.
@@ -37,23 +51,6 @@ public class Board
 	public void changeMeaning()
 	{
 		meaning = !meaning;
-	}
-	
-	/**
-	 * Change l'état d'effet.
-	 */
-	public void setEffect()
-	{
-		effect = !effect;
-	}
-	
-	/**
-	 * Retourne si on est dans le cas d'une carte à effet.
-	 * @return
-	 */
-	public boolean getEffect()
-	{
-		return effect;
 	}
 	
 	/**

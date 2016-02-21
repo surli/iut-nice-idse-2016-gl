@@ -31,7 +31,22 @@ Run > Edit Configurations ... > clique sur "+" > Maven
 Lancez les tests avant de commit. Une commande simple (pareil que pour lancer le serveur REST)
 Dans goals ou Command line : `install test`
 
+### Documents
+
+Tous les documents de chaque groupe se trouve dans le repertoire doc à la racine.
+
 ###Release
+
+>######Version 0.3
+
+- Ajout des routes pour l'inscription / connexion avec ses identifiants
+- Mis en place de la base de donnée
+- Ajout des actions dans le moteur
+    - Action du stop
+    - Changement de sens
+    - Changement de couleur
+- Se connecter avec ses identifiants sur l'ihm
+- Pouvoir s'inscrire
 
 >######Version 0.2
 
@@ -60,6 +75,7 @@ Dans goals ou Command line : `install test`
 - Pierre-Antoire Charpentier
 - Stéphanie Carrier
 - Nassim Omrani
+- Regis Parpex (Partie IA)
 
 ###IHM
 >Chef de groupe : Jérémy Froment
@@ -72,15 +88,13 @@ Dans goals ou Command line : `install test`
 
 - Jérémie Elbaz
 - Jocelin Heinen
-Lien du README du groupe : `src/main/java/fr/unice/idse/services`
 
 ###Base de donnée
->Chef de groupe : Marina 
+>Chef de groupe : Pierre Echardour 
 
 - Ugo Paneccasio
-- Pierre Echardour
+- Marina Helie-Zadeh
 - Medhi Ibnettalib
-- Regis Parpex
 
 ###Spécification du projet
 - Utilisation de Token pour assurer une sécurité en REST dans le header de la requête.
@@ -88,5 +102,4 @@ Lien du README du groupe : `src/main/java/fr/unice/idse/services`
 - Seulement l'hôte peut lancer la partie.
 - Les parties peuvent être comprises entre 2 et 6 joueurs.
 - Chargement des données sur la vue toutes les 5 secondes.
-
 

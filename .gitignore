@@ -1,9 +1,16 @@
 .DS_Store
 .idea
 bin
+.metadata
 *.jar
+!webuno/WEB-INF/lib/*.jar
+!src/main/webapp/WEB-INF/lib/*.jar
 .settings
 .classpath
 .project
 target
 *.iml
+npm-debug.log
+
+src/main/webapp/*
+!src/main/webapp/WEB-INF

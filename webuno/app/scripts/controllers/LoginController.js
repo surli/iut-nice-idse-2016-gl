@@ -6,14 +6,31 @@ angular.module('unoApp')
             $state.go('app.home');
         }
 
+        $scope.newUser = {};
+        $scope.error = '';
+
         $scope.goLogin = function () {
-            window.alert('Log in not available !');
+            console.log($scope.newUser);
+            Auth.setUser($scope.newUser)
+                .then(function (response) {
+                    console.log(response);
+                    if (response.data.error) {
+                        $scope.error = response.data.error;
+                    } else {
+                        response.data.name = response.data.playerName;
+                        Auth.connectUser(response.data);
+                        $state.go('app.home');
+                    }
+                });
         };
 
         $scope.goLoginGuess = function () {
-            Auth.setUser({
-                name: 'Anonyme'+Math.floor((Math.random() * (1000 - 1) + 1))
-            });
-            $state.go('app.home');
+            var name = 'Anonyme' + Math.floor((Math.random() * (1000 - 1) + 1));
+            Auth.setUserGuess(name)
+                .then(function (response) {
+                    response.data.name = name;
+                    Auth.connectUser(response.data);
+                    $state.go('app.home');
+                });
         };
     }]);

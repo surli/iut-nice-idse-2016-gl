@@ -2,6 +2,8 @@ package fr.unice.idse.model;
 
 import java.util.ArrayList;
 
+import fr.unice.idse.model.card.Color;
+
 public class Model {
 	private ArrayList<Game> games;
 	private ArrayList<Player> players;
@@ -47,27 +49,13 @@ public class Model {
 		}
 		return false;
 	}
-	
-	/**
-	 * Créer un joueur s'il n'existe pas
-	 * @param playerName, playerToken
-	 * @return Player
-	 */
-	public Player createPlayer(String playerName,String playerToken)
-	{
-		if(!playerExists(playerName))
-		{
-			return new Player(playerName,playerToken);
-		}
-		return null;
-	}
-	
+
 	/**
 	 * Créer un joueur s'il n'existe pas et l'ajoute dans la liste des joueurs
 	 * @param playerName, playerToken
 	 * @return true/false
 	 */
-	public boolean createPlayerBis(String playerName,String playerToken)
+	public boolean createPlayer(String playerName, String playerToken)
 	{
 		if(!playerExists(playerName))
 		{
@@ -246,7 +234,7 @@ public class Model {
 		Game game = findGameByName(gameName);
 		if(game != null)
 		{
-			return game.findPlayerByName(playerToken);
+			return game.findPlayerByToken(playerToken);
 		}
 		return null;
 	}

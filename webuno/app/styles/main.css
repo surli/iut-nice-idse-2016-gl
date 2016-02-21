@@ -5,7 +5,6 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-@import url(../../bower_components/components-font-awesome/css/font-awesome.css);
 @import url("https://fonts.googleapis.com/css?family=Lobster");
 @import url("https://fonts.googleapis.com/css?family=Cabin");
 html {
@@ -5835,13 +5834,13 @@ button.close {
   .btn .btn-warning:hover, .btn .btn-warning:active, .btn .btn-warning:visited, .btn .btn-warning:focus {
     background-color: #ffaa00; }
 
-input {
+input, select {
   border: none;
   text-align: center;
   color: #4B4B4B;
   border-radius: 5px;
   font-family: Cabin, Georgia, Times, serif; }
-  input:focus {
+  input:focus, select:focus {
     outline: none;
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2); }
 
@@ -5859,6 +5858,10 @@ input {
     border: none; }
   .panel .panel-body {
     padding: 30px 10px; }
+    .panel .panel-body table {
+      margin: 0; }
+      .panel .panel-body table tr td, .panel .panel-body table tr th {
+        border-top: 1px solid rgba(0, 0, 0, 0.2); }
 
 .jumbotron {
   border: none;
@@ -5874,116 +5877,114 @@ input {
   background-image: url(../images/cartes.svg);
   background-size: 1008px 864px;
   transform-origin: left bottom; }
-  .carte.Trefle-1 {
+  .carte.Red-0 {
     background-position: 0px 0px !important; }
-  .carte.Trefle-2 {
+  .carte.Red-1 {
     background-position: -72px 0px !important; }
-  .carte.Trefle-3 {
+  .carte.Red-2 {
     background-position: -144px 0px !important; }
-  .carte.Trefle-4 {
+  .carte.Red-3 {
     background-position: -216px 0px !important; }
-  .carte.Trefle-5 {
+  .carte.Red-4 {
     background-position: -288px 0px !important; }
-  .carte.Trefle-6 {
+  .carte.Red-5 {
     background-position: -360px 0px !important; }
-  .carte.Trefle-7 {
+  .carte.Red-6 {
     background-position: -432px 0px !important; }
-  .carte.Trefle-8 {
+  .carte.Red-7 {
     background-position: -504px 0px !important; }
-  .carte.Trefle-9 {
+  .carte.Red-8 {
     background-position: -576px 0px !important; }
-  .carte.Trefle-10 {
+  .carte.Red-9 {
     background-position: -648px 0px !important; }
-  .carte.Trefle-11 {
+  .carte.Red-10 {
     background-position: -720px 0px !important; }
-  .carte.Trefle-12 {
+  .carte.Red-11 {
     background-position: -792px 0px !important; }
-  .carte.Trefle-13 {
+  .carte.Red-12 {
     background-position: -864px 0px !important; }
-  .carte.Carreau-1 {
+  .carte.Yellow-0 {
     background-position: 0px -108px !important; }
-  .carte.Carreau-2 {
+  .carte.Yellow-1 {
     background-position: -72px -108px !important; }
-  .carte.Carreau-3 {
+  .carte.Yellow-2 {
     background-position: -144px -108px !important; }
-  .carte.Carreau-4 {
+  .carte.Yellow-3 {
     background-position: -216px -108px !important; }
-  .carte.Carreau-5 {
+  .carte.Yellow-4 {
     background-position: -288px -108px !important; }
-  .carte.Carreau-6 {
+  .carte.Yellow-5 {
     background-position: -360px -108px !important; }
-  .carte.Carreau-7 {
+  .carte.Yellow-6 {
     background-position: -432px -108px !important; }
-  .carte.Carreau-8 {
+  .carte.Yellow-7 {
     background-position: -504px -108px !important; }
-  .carte.Carreau-9 {
+  .carte.Yellow-8 {
     background-position: -576px -108px !important; }
-  .carte.Carreau-10 {
+  .carte.Yellow-9 {
     background-position: -648px -108px !important; }
-  .carte.Carreau-11 {
+  .carte.Yellow-10 {
     background-position: -720px -108px !important; }
-  .carte.Carreau-12 {
+  .carte.Yellow-11 {
     background-position: -792px -108px !important; }
-  .carte.Carreau-13 {
+  .carte.Yellow-12 {
     background-position: -864px -108px !important; }
-  .carte.Carreau-14 {
-    background-position: -936px -108px !important; }
-  .carte.Coeur-1 {
+  .carte.Green-0 {
     background-position: 0px -216px !important; }
-  .carte.Coeur-2 {
+  .carte.Green-1 {
     background-position: -72px -216px !important; }
-  .carte.Coeur-3 {
+  .carte.Green-2 {
     background-position: -144px -216px !important; }
-  .carte.Coeur-4 {
+  .carte.Green-3 {
     background-position: -216px -216px !important; }
-  .carte.Coeur-5 {
+  .carte.Green-4 {
     background-position: -288px -216px !important; }
-  .carte.Coeur-6 {
+  .carte.Green-5 {
     background-position: -360px -216px !important; }
-  .carte.Coeur-7 {
+  .carte.Green-6 {
     background-position: -432px -216px !important; }
-  .carte.Coeur-8 {
+  .carte.Green-7 {
     background-position: -504px -216px !important; }
-  .carte.Coeur-9 {
+  .carte.Green-8 {
     background-position: -576px -216px !important; }
-  .carte.Coeur-10 {
+  .carte.Green-9 {
     background-position: -648px -216px !important; }
-  .carte.Coeur-11 {
+  .carte.Green-10 {
     background-position: -720px -216px !important; }
-  .carte.Coeur-12 {
+  .carte.Green-11 {
     background-position: -792px -216px !important; }
-  .carte.Coeur-13 {
+  .carte.Green-12 {
     background-position: -864px -216px !important; }
-  .carte.Coeur-14 {
-    background-position: -936px -216px !important; }
-  .carte.Pique-1 {
+  .carte.Blue-0 {
     background-position: 0px -324px !important; }
-  .carte.Pique-2 {
+  .carte.Blue-1 {
     background-position: -72px -324px !important; }
-  .carte.Pique-3 {
+  .carte.Blue-2 {
     background-position: -144px -324px !important; }
-  .carte.Pique-4 {
+  .carte.Blue-3 {
     background-position: -216px -324px !important; }
-  .carte.Pique-5 {
+  .carte.Blue-4 {
     background-position: -288px -324px !important; }
-  .carte.Pique-6 {
+  .carte.Blue-5 {
     background-position: -360px -324px !important; }
-  .carte.Pique-7 {
+  .carte.Blue-6 {
     background-position: -432px -324px !important; }
-  .carte.Pique-8 {
+  .carte.Blue-7 {
     background-position: -504px -324px !important; }
-  .carte.Pique-9 {
+  .carte.Blue-8 {
     background-position: -576px -324px !important; }
-  .carte.Pique-10 {
+  .carte.Blue-9 {
     background-position: -648px -324px !important; }
-  .carte.Pique-11 {
+  .carte.Blue-10 {
     background-position: -720px -324px !important; }
-  .carte.Pique-12 {
+  .carte.Blue-11 {
     background-position: -792px -324px !important; }
-  .carte.Pique-13 {
+  .carte.Blue-12 {
     background-position: -864px -324px !important; }
-  .carte.Pique-14 {
-    background-position: -936px -324px !important; }
+  .carte.Black-14 {
+    background-position: -936px -540px !important; }
+  .carte.Black-13 {
+    background-position: -936px 0px !important; }
 
 .color-orange {
   color: #ffaa00 !important; }
@@ -6022,7 +6023,9 @@ header .navbar {
   margin-bottom: 0; }
 header .navbar-brand {
   font-size: 30pt; }
-  header .navbar-brand:hover {
+  header .navbar-brand.loader {
+    transition: ease-out;
+    transition-duration: 1s;
     text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff; }
 header .navbar-toggle {
   background-color: rgba(0, 0, 0, 0.2); }
@@ -6094,12 +6097,16 @@ footer {
           cursor: pointer;
           z-index: 9999; }
 
-/* Rotation */
+/* OLD LOADER
 @keyframes rotate {
   from {
-    transform: rotate(0deg); }
+    transform: rotate(0deg);
+  }
   to {
-    transform: rotate(360deg); } }
+    transform: rotate(360deg);
+  }
+}
+
 #loader {
   width: 4em;
   height: 4em;
@@ -6112,23 +6119,80 @@ footer {
   margin-top: -2em;
   content: "";
   color: #FFF;
-  background-color: #ff5555;
+  background-color: $rouge;
   animation: rotate 2.5s infinite linear;
   z-index: 9999;
   transition: ease-out;
-  transition-duration: 2s; }
-  #loader:before, #loader:after {
+  transition-duration: 2s;
+
+  &:before, &:after {
     width: 4em;
     height: 4em;
     content: "";
     position: absolute;
     left: 0;
-    top: 0; }
-  #loader:before {
+    top: 0;
+  }
+
+  &:before {
     transform: rotate(60deg);
-    background-color: #ffaa00; }
-  #loader:after {
+    background-color: $vert;
+  }
+
+  &:after {
     transform: rotate(-60deg);
-    background-color: #ffaa00; }
+    background-color: $vert;
+  }
+}
+*/
+.players {
+  padding: 10px; }
+  .players .player {
+    text-align: center;
+    padding: 15px 10px; }
+    .players .player .player-name {
+      border-radius: 50%;
+      padding: 25px 15px;
+      background: rgba(0, 0, 0, 0.7); }
+    .players .player .player-cartes {
+      z-index: 99999;
+      background: #285e67;
+      border: 5px solid #163439;
+      padding: 3px 10px;
+      border-radius: 15px;
+      font-size: 9pt; }
+    .players .player.current-player {
+      transform: scale(1.1); }
+      .players .player.current-player .player-name {
+        background: black;
+        border: 10px solid #FFF; }
+
+.modal-dialog {
+  position: absolute;
+  top: 50% !important;
+  transform: translate(0, -50%) !important;
+  -ms-transform: translate(0, -50%) !important;
+  -webkit-transform: translate(0, -50%) !important;
+  left: 50%;
+  margin-left: -150px;
+  margin-top: -50px;
+  width: 300px;
+  height: 100px;
+  border: none; }
+
+.modal-content {
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #FFF;
+  text-align: center;
+  line-height: 100px;
+  background: #55aa55;
+  box-shadow: 0 0 5px 0 #55aa55;
+  font-size: 18pt;
+  border: none; }
 
 /*# sourceMappingURL=main.css.map */

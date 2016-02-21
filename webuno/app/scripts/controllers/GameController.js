@@ -1,22 +1,90 @@
 'use strict';
 
 angular.module('unoApp')
-    .controller('GameController', ['$rootScope', '$scope', '$http', '$stateParams', function ($rootScope, $scope, $http, $stateParams) {
-        $http.get('/rest/game/' + $stateParams.name + '/' + $scope.user.name + '/hand')
-            .then(function (data) {
-                $scope.cartes = data.data.cartes;
+    .controller('GameController', ['$rootScope', '$scope', '$http', '$stateParams', '$timeout', 'Game', function ($rootScope, $scope, $http, $stateParams, $timeout, Game) {
+        var timeoutStateGame;
+        $scope.currentPlayer = '';
+
+        Game.getUserHand($stateParams.name)
+            .then(function (response) {
+                $scope.cartes = response.data.cartes;
             }, function (error) {
-                $scope.error = "Une erreur est survenue : " + error.toString();
+                console.error('Une erreur est survenue : ' + error.toString());
             });
 
-        //$scope.fausse = {};
+        Game.getGame($stateParams.name)
+            .then(function (response) {
+                $scope.game = response.data;
+                $scope.requestStateGame();
+            }, function (error) {
+                console.error('Une erreur est survenue : ' + error.toString());
+                $scope.requestStateGame();
+            });
+
+        $scope.requestStateGame = function () {
+            timeoutStateGame = $timeout(function () {
+                Game.getGame($stateParams.name)
+                    .then(function (response) {
+                        $scope.game = response.data;
+
+                        Game.getCurrentPlayer($stateParams.name)
+                            .then(function (response) {
+                                if ($scope.currentPlayer !== response.data.playerName) {
+                                    $scope.currentPlayer = response.data.playerName;
+                                    jQuery('.myModalCurrentPlayer').modal();
+                                    $timeout(function() {
+                                        jQuery('.myModalCurrentPlayer').modal('hide');
+                                    }, 2000);
+                                }
+
+                                if (response.data.playerName === $scope.user.name) {
+                                    console.log('à moi de jouer !');
+                                }
+                            });
+
+                        Game.getUserHand($stateParams.name)
+                            .then(function (response) {
+                                $scope.cartes = response.data.cartes;
+                            });
+
+                        $scope.requestStateGame();
+                    }, function (error) {
+                        console.error('Une erreur est survenue : ' + error.toString());
+                        $scope.requestStateGame();
+                    });
+            }, 2000);
+        };
 
         $scope.piocherCarte = function () {
-            $scope.cartes.push($scope.cartes[$scope.cartes.length % 8]);
+            Game.drawCard($stateParams.name)
+                .then(function () {
+                    Game.getUserHand($stateParams.name)
+                        .then(function (response) {
+                            $scope.cartes = response.data.cartes;
+                        });
+                }, function (error) {
+                    console.error(error);
+                });
         };
 
         $scope.jouerCarte = function (carte) {
-            $scope.cartes.splice($scope.cartes.indexOf(carte), 1);
-            $scope.fausse = carte;
+            Game.playCard($stateParams.name, carte)
+                .then(function () {
+                    Game.getUserHand($stateParams.name)
+                        .then(function (response) {
+                            $scope.cartes = response.data.cartes;
+                        });
+
+                    Game.getGame($stateParams.name)
+                        .then(function (response) {
+                            $scope.game = response.data;
+                        }, function (error) {
+                            console.error('Une erreur est survenue : ' + error.toString());
+                        });
+                });
         };
+
+        $scope.$on('$destroy', function () {
+            $timeout.cancel(timeoutStateGame);
+        });
     }]);

@@ -16,7 +16,8 @@ module.exports = function (grunt) {
     require('jit-grunt')(grunt, {
         useminPrepare: 'grunt-usemin',
         ngtemplates: 'grunt-angular-templates',
-        cdnify: 'grunt-google-cdn'
+        cdnify: 'grunt-google-cdn',
+        configureProxies: 'grunt-connect-proxy'
     });
 
     // Configurable paths for the application
@@ -69,37 +70,63 @@ module.exports = function (grunt) {
 
         // The actual grunt server settings
         connect: {
-            proxies: [
-                {
-                    context: '/rest',
-                    host: 'localhost',
-                    port: 8080,
-                    https: false,
-                    changeOrigin: false
-                }
-            ],
             options: {
                 port: 9000,
                 // Change this to '0.0.0.0' to access the server from outside.
                 hostname: 'localhost',
                 livereload: 35729
             },
+            proxies: [{
+                context: '/rest', // the context of the data service
+                host: 'localhost', // wherever the data service is running
+                port: 8080 // the port that the data service is running on
+            }],
             livereload: {
                 options: {
                     open: true,
+                    /*
+                    middleware: function (connect, options) {
+                        var middlewares = [];
+
+                        if (!Array.isArray(options.base)) {
+                            options.base = [options.base];
+                        }
+
+                        options.base.push('.tmp');
+                        options.base.push('/bower_components');
+                        options.base.push('./app/styles');
+                        options.base.push(appConfig.app);
+
+                        // Setup the proxy
+                        middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
+
+                        // Serve static files
+                        options.base.forEach(function(base) {
+                            middlewares.push(connect.static(base));
+                        });
+
+                        return middlewares;
+                    }
+                    */
                     middleware: function (connect) {
-                        return [
-                            connect.static('.tmp'),
-                            connect().use(
-                                '/bower_components',
-                                connect.static('./bower_components')
-                            ),
-                            connect().use(
-                                '/app/styles',
-                                connect.static('./app/styles')
-                            ),
-                            connect.static(appConfig.app)
-                        ];
+                        var middlewares = [];
+
+                        // Setup the proxy
+                        middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
+
+                        // Serve static files
+                        middlewares.push(connect.static('.tmp'));
+                        middlewares.push(connect().use(
+                            '/bower_components',
+                            connect.static('./bower_components')
+                        ));
+                        middlewares.push(connect().use(
+                            '/app/styles',
+                            connect.static('./app/styles')
+                        ));
+                        middlewares.push(connect.static(appConfig.app));
+
+                        return middlewares;
                     }
                 }
             },
@@ -489,6 +516,7 @@ module.exports = function (grunt) {
             'wiredep',
             'concurrent:server',
             'postcss:server',
+            'configureProxies:server',
             'connect:livereload',
             'watch'
         ]);

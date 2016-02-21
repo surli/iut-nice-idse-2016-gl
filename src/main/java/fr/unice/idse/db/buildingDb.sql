@@ -1,0 +1,209 @@
+﻿-- phpMyAdmin SQL Dump
+-- version 4.2.7.1
+-- http://www.phpmyadmin.net
+--
+-- Client :  localhost
+-- Généré le :  Dim 14 Février 2016 à 16:42
+-- Version du serveur :  5.6.20-log
+-- Version de PHP :  5.5.15
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Base de données :  `UNO`
+--
+CREATE DATABASE IF NOT EXISTS `uno` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `uno`;
+
+--
+-- Structure de la table 'GAMES'
+-- Création de la table 
+--
+CREATE TABLE IF NOT EXISTS `games`(
+`g_id` INT(5) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+`g_nom` VARCHAR (50) NOT NULL,
+`g_nbr_max_joueur` INT (2),
+`g_nbr_max_ia` INT (2),
+`g_etat` INT (2),
+UNIQUE (g_nom)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+-- Structure de la table 'STATUT_USERS'
+-- Création de la table 
+
+CREATE TABLE IF NOT EXISTS `statut_users`(
+`su_id` INT (2) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+`su_wording` VARCHAR (25) NOT NULL
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+-- Structure de la table 'USERS'
+-- Création de la table 
+
+CREATE TABLE IF NOT EXISTS `users`(
+`u_id` INT (5) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+`u_pseudo` VARCHAR (30) NOT NULL,
+`u_email` VARCHAR (50),
+`u_password` VARCHAR (64),
+`u_su_id` INT (2),
+-- Ajout champ unique 
+UNIQUE (u_pseudo, u_email),
+-- Ajout des contraintes des clés étrangère 
+CONSTRAINT fk_statut_users          
+		FOREIGN KEY (u_su_id)            
+		REFERENCES statut_users(su_id) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+-- Structure de la table 'CARDS'
+-- Création de la table 
+
+CREATE TABLE IF NOT EXISTS `cards`(
+`c_id` INT (5) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+`c_value` ENUM ('zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'skip', 'reverse', 'drawtwo', 'drawfour', 'wild'), 
+`c_color` ENUM ('blue', 'green', 'red', 'yellow', 'black')
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+-- Structure de la table 'MATCHS'
+-- Création de la table 
+
+CREATE TABLE IF NOT EXISTS `matchs`(
+`m_id` INT (7) AUTO_INCREMENT PRIMARY KEY  NOT NULL,
+`m_g_id`INT (5) NOT NULL,
+-- Ajout des contraintes des clés étrangère 
+CONSTRAINT fk_matchs_game          
+		FOREIGN KEY (m_g_id)            
+		REFERENCES games(g_id) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+-- Structure de la table 'TURNS'
+-- Création de la table 
+
+CREATE TABLE IF NOT EXISTS `turns`(
+`t_id` INT (7) AUTO_INCREMENT PRIMARY KEY  NOT NULL,
+`t_m_id`INT (7) NOT NULL,
+`t_sens` ENUM ('normal', 'reverse'),
+`id_user_ready` INT (5),
+-- Ajout des contraintes des clés étrangère 
+ CONSTRAINT fk_match_turns          
+        FOREIGN KEY (t_m_id)            
+        REFERENCES matchs(m_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_user_turns
+  		FOREIGN KEY (id_user_ready)
+  		REFERENCES users(u_id)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+-- Structure de la table 'HANDS_PLAYER_IN_GAME'
+-- Création de la table
+
+CREATE TABLE IF NOT EXISTS `hands_players_in_game` (
+`h_id_match` int(5) NOT NULL,
+`h_id_user` int(5) NOT NULL,
+`h_id_card` int(5) NOT NULL,
+`h_tour` int (5) NOT NULL,
+-- Ajout de la clé primaire composite 
+PRIMARY KEY (h_id_match,h_id_user,h_id_card),
+-- Ajout des contraintes des clés étrangère 
+CONSTRAINT fk_match_hand          
+		FOREIGN KEY (h_id_match)            
+		REFERENCES matchs(m_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT fk_user_hand          
+		FOREIGN KEY (h_id_user)            
+		REFERENCES users(u_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT fk_card_hand          
+		FOREIGN KEY (h_id_card)            
+		REFERENCES cards(c_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- Structure de la table 'PLAYER_IN_GAME'
+-- Création de la table
+
+CREATE TABLE IF NOT EXISTS `players_in_game` (
+`p_g_id` int(5) NOT NULL,
+`p_id_user` int(5) NOT NULL,
+`p_position` int (1) Not NULL,
+-- Ajout de la clé primaire composite 
+PRIMARY KEY (p_g_id,p_id_user),
+-- Ajout des contraintes des clés étrangère 
+CONSTRAINT fk_game_player          
+		FOREIGN KEY (p_g_id)            
+		REFERENCES games(g_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT fk_user_in_game          
+		FOREIGN KEY (p_id_user)            
+		REFERENCES users(u_id) ON DELETE CASCADE ON UPDATE CASCADE	
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- Structure de la table 'DECK'
+-- Création de la table 
+
+CREATE TABLE IF NOT EXISTS `deck`(
+`d_t_id` int(5) NOT NULL,
+`d_m_id` int(5) NOT NULL,
+`d_c_id` INT (5),
+-- Ajout de la clé primaire composite  
+PRIMARY KEY (d_t_id,d_m_id),
+-- Ajout des contraites des clés étrangère 
+CONSTRAINT FK_deck_turn
+		FOREIGN kEY (d_t_id)
+		REFERENCES turns (t_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT FK_deck_match
+		FOREIGN KEY (d_m_id)
+		REFERENCES matchs(m_id)
+ )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- Structure de la table 'STACK'
+-- Création de la table 
+
+CREATE TABLE IF NOT EXISTS `stack`(
+`s_t_id` int(5) NOT NULL,
+`s_m_id` int(5) NOT NULL,
+`s_c_id` INT (5),
+-- Ajout de la clé primaire composite  
+PRIMARY KEY (s_t_id,s_m_id),
+-- Ajout des contraites des clés étrangère 
+CONSTRAINT FK_stack_turn
+		FOREIGN kEY (s_t_id)
+		REFERENCES turns (t_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT FK_stack_match
+		FOREIGN KEY (s_m_id)
+		REFERENCES matchs(m_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- Structure de la table 'STATS'
+-- Création de la table
+
+CREATE TABLE IF NOT EXISTS `stats`(
+`st_g_id` INT (5) NOT NULL,
+`st_u_id` INT (5) NOT NULL,
+`nbr_of_cards_in_hand` INT (3) NOT NULL,
+`nbr_of_strokes` INT (5) NOT NULL,
+`st_score` INT (7) NOT NULL,
+-- Ajout de la clé primaire composite 
+PRIMARY KEY (st_g_id,st_u_id),
+ -- Ajout des contraintes des clés étrangère 
+  CONSTRAINT fk_score_game          
+		FOREIGN KEY (st_g_id)            
+		REFERENCES games(g_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT fk_score_user          
+		FOREIGN KEY (st_u_id)            
+		REFERENCES users(u_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
