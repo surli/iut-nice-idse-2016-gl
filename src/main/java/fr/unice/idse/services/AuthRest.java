@@ -75,7 +75,7 @@ public class AuthRest extends OriginRest{
             return sendResponse(405, jsonResult.toString(), "PUT");
         }
 
-        if(!pattern.matcher(jsonResult.getString("email")).matches()){
+        if(!pattern.matcher(jsonObject.getString("email")).matches()){
             jsonResult.put("error", "Email invalid");
             return sendResponse(405, jsonResult.toString(), "PUT");
         }
@@ -110,42 +110,42 @@ public class AuthRest extends OriginRest{
         // Verification de l'existante des variables
         if(!jsonObject.has("email")){
             jsonResult.put("error", "Missing parameter email");
-            return sendResponse(405, jsonResult.toString(), "PUT");
+            return sendResponse(405, jsonResult.toString(), "POST");
         }
         if(!jsonObject.has("playerName")){
             jsonResult.put("error", "Missing parameter playerName");
-            return sendResponse(405, jsonResult.toString(), "PUT");
+            return sendResponse(405, jsonResult.toString(), "POST");
         }
         if(!jsonObject.has("password")){
             jsonResult.put("error", "Missing parameter password");
-            return sendResponse(405, jsonResult.toString(), "PUT");
+            return sendResponse(405, jsonResult.toString(), "POST");
         }
 
         // Vérification des variables
-        if(!pattern.matcher(jsonResult.getString("email")).matches()){
+        if(!pattern.matcher(jsonObject.getString("email")).matches()){
             jsonResult.put("error", "Email invalid");
-            return sendResponse(405, jsonResult.toString(), "PUT");
+            return sendResponse(405, jsonResult.toString(), "POST");
         }
         if(jsonObject.getString("playerName").length() < 3) {
             jsonResult.put("error", "playerName invalid size");
-            return sendResponse(405, jsonResult.toString(), "PUT");
+            return sendResponse(405, jsonResult.toString(), "POST");
         }
 
         // Insertion dans la bdd
         if(!dataBase.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")))){
             jsonResult.put("error", "Player already exist");
-            return sendResponse(405, jsonResult.toString(), "PUT");
+            return sendResponse(405, jsonResult.toString(), "POST");
         }
 
         // Ajout dans le model
         String token = generateToken(jsonResult.getString("playerName"));
         if(model.createPlayer(jsonObject.getString("playerName"), token)){
             jsonResult.put("token", token);
-            return sendResponse(200, jsonResult.toString(), "PUT");
+            return sendResponse(200, jsonResult.toString(), "POST");
         }
 
         jsonResult.put("error", "Player already exist");
-        return sendResponse(405, jsonResult.toString(), "PUT");
+        return sendResponse(405, jsonResult.toString(), "POST");
     }
 
 }
