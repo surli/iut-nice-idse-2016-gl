@@ -20,3 +20,11 @@
             class="carte {{carte.family}}-{{carte.number | WordToNumber}}"></li>
     </ul>
 </div>
+
+<div class="modal fade myModalCurrentPlayer" tabindex="-1" role="dialog" aria-labelledby="modalCurrentPlayer">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            À {{ (currentPlayer == user.name) ? "toi" : currentPlayer }} de jouer !
+        </div>
+    </div>
+</div>

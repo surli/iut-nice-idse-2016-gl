@@ -6167,4 +6167,32 @@ footer {
         background: black;
         border: 10px solid #FFF; }
 
+.modal-dialog {
+  position: absolute;
+  top: 50% !important;
+  transform: translate(0, -50%) !important;
+  -ms-transform: translate(0, -50%) !important;
+  -webkit-transform: translate(0, -50%) !important;
+  left: 50%;
+  margin-left: -150px;
+  margin-top: -50px;
+  width: 300px;
+  height: 100px;
+  border: none; }
+
+.modal-content {
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #FFF;
+  text-align: center;
+  line-height: 100px;
+  background: #55aa55;
+  box-shadow: 0 0 5px 0 #55aa55;
+  font-size: 18pt;
+  border: none; }
+
 /*# sourceMappingURL=main.css.map */
