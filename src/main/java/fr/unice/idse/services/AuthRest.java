@@ -1,6 +1,7 @@
 package fr.unice.idse.services;
 
 
+import fr.unice.idse.db.DataBaseManagement;
 import fr.unice.idse.model.Model;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -60,6 +61,7 @@ public class AuthRest extends OriginRest{
         JSONObject jsonObject = new JSONObject(json);
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
+        DataBaseManagement dataBase = new DataBaseManagement();
 
         if(!jsonObject.has("email")){
             jsonResult.put("error", "Missing parameter email");
@@ -71,10 +73,13 @@ public class AuthRest extends OriginRest{
             return sendResponse(405, jsonResult.toString(), "PUT");
         }
 
-        
+        if(!dataBase.userLoginIsCorrect(jsonObject.getString("email"), generatePassword(jsonObject.getString("password")))){
+            jsonResult.put("error", "Email or password incorrect");
+            return sendResponse(405, jsonResult.toString(), "PUT");
+        }
 
         String token = generateToken(jsonObject.getString("email"));
-        if(model.createPlayer("", token)){
+        if(model.createPlayer(dataBase.getPseudoWithEmail(jsonObject.getString("email")), token)){
             jsonResult.put("token", token);
             return sendResponse(200, jsonResult.toString(), "PUT");
         }
