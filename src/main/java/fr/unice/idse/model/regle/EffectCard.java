@@ -8,10 +8,13 @@ public class EffectCard
 	private Value value;
 	private Board board;
 
+	private boolean effect;
+	
 	public EffectCard(Board board, Value value)
 	{
 		this.value = value;
 		this.board = board;
+		effect = false;
 	}
 
 	public Value getValue()
@@ -33,10 +36,42 @@ public class EffectCard
 	{
 		return card.getValue() == getValue();
 	}
-
-	//Methode à override
+	
+	/**
+	 * Pour savoir si on a affaire à une regle contrable
+	 * @return
+	 */
+	public boolean getEffect()
+	{
+		return effect;
+	}
+	
+	public void setEffect()
+	{
+		effect = !effect;
+	}
+	
+	/**
+	 * A apellé pour change couleur et pioche 4 cartes
+	 * @param color
+	 */
+	public void changeColor(Color color)
+	{
+		if(board.getStack().topCard().getColor().equals(Color.Black))
+		{
+			board.changeColor(color);
+		}
+	}
+	
+	//Methode à override pour les effets immediat
 	public void action()
 	{
 
+	}
+	
+	//Methode à override pour les effets contrable
+	public void effect()
+	{
+		
 	}
 }

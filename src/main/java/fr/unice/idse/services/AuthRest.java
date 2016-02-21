@@ -1,11 +1,14 @@
 package fr.unice.idse.services;
 
 
+import fr.unice.idse.db.DataBaseManagement;
 import fr.unice.idse.model.Model;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import javax.smartcardio.ResponseAPDU;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -24,7 +27,7 @@ public class AuthRest extends OriginRest{
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response authPlayerGuest(String stringJson) throws JSONException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public Response authPlayerGuest(String stringJson) throws JSONException {
         Model model = Model.getInstance();
         JSONObject jsonObject = new JSONObject(stringJson);
         JSONObject jsonReturn = new JSONObject();
@@ -45,4 +48,45 @@ public class AuthRest extends OriginRest{
         jsonReturn.put("error", "Player already exist");
         return sendResponse(405, jsonReturn.toString(), "POST");
     }
+
+    /**
+     * Authentifie un utilisateur avec ses identifiants
+     * @param json String
+     * @return Response
+     * @throws JSONException
+     */
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response authPlayer(String json) throws JSONException {
+        JSONObject jsonObject = new JSONObject(json);
+        JSONObject jsonResult = new JSONObject();
+        Model model = Model.getInstance();
+        DataBaseManagement dataBase = new DataBaseManagement();
+
+        if(!jsonObject.has("email")){
+            jsonResult.put("error", "Missing parameter email");
+            return sendResponse(405, jsonResult.toString(), "PUT");
+        }
+
+        if(!jsonObject.has("password")){
+            jsonResult.put("error", "Missing parameter password");
+            return sendResponse(405, jsonResult.toString(), "PUT");
+        }
+
+        if(!dataBase.userLoginIsCorrect(jsonObject.getString("email"), generatePassword(jsonObject.getString("password")))){
+            jsonResult.put("error", "Email or password incorrect");
+            return sendResponse(405, jsonResult.toString(), "PUT");
+        }
+
+        String token = generateToken(jsonObject.getString("email"));
+        if(model.createPlayer(dataBase.getPseudoWithEmail(jsonObject.getString("email")), token)){
+            jsonResult.put("token", token);
+            return sendResponse(200, jsonResult.toString(), "PUT");
+        }
+
+        jsonResult.put("error", "Player already exist");
+        return sendResponse(405, jsonResult.toString(), "PUT");
+    }
+
+
 }

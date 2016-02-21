@@ -13,6 +13,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Random;
 
 public class OriginRest {
 
@@ -27,9 +28,19 @@ public class OriginRest {
     }
 
     public String generateToken(String pseudo){
+        Date date = new Date();
+        Random random = new Random();
+        KeySpec spec = new PBEKeySpec((pseudo+date.toString()).toCharArray(), Config._salt.getBytes(), random.nextInt(100), 128);
+        return hash(spec);
+    }
+
+    public String generatePassword(String password){
+        KeySpec spec = new PBEKeySpec((password).toCharArray(), Config._salt.getBytes(), 20, 128);
+        return hash(spec);
+    }
+
+    private String hash(KeySpec spec){
         try {
-            Date date = new Date();
-            KeySpec spec = new PBEKeySpec((pseudo+date.toString()).toCharArray(), Config._salt.getBytes(), 65536, 128);
             SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] hash = f.generateSecret(spec).getEncoded();
             Base64.Encoder enc = Base64.getEncoder();
