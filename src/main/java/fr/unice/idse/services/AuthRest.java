@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.regex.Pattern;
 
 @Path("auth")
 public class AuthRest extends OriginRest{
@@ -62,6 +63,7 @@ public class AuthRest extends OriginRest{
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
         DataBaseManagement dataBase = new DataBaseManagement();
+        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         if(!jsonObject.has("email")){
             jsonResult.put("error", "Missing parameter email");
@@ -70,6 +72,11 @@ public class AuthRest extends OriginRest{
 
         if(!jsonObject.has("password")){
             jsonResult.put("error", "Missing parameter password");
+            return sendResponse(405, jsonResult.toString(), "PUT");
+        }
+
+        if(!pattern.matcher(jsonResult.getString("email")).matches()){
+            jsonResult.put("error", "Email invalid");
             return sendResponse(405, jsonResult.toString(), "PUT");
         }
 
