@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `matchs`(
 CREATE TABLE IF NOT EXISTS `turns`(
 `t_id` INT (7) AUTO_INCREMENT PRIMARY KEY  NOT NULL,
 `t_m_id`INT (7) NOT NULL,
-`sens` , 
+`t_sens` , 
 `id_user_ready` INT (5),
 -- Ajout des contraintes des clés étrangère 
  CONSTRAINT fk_match_turns          
@@ -144,6 +144,18 @@ CREATE TABLE IF NOT EXISTS `players_in_game` (
         FOREIGN KEY (p_id_user)            
         REFERENCES users(u_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+-- Structure de la table 'DECK'
+-- Création de la table 
+CREATE TABLE IF NOT EXISTS `deck`(
+`d_t_id` int(5) NOT NULL,
+`d_m_id` int(5) NOT NULL,
+`d_c_id` INT (5)
+  )
+
+
 
 -- Structure de la table 'stats'
 -- Création de la table
