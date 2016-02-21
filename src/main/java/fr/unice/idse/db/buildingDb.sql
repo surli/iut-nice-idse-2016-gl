@@ -172,26 +172,33 @@ CREATE TABLE IF NOT EXISTS `stack`(
 `s_m_id` int(5) NOT NULL,
 `s_c_id` INT (5),
 -- Ajout de la clé primaire composite  
-PRIMARY KEY (d_t_id,d_m_id)
+PRIMARY KEY (s_t_id,s_m_id),
+-- Ajout des contraites des clés étrangère 
+CONSTRAINT FK_stack_turn
+		FOREIGN kEY (s_t_id)
+		REFERENCES turns (_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT FK_stack_match
+		FOREIGN KEY (s_m_id)
+		REFERENCES matchs(m_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Structure de la table 'stats'
 -- Création de la table
 
 CREATE TABLE IF NOT EXISTS `stats`(
-`s_g_id` INT (5) NOT NULL,
-`s_u_id` INT (5) NOT NULL,
-`nb_of_cards_in_hand` INT (3) NOT NULL,
-`nb_of_strokes` INT (5) NOT NULL,
-`score` INT (7) NOT NULL,
+`st_g_id` INT (5) NOT NULL,
+`st_u_id` INT (5) NOT NULL,
+`nbr_of_cards_in_hand` INT (3) NOT NULL,
+`nbr_of_strokes` INT (5) NOT NULL,
+`st_score` INT (7) NOT NULL,
 -- Ajout de la clé primaire composite 
-PRIMARY KEY (s_g_id,s_u_id),
+PRIMARY KEY (st_g_id,st_u_id),
  -- Ajout des contraintes des clés étrangère 
   CONSTRAINT fk_score_game          
-        FOREIGN KEY (s_g_id)            
+        FOREIGN KEY (st_g_id)            
         REFERENCES games(g_id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT fk_score_user          
-        FOREIGN KEY (s_u_id)            
+        FOREIGN KEY (st_u_id)            
         REFERENCES users(u_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
