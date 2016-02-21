@@ -1,29 +1,29 @@
 <div class="jumbotron">
-    <button class="btn btn-success" id="ingage" data-ui-sref="app.start">
-        Start new game
-    </button>
+  <button class="btn btn-success" id="ingage" data-ui-sref="app.start">
+    Start new game
+  </button>
 </div>
 <div class="col-md-8 col-md-offset-2">
-    <div class="panel panel-default">
-        <div class="panel-heading text-center">All games</div>
-        <div class="panel-body text-center" style="padding:0;">
-            <table class="table" data-ng-if="games.length > 0" style="margin: 0;">
-                <tr data-ng-repeat="game in games">
-                    <td>{{game.gamename}}</td>
-                    <td>{{game.numberplayer}}/{{game.maxplayer}}</td>
-                    <td>{{(game.state == "true") ? "Started" : ((game.numberplayer == game.maxplayer) ? "Full Players" : "Waiting for Players")}}</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm"
-                                data-ng-if="game.numberplayer != game.maxplayer"
-                                data-ng-click="joinGame(game.gamename)">
-                            Join
-                        </button>
-                    </td>
-                </tr>
-            </table>
-            <p style="padding: 15px;" data-ng-if="games.length == 0">There is no started games yet</p>
-        </div>
+  <div class="panel panel-default">
+    <div class="panel-heading text-center">All games</div>
+    <div class="panel-body text-center" style="padding:0;">
+      <table class="table" data-ng-if="games.length > 0" style="margin: 0;">
+        <tr data-ng-repeat="game in games">
+          <td>{{game.gamename}}</td>
+          <td>{{game.numberplayer}}/{{game.maxplayer}}</td>
+          <td>{{(game.state == "true") ? "Started" : ((game.numberplayer == game.maxplayer) ? "Full Players" : "Waiting for Players")}}</td>
+          <td>
+            <button class="btn btn-warning btn-sm"
+                    data-ng-if="game.numberplayer != game.maxplayer"
+                    data-ng-click="joinGame(game.gamename)">
+              Join
+            </button>
+          </td>
+        </tr>
+      </table>
+      <p style="padding: 15px;" data-ng-if="games.length == 0">There is no started games yet</p>
     </div>
+  </div>
 </div>
 <!-- Mes parties en pause car pas encore défini la méthode.
 <div class="col-md-8 col-md-offset-2">
