@@ -15,18 +15,20 @@ public class DataBaseManagement {
 	private PreparedStatement ps = null;
 	private ResultSet rs = null;
 
-	public void connect() throws SQLException {
+	public void connect() {
 		rs = null;
 		ps = null;
 		con = null;
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
+			con = DriverManager.getConnection(url, user, pass);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (SQLException e){
+			e.printStackTrace();
 		}
-		con = DriverManager.getConnection(url, user, pass);
 	}
 
 	public void end() {

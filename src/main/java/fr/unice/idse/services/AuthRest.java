@@ -63,6 +63,7 @@ public class AuthRest extends OriginRest{
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
         DataBaseManagement dataBase = new DataBaseManagement();
+        dataBase.connect();
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         if(!jsonObject.has("email")){
@@ -81,12 +82,14 @@ public class AuthRest extends OriginRest{
         }
 
         if(!dataBase.userLoginIsCorrect(jsonObject.getString("email"), generatePassword(jsonObject.getString("password")))){
+            dataBase.end();
             jsonResult.put("error", "Email or password incorrect");
             return sendResponse(405, jsonResult.toString(), "PUT");
         }
 
         String token = generateToken(jsonObject.getString("email"));
         if(model.createPlayer(dataBase.getPseudoWithEmail(jsonObject.getString("email")), token)){
+            dataBase.end();
             jsonResult.put("token", token);
             return sendResponse(200, jsonResult.toString(), "PUT");
         }
@@ -96,6 +99,12 @@ public class AuthRest extends OriginRest{
     }
 
 
+    /**
+     * Créer un joueur dans la base de donnée
+     * @param json String
+     * @return Response
+     * @throws JSONException
+     */
     @POST
     @Path("/signup")
     @Produces(MediaType.APPLICATION_JSON)
@@ -105,6 +114,7 @@ public class AuthRest extends OriginRest{
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
         DataBaseManagement dataBase = new DataBaseManagement();
+        dataBase.connect();
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         // Verification de l'existante des variables
@@ -133,6 +143,7 @@ public class AuthRest extends OriginRest{
 
         // Insertion dans la bdd
         if(!dataBase.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")))){
+            dataBase.end();
             jsonResult.put("error", "Player already exist");
             return sendResponse(405, jsonResult.toString(), "POST");
         }
