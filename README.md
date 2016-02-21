@@ -41,6 +41,10 @@ Tous les documents de chaque groupe se trouve dans le repertoire doc à la racin
 
 - Ajout des routes pour l'inscription / connexion avec ses identifiants
 - Mis en place de la base de donnée
+- Ajout des actions dans le moteur
+    - Action du stop
+    - Changement de sens
+    - Changement de couleur
 
 >######Version 0.2
 
