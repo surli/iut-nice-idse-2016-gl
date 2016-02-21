@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `matchs`(
 CREATE TABLE IF NOT EXISTS `turns`(
 `t_id` INT (7) AUTO_INCREMENT PRIMARY KEY  NOT NULL,
 `t_m_id`INT (7) NOT NULL,
-`sens` ENUM ('normal', 'reverse'), 
+`sens` , 
 `id_user_ready` INT (5),
 -- Ajout des contraintes des clés étrangère 
  CONSTRAINT fk_match_turns          
@@ -133,6 +133,7 @@ CREATE TABLE IF NOT EXISTS `hands_players_in_game` (
 CREATE TABLE IF NOT EXISTS `players_in_game` (
   `p_g_id` int(5) NOT NULL,
   `p_id_user` int(5) NOT NULL,
+  `p_position` int (1) Not NULL,
   -- Ajout de la clé primaire composite 
   PRIMARY KEY (p_g_id,p_id_user),
    -- Ajout des contraintes des clés étrangère 
