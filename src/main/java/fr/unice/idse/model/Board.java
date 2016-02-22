@@ -147,9 +147,9 @@ public class Board
 	public void init()
 	{
 		deck.initDeck();
-		for(Player player : players)
+		for(int j = 0; j < 7; j++)
 		{
-			for(int j = 0; j < 7; j++)
+			for(Player player : players)
 			{
 				player.getCards().add(deck.topCard());
 				deck.removeTopCard();
