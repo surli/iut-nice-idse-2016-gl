@@ -199,8 +199,7 @@ public class Deck {
 	 * Permet de retirer la carte supérieure de la pioche
 	 */
 	public void removeTopCard(){
-		Card topCard = topCard();
-		deck.remove(topCard);
+		deck.remove(deck.size()-1);
 	}
 	
 	/**
@@ -219,4 +218,11 @@ public class Deck {
 	    deck.deck = (ArrayList<Card>) this.deck.clone();
 	    return deck;
   	}
+
+	@Override
+	public String toString() {
+		return "Deck "+ deck;
+	}
+	
+	
 }

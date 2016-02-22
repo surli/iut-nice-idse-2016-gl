@@ -37,6 +37,12 @@ Tous les documents de chaque groupe se trouve dans le repertoire doc à la racin
 
 ###Release
 
+>######Version 0.3.1
+
+- Correction de la distribution des cartes
+- Correction de quelques bugs dans l'interface web
+- Correction du pom.xml
+
 >######Version 0.3
 
 - Ajout des routes pour l'inscription / connexion avec ses identifiants
