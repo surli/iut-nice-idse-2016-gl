@@ -16,6 +16,14 @@ public class DataBaseManagement {
 	private PreparedStatement ps = null;
 	private ResultSet rs = null;
 
+	public DataBaseManagement(){
+		connect();
+	}
+	
+	public void finalize(){
+		end();
+	}
+	
 	public void connect() {
 		rs = null;
 		ps = null;
@@ -27,7 +35,7 @@ public class DataBaseManagement {
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -41,6 +49,23 @@ public class DataBaseManagement {
 		}
 	}
 
+	public String getPseudoWithEmail(String email) {
+		String query = "SELECT u_pseudo FROM users WHERE u_email = ?";
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, email);
+			rs = ps.executeQuery();
+			if (rs.next())
+				return rs.getString("u_pseudo");
+			else
+				return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public int getCurrentAutoIncrementValueWithTableName(String tableName) {
 		String query = "SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
 		int result = 0;
@@ -48,6 +73,57 @@ public class DataBaseManagement {
 			ps = con.prepareStatement(query);
 			ps.setString(1, "uno");
 			ps.setString(2, tableName);
+			rs = ps.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public int getIdUserWithPseudo(String pseudo) {
+		String query = "SELECT u_id FROM users WHERE u_pseudo = ?";
+		int result = 0;
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, pseudo);
+			rs = ps.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+
+	}
+
+	public int countCardsWithThisValueAndThisColor(String value, String color) {
+		String query = "SELECT COUNT(*) FROM cards WHERE c_value = ? AND c_color = ?";
+		int result = 0;
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, value);
+			ps.setString(2, color);
+			rs = ps.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public int getIdCard(String value, String color) {
+		String query = "SELECT c_id FROM cards WHERE c_value = ? AND c_color = ?";
+		int result = 0;
+		try {
+			ps = con.prepareStatement(query);
+			ps.setString(1, value);
+			ps.setString(2, color);
 			rs = ps.executeQuery();
 			if (rs.next())
 				result = rs.getInt(1);
@@ -76,40 +152,6 @@ public class DataBaseManagement {
 			e.printStackTrace();
 		}
 		return false;
-	}
-
-	public String getPseudoWithEmail(String email) {
-		String query = "SELECT u_pseudo FROM users WHERE u_email = ?";
-		try {
-			ps = con.prepareStatement(query);
-			ps.setString(1, email);
-			rs = ps.executeQuery();
-			if (rs.next())
-				return rs.getString("u_pseudo");
-			else
-				return null;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public int getIdUserWithPseudo(String pseudo) {
-		String query = "SELECT u_id FROM users WHERE u_pseudo = ?";
-		int result = 0;
-		try {
-			ps = con.prepareStatement(query);
-			ps.setString(1, pseudo);
-			rs = ps.executeQuery();
-			if (rs.next())
-				result = rs.getInt(1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
-
 	}
 
 	public boolean ifUserAlreadyExistPseudoEmail(String pseudo, String email) {
@@ -199,40 +241,6 @@ public class DataBaseManagement {
 			return true;
 		} else
 			return false;
-	}
-
-	public int countCardsWithThisValueAndThisColor(String value, String color) {
-		String query = "SELECT COUNT(*) FROM cards WHERE c_value = ? AND c_color = ?";
-		int result = 0;
-		try {
-			ps = con.prepareStatement(query);
-			ps.setString(1, value);
-			ps.setString(2, color);
-			rs = ps.executeQuery();
-			if (rs.next())
-				result = rs.getInt(1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
-	}
-
-	public int getIdCard(String value, String color) {
-		String query = "SELECT c_id FROM cards WHERE c_value = ? AND c_color = ?";
-		int result = 0;
-		try {
-			ps = con.prepareStatement(query);
-			ps.setString(1, value);
-			ps.setString(2, color);
-			rs = ps.executeQuery();
-			if (rs.next())
-				result = rs.getInt(1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
 	}
 
 	/*
