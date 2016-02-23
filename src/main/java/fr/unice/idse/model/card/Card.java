@@ -7,6 +7,7 @@ public class Card implements Comparable<Card>{
 	// --- Constructeur
 		public Card(Value value) {
 			this.value=value;
+			this.color=null;
 		}
 		
 		public Card(Value value,Color color) {
@@ -36,8 +37,6 @@ public class Card implements Comparable<Card>{
 			return false;
 		}
 		
-		
-
 		@Override
 		public int hashCode() {
 			final int prime = 31;

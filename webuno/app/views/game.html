@@ -1,8 +1,10 @@
-<div class="players">
-    <div data-ng-repeat="player in game.players" data-ng-if="player.name != user.name" class="text-center">
-        <span>{{player.name}}</span>
-        <br />
-        <span>{{player.cartes}} cartes</span>
+<div class="container">
+    <div class="players col-md-12">
+        <div data-ng-repeat="player in game.players" data-ng-if="player.name != user.name" class="player col-md-{{12 / (game.players.length-1)}} {{(player.name == currentPlayer) ? 'current-player' : ''}}">
+            <span class="player-name">{{player.name}}</span>
+            <br />
+            <span class="player-cartes">{{player.cartes}} carte{{(player.cartes > 1) ? "s" : ""}}</span>
+        </div>
     </div>
 </div>
 
@@ -15,6 +17,14 @@
     <ul>
         <li data-ng-repeat="carte in cartes track by $index"
             data-ng-click="jouerCarte(carte)"
-            class="carte {{carte.familly}}-{{carte.number | WordToNumber}}"></li>
+            class="carte {{carte.family}}-{{carte.number | WordToNumber}}"></li>
     </ul>
+</div>
+
+<div class="modal fade myModalCurrentPlayer" tabindex="-1" role="dialog" aria-labelledby="modalCurrentPlayer">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            À {{ (currentPlayer == user.name) ? "toi" : currentPlayer }} de jouer !
+        </div>
+    </div>
 </div>

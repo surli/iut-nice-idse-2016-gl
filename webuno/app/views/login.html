@@ -4,19 +4,23 @@
             <span class="color-orange">U</span><span class="color-rouge">N</span><span class="color-vert">O</span>
         </h1>
         <br />
+        <div class="alert alert-danger" data-ng-if="error">
+            <strong>{{error}}</strong>
+        </div>
+        <br />
         <div class="col-md-6">
             <div class="panel panel-default" style="height: 305px">
                 <div class="panel-heading">Login</div>
                 <div class="panel-body">
                     <form method="post" class="form-horizontal" data-ng-submit="goLogin()">
                         <div class="form-group">
-                            <input class="input-form input-lg" type="email" placeholder="Email" id="email" data-ng-model="email"/>
+                            <input class="input-form input-lg" type="email" placeholder="Email" id="email" data-ng-model="newUser.email"/>
                         </div>
                         <div class="form-group">
-                            <input class="input-form input-lg" type="password" placeholder="Password" id="pass" data-ng-model="pass"/>
+                            <input class="input-form input-lg" type="password" placeholder="Password" id="pass" data-ng-model="newUser.password"/>
                         </div>
                         <br />
-                        <button type="submit" class="btn btn-lg btn-success">Login</button>
+                        <button type="submit" class="btn btn-lg btn-success" data-ng-disabled="isLoading">Login</button>
                     </form>
                 </div>
             </div>
@@ -28,7 +32,7 @@
                 <div class="panel-body">
                     <br />
                     <br />
-                    <button data-ng-click="goLoginGuess();" style="font-size: 26pt;" class="btn btn-lg btn-success" >Connect Guest</button>
+                    <button data-ng-click="goLoginGuess();" style="font-size: 26pt;" class="btn btn-lg btn-success" data-ng-disabled="isLoading">Connect Guest</button>
                     <br />
                     <br />
                 </div>
@@ -42,7 +46,7 @@
                 </span>
                 You don't have an account ?
                 <br />
-                <button class="btn btn-danger" data-ui-sref="register" >Register</button>
+                <button class="btn btn-danger" data-ui-sref="register">Register</button>
             </p>
         </div>
     </div>

@@ -31,7 +31,28 @@ Run > Edit Configurations ... > clique sur "+" > Maven
 Lancez les tests avant de commit. Une commande simple (pareil que pour lancer le serveur REST)
 Dans goals ou Command line : `install test`
 
+### Documents
+
+Tous les documents de chaque groupe se trouve dans le repertoire doc à la racine.
+
 ###Release
+
+>######Version 0.3.1
+
+- Correction de la distribution des cartes
+- Correction de quelques bugs dans l'interface web
+- Correction du pom.xml
+
+>######Version 0.3
+
+- Ajout des routes pour l'inscription / connexion avec ses identifiants
+- Mis en place de la base de donnée
+- Ajout des actions dans le moteur
+    - Action du stop
+    - Changement de sens
+    - Changement de couleur
+- Se connecter avec ses identifiants sur l'ihm
+- Pouvoir s'inscrire
 
 >######Version 0.2
 
@@ -73,9 +94,8 @@ Dans goals ou Command line : `install test`
 
 - Jérémie Elbaz
 - Jocelin Heinen
-Lien du README du groupe : `src/main/java/fr/unice/idse/services`
 
-###Base de donnÃ©e
+###Base de donnée
 >Chef de groupe : Pierre Echardour 
 
 - Ugo Paneccasio

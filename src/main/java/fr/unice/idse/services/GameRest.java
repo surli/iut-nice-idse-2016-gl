@@ -398,16 +398,18 @@ public class GameRest extends OriginRest{
         if(model.findPlayerByToken(gameName, token) == null){
             jsonReturn.put("error", "Player not found with this token");
             return sendResponse(405, jsonReturn.toString(), "POST");
+            
         }
 
         if(!model.findPlayerByToken(gameName, token).getName().equals(playerName)){
             jsonReturn.put("error", "Invalid token for this player");
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
+        
 
         // verifie que la partie est bien lancée
         if(!model.findGameByName(gameName).gameBegin()){
-            jsonReturn.put("error", "Game no started");
+            jsonReturn.put("error", "Game not started");
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
 

@@ -4,22 +4,26 @@
             <span class="color-orange">U</span><span class="color-rouge">N</span><span class="color-vert">O</span>
         </h1>
         <br />
+        <div class="alert alert-danger" data-ng-if="error">
+            <strong>{{error}}</strong>
+        </div>
+        <br />
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Register</div>
                 <div class="panel-body">
                     <form  method="post" class="form-horizontal" data-ng-submit="goRegister()">
                         <div class="form-group">
-                            <input class="input-form input-lg" type="text" placeholder="Prénom" id="prenom" data-ng-model="prenom"/>
+                            <input class="input-form input-lg" type="text" placeholder="Name" id="prenom" data-ng-model="newUser.name"/>
                         </div>
                         <div class="form-group">
-                            <input class="input-form input-lg" type="email" placeholder="Email" id="email" data-ng-model="email"/>
+                            <input class="input-form input-lg" type="email" placeholder="Email" id="email" data-ng-model="newUser.email"/>
                         </div>
                         <div class="form-group">
-                            <input class="input-form input-lg" type="password" placeholder="Password" id="pass" data-ng-model="pass"/>
+                            <input class="input-form input-lg" type="password" placeholder="Password" id="pass" data-ng-model="newUser.password"/>
                         </div>
                         <br />
-                        <button type="submit" class="btn btn-lg btn-success" >Register</button>
+                        <button type="submit" class="btn btn-lg btn-success" data-ng-disabled="isLoading">Register</button>
                     </form>
                 </div>
             </div>

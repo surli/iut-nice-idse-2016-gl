@@ -52,7 +52,7 @@ jetty:run
 │   │   │   ├── GET     Retourne le joueur courant
 │   │   │   ├── PUT     Lance une partie (Que l'host)
 │   │   ├── /updated
-│   │   │   ├── GET
+│   │   │   ├── GET     Retourne si une mise a jour a eu lieu
 │   │   ├── /{playerName} 
 │   │   │   ├── GET     Retoune la main du joueur
 │   │   │   ├── POST    Pioche une carte
@@ -61,12 +61,14 @@ jetty:run
 │   ├── GET             Retourne la liste des utilisateurs connecté 
 │   ├── POST            Ajoute un utilisateur
 │   ├── CONNECT         Connecte un utilisateur
-│   ├── /{playerName} 
+│   ├── /{playerName}
 │   │   ├── GET         Retourne les informations de l'utilisateur
 │   │   ├── POST        Authentifie un Guest en renvoyant un token
 │   │   ├── DELETE      Deconnecte l'utilisateurs
 │   │   ├── PUT         Mise a jouer des informations de l'utilisateur
-
+├── /auth
+│   ├── POST            Authentifie un Guest en renvoyant un token
+│   ├── PUT             Authentifie un joueur avec ses identifiants
 ```
 
 Chaque route doit posseder un Token dans le header pour nom _token

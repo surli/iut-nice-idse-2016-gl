@@ -135,7 +135,6 @@ input, select {
   background-size: $carte-width*14 $carte-height*8;
   transform-origin: left bottom;
 
-
   @for $i from 0 through 12 {
     &.Red-#{$i} {
       @include sprite-carte($i, 0);
@@ -219,7 +218,9 @@ header {
   .navbar-brand {
     font-size: 30pt;
 
-    &:hover {
+    &.loader {
+      transition: ease-out;
+      transition-duration: 1s;
       text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
     }
   }
@@ -326,11 +327,7 @@ footer {
   }
 }
 
-#login {
-
-}
-
-/* Rotation */
+/* OLD LOADER
 @keyframes rotate {
   from {
     transform: rotate(0deg);
@@ -376,4 +373,68 @@ footer {
     transform: rotate(-60deg);
     background-color: $vert;
   }
+}
+*/
+
+.players {
+  padding: 10px;
+
+  .player {
+    text-align: center;
+    padding: 15px 10px;
+
+    .player-name {
+      border-radius: 50%;
+      padding: 25px 15px;
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .player-cartes {
+      z-index: 99999;
+      background: rgb(40, 94, 103);
+      border: 5px solid rgb(22, 52, 57);
+      padding: 3px 10px;
+      border-radius: 15px;
+      font-size: 9pt;
+    }
+
+    &.current-player {
+      transform: scale(1.1);
+
+      .player-name {
+        background: rgba(0, 0, 0, 1);
+        border: 10px solid #FFF;
+      }
+    }
+  }
+}
+
+.modal-dialog {
+  position: absolute;
+  top: 50% !important;
+  transform: translate(0, -50%) !important;
+  -ms-transform: translate(0, -50%) !important;
+  -webkit-transform: translate(0, -50%) !important;
+  left: 50%;
+  margin-left: -150px;
+  margin-top: -50px;
+  width: 300px;
+  height: 100px;
+  border: none;
+}
+
+.modal-content {
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: $blanc;
+  text-align: center;
+  line-height: 100px;
+  background: $vert;
+  box-shadow: 0 0 5px 0 $vert;
+  font-size: 18pt;
+  border: none;
 }

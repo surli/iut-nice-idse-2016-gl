@@ -6,8 +6,21 @@ angular.module('unoApp')
             $state.go('app.home');
         }
 
+        $scope.newUser  = {};
+        $scope.error    = '';
+
         $scope.goRegister = function () {
-            // TODO ajouter fonction Auth.register($scope.email,$scope.name,$scope.password)
-            window.alert('Register not available !');
+            console.log($scope.newUser);
+            Auth.registerUser($scope.newUser)
+                .then(function (response) {
+                    console.log("toto:",response);
+                    if (response.data.error) {
+                        $scope.error = response.data.error;
+                    } else {
+                        response.data.name = $scope.newUser.name;
+                        Auth.connectUser(response.data);
+                        $state.go('app.home');
+                    }
+                });
         };
     }]);

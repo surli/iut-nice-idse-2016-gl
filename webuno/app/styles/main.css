@@ -6023,7 +6023,9 @@ header .navbar {
   margin-bottom: 0; }
 header .navbar-brand {
   font-size: 30pt; }
-  header .navbar-brand:hover {
+  header .navbar-brand.loader {
+    transition: ease-out;
+    transition-duration: 1s;
     text-shadow: 1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff; }
 header .navbar-toggle {
   background-color: rgba(0, 0, 0, 0.2); }
@@ -6095,12 +6097,16 @@ footer {
           cursor: pointer;
           z-index: 9999; }
 
-/* Rotation */
+/* OLD LOADER
 @keyframes rotate {
   from {
-    transform: rotate(0deg); }
+    transform: rotate(0deg);
+  }
   to {
-    transform: rotate(360deg); } }
+    transform: rotate(360deg);
+  }
+}
+
 #loader {
   width: 4em;
   height: 4em;
@@ -6113,23 +6119,80 @@ footer {
   margin-top: -2em;
   content: "";
   color: #FFF;
-  background-color: #ff5555;
+  background-color: $rouge;
   animation: rotate 2.5s infinite linear;
   z-index: 9999;
   transition: ease-out;
-  transition-duration: 2s; }
-  #loader:before, #loader:after {
+  transition-duration: 2s;
+
+  &:before, &:after {
     width: 4em;
     height: 4em;
     content: "";
     position: absolute;
     left: 0;
-    top: 0; }
-  #loader:before {
+    top: 0;
+  }
+
+  &:before {
     transform: rotate(60deg);
-    background-color: #55aa55; }
-  #loader:after {
+    background-color: $vert;
+  }
+
+  &:after {
     transform: rotate(-60deg);
-    background-color: #55aa55; }
+    background-color: $vert;
+  }
+}
+*/
+.players {
+  padding: 10px; }
+  .players .player {
+    text-align: center;
+    padding: 15px 10px; }
+    .players .player .player-name {
+      border-radius: 50%;
+      padding: 25px 15px;
+      background: rgba(0, 0, 0, 0.7); }
+    .players .player .player-cartes {
+      z-index: 99999;
+      background: #285e67;
+      border: 5px solid #163439;
+      padding: 3px 10px;
+      border-radius: 15px;
+      font-size: 9pt; }
+    .players .player.current-player {
+      transform: scale(1.1); }
+      .players .player.current-player .player-name {
+        background: black;
+        border: 10px solid #FFF; }
+
+.modal-dialog {
+  position: absolute;
+  top: 50% !important;
+  transform: translate(0, -50%) !important;
+  -ms-transform: translate(0, -50%) !important;
+  -webkit-transform: translate(0, -50%) !important;
+  left: 50%;
+  margin-left: -150px;
+  margin-top: -50px;
+  width: 300px;
+  height: 100px;
+  border: none; }
+
+.modal-content {
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #FFF;
+  text-align: center;
+  line-height: 100px;
+  background: #55aa55;
+  box-shadow: 0 0 5px 0 #55aa55;
+  font-size: 18pt;
+  border: none; }
 
 /*# sourceMappingURL=main.css.map */

@@ -8,10 +8,25 @@ angular.module('unoApp')
             },
             setUser: function (newUser) {
                 var deferred = $q.defer();
-                $http.post('/rest/auth', {
-                    playername: newUser
+
+                $http.put('/rest/auth', {
+                    email: newUser.email,
+                    password: sha1(newUser.password)
                 }).then(function (response) {
-                    deferred.resolve(response.data);
+                    deferred.resolve(response);
+                }, function (error) {
+                    deferred.reject(error);
+                });
+
+                return deferred.promise;
+            },
+            setUserGuess: function (playername) {
+                var deferred = $q.defer();
+
+                $http.post('/rest/auth', {
+                    playername: playername
+                }).then(function (response) {
+                    deferred.resolve(response);
                 }, function (error) {
                     deferred.reject(error);
                 });
@@ -27,13 +42,13 @@ angular.module('unoApp')
             destroyUser: function () {
                 localStorageService.remove('user');
             },
-            registerUser: function (email, name, password) {
+            registerUser: function (newUser) {
                 var deferred = $q.defer();
-                // TODO voir la route pour le register et la méthode
-                $http.put('/rest/game/', {
-                        email: email,
-                        name: name,
-                        password: password
+
+                $http.post('/rest/auth/signup', {
+                        email: newUser.email,
+                        playerName: newUser.name,
+                        password: sha1(newUser.password)
                     })
                     .then(function (response) {
                         console.log(response);
@@ -42,6 +57,7 @@ angular.module('unoApp')
                         console.log(error);
                         deferred.reject(error);
                     });
+
                 return deferred.promise;
             }
         };
