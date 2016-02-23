@@ -17,6 +17,7 @@ cp -rf ../../webuno/WEB-INF/ webapp/WEB-INF/
 echo "Copie des fichiers terminée."
 
 echo "Packaging du projet..."
+cd ../../
 mvn package
 echo "Packaging du projet terminé."
 

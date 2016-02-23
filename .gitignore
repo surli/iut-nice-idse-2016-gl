@@ -12,5 +12,11 @@ target
 *.iml
 npm-debug.log
 
-src/main/webapp/*
-!src/main/webapp/WEB-INF
+src/main/webapp/bower_components
+src/main/webapp/images
+src/main/webapp/fonts
+src/main/webapp/scripts
+src/main/webapp/styles
+src/main/webapp/favicon.ico
+src/main/webapp/index.html
+src/main/webapp/robots.txt
