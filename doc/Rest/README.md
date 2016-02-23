@@ -89,10 +89,11 @@ Return:
         }
     ]
 }
+```
 * 404 Missing token
 * 405 Invalid token
 
-```
+
 
 __POST /uno/game__ CreateGame
 
@@ -124,13 +125,13 @@ Send :
 		{"playerName":"marcel","nbCard":4}
 	]
 }
+```
 
 Return :
 * 200 Ok
 * 404 Missing token
 * 405 Missing game or invalid token
 
-```
 __PUT /uno/game/{gamename}__ AddPlayer
 
 Send :
@@ -138,13 +139,13 @@ Send :
 {
     "playerName":"bob"
 }
+```
 
 Return :
 * 200 Ok
 * 404 Missing token
 * 405 Missing or invalid parameters or invalid token
 * 500 Game already begun 
-``
 
 __DELETE /uno/game/{gamename}__ GetGameState
 
@@ -184,6 +185,7 @@ Return :
 {
     "error": "No current player has been set",
 }
+```
 
 __PUT /uno/game/{gamename}/command__ BeginGame
 
