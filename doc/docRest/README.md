@@ -51,39 +51,31 @@ jetty:run
 │   │   ├── /command
 │   │   │   ├── GET     Retourne le joueur courant
 │   │   │   ├── PUT     Lance une partie (Que l'host)
+│   │   ├── /updated
+│   │   │   ├── GET
 │   │   ├── /{playerName} 
 │   │   │   ├── GET     Retoune la main du joueur
 │   │   │   ├── POST    Pioche une carte
 │   │   │   ├── PUT     Joue une carte
 ├── /player 
-│   ├── GET             Retourne la liste des joueurs
+│   ├── GET             Retourne la liste des utilisateurs connecté 
+│   ├── POST            Ajoute un utilisateur
+│   ├── CONNECT         Connecte un utilisateur
 │   ├── /{playerName} 
-│   │   ├── GET         Retourne les informations du joueur
-├── /auth
-│   ├── POST            Authentifie un Guest en renvoyant un token
+│   │   ├── GET         Retourne les informations de l'utilisateur
+│   │   ├── POST        Authentifie un Guest en renvoyant un token
+│   │   ├── DELETE      Deconnecte l'utilisateurs
+│   │   ├── PUT         Mise a jouer des informations de l'utilisateur
+
 ```
 
 Chaque route doit posseder un Token dans le header pour nom _token
 
-__POST /uno/game__ CreateGame
-
-Send :
-```json
-{
-    "gamename":"uno",
-    "playerName":"john"
-}
-```
-Return :
-
-* 200 Ok
-* 401 Invalid token
-* 405 Missing or invalid parameters
-* 500 Gamename already in use
-
 __GET /uno/game__ GetListGames
  
- Return 200 Ok :
+Return:
+
+* 200 Ok :
  ```json
 {
     "games": [
@@ -95,20 +87,29 @@ __GET /uno/game__ GetListGames
         }
     ]
 }
+* 404 Missing token
+* 405 Invalid token
+
 ```
- 
-__PUT /uno/game/{gamename}__ AddPlayer
+
+__POST /uno/game__ CreateGame
 
 Send :
- ```json
+```json
 {
-    "playerName":"bob"
+    "gamename":"uno",
+    "playerName":"john"
+    "numberplayers:3
 }
 ```
+Return :
 
-__GET /uno/game/{gamename}__ GetGameState
-
-> TODO
+* 200 Ok
+* 404 Missing token
+* 405 Missing or invalid parameters or invalid token
+* 500 Gamename already in use
+ 
+__GET /uno/game/{gamename}__ GetStateGame
 
 Send :
  ```json
@@ -121,52 +122,91 @@ Send :
 		{"playerName":"marcel","nbCard":4}
 	]
 }
+
+Return :
+* 200 Ok
+* 404 Missing token
+* 405 Missing game or invalid token
+
 ```
+__PUT /uno/game/{gamename}__ AddPlayer
+
+Send :
+ ```json
+{
+    "playerName":"bob"
+}
+
+Return :
+* 200 Ok
+* 404 Missing token
+* 405 Missing or invalid parameters or invalid token
+* 500 Game already begun 
+``
 
 __DELETE /uno/game/{gamename}__ GetGameState
 
-> TODO
+Return:
 
-Return Ok
+* 200 Ok
+* 404 Missing token
+* 405 Invalid token
 
-__GET /uno/game/{gamename}/command__ CurrentPlayer
+__GET /uno/game/{gamename}/command__ ActualPlayer
 
-Return the current player of the game 
+Return :
 
-There are three type of return :
-
-1. Response 200 Ok
+* Response 200 Ok
  ```json
 {
     "playerName": "John",
 }
 ```
 
-2. Response 401 Unauthorized
+* Response 401 Unauthorized
  ```json
 {
     "error": "Game has not begin",
 }
 ```
 
+* Response 405 Method Not Allowed
+ ```json
+{
+    "error": "Invalid token",
+}
+```
+
+* Response 422 Unprocessable entity
+ ```json
+{
+    "error": "No current player has been set",
+}
+
 __PUT /uno/game/{gamename}/command__ BeginGame
 
-> TODO
+Return:
 
-Return Ok
+* 200 Ok
+* 404 Missing game or token
+* 405 Invalid parameters
 
 __GET /uno/game/{gamename}/updated__ GetUpdate
 
 Return :
+
+* 200 Ok
  ```json
 {
     "update":true,
 }
 ```
 
-__GET /uno/game/{gamename}/{playerName}__ (GetHand)
+__GET /uno/game/{gamename}/{playerName}__ GetHand
 
 Return :
+
+* 200 Ok
  ```json
 {
     "cards": [
@@ -177,14 +217,27 @@ Return :
     ]
 }
 ```
+* 404 Missing token
+* 405 Invalide player 
 
-__POST /uno/game/{gamename}/{playerName}__ (PickACard)
+__POST /uno/game/{gamename}/{playerName}__ PickACard
 
-Return Ok
+Return :
 
-__PUT /uno/game/{gamename}/{playerName}__ (PlayCard)
+* 200 Ok
+ ```json
+{
+	"return":true
+}
+```
+* 404 Missing game or token
+* 405 Invalid token, game not bagan, wrong turn or invalid card
 
-Send :
+__PUT /uno/game/{gamename}/{playerName}__ PlayCard
+
+Return :
+
+* 200 Ok
  ```json
 {
     "value": 0,
@@ -193,9 +246,13 @@ Send :
 }
 ```
 
+* 404 Missing token
+* 405 Invalid parameter
+
 __GET /uno/player__ GetListPlayers
  
-  Return :
+Return :
+* 200 Ok
  ```json
 {
     "players": [
@@ -207,6 +264,18 @@ __GET /uno/player__ GetListPlayers
 }
 ```
 
+__GET /uno/player__ GetPlayers
+ 
+Return :
+
+* 200 Ok
+ ```json
+{
+	"pseudo":"john",
+	"email":"john@mail.com"
+}
+```
+* 405 Invalid player
 
 ### Running test
 
