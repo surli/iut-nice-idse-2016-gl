@@ -730,6 +730,7 @@ public class GameRestTest extends JerseyTest {
         }
         Response response = target("/game/tata/azert1").request().header("token", "token1").delete();
         assertEquals(200, response.getStatus());
+        assertTrue(model.playerExistsInList("azert1"));
     }
 
     @Test
@@ -750,6 +751,7 @@ public class GameRestTest extends JerseyTest {
         Response response = target("/game/tata/toto").request().header("token", "token").delete();
         assertEquals(200, response.getStatus());
         assertFalse(model.existsGame("tata"));
+        assertTrue(model.playerExistsInList("toto"));
     }
 
     @Test
@@ -762,5 +764,8 @@ public class GameRestTest extends JerseyTest {
         assertEquals(200, response.getStatus());
         assertTrue(model.existsGame("tata"));
         assertEquals("azert0", model.findGameByName("tata").getHost().getName());
+        assertTrue(model.playerExistsInList("toto"));
+        for(int i = 0; i < 3; i++)
+            assertFalse(model.playerExistsInList("azert"+i));
     }
 }
