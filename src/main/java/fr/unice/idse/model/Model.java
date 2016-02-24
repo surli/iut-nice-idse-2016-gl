@@ -316,4 +316,17 @@ public class Model {
 		return false;
 	}
 	 
+	/**
+	 * Méthode qui permet la suppression d'une partie
+	 */
+	public boolean removeGame(String gameName)
+	{
+		Game game=findGameByName(gameName);
+		if(game!=null)
+		{
+			games.remove(game);
+			return true;
+		}
+		return false;
+	}
 }
