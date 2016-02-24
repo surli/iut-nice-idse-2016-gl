@@ -560,10 +560,23 @@ public class GameRest extends OriginRest{
         }
 
         // Si le joueur est l'hôte de la partie
-        /*if(model.findGameByName(gameName).getHost().getName().equals(gameName)){
-            jsonReturn.put("error", "Token invalid for this player");
-            return sendResponse(405, jsonReturn.toString(), "DELETE");
-        }*/
+        if(model.findGameByName(gameName).getHost().getName().equals(playerName)){
+            // s'il ne reste qu'un joueur dans la partie
+            if(model.findGameByName(gameName).getPlayers().size() == 1){
+                if(model.removePlayerFromGameByName(gameName, playerName))
+                    if(model.removeGame(gameName)){
+                        jsonReturn.put("status", true);
+                        return sendResponse(200, jsonReturn.toString(), "DELETE");
+                    }
+            // S'il y a d'autre joueur dans la partie
+            } else {
+                if(model.removePlayerFromGameByName(gameName, playerName)){
+                    model.findGameByName(gameName).setHost(model.findGameByName(gameName).getPlayers().get(0));
+                    jsonReturn.put("status", true);
+                    return sendResponse(200, jsonReturn.toString(), "DELETE");
+                }
+            }
+        }
 
         // remove player de la game
         if(model.removePlayerFromGameByName(gameName, playerName)){

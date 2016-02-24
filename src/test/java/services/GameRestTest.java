@@ -744,4 +744,23 @@ public class GameRestTest extends JerseyTest {
         JSONObject json = new JSONObject(response.readEntity(String.class));
         assertEquals("Game already started", json.getString("error"));
     }
+
+    @Test
+    public void retirerHostDeLaPartieQuandIlEstToutSeul() {
+        Response response = target("/game/tata/toto").request().header("token", "token").delete();
+        assertEquals(200, response.getStatus());
+        assertFalse(model.existsGame("tata"));
+    }
+
+    @Test
+    public void retirerHostDeLaPartieEtChangeHost() {
+        for(int i = 0; i < 3; i++){
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
+            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
+        }
+        Response response = target("/game/tata/toto").request().header("token", "token").delete();
+        assertEquals(200, response.getStatus());
+        assertTrue(model.existsGame("tata"));
+        assertEquals("azert0", model.findGameByName("tata").getHost().getName());
+    }
 }
