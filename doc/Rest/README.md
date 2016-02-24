@@ -57,6 +57,7 @@ jetty:run
 │   │   │   ├── GET     Retoune la main du joueur
 │   │   │   ├── POST    Pioche une carte
 │   │   │   ├── PUT     Joue une carte
+│   │   │   ├── DELETE  Retire un joueur d'une partie
 ├── /player 
 │   ├── GET             Retourne la liste des utilisateurs connecté 
 │   ├── POST            Ajoute un utilisateur
