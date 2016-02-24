@@ -84,30 +84,6 @@ module.exports = function (grunt) {
             livereload: {
                 options: {
                     open: true,
-                    /*
-                    middleware: function (connect, options) {
-                        var middlewares = [];
-
-                        if (!Array.isArray(options.base)) {
-                            options.base = [options.base];
-                        }
-
-                        options.base.push('.tmp');
-                        options.base.push('/bower_components');
-                        options.base.push('./app/styles');
-                        options.base.push(appConfig.app);
-
-                        // Setup the proxy
-                        middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
-
-                        // Serve static files
-                        options.base.forEach(function(base) {
-                            middlewares.push(connect.static(base));
-                        });
-
-                        return middlewares;
-                    }
-                    */
                     middleware: function (connect) {
                         var middlewares = [];
 
