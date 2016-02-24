@@ -184,7 +184,12 @@ public class Model {
 		Game game = findGameByName(gameName);
 		if(game != null)
 		{
-			return game.removePlayerByName(playerName);
+			Player player = findPlayerByName(gameName, playerName);
+			if(game.removePlayerByName(playerName))
+			{
+				players.add(player);
+				return true;
+			}
 		}
 		return false;
 	}
