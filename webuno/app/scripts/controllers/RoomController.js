@@ -29,13 +29,7 @@ angular.module('unoApp')
         };
 
         $scope.startGameNow = function () {
-            $http.put('/rest/game/' + $scope.gameName + '/command', {
-                    playerName: $scope.user.name
-                }, {
-                    headers: {
-                        token: $scope.user.token
-                    }
-                })
+            Game.startGame($scope.gameName)
                 .then(function (response) {
                     switch (response.status) {
                         case 200 :
@@ -48,8 +42,6 @@ angular.module('unoApp')
                         default:
                             console.error(response);
                     }
-                }, function (error) {
-                    console.error(error);
                 });
         };
 

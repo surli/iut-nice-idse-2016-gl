@@ -66,6 +66,19 @@ angular.module('unoApp')
                 });
             },
 
+            startGame: function(gameName) {
+                return HttpRequest.send({
+                    method: 'put',
+                    url: '/rest/game/' + gameName + '/command',
+                    headers: {
+                        token: Auth.getUser().token
+                    },
+                    data: {
+                        playerName: Auth.getUser().name
+                    }
+                });
+            },
+
             // pioche une carte
             drawCard: function (gameName) {
                 return HttpRequest.send({
