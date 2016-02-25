@@ -3,11 +3,11 @@
 cd webuno/
 
 echo "\n--- Installation de grunt-cli et bower..."
-sudo npm install -g grunt-cli bower
+#npm install grunt-cli bower
 echo "--- Fin de l'installation de grunt-cli and bower.\n"
 
 echo "\n--- Installation de compass..."
-sudo gem install compass
+#gem install compass
 echo "--- Fin de l'installation de compass.\n"
 
 echo "\n--- Installation des dépendances..."
