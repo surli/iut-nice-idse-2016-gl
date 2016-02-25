@@ -37,6 +37,7 @@ $carte-height: 360px*0.3;
 .btn {
   color: #FFF;
   border: none;
+  border-bottom: 3px outset;
 
   &:focus, &:focus:active {
     outline: none;
@@ -47,25 +48,33 @@ $carte-height: 360px*0.3;
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
   }
 
-  .btn-primary {
+  &.btn-primary {
+    border-color: darken($bleu, 10%);
+
     &:hover, &:active, &:visited, &:focus {
       background-color: $bleu;
     }
   }
 
-  .btn-danger {
+  &.btn-danger {
+    border-color: darken($rouge, 10%);
+
     &:hover, &:active, &:visited, &:focus {
       background-color: $rouge;
     }
   }
 
-  .btn-success {
+  &.btn-success {
+    border-color: darken($vert, 1%) !important;
+
     &:hover, &:active, &:visited, &:focus {
       background-color: $vert;
     }
   }
 
-  .btn-warning {
+  &.btn-warning {
+    border-color: darken($orange, 10%);
+
     &:hover, &:active, &:visited, &:focus {
       background-color: $orange;
     }

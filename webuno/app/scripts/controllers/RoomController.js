@@ -47,5 +47,9 @@ angular.module('unoApp')
 
         $scope.$on('$destroy', function () {
             $timeout.cancel(timeoutStateGame);
+            Game.quitRoom($scope.gameName)
+                .then(function(response) {
+                    console.log(response);
+                });
         });
     }]);
