@@ -8,16 +8,13 @@ angular.module('unoApp')
         Game.getUserHand($stateParams.name)
             .then(function (response) {
                 $scope.cartes = response.data.cartes;
-            }, function (error) {
-                console.error('Une erreur est survenue : ' + error.toString());
             });
 
         Game.getGame($stateParams.name)
             .then(function (response) {
                 $scope.game = response.data;
                 $scope.requestStateGame();
-            }, function (error) {
-                console.error('Une erreur est survenue : ' + error.toString());
+            }, function () {
                 $scope.requestStateGame();
             });
 
@@ -32,13 +29,9 @@ angular.module('unoApp')
                                 if ($scope.currentPlayer !== response.data.playerName) {
                                     $scope.currentPlayer = response.data.playerName;
                                     jQuery('.myModalCurrentPlayer').modal();
-                                    $timeout(function() {
+                                    $timeout(function () {
                                         jQuery('.myModalCurrentPlayer').modal('hide');
                                     }, 2000);
-                                }
-
-                                if (response.data.playerName === $scope.user.name) {
-                                    console.log('à moi de jouer !');
                                 }
                             });
 
@@ -48,8 +41,7 @@ angular.module('unoApp')
                             });
 
                         $scope.requestStateGame();
-                    }, function (error) {
-                        console.error('Une erreur est survenue : ' + error.toString());
+                    }, function () {
                         $scope.requestStateGame();
                     });
             }, 2000);
@@ -62,8 +54,6 @@ angular.module('unoApp')
                         .then(function (response) {
                             $scope.cartes = response.data.cartes;
                         });
-                }, function (error) {
-                    console.error(error);
                 });
         };
 
@@ -78,8 +68,6 @@ angular.module('unoApp')
                     Game.getGame($stateParams.name)
                         .then(function (response) {
                             $scope.game = response.data;
-                        }, function (error) {
-                            console.error('Une erreur est survenue : ' + error.toString());
                         });
                 });
         };
