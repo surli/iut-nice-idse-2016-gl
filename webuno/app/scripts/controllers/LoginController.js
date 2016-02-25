@@ -10,7 +10,6 @@ angular.module('unoApp')
         $scope.error = '';
 
         $scope.goLogin = function () {
-            console.log($scope.newUser);
             Auth.setUser($scope.newUser)
                 .then(function (response) {
                     console.log(response);
