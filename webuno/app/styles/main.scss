@@ -38,6 +38,7 @@ $carte-height: 360px*0.3;
   color: #FFF;
   border: none;
   border-bottom: 3px outset;
+  border-radius: 15px;
 
   &:focus, &:focus:active {
     outline: none;
@@ -81,12 +82,12 @@ $carte-height: 360px*0.3;
   }
 }
 
-input, select {
-  border: none;
+.form-control, input, select {
+  border: none !important;
   text-align: center;
   color: $gris;
   border-radius: 5px;
-  font-family: Cabin, Georgia, Times, serif;;
+  font-family: Cabin, Georgia, Times, serif;
 
   &:focus {
     outline: none;

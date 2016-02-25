@@ -5820,7 +5820,8 @@ button.close {
 .btn {
   color: #FFF;
   border: none;
-  border-bottom: 3px outset; }
+  border-bottom: 3px outset;
+  border-radius: 15px; }
   .btn:focus, .btn:focus:active {
     outline: none;
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2); }
@@ -5843,13 +5844,13 @@ button.close {
     .btn.btn-warning:hover, .btn.btn-warning:active, .btn.btn-warning:visited, .btn.btn-warning:focus {
       background-color: #ffaa00; }
 
-input, select {
-  border: none;
+.form-control, input, select {
+  border: none !important;
   text-align: center;
   color: #4B4B4B;
   border-radius: 5px;
   font-family: Cabin, Georgia, Times, serif; }
-  input:focus, select:focus {
+  .form-control:focus, input:focus, select:focus {
     outline: none;
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2); }
 

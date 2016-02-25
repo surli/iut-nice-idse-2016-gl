@@ -25,7 +25,7 @@ angular.module('unoApp')
                     }, function () {
                         $scope.requestStateGame();
                     });
-            }, 5000);
+            }, 2000);
         };
 
         $scope.startGameNow = function () {
@@ -47,9 +47,12 @@ angular.module('unoApp')
 
         $scope.$on('$destroy', function () {
             $timeout.cancel(timeoutStateGame);
-            Game.quitRoom($scope.gameName)
-                .then(function(response) {
-                    console.log(response);
-                });
+            if (!$scope.game.state) {
+                Game.quitRoom($scope.gameName);
+            }
         });
+
+        window.onbeforeunload = function () {
+            Game.quitRoom($scope.gameName);
+        };
     }]);

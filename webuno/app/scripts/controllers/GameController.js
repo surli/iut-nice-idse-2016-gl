@@ -44,7 +44,7 @@ angular.module('unoApp')
                     }, function () {
                         $scope.requestStateGame();
                     });
-            }, 2000);
+            }, 500);
         };
 
         $scope.piocherCarte = function () {

@@ -66,7 +66,7 @@ angular.module('unoApp')
                 });
             },
 
-            startGame: function(gameName) {
+            startGame: function (gameName) {
                 return HttpRequest.send({
                     method: 'put',
                     url: '/rest/game/' + gameName + '/command',
@@ -117,7 +117,7 @@ angular.module('unoApp')
                 });
             },
 
-            quitRoom: function(gameName) {
+            quitRoom: function (gameName) {
                 return HttpRequest.send({
                     method: 'delete',
                     url: '/rest/game/' + gameName + '/' + Auth.getUser().name,
