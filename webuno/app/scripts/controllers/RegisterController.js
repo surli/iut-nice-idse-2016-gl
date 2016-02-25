@@ -10,10 +10,8 @@ angular.module('unoApp')
         $scope.error    = '';
 
         $scope.goRegister = function () {
-            console.log($scope.newUser);
             Auth.registerUser($scope.newUser)
                 .then(function (response) {
-                    console.log("toto:",response);
                     if (response.data.error) {
                         $scope.error = response.data.error;
                     } else {

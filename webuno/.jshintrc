@@ -12,6 +12,7 @@
   "unused": true,
   "globals": {
     "jQuery" : false,
-    "angular": false
+    "angular": false,
+    "CryptoJS": false
   }
 }
