@@ -13,7 +13,7 @@ angular.module('unoApp')
             console.log($scope.newUser);
             Auth.registerUser($scope.newUser)
                 .then(function (response) {
-                    console.log("toto:",response);
+                    // console.log("toto:",response);
                     if (response.data.error) {
                         $scope.error = response.data.error;
                     } else {

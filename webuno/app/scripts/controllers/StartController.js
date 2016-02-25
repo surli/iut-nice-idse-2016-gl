@@ -16,10 +16,10 @@ angular.module('unoApp')
                                 $scope.error = data.error;
                         }
                     }, function(error) {
-                        $scope.error = 'Une erreur est survenue : ' + error;
+                        $scope.error = 'An error occured : ' + error;
                     });
             } else {
-                $scope.error = '3 caractères minimum est requis pour le nom de la partie';
+                $scope.error = '3 characters minimum required to name the game';
             }
         };
     }]);

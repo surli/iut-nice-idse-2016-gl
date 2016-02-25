@@ -9,7 +9,7 @@ angular.module('unoApp')
             .then(function (response) {
                 $scope.cartes = response.data.cartes;
             }, function (error) {
-                console.error('Une erreur est survenue : ' + error.toString());
+                console.error('An error occured : ' + error.toString());
             });
 
         Game.getGame($stateParams.name)
@@ -17,7 +17,7 @@ angular.module('unoApp')
                 $scope.game = response.data;
                 $scope.requestStateGame();
             }, function (error) {
-                console.error('Une erreur est survenue : ' + error.toString());
+                console.error('An error occured : ' + error.toString());
                 $scope.requestStateGame();
             });
 
@@ -38,7 +38,7 @@ angular.module('unoApp')
                                 }
 
                                 if (response.data.playerName === $scope.user.name) {
-                                    console.log('à moi de jouer !');
+                                    console.log('my turn !');
                                 }
                             });
 
@@ -49,7 +49,7 @@ angular.module('unoApp')
 
                         $scope.requestStateGame();
                     }, function (error) {
-                        console.error('Une erreur est survenue : ' + error.toString());
+                        console.error('An error occured : ' + error.toString());
                         $scope.requestStateGame();
                     });
             }, 2000);
