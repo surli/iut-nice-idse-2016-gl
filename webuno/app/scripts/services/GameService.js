@@ -115,6 +115,16 @@ angular.module('unoApp')
                         token: Auth.getUser().token
                     }
                 });
+            },
+
+            quitRoom: function(gameName) {
+                return HttpRequest.send({
+                    method: 'delete',
+                    url: '/rest/game/' + gameName + '/' + Auth.getUser().name,
+                    headers: {
+                        token: Auth.getUser().token
+                    }
+                });
             }
         };
     });
