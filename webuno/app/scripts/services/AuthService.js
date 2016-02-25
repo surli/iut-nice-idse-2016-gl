@@ -11,7 +11,7 @@ angular.module('unoApp')
 
                 $http.put('/rest/auth', {
                     email: newUser.email,
-                    password: sha1(newUser.password)
+                    password: CryptoJS.SHA512(newUser.password)
                 }).then(function (response) {
                     deferred.resolve(response);
                 }, function (error) {
@@ -48,7 +48,7 @@ angular.module('unoApp')
                 $http.post('/rest/auth/signup', {
                         email: newUser.email,
                         playerName: newUser.name,
-                        password: sha1(newUser.password)
+                        password: CryptoJS.SHA512(newUser.password)
                     })
                     .then(function (response) {
                         console.log(response);
