@@ -18,6 +18,23 @@
 
 ### Introduction 
 
+##### Arbo structure
+
+```
+/webuno
+├── /app 
+│   ├── /images          
+│   ├── /scripts           
+│   ├── /styles 
+│   ├── /views 
+├── /bower_components
+├── /dist
+├── /test 
+├── /WEB-INF
+├── bower.json
+├── Gruntfile.js
+├── package.json
+```
 
 ### Install
 
@@ -90,3 +107,7 @@ https://github.com/yeoman/generator-angular#readme
 #### AngularJS
 
 https://docs.angularjs.org/guide/
+
+#### GruntJs 
+
+http://gruntjs.com/getting-started
