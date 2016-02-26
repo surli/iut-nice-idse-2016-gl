@@ -422,14 +422,13 @@ public class GameRest extends OriginRest{
         int cartes = model.findGameByName(gameName).getBoard().getActualPlayer().getCards().size();
         model.findGameByName(gameName).getBoard().drawCard();
 
-        if(model.findGameByName(gameName).getBoard().getActualPlayer().getCards().size() == cartes+1){
-            jsonReturn.put("return", true);
-            return sendResponse(200, jsonReturn.toString(), "POST");
+        if(model.findGameByName(gameName).getBoard().getActualPlayer().getCards().size() != cartes+1){
+            jsonReturn.put("return", false);
+            return sendResponse(405, jsonReturn.toString(), "POST");
         }
-
-        jsonReturn.put("return", false);
-        return sendResponse(405, jsonReturn.toString(), "POST");
-
+        jsonReturn.put("return", true);
+        model.findGameByName(gameName).getBoard().nextPlayer();
+        return sendResponse(200, jsonReturn.toString(), "POST");
     }
 
     /**
