@@ -6,9 +6,9 @@ echo "\n--- Installation des dépendances..."
 npm install
 echo "--- Fin d'installation des dépendances.\n"
 
-echo "\n--- Build en cours..."
-grunt build
-echo "--- Build terminé !\n"
+echo "\n--- Build / Tests en cours..."
+grunt
+echo "--- Build / Tests terminés !\n"
 
 echo "\n--- Suppression de l'ancien build en cours..."
 cd ../src/main/
