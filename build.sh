@@ -16,6 +16,7 @@ rm -rf webapp/
 echo "--- Suppression de l'ancien build terminée.\n"
 
 echo "\n--- Copie du build de dev dans le dossier de production..."
+mkdir webapp
 cp -rf ../../webuno/dist/ webapp/
 cp -rf ../../webuno/WEB-INF/ webapp/WEB-INF/
 echo "--- Copie des fichiers terminée.\n"
