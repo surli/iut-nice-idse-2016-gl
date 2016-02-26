@@ -1,17 +1,54 @@
-## Init Project
+# UNO Interface Web [IHM]
 
-Run `npm install` for install npm dependencies.
+### Table of contents
 
-Run `npm install bower -g` for install bower and `bower install` for install bower dependencies.
+- [Contributors](#contributors)
+- [Introduction](#introduction)
+- [Install](#install)
+- [Launch](#launch)
+- [Running test](#running-test)
+- [TODO](#todo)
+- [Documentation](#Documentation)
 
-Run `npm install grunt-cli -g` for install Grunt.
+### Contributors
 
-Run `gem install sass` for install Sass.
+* Jeremy Froment
+* Teva Locandro
+* Nicolas Claisse
 
-Run `gem install compass` for install Compass.
+### Introduction 
 
 
-## If gem don't run (Windows)
+### Install
+
+Run this command for install npm dependencies :
+```
+npm install
+```
+
+Run commands to install bower and install bower dependencies :
+```
+npm install bower -g
+bower install
+```
+
+Run this command for install Grunt :
+```
+npm install grunt-cli -g
+```
+
+Run this command for install Sass :
+```
+gem install sass
+```
+
+Run this command for install Compass :
+```
+gem install compass
+```
+
+
+#### If gem don't run (Windows)
 
 Go to `http://rubyinstaller.org/downloads/` and download `Ruby.2.1.7 or 2.1.7(x64)`
 
@@ -22,16 +59,34 @@ Double click `ruby installer` click `add PATH environnement` and finish install.
 Source in french : http://www.codesscripts.fr/installer-ruby-sass-et-compass-avec-le-terminal-windows/
 
 
-## Build & Development
+#### Build & Development
 
-Run `grunt` or `grunt --force` for building and `grunt serve` for preview.
+Run `grunt` or `grunt --force` for building.
 
+To previews :
+```
+grunt serve
+```
 
-## Testing
+### Testing
 
-Running `grunt test` will run the unit tests with karma.
+Running this command will run the unit tests with karma :
+```
+grunt test
+```
 
+### TODO
 
-## Documentation Yeoman
+* Complete this README
+* Create a functional interface
+* Users can play UNO
+
+### Documentation
+
+#### Yeoman
 
 https://github.com/yeoman/generator-angular#readme
+
+#### AngularJS
+
+https://docs.angularjs.org/guide/
