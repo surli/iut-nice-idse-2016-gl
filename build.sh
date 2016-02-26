@@ -7,7 +7,7 @@ npm install
 echo "--- Fin d'installation des dépendances.\n"
 
 echo "\n--- Build / Tests en cours..."
-grunt
+grunt --force
 echo "--- Build / Tests terminés !\n"
 
 echo "\n--- Suppression de l'ancien build en cours..."
