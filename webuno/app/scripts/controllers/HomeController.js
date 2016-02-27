@@ -1,51 +1,47 @@
 'use strict';
 
 angular.module('unoApp')
-  .controller('HomeController', ['$scope', '$timeout', '$http', '$state', 'Game', function ($scope, $timeout, $http, $state, Game) {
-    var timeoutListGames;
+    .controller('HomeController', ['$scope', '$timeout', '$http', '$state', 'Game', function ($scope, $timeout, $http, $state, Game) {
+        var timeoutListGames;
 
-    Game.getAllGames()
-      .then(function (data) {
-        $scope.games = data.data.games;
-        $scope.requestListGames();
-      }, function (error) {
-        console.error(error);
-        $scope.requestListGames();
-      });
-
-    $scope.requestListGames = function () {
-      timeoutListGames = $timeout(function () {
         Game.getAllGames()
-          .then(function (data) {
-            $scope.games = data.data.games;
-            $scope.requestListGames();
-          }, function (error) {
-            console.error(error);
-            $scope.requestListGames();
-          });
-      }, 5000);
-    };
+            .then(function (response) {
+                $scope.games = response.data.games;
+                $scope.requestListGames();
+            }, function () {
+                $scope.requestListGames();
+            });
 
-    $scope.joinGame = function (gameName) {
-      Game.joinGame(gameName)
-        .then(function (response) {
-          switch (response.status) {
-            case 200 :
-              if (response.data.status) {
-                $state.go('app.room', {name: gameName});
-              } else {
-                console.error('MyError 1 : ', response);
-              }
-              break;
-            default :
-              console.error('MyError 2 : ', response);
-          }
-        }, function (error) {
-          console.error(error);
+        $scope.requestListGames = function () {
+            timeoutListGames = $timeout(function () {
+                Game.getAllGames()
+                    .then(function (response) {
+                        $scope.games = response.data.games;
+                        $scope.requestListGames();
+                    }, function () {
+                        $scope.requestListGames();
+                    });
+            }, 2000);
+        };
+
+        $scope.joinGame = function (gameName) {
+            Game.joinGame(gameName)
+                .then(function (response) {
+                    switch (response.status) {
+                        case 200 :
+                            if (response.data.status) {
+                                $state.go('app.room', {name: gameName});
+                            } else {
+                                $scope.error = response;
+                            }
+                            break;
+                        default :
+                            $scope.error = response;
+                    }
+                });
+        };
+
+        $scope.$on('$destroy', function () {
+            $timeout.cancel(timeoutListGames);
         });
-    };
-
-    $scope.$on('$destroy', function(){
-      $timeout.cancel(timeoutListGames);
-    });
-  }]);
+    }]);

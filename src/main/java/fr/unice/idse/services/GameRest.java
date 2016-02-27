@@ -57,11 +57,11 @@ public class GameRest extends OriginRest{
         // verification du token
         if(token == null) {
             jsonObject.put("error", "No token found");
-            return sendResponse(500, jsonObject.toString(), "GET");
+            return sendResponse(404, jsonObject.toString(), "GET");
         }
         if(model.getPlayerFromList(token) == null){
             jsonObject.put("error", "No player found with this token");
-            return sendResponse(500, jsonObject.toString(), "GET");
+            return sendResponse(405, jsonObject.toString(), "GET");
         }
 
         // Ajout des games dans la liste
@@ -128,9 +128,9 @@ public class GameRest extends OriginRest{
 
     /**
      * Retourne l'état de la partie
-     * gamename : Nom de la partie
      *
      * @param gamename Nom de partie
+     * @param token Token
      * @return Response
      */
     @GET
@@ -143,12 +143,12 @@ public class GameRest extends OriginRest{
 
         if(token == null){
             jsonObject.put("error", "Missing token");
-            return sendResponse(500, jsonObject.toString(), "GET");
+            return sendResponse(404, jsonObject.toString(), "GET");
         }
 
         if(model.findGameByName(gamename) == null) {
             jsonObject.put("error", "Partie inconnue");
-            return sendResponse(404, jsonObject.toString(), "GET");
+            return sendResponse(405, jsonObject.toString(), "GET");
         }
 
         if(model.findPlayerByToken(gamename, token) == null){
@@ -202,17 +202,19 @@ public class GameRest extends OriginRest{
         Model model = Model.getInstance();
         JSONObject json = new JSONObject(objJSON);
         JSONObject jsonObject = new JSONObject();
-
-        if(model.findGameByName(gamename) == null) {
-            jsonObject.put("error", "Partie inconnue");
-            return sendResponse(404, jsonObject.toString(), "PUT");
-        }
-
+        
         // verification du token
         if(token == null) {
             jsonObject.put("error", "Missing parameters token");
+            return sendResponse(404, jsonObject.toString(), "PUT");
+        }
+        
+        if(model.findGameByName(gamename) == null) {
+            jsonObject.put("error", "Partie inconnue");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
+
+
 
         // verification du joueur
         if(!json.has("playerName"))
@@ -255,7 +257,7 @@ public class GameRest extends OriginRest{
         // verification du token
         if(token == null){
             jsonObject.put("error", "Token not found");
-            return sendResponse(405, jsonObject.toString(), "PUT");
+            return sendResponse(404, jsonObject.toString(), "PUT");
         }
 
         // verification du playerName
@@ -328,7 +330,7 @@ public class GameRest extends OriginRest{
     /*
      * @param playerName
      * @param gameName
-     * @retur
+     * @return Status 200 : {"cards": [{"number":int,"familly":String}]}
      * @throws JSONException
      */
     @GET
@@ -342,7 +344,7 @@ public class GameRest extends OriginRest{
 
         if(token == null){
             jsonObject.put("error", "Token not found");
-            return sendResponse(405, jsonObject.toString(), "GET");
+            return sendResponse(404, jsonObject.toString(), "GET");
         }
         if(model.findPlayerByName(gameName, playerName) == null) {
             jsonObject.put("error", "No player found");
@@ -372,7 +374,7 @@ public class GameRest extends OriginRest{
      */
 
     @POST
-    @Path("/{gameName}/{playerName}")
+    @Path("{gameName}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response pickacard(@HeaderParam("token") String token, @PathParam("gameName") String gameName,@PathParam("playerName") String playerName) throws JSONException {
         // Cration de tous les objets
@@ -390,7 +392,7 @@ public class GameRest extends OriginRest{
         // Vérification de l'authentification
         if(token == null){
             jsonReturn.put("error", "Token not found");
-            return sendResponse(405, jsonReturn.toString(), "POST");
+            return sendResponse(404, jsonReturn.toString(), "POST");
         }
 
         if(model.findPlayerByToken(gameName, token) == null){
@@ -420,14 +422,13 @@ public class GameRest extends OriginRest{
         int cartes = model.findGameByName(gameName).getBoard().getActualPlayer().getCards().size();
         model.findGameByName(gameName).getBoard().drawCard();
 
-        if(model.findGameByName(gameName).getBoard().getActualPlayer().getCards().size() == cartes+1){
-            jsonReturn.put("return", true);
-            return sendResponse(200, jsonReturn.toString(), "POST");
+        if(model.findGameByName(gameName).getBoard().getActualPlayer().getCards().size() != cartes+1){
+            jsonReturn.put("return", false);
+            return sendResponse(405, jsonReturn.toString(), "POST");
         }
-
-        jsonReturn.put("return", false);
-        return sendResponse(405, jsonReturn.toString(), "POST");
-
+        jsonReturn.put("return", true);
+        model.findGameByName(gameName).getBoard().nextPlayer();
+        return sendResponse(200, jsonReturn.toString(), "POST");
     }
 
     /**
@@ -436,7 +437,7 @@ public class GameRest extends OriginRest{
      * @param playerName
      * @param gameName
      * @param strJSON {"value": int, "color": str, "actionCard": null}
-     * @return Response 200 | 422 | 405
+     * @return Response 200 | 405
      * @throws JSONException
      */
     @PUT
@@ -459,7 +460,7 @@ public class GameRest extends OriginRest{
         // Verification de l'authentification
         if(token == null){
             jsonObject.put("error", "Token not found");
-            return sendResponse(405, jsonObject.toString(), "PUT");
+            return sendResponse(404, jsonObject.toString(), "PUT");
         }
         if(model.findPlayerByName(gameName, playerName) == null) {
             jsonObject.put("error", "The player does not exist");
@@ -503,5 +504,85 @@ public class GameRest extends OriginRest{
 
         jsonObject.put("success", true);
         return sendResponse(200, jsonObject.toString(), "PUT");
+    }
+
+    /**
+     * Methode qui permet de retirer un joueur d'une partie qui n'est pas commencée
+     * @param token String
+     * @param gameName String
+     * @param playerName String
+     * @return Response
+     * @throws JSONException
+     */
+    @DELETE
+    @Path("/{gameName}/{playerName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response removerPlayer(@HeaderParam("token") String token, @PathParam("gameName") String gameName, @PathParam("playerName") String playerName) throws JSONException {
+        // Initialisation des variables
+        Model model = Model.getInstance();
+        JSONObject jsonReturn = new JSONObject();
+
+        // Verificaton du token
+        if(token == null){
+            jsonReturn.put("error", "Token not found");
+            return sendResponse(405, jsonReturn.toString(), "DELETE");
+        }
+
+        // Verification des champs
+        if(gameName == null){
+            jsonReturn.put("error", "Parameter gameName not found");
+            return sendResponse(405, jsonReturn.toString(), "DELETE");
+        }
+        if(playerName == null){
+            jsonReturn.put("error", "Parameter playerName not found");
+            return sendResponse(405, jsonReturn.toString(), "DELETE");
+        }
+
+        // Verification de la game
+        if(!model.existsGame(gameName)){
+            jsonReturn.put("error", "Game not found");
+            return sendResponse(405, jsonReturn.toString(), "DELETE");
+        }
+        if(model.findGameByName(gameName).gameBegin()){
+            jsonReturn.put("error", "Game already started");
+            return sendResponse(405, jsonReturn.toString(), "DELETE");
+        }
+
+        // Vérification du joueur
+        if(model.findPlayerByName(gameName, playerName) == null){
+            jsonReturn.put("error", "Player not found");
+            return sendResponse(405, jsonReturn.toString(), "DELETE");
+        }
+        if(!model.findPlayerByName(gameName, playerName).getToken().equals(token)){
+            jsonReturn.put("error", "Token invalid for this player");
+            return sendResponse(405, jsonReturn.toString(), "DELETE");
+        }
+
+        // Si le joueur est l'hôte de la partie
+        if(model.findGameByName(gameName).getHost().getName().equals(playerName)){
+            // s'il ne reste qu'un joueur dans la partie
+            if(model.findGameByName(gameName).getPlayers().size() == 1){
+                if(model.removePlayerFromGameByName(gameName, playerName))
+                    if(model.removeGame(gameName)){
+                        jsonReturn.put("status", true);
+                        return sendResponse(200, jsonReturn.toString(), "DELETE");
+                    }
+            // S'il y a d'autre joueur dans la partie
+            } else {
+                if(model.removePlayerFromGameByName(gameName, playerName)){
+                    model.findGameByName(gameName).setHost(model.findGameByName(gameName).getPlayers().get(0));
+                    jsonReturn.put("status", true);
+                    return sendResponse(200, jsonReturn.toString(), "DELETE");
+                }
+            }
+        }
+
+        // remove player de la game
+        if(model.removePlayerFromGameByName(gameName, playerName)){
+            jsonReturn.put("status", true);
+            return sendResponse(200, jsonReturn.toString(), "DELETE");
+        }
+        jsonReturn.put("status", false);
+        return sendResponse(405, jsonReturn.toString(), "DELETE");
     }
 }

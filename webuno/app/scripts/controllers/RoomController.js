@@ -1,31 +1,20 @@
 'use strict';
 
 angular.module('unoApp')
-    .controller('RoomController', ['$rootScope', '$scope', '$state', '$stateParams', '$http', '$timeout', function ($rootScope, $scope, $state, $stateParams, $http, $timeout) {
+    .controller('RoomController', ['$rootScope', '$scope', '$state', '$stateParams', '$http', '$timeout', 'Game', function ($rootScope, $scope, $state, $stateParams, $http, $timeout, Game) {
         $scope.gameName = $stateParams.name;
         var timeoutStateGame;
-        // TODO remplacer par Game.getGame
-        $http.get('/rest/game/' + $scope.gameName, {
-                headers: {
-                    token: $scope.user.token
-                }
-            })
+        Game.getGame($scope.gameName)
             .then(function (response) {
                 $scope.game = response.data;
                 $scope.requestStateGame();
-            }, function (error) {
-                console.error(error);
+            }, function () {
                 $scope.requestStateGame();
             });
 
         $scope.requestStateGame = function () {
             timeoutStateGame = $timeout(function () {
-                //TODO remplacer par Game.getGame (attention il y a un traitement en plus que faire ?)
-                $http.get('/rest/game/' + $scope.gameName, {
-                        headers: {
-                            token: $scope.user.token
-                        }
-                    })
+                Game.getGame($scope.gameName)
                     .then(function (response) {
                         $scope.game = response.data;
                         if ($scope.game.state) {
@@ -33,22 +22,14 @@ angular.module('unoApp')
                         } else {
                             $scope.requestStateGame();
                         }
-                    }, function (error) {
-                        console.error(error);
+                    }, function () {
                         $scope.requestStateGame();
                     });
-            }, 5000);
+            }, 2000);
         };
 
         $scope.startGameNow = function () {
-            // TODO remplacer par ****
-            $http.put('/rest/game/' + $scope.gameName + '/command', {
-                    playerName: $scope.user.name
-                }, {
-                    headers: {
-                        token: $scope.user.token
-                    }
-                })
+            Game.startGame($scope.gameName)
                 .then(function (response) {
                     switch (response.status) {
                         case 200 :
@@ -61,12 +42,17 @@ angular.module('unoApp')
                         default:
                             console.error(response);
                     }
-                }, function (error) {
-                    console.error(error);
                 });
         };
 
         $scope.$on('$destroy', function () {
             $timeout.cancel(timeoutStateGame);
+            if (!$scope.game.state) {
+                Game.quitRoom($scope.gameName);
+            }
         });
+
+        window.onbeforeunload = function () {
+            Game.quitRoom($scope.gameName);
+        };
     }]);

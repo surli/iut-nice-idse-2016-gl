@@ -10,7 +10,6 @@ angular.module('unoApp')
         $scope.error = '';
 
         $scope.goLogin = function () {
-            console.log($scope.newUser);
             Auth.setUser($scope.newUser)
                 .then(function (response) {
                     console.log(response);
@@ -25,7 +24,7 @@ angular.module('unoApp')
         };
 
         $scope.goLoginGuess = function () {
-            var name = 'Anonyme' + Math.floor((Math.random() * (1000 - 1) + 1));
+            var name = 'Anonymous' + Math.floor((Math.random() * (1000 - 1) + 1));
             Auth.setUserGuess(name)
                 .then(function (response) {
                     response.data.name = name;
