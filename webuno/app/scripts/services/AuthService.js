@@ -12,7 +12,7 @@ angular.module('unoApp')
                     url: '/rest/auth',
                     data: {
                         email: newUser.email,
-                        password: CryptoJS.SHA512(newUser.password)
+                        password: CryptoJS.SHA1(newUser.password)
                     }
                 });
             },
@@ -41,7 +41,7 @@ angular.module('unoApp')
                     data: {
                         email: newUser.email,
                         playerName: newUser.name,
-                        password: CryptoJS.SHA512(newUser.password)
+                        password: CryptoJS.SHA1(newUser.password)
                     }
                 });
             }
