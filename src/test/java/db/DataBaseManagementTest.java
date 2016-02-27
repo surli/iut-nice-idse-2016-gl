@@ -6,8 +6,8 @@ import org.junit.Test;
 import fr.unice.idse.db.DataBaseManagement;;
 
 public class DataBaseManagementTest {
-
-	/*DataBaseManagement dataBaseManagement = new DataBaseManagement();
+	/*
+	DataBaseManagement dataBaseManagement = new DataBaseManagement();
 
 	@Test
 	public void ifUserAlreadyExistPseudoEmailIsCorrect() throws SQLException {
@@ -21,9 +21,7 @@ public class DataBaseManagementTest {
 
 	@Test
 	public void addDeleteUpdateUserIsCorrect() throws SQLException {
-		int autoIncrement = dataBaseManagement.getCurrentAutoIncrementValueWithTableName("users");
 		assertTrue(dataBaseManagement.addUser("titi", "titi@gmail.com", "mypass"));
-		assertTrue(dataBaseManagement.getIdUserWithPseudo("titi") == autoIncrement);
 		assertTrue(dataBaseManagement.userLoginIsCorrect("titi@gmail.com", "mypass"));
 		assertTrue(dataBaseManagement.getPseudoWithEmail("titi@gmail.com").equals("titi"));
 		assertTrue(dataBaseManagement.updateUserPseudo("titi@gmail.com", "mypass", "newtiti"));
@@ -34,9 +32,7 @@ public class DataBaseManagementTest {
 
 	@Test
 	public void addDeleteCardIsCorrect() throws SQLException {
-		int autoIncrement = dataBaseManagement.getCurrentAutoIncrementValueWithTableName("cards");
 		assertTrue(dataBaseManagement.addCard("zero", "blue"));
-		assertTrue(dataBaseManagement.getIdCard("zero", "blue") == autoIncrement);
 		assertTrue(dataBaseManagement.deleteCard("zero", "blue"));
 	}
 
