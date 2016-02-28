@@ -2,6 +2,7 @@ package fr.unice.idse.model;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import fr.unice.idse.model.card.Card;
 
@@ -84,6 +85,11 @@ public class Player {
 	public boolean play(int cardPosition,Board board)
 	{
 		return false;	
+	}
+	
+	public void sortCards()
+	{
+		Collections.sort(this.cards);
 	}
 	
 }
