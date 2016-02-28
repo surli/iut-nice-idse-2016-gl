@@ -1,6 +1,7 @@
 package fr.unice.idse.model.regle;
 
 import fr.unice.idse.model.Board;
+import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
 
 public class RuleChangeColor extends EffectCard 
@@ -10,6 +11,15 @@ public class RuleChangeColor extends EffectCard
 	{
 		super(board, value);
 
+	}
+	
+	@Override
+	public void changeColor(Color color)
+	{
+		if(getBoard().getStack().topCard().getColor().equals(Color.Black))
+		{
+			getBoard().changeColor(color);
+		}
 	}
 
 }

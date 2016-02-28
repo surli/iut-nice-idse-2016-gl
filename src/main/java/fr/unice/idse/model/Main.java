@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.regle.EffectCard;
+import fr.unice.idse.model.regle.RuleChangeColor;
 
 
 
