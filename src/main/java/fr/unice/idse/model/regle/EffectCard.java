@@ -45,7 +45,7 @@ public class EffectCard
 	
 	/***
 	 * Methode à override pour les changement de couleur
-	 * @param : Color
+	 * @param : Couleur demandé par le Joueur.
 	 */
 	public void changeColor(Color color)
 	{

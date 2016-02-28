@@ -16,10 +16,7 @@ public class RuleChangeColor extends EffectCard
 	@Override
 	public void changeColor(Color color)
 	{
-		if(getBoard().getStack().topCard().getColor().equals(Color.Black))
-		{
-			getBoard().changeColor(color);
-		}
+		getBoard().changeColor(color);
 	}
 
 }
