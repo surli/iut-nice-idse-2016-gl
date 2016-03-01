@@ -19,7 +19,7 @@ angular.module('unoApp')
             setUserGuess: function (playername) {
                 return HttpRequest.send({
                     method: 'post',
-                    url: '/rest/auth',
+                    url: 'rest/auth',
                     data: {
                         playername: playername
                     }
