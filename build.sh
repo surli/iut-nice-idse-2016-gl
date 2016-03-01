@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 cd webuno/
 
 echo "\n--- Installation des dépendances..."
