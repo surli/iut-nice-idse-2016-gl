@@ -17,6 +17,14 @@ angular.module('unoApp')
                 });
             },
             setUserGuess: function (playername) {
+              console.log("SetUserGuess", {
+                  method: 'post',
+                  url: 'rest/auth',
+                  data: {
+                    playername: playername
+                  }
+                });
+
                 return HttpRequest.send({
                     method: 'post',
                     url: 'rest/auth',
