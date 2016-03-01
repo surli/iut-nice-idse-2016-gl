@@ -81,7 +81,6 @@ public class AuthRest extends OriginRest{
         }
 
         if(!dataBase.userLoginIsCorrect(jsonObject.getString("email"), generatePassword(jsonObject.getString("password")))){
-            dataBase.end();
             jsonResult.put("error", "Email or password incorrect");
             return sendResponse(405, jsonResult.toString(), "PUT");
         }
