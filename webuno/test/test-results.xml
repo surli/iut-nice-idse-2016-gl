@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<testsuite name="PhantomJS 2.1.1 (Mac OS X 0.0.0)" package="" timestamp="2016-03-01T10:19:33" id="0" hostname="MacBook-Pro-de-Jeremie.local" tests="7" errors="0" failures="0" time="0.05">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1"/>
+  </properties>
+  <testcase name="test de la variable error" time="0.025" classname="PhantomJS_2_1_1_(Mac_OS_X_0_0_0).Controller: LoginController"/>
+  <testcase name="test de la variable newUser" time="0.005" classname="PhantomJS_2_1_1_(Mac_OS_X_0_0_0).Controller: LoginController"/>
+  <testcase name="test de la fonction goLoginGuess" time="0.005" classname="PhantomJS_2_1_1_(Mac_OS_X_0_0_0).Controller: LoginController"/>
+  <testcase name="test de la fonction goLogin" time="0.004" classname="PhantomJS_2_1_1_(Mac_OS_X_0_0_0).Controller: LoginController"/>
+  <testcase name="test de la variable error" time="0.004" classname="PhantomJS_2_1_1_(Mac_OS_X_0_0_0).Controller: RegisterController"/>
+  <testcase name="test de la variable newUser" time="0.004" classname="PhantomJS_2_1_1_(Mac_OS_X_0_0_0).Controller: RegisterController"/>
+  <testcase name="test de la fonction goRegister" time="0.003" classname="PhantomJS_2_1_1_(Mac_OS_X_0_0_0).Controller: RegisterController"/>
+  <system-out>
+    <![CDATA[
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>
