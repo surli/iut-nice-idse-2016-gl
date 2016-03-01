@@ -32,6 +32,7 @@ import fr.unice.idse.model.card.Value;
  * │   │   │   ├── GET     Retoune la main du joueur (Fait)
  * │   │   │   ├── POST    Pioche une carte (Fait)
  * │   │   │   ├── PUT     Joue une carte (Fait)
+ * │   │   │   ├── DELETE  Supprimes un joueur d'une partie (Fait)
  */
 
 @Path("/game")
