@@ -67,10 +67,14 @@ public class DataBaseManagement {
 		return false;
 	}
 
-	public String getPseudoWithEmail(String email) throws SQLException {
-		String query = "SELECT u_pseudo FROM users WHERE u_email = ?";
-		if (sqlBased(query, email))
-			return rs.getString("u_pseudo");
+	public String getPseudoWithEmail(String email) {
+		try {
+			String query = "SELECT u_pseudo FROM users WHERE u_email = ?";
+			if (sqlBased(query, email))
+				return rs.getString("u_pseudo");
+		}catch (SQLException e){
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -105,13 +109,17 @@ public class DataBaseManagement {
 		return 0;
 	}
 
-	public boolean userLoginIsCorrect(String email, String password) throws SQLException {
-		String query = "SELECT u_email, u_password FROM users WHERE u_email = ? AND u_password = ?";
-		if (sqlBased(query, email, password))
-			if (rs.getString("u_email").equals(email) && rs.getString("u_password").equals(password))
-				return true;
-			else
-				return false;
+	public boolean userLoginIsCorrect(String email, String password) {
+		try {
+			String query = "SELECT u_email, u_password FROM users WHERE u_email = ? AND u_password = ?";
+			if (sqlBased(query, email, password))
+				if (rs.getString("u_email").equals(email) && rs.getString("u_password").equals(password))
+					return true;
+				else
+					return false;
+		}catch (SQLException e){
+			e.printStackTrace();
+		}
 		return false;
 	}
 
