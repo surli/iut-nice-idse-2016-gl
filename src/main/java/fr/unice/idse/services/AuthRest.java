@@ -63,7 +63,6 @@ public class AuthRest extends OriginRest{
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
         DataBaseManagement dataBase = new DataBaseManagement();
-        dataBase.connect();
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         if(!jsonObject.has("email")){
@@ -90,7 +89,6 @@ public class AuthRest extends OriginRest{
         String token = generateToken(jsonObject.getString("email"));
         String playerName = dataBase.getPseudoWithEmail(jsonObject.getString("email"));
         if(model.createPlayer(playerName, token)){
-            dataBase.end();
             jsonResult.put("token", token);
             jsonResult.put("playerName", playerName);
             return sendResponse(200, jsonResult.toString(), "PUT");
@@ -116,7 +114,6 @@ public class AuthRest extends OriginRest{
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
         DataBaseManagement dataBase = new DataBaseManagement();
-        dataBase.connect();
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         // Verification de l'existante des variables
@@ -145,7 +142,6 @@ public class AuthRest extends OriginRest{
 
         // Insertion dans la bdd
         if(!dataBase.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")))){
-            dataBase.end();
             jsonResult.put("error", "Player already exist");
             return sendResponse(405, jsonResult.toString(), "POST");
         }
