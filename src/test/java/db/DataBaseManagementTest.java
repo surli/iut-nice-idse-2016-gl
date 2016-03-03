@@ -21,12 +21,13 @@ public class DataBaseManagementTest {
 
 	@Test
 	public void addDeleteUpdateUserIsCorrect() throws SQLException {
-		assertTrue(dataBaseManagement.addUser("titi", "titi@gmail.com", "mypass"));
+		assertTrue(dataBaseManagement.addUser("titi", "titi@gmail.com", "mypass", "member"));
 		assertTrue(dataBaseManagement.userLoginIsCorrect("titi@gmail.com", "mypass"));
 		assertTrue(dataBaseManagement.getPseudoWithEmail("titi@gmail.com").equals("titi"));
 		assertTrue(dataBaseManagement.updateUserPseudo("titi@gmail.com", "mypass", "newtiti"));
 		assertTrue(dataBaseManagement.updateUserEmail("titi@gmail.com", "mypass", "newtiti@gmail.com"));
 		assertTrue(dataBaseManagement.updateUserPassword("newtiti@gmail.com", "mypass", "mynewpass"));
+		assertTrue(dataBaseManagement.updateUserType("newtiti@gmail.com", "mynewpass", "admin"));
 		assertTrue(dataBaseManagement.deleteUserWithPseudo("newtiti"));
 	}
 

@@ -119,7 +119,7 @@ public class DataBaseManagement {
 	}
 
 	public boolean userLoginIsCorrect(String email, String password) {
-		String query = "SELECT u_email, u_password FROM users WHERE u_email = ? AND u_password = ?";
+		String query = "SELECT u_email, u_password, u_type FROM users WHERE u_email = ? AND u_password = ? AND (u_type = 'admin' OR u_type = 'member')";
 		if (sqlBased(query, email, password))
 			try {
 				if (rs.getString("u_email").equals(email) && rs.getString("u_password").equals(password))
@@ -152,10 +152,10 @@ public class DataBaseManagement {
 		return false;
 	}
 
-	public boolean addUser(String pseudo, String email, String password) {
+	public boolean addUser(String pseudo, String email, String password, String type) {
 		if (!ifUserAlreadyExistPseudoEmail(pseudo, email)) {
-			String query = "INSERT INTO users (u_pseudo, u_email, u_password) VALUES (?, ?, ?)";
-			if (sqlBased(query, pseudo, email, password))
+			String query = "INSERT INTO users (u_pseudo, u_email, u_password, u_type) VALUES (?, ?, ?, ?)";
+			if (sqlBased(query, pseudo, email, password, type))
 				return true;
 		}
 		return false;
@@ -224,6 +224,16 @@ public class DataBaseManagement {
 			String query = "UPDATE users SET u_password = ? WHERE u_email = ?";
 			if (sqlBased(query, newPassword, email))
 				if (userLoginIsCorrect(email, newPassword))
+					return true;
+		}
+		return false;
+	}
+	
+	public boolean updateUserType(String email, String password, String newType) {
+		if (userLoginIsCorrect(email, password)) {
+			String query = "UPDATE users SET u_type = ? WHERE u_email = ?";
+			if (sqlBased(query, newType, email))
+				if (userLoginIsCorrect(email, password))
 					return true;
 		}
 		return false;
