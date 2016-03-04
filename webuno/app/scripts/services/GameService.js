@@ -7,7 +7,7 @@ angular.module('unoApp')
             createGame: function (game, nbPlayers) {
                 return HttpRequest.send({
                     method: 'post',
-                    url: '/rest/game',
+                    url: 'rest/game',
                     headers: {
                         token: Auth.getUser().token
                     },
@@ -23,7 +23,7 @@ angular.module('unoApp')
             getGame: function (gameName) {
                 return HttpRequest.send({
                     method: 'get',
-                    url: '/rest/game/' + gameName,
+                    url: 'rest/game/' + gameName,
                     headers: {
                         token: Auth.getUser().token
                     }
@@ -34,7 +34,7 @@ angular.module('unoApp')
             getAllGames: function () {
                 return HttpRequest.send({
                     method: 'get',
-                    url: '/rest/game',
+                    url: 'rest/game',
                     headers: {
                         token: Auth.getUser().token
                     }
@@ -45,7 +45,7 @@ angular.module('unoApp')
             getUserHand: function (gameName) {
                 return HttpRequest.send({
                     method: 'get',
-                    url: '/rest/game/' + gameName + '/' + Auth.getUser().name,
+                    url: 'rest/game/' + gameName + '/' + Auth.getUser().name,
                     headers: {
                         token: Auth.getUser().token
                     }
@@ -56,7 +56,7 @@ angular.module('unoApp')
             joinGame: function (gameName) {
                 return HttpRequest.send({
                     method: 'put',
-                    url: '/rest/game/' + gameName,
+                    url: 'rest/game/' + gameName,
                     headers: {
                         token: Auth.getUser().token
                     },
@@ -69,7 +69,7 @@ angular.module('unoApp')
             startGame: function (gameName) {
                 return HttpRequest.send({
                     method: 'put',
-                    url: '/rest/game/' + gameName + '/command',
+                    url: 'rest/game/' + gameName + '/command',
                     headers: {
                         token: Auth.getUser().token
                     },
@@ -83,7 +83,7 @@ angular.module('unoApp')
             drawCard: function (gameName) {
                 return HttpRequest.send({
                     method: 'post',
-                    url: '/rest/game/' + gameName + '/' + Auth.getUser().name,
+                    url: 'rest/game/' + gameName + '/' + Auth.getUser().name,
                     headers: {
                         token: Auth.getUser().token
                     },
@@ -95,7 +95,7 @@ angular.module('unoApp')
             playCard: function (gameName, carte) {
                 return HttpRequest.send({
                     method: 'put',
-                    url: '/rest/game/' + gameName + '/' + Auth.getUser().name,
+                    url: 'rest/game/' + gameName + '/' + Auth.getUser().name,
                     headers: {
                         token: Auth.getUser().token
                     },
@@ -110,7 +110,7 @@ angular.module('unoApp')
             getCurrentPlayer: function (gameName) {
                 return HttpRequest.send({
                     method: 'get',
-                    url: '/rest/game/' + gameName + '/command',
+                    url: 'rest/game/' + gameName + '/command',
                     headers: {
                         token: Auth.getUser().token
                     }
@@ -120,7 +120,7 @@ angular.module('unoApp')
             quitRoom: function (gameName) {
                 return HttpRequest.send({
                     method: 'delete',
-                    url: '/rest/game/' + gameName + '/' + Auth.getUser().name,
+                    url: 'rest/game/' + gameName + '/' + Auth.getUser().name,
                     headers: {
                         token: Auth.getUser().token
                     }

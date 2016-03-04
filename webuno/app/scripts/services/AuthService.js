@@ -9,7 +9,7 @@ angular.module('unoApp')
             setUser: function (newUser) {
                 return HttpRequest.send({
                     method: 'put',
-                    url: '/rest/auth',
+                    url: 'rest/auth',
                     data: {
                         email: newUser.email,
                         password: CryptoJS.SHA1(newUser.password)
@@ -19,7 +19,7 @@ angular.module('unoApp')
             setUserGuess: function (playername) {
                 return HttpRequest.send({
                     method: 'post',
-                    url: '/rest/auth',
+                    url: 'rest/auth',
                     data: {
                         playername: playername
                     }
@@ -37,7 +37,7 @@ angular.module('unoApp')
             registerUser: function (newUser) {
                 return HttpRequest.send({
                     method: 'post',
-                    url: '/rest/auth/signup',
+                    url: 'rest/auth/signup',
                     data: {
                         email: newUser.email,
                         playerName: newUser.name,
