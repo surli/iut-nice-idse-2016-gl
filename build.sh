@@ -2,6 +2,10 @@
 
 set -a
 
+echo "\n--- Nettoyage de la version précédente de maven..."
+mvn clean
+echo "--- Nettoyage terminé.\n"
+
 
 
 echo "\n--- Installation des dépendances..."
