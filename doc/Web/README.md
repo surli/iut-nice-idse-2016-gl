@@ -59,7 +59,7 @@ npm test
 
 #### Build
 
-Running this command f©or build (run build.sh) :
+Running this command for build (run build.sh) :
 ```
 npm run build
 ```
