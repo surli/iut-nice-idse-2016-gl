@@ -74,5 +74,3 @@ echo "--- Packaging du projet terminé.\n"
 echo "\n|---------------------------------------|"
 echo "|----- MISE EN PRODUCTION TERMINÉE -----|"
 echo "|---------------------------------------|\n"
-
-exit 0;
