@@ -1,5 +1,7 @@
 <div id="register" class="container">
     <div class="col-md-offset-3 col-md-6 text-center">
+        <img class="language" src="images/fr.png" alt="Français" data-ng-click="changeLanguage('fr')">
+        <img class="language" src="images/en.jpg" alt="English" data-ng-click="changeLanguage('en')">
         <h1 class="title-uno">
             <span class="color-orange">U</span><span class="color-rouge">N</span><span class="color-vert">O</span>
         </h1>
@@ -10,29 +12,29 @@
         <br />
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
+                <div class="panel-heading">{{'REGISTER' | translate}}</div>
                 <div class="panel-body">
                     <form  method="post" class="form-horizontal" data-ng-submit="goRegister()">
                         <div class="form-group">
-                            <input class="input-form input-lg" type="text" placeholder="Name" id="prenom" data-ng-model="newUser.name"/>
+                            <input class="input-form input-lg" type="text" placeholder="{{'NAME' | translate}}" id="prenom" data-ng-model="newUser.name"/>
                         </div>
                         <div class="form-group">
-                            <input class="input-form input-lg" type="email" placeholder="Email" id="email" data-ng-model="newUser.email"/>
+                            <input class="input-form input-lg" type="email" placeholder="{{'EMAIL' | translate}}" id="email" data-ng-model="newUser.email"/>
                         </div>
                         <div class="form-group">
-                            <input class="input-form input-lg" type="password" placeholder="Password" id="pass" data-ng-model="newUser.password"/>
+                            <input class="input-form input-lg" type="password" placeholder="{{'PASSWORD' | translate}}" id="pass" data-ng-model="newUser.password"/>
                         </div>
                         <br />
-                        <button type="submit" class="btn btn-lg btn-success" data-ng-disabled="isLoading">Register</button>
+                        <button type="submit" class="btn btn-lg btn-success" data-ng-disabled="isLoading">{{'REGISTER' | translate}}</button>
                     </form>
                 </div>
             </div>
         </div>
         <br />
         <p>
-            You already have an account ?
+            {{'ALREADYACCOUNT' | translate}}
             <br />
-            <button class="btn btn-danger" data-ui-sref="login" >Login</button>
+            <button class="btn btn-danger" data-ui-sref="login" >{{'LOGIN' | translate}}</button>
         </p>
     </div>
 </div>

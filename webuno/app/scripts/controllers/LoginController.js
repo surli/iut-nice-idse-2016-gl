@@ -5,7 +5,7 @@ angular.module('unoApp')
      * Contrôleur LoginController de la route /login
      * Gère la connexion utilisateur
      */
-    .controller('LoginController', ['$rootScope', '$scope', '$state', 'Auth', function ($rootScope, $scope, $state, Auth) {
+    .controller('LoginController', ['$rootScope', '$scope', '$state', '$translate', 'Auth', function ($rootScope, $scope, $state, $translate, Auth) {
         // Utilisation du service Auth qui retourne si l'utilisateur est connecté
         // Si un utilisateur est déjà authentifié
         // alors il est redirigé vers la page d'accueil de l'application
@@ -47,5 +47,12 @@ angular.module('unoApp')
                     Auth.connectUser(response.data);
                     $state.go('app.home');
                 });
+        };
+
+        // Fonction qui permet de changer la langue
+        $scope.changeLanguage = function (langKey) {
+            // Utilisation de la dépendance $translate pour changer la langue de l'app
+            $rootScope.lang = langKey;
+            $translate.use(langKey);
         };
     }]);

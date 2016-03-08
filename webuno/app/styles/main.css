@@ -6213,6 +6213,7 @@ footer {
 
 .language {
   width: 25px;
+  height: 18px;
   cursor: pointer; }
   .language:hover {
     transform: scale(1.1); }

@@ -119,12 +119,14 @@ angular
         $translateProvider
             .translations('en', {
                 EMAIL: 'Email',
+                NAME: 'Name',
                 PASSWORD: 'Password',
                 OR: 'OR',
                 LOGIN: 'Login',
                 CONNECTGUEST: 'Connect Guest',
                 REGISTER: 'Register',
                 NOTACCOUNT: 'You don\'t have an account ?',
+                ALREADYACCOUNT: 'You already have an account ?',
                 STARTNEWGAME: 'Start new game',
                 ALLGAMES: 'All games',
                 NOGAMESSTARTED: 'There is no started games yet',
@@ -139,12 +141,14 @@ angular
             })
             .translations('fr', {
                 EMAIL: 'Email',
+                NAME: 'Nom',
                 PASSWORD: 'Mot de passe',
                 OR: 'OU',
                 LOGIN: 'Connexion',
                 CONNECTGUEST: 'Connexion en tant qu\'invité',
                 REGISTER: 'S\'inscrire',
-                NOTACCOUNT: 'Vous n\'avez pas de compte ?',
+                NOTACCOUNT: 'Tu n\'as pas de compte ?',
+                ALREADYACCOUNT: 'Tu as déjà un compte ?',
                 STARTNEWGAME: 'Créer une nouvelle partie',
                 ALLGAMES: 'Toutes les parties',
                 NOGAMESSTARTED: 'Il n\'y a pas encore de partie commencée',
@@ -157,6 +161,6 @@ angular
                 JOINGAME: 'a rejoint la partie',
                 CARD: 'carte'
             })
-            .preferredLanguage('fr');
+            .preferredLanguage('en');
     })
 ;
