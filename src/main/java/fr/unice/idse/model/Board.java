@@ -33,6 +33,7 @@ public class Board
 	}	
 
 	public void setActualColor(Color actualColor){ this.actualColor = actualColor; }
+	public Color getActualColor(){return this.actualColor; }
 
 	
 	public Alternative getAlternative()
@@ -178,7 +179,7 @@ public class Board
 	
 	/**
 	 * Retourne si une carte est jouable
-	 * @param Card
+	 * @param card
 	 */
 	public boolean askPlayableCard(Card card)
 	{

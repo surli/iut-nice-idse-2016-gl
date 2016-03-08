@@ -190,4 +190,45 @@ public class PlayCardTest extends JerseyTest {
         JSONObject json = new JSONObject(response.readEntity(String.class));
         assertTrue(json.getBoolean("success"));
     }
+
+    @Test
+    public void changementDeCouleurAvecUneMauvaiseCouleur() throws JSONException{
+        assertTrue(model.findGameByName("tata").start());
+        model.findGameByName("tata").getBoard().getActualPlayer().getCards().add(new Card(Value.Wild,Color.Black));
+        model.findGameByName("tata").getBoard().getStack().addCard(new Card(Value.Five, Color.Red));
+        model.findGameByName("tata").getBoard().setActualColor(Color.Red);
+
+        // Envoie des données
+        JSONObject jsonEntity = new JSONObject();
+        jsonEntity.put("value", "Wild");
+        jsonEntity.put("color", "Black");
+        jsonEntity.put("setcolor", "Black");
+        Response response = target("/game/tata/toto").request().header("token", "token").put(Entity.entity(jsonEntity.toString(), MediaType.APPLICATION_JSON));
+
+        assertEquals(405, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertEquals("Setcolor not accepted", json.getString("error"));
+    }
+
+    @Test
+    public void changementDeCouleurAvecUneBonneCouleur() throws JSONException{
+        assertTrue(model.findGameByName("tata").start());
+        model.findGameByName("tata").getBoard().getActualPlayer().getCards().add(new Card(Value.Wild,Color.Black));
+        model.findGameByName("tata").getBoard().getStack().addCard(new Card(Value.Five, Color.Red));
+        model.findGameByName("tata").getBoard().setActualColor(Color.Red);
+
+        // Envoie des données
+        JSONObject jsonEntity = new JSONObject();
+        jsonEntity.put("value", "Wild");
+        jsonEntity.put("color", "Black");
+        jsonEntity.put("setcolor", "Yellow");
+        Response response = target("/game/tata/toto").request().header("token", "token").put(Entity.entity(jsonEntity.toString(), MediaType.APPLICATION_JSON));
+
+        assertEquals(200, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertTrue(json.getBoolean("success"));
+        assertEquals("Yellow", model.findGameByName("tata").getBoard().getActualColor().toString());
+    }
 }

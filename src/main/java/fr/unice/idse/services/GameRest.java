@@ -519,16 +519,16 @@ public class GameRest extends OriginRest{
                 }
                 Color color;
                 switch (json.getString("setcolor")){
-                    case "red" :
+                    case "Red" :
                         color = Color.Red;
                         break;
-                    case "blue":
+                    case "Blue":
                         color = Color.Blue;
                         break;
-                    case "green":
+                    case "Green":
                         color = Color.Green;
                         break;
-                    case "yellow":
+                    case "Yellow":
                         color = Color.Yellow;
                         break;
                     default:
