@@ -22,6 +22,7 @@ public class Alternative
 			actions.add(new RuleReverse(board, Value.Reverse));
 			actions.add(new RuleSkip(board, Value.Skip));
 			actions.add(new RuleDrawTwo(board, Value.DrawTwo));
+			actions.add(new RuleDrawFour(board, Value.DrawFour));
 		}
 		else
 		{
@@ -51,7 +52,7 @@ public class Alternative
 	{
 		for (EffectCard rule : actions)
 		{
-			if (rule.isEffect(card) && rule.getEffect()) 
+			if (rule.isEffect(card))
 			{
 				return rule;
 			}

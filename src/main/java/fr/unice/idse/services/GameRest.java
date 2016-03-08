@@ -500,22 +500,47 @@ public class GameRest extends OriginRest{
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
 
-        // Verifie que la carte est jouable
+
+
+            // Verifie que la carte est jouable
         if(!model.findGameByName(gameName).getBoard().askPlayableCard(card)) {
             jsonObject.put("error", "The card can't be played");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
-        
+
         // Finalement la carte est jouer
         model.findGameByName(gameName).getBoard().poseCard(card);
-        
-        //verification si carte action
-		Alternative variante = model.findGameByName(gameName).getAlternative();
-        EffectCard effectCard = variante.isEffectCardAfterPose(card);
-        
-        if(effectCard==null){
-        model.findGameByName(gameName).getBoard().nextPlayer();
+
+        if(model.findGameByName(gameName).getBoard().getAlternative().isEffectCardBeforePlay(card) != null){
+            if(model.findGameByName(gameName).getBoard().getAlternative().isEffectCardBeforePlay(card).isColorChangingCard()){
+                if(!json.has("setcolor")){
+                    jsonObject.put("error", "The card need new color");
+                    return sendResponse(405, jsonObject.toString(), "PUT");
+                }
+                Color color;
+                switch (json.getString("setcolor")){
+                    case "Red" :
+                        color = Color.Red;
+                        break;
+                    case "Blue":
+                        color = Color.Blue;
+                        break;
+                    case "Green":
+                        color = Color.Green;
+                        break;
+                    case "Yellow":
+                        color = Color.Yellow;
+                        break;
+                    default:
+                        jsonObject.put("error", "Setcolor not accepted");
+                        return sendResponse(405, jsonObject.toString(), "PUT");
+                }
+                model.findGameByName(gameName).getBoard().getAlternative().isEffectCardBeforePlay(card).changeColor(color);
+            }
+            model.findGameByName(gameName).getBoard().getAlternative().isEffectCardBeforePlay(card).action();
         }
+
+        model.findGameByName(gameName).getBoard().nextPlayer();
         
         jsonObject.put("success", true);
         return sendResponse(200, jsonObject.toString(), "PUT");

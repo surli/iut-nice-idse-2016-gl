@@ -33,6 +33,7 @@ public class Board
 	}	
 
 	public void setActualColor(Color actualColor){ this.actualColor = actualColor; }
+	public Color getActualColor(){return this.actualColor; }
 
 	
 	public Alternative getAlternative()
@@ -178,11 +179,18 @@ public class Board
 	
 	/**
 	 * Retourne si une carte est jouable
-	 * @param Card
+	 * @param card
 	 */
 	public boolean askPlayableCard(Card card)
 	{
-		return card.getValue() == stack.topCard().getValue() || card.getColor().equals(actualColor) || card.getColor().equals(Color.Black);
+		if(cptDrawCard > 1)
+		{
+			return card.getValue() == stack.topCard().getValue();
+		}
+		else
+		{
+			return card.getValue() == stack.topCard().getValue() || card.getColor().equals(actualColor) || card.getColor().equals(Color.Black);
+		}
 	}
 	
 	/**
