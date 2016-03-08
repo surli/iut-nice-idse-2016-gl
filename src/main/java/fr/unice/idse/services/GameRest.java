@@ -512,6 +512,7 @@ public class GameRest extends OriginRest{
         //verification si carte action
 		Alternative variante = model.findGameByName(gameName).getAlternative();
         EffectCard effectCard = variante.isEffectCardAfterPose(card);
+        
         if(effectCard==null){
         model.findGameByName(gameName).getBoard().nextPlayer();
         }
