@@ -129,7 +129,6 @@ public class GameRest extends OriginRest{
 
     /**
      * Retourne l'état de la partie
-     *
      * @param gamename Nom de partie
      * @param token Token
      * @return Response
@@ -214,8 +213,6 @@ public class GameRest extends OriginRest{
             jsonObject.put("error", "Partie inconnue");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
-
-
 
         // verification du joueur
         if(!json.has("playerName"))
@@ -388,8 +385,6 @@ public class GameRest extends OriginRest{
         // Cration de tous les objets
         Model model = Model.getInstance();
         JSONObject jsonReturn = new JSONObject();
-        Player player = model.findPlayerByName(gameName, playerName);
-        Player verifplayer = model.findGameByName(gameName).getBoard().getActualPlayer();
 
         // verification de l'existance de la game
         if(model.findGameByName(gameName) == null) {
@@ -451,7 +446,9 @@ public class GameRest extends OriginRest{
     @PUT
     @Path("/{gameName}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response playCard(@HeaderParam("token") String token, @PathParam("playerName") String playerName, @PathParam("gameName") String gameName, String strJSON ) throws JSONException{
+    public Response playCard(@HeaderParam("token") String token, @PathParam("playerName") String playerName,
+    		@PathParam("gameName") String gameName, String strJSON ) throws JSONException{
+    	
         Model model = Model.getInstance();
         JSONObject jsonObject = new JSONObject();
 
@@ -505,11 +502,17 @@ public class GameRest extends OriginRest{
             jsonObject.put("error", "The card can't be played");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
+        
+        
 
         // Finalement la carte est jouer
         model.findGameByName(gameName).getBoard().poseCard(card);
+        
+        //verification si carte action
+        if(!model.actionCard()){
         model.findGameByName(gameName).getBoard().nextPlayer();
-
+        }
+        
         jsonObject.put("success", true);
         return sendResponse(200, jsonObject.toString(), "PUT");
     }
