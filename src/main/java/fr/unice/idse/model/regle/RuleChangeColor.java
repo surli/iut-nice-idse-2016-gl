@@ -10,7 +10,7 @@ public class RuleChangeColor extends EffectCard
 	public RuleChangeColor(Board board, Value value) 
 	{
 		super(board, value);
-
+		setColorChangingCard(true);
 	}
 	
 	@Override

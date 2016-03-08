@@ -9,7 +9,7 @@ public class RuleDrawFour extends EffectCard
 	public RuleDrawFour(Board board, Value value) 
 	{
 		super(board, value);
-		// TODO Auto-generated constructor stub
+		setColorChangingCard(true);
 	}
 
 	@Override

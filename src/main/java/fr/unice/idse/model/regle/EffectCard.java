@@ -7,11 +7,13 @@ public class EffectCard
 {
 	private Value value;
 	private Board board;
+	private boolean isColorChangingCard;
 	
 	public EffectCard(Board board, Value value)
 	{
 		this.value = value;
 		this.board = board;
+		this.isColorChangingCard=false;
 	}
 
 	public Value getValue()
@@ -22,6 +24,14 @@ public class EffectCard
 	public Board getBoard()
 	{
 		return board;
+	}
+
+	public boolean isColorChangingCard() {
+		return isColorChangingCard;
+	}
+
+	public void setColorChangingCard(boolean isColorChangingCard) {
+		this.isColorChangingCard = isColorChangingCard;
 	}
 
 	/**
