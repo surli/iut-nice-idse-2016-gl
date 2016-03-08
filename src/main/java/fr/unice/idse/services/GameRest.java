@@ -564,8 +564,10 @@ public class GameRest extends OriginRest{
 
         // Si la partie a commencer supprimer tous les joueurs ainsi que la partie
         if(model.findGameByName(gameName).gameBegin()){
-            for(int i = 0; i < model.findGameByName(gameName).getPlayers().size(); i++)
-                model.removePlayerFromGameByName(gameName, model.findGameByName(gameName).getPlayers().get(i).getName());
+            int taille = model.findGameByName(gameName).getPlayers().size();
+            for(int i = 0; i < taille; i++) {
+                model.removePlayerFromGameByName(gameName, model.findGameByName(gameName).getPlayers().get(0).getName());
+            }
             model.removeGame(gameName);
             jsonReturn.put("status", true);
             return sendResponse(200, jsonReturn.toString(), "DELETE");
