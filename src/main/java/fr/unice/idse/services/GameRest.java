@@ -239,6 +239,12 @@ public class GameRest extends OriginRest{
         return sendResponse(200, jsonObject.toString(), "PUT");
     }
 
+    /**
+     * Méthode en PUT permettant le début d'une partie
+     * Signature : {gamename: String}/command
+     * La partie doit être existante.
+     * @return Response
+     */
 
     @PUT
     @Path("{gamename}/command")
@@ -368,10 +374,11 @@ public class GameRest extends OriginRest{
 
         return sendResponse(200, jsonObject.toString(), "GET");
     }
-
+    
     /**
-     * Methode piocher une carte
-     * Verif user actuel est bien l'utilisateur
+     * Méthode en POST permettant de faire piocher une carte au joueur actuel
+     * Signature : {gamename: String}/{playerName:string}
+     * @return Response
      */
 
     @POST
