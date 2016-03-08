@@ -182,7 +182,14 @@ public class Board
 	 */
 	public boolean askPlayableCard(Card card)
 	{
-		return card.getValue() == stack.topCard().getValue() || card.getColor().equals(actualColor) || card.getColor().equals(Color.Black);
+		if(cptDrawCard > 1)
+		{
+			return card.getValue() == stack.topCard().getValue();
+		}
+		else
+		{
+			return card.getValue() == stack.topCard().getValue() || card.getColor().equals(actualColor) || card.getColor().equals(Color.Black);
+		}
 	}
 	
 	/**

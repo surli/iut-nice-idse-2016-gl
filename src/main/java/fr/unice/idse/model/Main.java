@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.regle.EffectCard;
+import fr.unice.idse.model.regle.RuleChangeColor;
 
 
 
@@ -32,19 +33,19 @@ public class Main
 			while(!gameTest.gameEnd())
 			{
 				Player actualPlayer = board.getActualPlayer();
+				Card actualCardInStack = board.getStack().topCard();
+				EffectCard effectCardBeforePlay = variante.isEffectCardBeforePlay(actualCardInStack);
+				if(effectCardBeforePlay != null)
+				{
+					effectCardBeforePlay.effect();
+				}
 				System.out.println("Main du joueur " + actualPlayer.getName());
 				for (int i = 0 ; i < actualPlayer.getCards().size() ; i++) 
 				{
 					Card card = actualPlayer.getCards().get(i);
 					System.out.println("[" + (i) + "] : " + card);
 				}
-				Card actualCardInStack = board.getStack().topCard();
 				System.out.println("Carte dans la fosse " + actualCardInStack.toString());
-				EffectCard effectCardBeforePlay = variante.isEffectCardBeforePlay(actualCardInStack);
-				if(effectCardBeforePlay != null)
-				{
-					effectCardBeforePlay.effect();
-				}
 				if(board.askPlayerCanPlay(actualPlayer))
 				{
 					ArrayList<Card> playableCards = board.playableCards();
