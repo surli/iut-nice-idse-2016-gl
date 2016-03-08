@@ -10,12 +10,15 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import fr.unice.idse.model.Alternative;
+import fr.unice.idse.model.Board;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
+import fr.unice.idse.model.regle.EffectCard;
 
 /**
  * /game
@@ -503,13 +506,13 @@ public class GameRest extends OriginRest{
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
         
-        
-
         // Finalement la carte est jouer
         model.findGameByName(gameName).getBoard().poseCard(card);
         
         //verification si carte action
-        if(!model.actionCard()){
+		Alternative variante = model.findGameByName(gameName).getAlternative();
+        EffectCard effectCard = variante.isEffectCardAfterPose(card);
+        if(effectCard==null){
         model.findGameByName(gameName).getBoard().nextPlayer();
         }
         
