@@ -17,6 +17,13 @@ angular
         'ui.router',
         'LocalStorageModule'
     ])
+
+    /**
+     * Configuration pour récupérer les requêtes http
+     *
+     * Dans notre cas, incrémentation/décrémentation dans la variable isLoading du nombre de requêtes
+     * http afin d'afficher un loader ou de bloquer des boutons lorsque des requêtes sont en cours
+     */
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push(['$rootScope', function ($rootScope) {
             $rootScope.isLoading = 0;
@@ -40,9 +47,28 @@ angular
             };
         }]);
     }])
+
+    /**
+     * On configure localStorage, il faut setter le type de storage qu'on veut utiliser
+     */
     .config(['localStorageServiceProvider', function (localStorageServiceProvider) {
         localStorageServiceProvider.setStorageType('sessionStorage');
     }])
+
+    /**
+     * Configuration des routes
+     *
+     * ├ /login     => LoginController
+     * ├ /register  => RegisterController
+     * ├ /app       => AppController
+     * ├──── /home      => HomeController
+     * ├──── /start     => StartController
+     * ├──── /room      => RoomController
+     * ├──── /game      => GameController
+     *
+     * Route par défaut /login
+     *
+     */
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('login', {

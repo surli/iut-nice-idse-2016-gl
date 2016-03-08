@@ -3,7 +3,14 @@
 angular.module('unoApp')
     .service('Game', function (Auth, HttpRequest) {
         return {
-            // créer une partie
+
+            /**
+             * Permet la création d'une partie
+             *
+             * @param game
+             * @param nbPlayers
+             * @returns {*}
+             */
             createGame: function (game, nbPlayers) {
                 return HttpRequest.send({
                     method: 'post',
@@ -19,7 +26,12 @@ angular.module('unoApp')
                 });
             },
 
-            // renvoie les data de la partie
+            /**
+             * Retourne l'état de la partie passée en paramètre
+             *
+             * @param gameName
+             * @returns {*}
+             */
             getGame: function (gameName) {
                 return HttpRequest.send({
                     method: 'get',
@@ -30,7 +42,11 @@ angular.module('unoApp')
                 });
             },
 
-            // renvoie toutes les parties en cours
+            /**
+             * Retourne la liste de toutes les parties
+             *
+             * @returns {*}
+             */
             getAllGames: function () {
                 return HttpRequest.send({
                     method: 'get',
@@ -41,7 +57,12 @@ angular.module('unoApp')
                 });
             },
 
-            // renvoie la main d'un joueur
+            /**
+             * Retourne la main du joueur connecté
+             *
+             * @param gameName
+             * @returns {*}
+             */
             getUserHand: function (gameName) {
                 return HttpRequest.send({
                     method: 'get',
@@ -52,7 +73,12 @@ angular.module('unoApp')
                 });
             },
 
-            // ajoute un joueur à une partie
+            /**
+             * Permet de rejoindre une partie
+             *
+             * @param gameName
+             * @returns {*}
+             */
             joinGame: function (gameName) {
                 return HttpRequest.send({
                     method: 'put',
@@ -66,6 +92,12 @@ angular.module('unoApp')
                 });
             },
 
+            /**
+             * Permet de démarrer une partie
+             *
+             * @param gameName
+             * @returns {*}
+             */
             startGame: function (gameName) {
                 return HttpRequest.send({
                     method: 'put',
@@ -79,7 +111,12 @@ angular.module('unoApp')
                 });
             },
 
-            // pioche une carte
+            /**
+             * Permet de piocher une carte
+             *
+             * @param gameName
+             * @returns {*}
+             */
             drawCard: function (gameName) {
                 return HttpRequest.send({
                     method: 'post',
@@ -91,7 +128,13 @@ angular.module('unoApp')
                 });
             },
 
-            // jouer une carte
+            /**
+             * Permet de jouer une carte
+             *
+             * @param gameName
+             * @param carte
+             * @returns {*}
+             */
             playCard: function (gameName, carte) {
                 return HttpRequest.send({
                     method: 'put',
@@ -106,7 +149,12 @@ angular.module('unoApp')
                 });
             },
 
-            // retourne le joueur devant jouer
+            /**
+             * Retourne le nom du joueur devant jouer
+             *
+             * @param gameName
+             * @returns {*}
+             */
             getCurrentPlayer: function (gameName) {
                 return HttpRequest.send({
                     method: 'get',
@@ -117,6 +165,12 @@ angular.module('unoApp')
                 });
             },
 
+            /**
+             * Permet de quitter la room passée en paramètre
+             *
+             * @param gameName
+             * @returns {*}
+             */
             quitRoom: function (gameName) {
                 return HttpRequest.send({
                     method: 'delete',
