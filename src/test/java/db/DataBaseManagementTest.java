@@ -2,13 +2,28 @@ package db;
 
 import static org.junit.Assert.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import org.junit.Test;
-import fr.unice.idse.db.DataBaseManagement;;
+import fr.unice.idse.db.DataBaseManagement;
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.card.Value;;
 
 public class DataBaseManagementTest {
-	/*
-	DataBaseManagement dataBaseManagement = new DataBaseManagement();
 
+	DataBaseManagement dataBaseManagement = new DataBaseManagement();
+	
+	@Test
+	public void voidIfCountPointsIsCorrect(){
+		ArrayList<Card> totoHand = new ArrayList<Card>();
+		totoHand.add(new Card(Value.One,Color.Green));
+		totoHand.add(new Card(Value.Seven,Color.Blue));
+		totoHand.add(new Card(Value.Skip,Color.Red));
+		totoHand.add(new Card(Value.Wild,Color.Black));
+		assertEquals(dataBaseManagement.countPoints(totoHand),78);
+	}
+	/*
 	@Test
 	public void ifUserAlreadyExistPseudoEmailIsCorrect() throws SQLException {
 		assertFalse(dataBaseManagement.ifUserAlreadyExistPseudoEmail("toto@gmail.com", "toto"));

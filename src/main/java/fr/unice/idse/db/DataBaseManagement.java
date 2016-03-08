@@ -1,10 +1,12 @@
 package fr.unice.idse.db;
 
 import fr.unice.idse.constante.*;
+import fr.unice.idse.model.card.*;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -65,6 +67,61 @@ public class DataBaseManagement {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public int countPoints(ArrayList<Card> playerHand){
+		int result = 0;
+		for (Card c : playerHand){
+			switch(c.getValue().toString()){
+			case "Zero":
+				break;
+			case "One":
+				result += 1;
+				break;
+			case "Two":
+				result += 2;
+				break;
+			case "Three":
+				result += 3;
+				break;
+			case "Four":
+				result += 4;
+				break;
+			case "Five":
+				result += 5;
+				break;
+			case "Six":
+				result += 6;
+				break;
+			case "Seven":
+				result += 7;
+				break;
+			case "Eight":
+				result += 8;
+				break;
+			case "Nine":
+				result += 9;
+				break;
+			case "Skip":
+				result += 20;
+				break;
+			case "Reverse":
+				result += 20;
+				break;
+			case "DrawTwo":
+				result += 20;
+				break;
+			case "Wild":
+				result += 50;
+				break;
+			case "DrawFour":
+				result += 50;
+				break;
+			default:
+				throw new IllegalArgumentException("Invalide card value : " + c.getValue().toString());
+			}	
+		}
+		return result;
 	}
 
 	public String getPseudoWithEmail(String email) {
