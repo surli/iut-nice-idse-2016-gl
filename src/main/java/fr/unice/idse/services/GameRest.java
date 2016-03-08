@@ -10,12 +10,15 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import fr.unice.idse.model.Alternative;
+import fr.unice.idse.model.Board;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.Player;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
+import fr.unice.idse.model.regle.EffectCard;
 
 /**
  * /game
@@ -129,7 +132,6 @@ public class GameRest extends OriginRest{
 
     /**
      * Retourne l'état de la partie
-     *
      * @param gamename Nom de partie
      * @param token Token
      * @return Response
@@ -215,8 +217,6 @@ public class GameRest extends OriginRest{
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
 
-
-
         // verification du joueur
         if(!json.has("playerName"))
             return sendResponse(405, "Missing or invalid parameters", "PUT");
@@ -239,6 +239,12 @@ public class GameRest extends OriginRest{
         return sendResponse(200, jsonObject.toString(), "PUT");
     }
 
+    /**
+     * Méthode en PUT permettant le début d'une partie
+     * Signature : {gamename: String}/command
+     * La partie doit être existante.
+     * @return Response
+     */
 
     @PUT
     @Path("{gamename}/command")
@@ -368,10 +374,11 @@ public class GameRest extends OriginRest{
 
         return sendResponse(200, jsonObject.toString(), "GET");
     }
-
+    
     /**
-     * Methode piocher une carte
-     * Verif user actuel est bien l'utilisateur
+     * Méthode en POST permettant de faire piocher une carte au joueur actuel
+     * Signature : {gamename: String}/{playerName:string}
+     * @return Response
      */
 
     @POST
@@ -381,8 +388,6 @@ public class GameRest extends OriginRest{
         // Cration de tous les objets
         Model model = Model.getInstance();
         JSONObject jsonReturn = new JSONObject();
-        Player player = model.findPlayerByName(gameName, playerName);
-        Player verifplayer = model.findGameByName(gameName).getBoard().getActualPlayer();
 
         // verification de l'existance de la game
         if(model.findGameByName(gameName) == null) {
@@ -444,7 +449,9 @@ public class GameRest extends OriginRest{
     @PUT
     @Path("/{gameName}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response playCard(@HeaderParam("token") String token, @PathParam("playerName") String playerName, @PathParam("gameName") String gameName, String strJSON ) throws JSONException{
+    public Response playCard(@HeaderParam("token") String token, @PathParam("playerName") String playerName,
+    		@PathParam("gameName") String gameName, String strJSON ) throws JSONException{
+    	
         Model model = Model.getInstance();
         JSONObject jsonObject = new JSONObject();
 
@@ -498,11 +505,18 @@ public class GameRest extends OriginRest{
             jsonObject.put("error", "The card can't be played");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
-
+        
         // Finalement la carte est jouer
         model.findGameByName(gameName).getBoard().poseCard(card);
+        
+        //verification si carte action
+		Alternative variante = model.findGameByName(gameName).getAlternative();
+        EffectCard effectCard = variante.isEffectCardAfterPose(card);
+        
+        if(effectCard==null){
         model.findGameByName(gameName).getBoard().nextPlayer();
-
+        }
+        
         jsonObject.put("success", true);
         return sendResponse(200, jsonObject.toString(), "PUT");
     }
@@ -544,10 +558,6 @@ public class GameRest extends OriginRest{
             jsonReturn.put("error", "Game not found");
             return sendResponse(405, jsonReturn.toString(), "DELETE");
         }
-        if(model.findGameByName(gameName).gameBegin()){
-            jsonReturn.put("error", "Game already started");
-            return sendResponse(405, jsonReturn.toString(), "DELETE");
-        }
 
         // Vérification du joueur
         if(model.findPlayerByName(gameName, playerName) == null){
@@ -557,6 +567,17 @@ public class GameRest extends OriginRest{
         if(!model.findPlayerByName(gameName, playerName).getToken().equals(token)){
             jsonReturn.put("error", "Token invalid for this player");
             return sendResponse(405, jsonReturn.toString(), "DELETE");
+        }
+
+        // Si la partie a commencer supprimer tous les joueurs ainsi que la partie
+        if(model.findGameByName(gameName).gameBegin()){
+            int taille = model.findGameByName(gameName).getPlayers().size();
+            for(int i = 0; i < taille; i++) {
+                model.removePlayerFromGameByName(gameName, model.findGameByName(gameName).getPlayers().get(0).getName());
+            }
+            model.removeGame(gameName);
+            jsonReturn.put("status", true);
+            return sendResponse(200, jsonReturn.toString(), "DELETE");
         }
 
         // Si le joueur est l'hôte de la partie
