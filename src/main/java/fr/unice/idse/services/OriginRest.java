@@ -30,7 +30,7 @@ public class OriginRest {
     public String generateToken(String pseudo){
         Date date = new Date();
         Random random = new Random();
-        KeySpec spec = new PBEKeySpec((pseudo+date.toString()).toCharArray(), Config._salt.getBytes(), random.nextInt(100), 128);
+        KeySpec spec = new PBEKeySpec((pseudo+date.toString()).toCharArray(), Config._salt.getBytes(), random.nextInt(100)+1, 128);
         return hash(spec);
     }
 

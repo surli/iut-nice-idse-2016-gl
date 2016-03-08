@@ -101,7 +101,7 @@ public class GameRestTest extends JerseyTest {
     @Test
     public void retourneUneErreur404SiPartieNexistePas() {
         Response response = target("/game/sdsdsdss").request().header("token", "token").get();
-        assertEquals(404, response.getStatus());
+        assertEquals(405, response.getStatus());
     }
 
     @Test
@@ -439,7 +439,7 @@ public class GameRestTest extends JerseyTest {
 
         Entity<String> jsonEntity = Entity.entity(null, MediaType.APPLICATION_JSON);
         Response response = target("/game/tata/azert1").request().header("", "").post(jsonEntity);
-        assertEquals(405, response.getStatus()); 
+        assertEquals(404, response.getStatus()); 
         
         JSONObject json = new JSONObject(response.readEntity(String.class));
         assertEquals("Token not found", json.getString("error"));
@@ -720,5 +720,57 @@ public class GameRestTest extends JerseyTest {
         // Parse la reponse en JSON
         JSONObject json = new JSONObject(response.readEntity(String.class));
         assertTrue(json.getBoolean("success"));
+    }
+
+    @Test
+    public void retireUnJoueurQuiEstDansUnePartieNonCommencer() {
+        for(int i = 0; i < 3; i++){
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
+            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
+        }
+        Response response = target("/game/tata/azert1").request().header("token", "token1").delete();
+        assertEquals(200, response.getStatus());
+        assertTrue(model.playerExistsInList("azert1"));
+    }
+
+    @Test
+    public void retireUnJoueurDUnePartieQuiACommencer() throws JSONException{
+        for(int i = 0; i < 3; i++){
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
+            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
+        }
+        assertEquals(4, model.findGameByName("tata").getPlayers().size());
+
+        assertTrue(model.findGameByName("tata").start());
+        Response response = target("/game/tata/azert1").request().header("token", "token1").delete();
+        assertEquals(200, response.getStatus());
+
+        for(int i = 0; i < 3; i++)
+            assertTrue(model.playerExistsInList("azert"+i));
+        assertTrue(model.playerExistsInList("toto"));
+        assertFalse(model.existsGame("tata"));
+    }
+
+    @Test
+    public void retirerHostDeLaPartieQuandIlEstToutSeul() {
+        Response response = target("/game/tata/toto").request().header("token", "token").delete();
+        assertEquals(200, response.getStatus());
+        assertFalse(model.existsGame("tata"));
+        assertTrue(model.playerExistsInList("toto"));
+    }
+
+    @Test
+    public void retirerHostDeLaPartieEtChangeHost() {
+        for(int i = 0; i < 3; i++){
+            assertTrue(model.createPlayer("azert"+i, "token"+i));
+            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
+        }
+        Response response = target("/game/tata/toto").request().header("token", "token").delete();
+        assertEquals(200, response.getStatus());
+        assertTrue(model.existsGame("tata"));
+        assertEquals("azert0", model.findGameByName("tata").getHost().getName());
+        assertTrue(model.playerExistsInList("toto"));
+        for(int i = 0; i < 3; i++)
+            assertFalse(model.playerExistsInList("azert"+i));
     }
 }
