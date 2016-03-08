@@ -11,7 +11,7 @@ import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;;
 
 public class DataBaseManagementTest {
-
+	/*
 	DataBaseManagement dataBaseManagement = new DataBaseManagement();
 	
 	@Test
@@ -23,7 +23,7 @@ public class DataBaseManagementTest {
 		totoHand.add(new Card(Value.Wild,Color.Black));
 		assertEquals(dataBaseManagement.countPoints(totoHand),78);
 	}
-	/*
+	
 	@Test
 	public void ifUserAlreadyExistPseudoEmailIsCorrect() throws SQLException {
 		assertFalse(dataBaseManagement.ifUserAlreadyExistPseudoEmail("toto@gmail.com", "toto"));
