@@ -99,4 +99,6 @@ angular.module('unoApp')
         $scope.$on('$destroy', function () {
             $timeout.cancel(timeoutStateGame);
         });
+
+        window.onbeforeunload = function () {};
     }]);

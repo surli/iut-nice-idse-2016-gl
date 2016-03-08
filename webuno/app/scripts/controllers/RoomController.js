@@ -13,10 +13,18 @@ angular.module('unoApp')
         // Utilisation du service Game pour récupérer l'état de la partie
         Game.getGame($scope.gameName)
             .then(function (response) {
-                $scope.game = response.data;
-                $scope.requestStateGame();
-            }, function () {
-                $scope.requestStateGame();
+                if (response.data.error) {
+                    $state.go('login');
+                } else {
+                    $scope.game = response.data;
+                    $scope.requestStateGame();
+                }
+            }, function (error) {
+                if (error.data.error) {
+                    $state.go('login');
+                } else {
+                    $scope.requestStateGame();
+                }
             });
 
         // Fonction qui permet de requêter toutes les 2 secondes sur l'état de la partie
@@ -53,7 +61,11 @@ angular.module('unoApp')
                     switch (response.status) {
                         case 200 :
                             if (response.data.status) {
-                                $state.go('app.game', {name: $scope.gameName});
+                                Game.getGame($scope.gameName)
+                                    .then(function(response) {
+                                        $scope.game = response.data;
+                                        $state.go('app.game', {name: $scope.gameName});
+                                    });
                             } else {
                                 console.error(response);
                             }
@@ -67,7 +79,7 @@ angular.module('unoApp')
         // Évènement qui permet de stopper le timer et quitter la room quand on quitte le contrôleur RoomController
         $scope.$on('$destroy', function () {
             $timeout.cancel(timeoutStateGame);
-            if (!$scope.game.state) {
+            if ($scope.game.state === false) {
                 Game.quitRoom($scope.gameName);
             }
         });

@@ -5,7 +5,7 @@ angular.module('unoApp')
      * Contrôleur global AppController de la route /app
      * Gère l'ensemble de l'application une fois un utilisateur connecté
      */
-    .controller('AppController', ['$rootScope', '$scope', '$state', 'Auth', function ($rootScope, $scope, $state, Auth) {
+    .controller('AppController', ['$rootScope', '$scope', '$state', '$translate', 'Auth', function ($rootScope, $scope, $state, $translate, Auth) {
         // Si l'utilisateur n'est pas connecté alors il est redirigé vers la page de connexion
         // sinon $scope.user contient les données utlisateur
         if (!Auth.isConnected()) {
@@ -18,5 +18,12 @@ angular.module('unoApp')
         $scope.goLogout = function() {
             Auth.destroyUser();
             $state.go('login');
+        };
+
+        // Fonction qui permet de changer la langue
+        $scope.changeLanguage = function (langKey) {
+            // Utilisation de la dépendance $translate pour changer la langue de l'app
+            $rootScope.lang = langKey;
+            $translate.use(langKey);
         };
     }]);

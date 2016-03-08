@@ -15,7 +15,8 @@ angular
         'ngResource',
         'ngSanitize',
         'ui.router',
-        'LocalStorageModule'
+        'LocalStorageModule',
+        'pascalprecht.translate'
     ])
 
     /**
@@ -109,4 +110,53 @@ angular
             });
 
         $urlRouterProvider.otherwise('/login');
-    });
+    })
+
+    /**
+     * Configuration des langues (EN|FR)
+     */
+    .config(function ($translateProvider) {
+        $translateProvider
+            .translations('en', {
+                EMAIL: 'Email',
+                PASSWORD: 'Password',
+                OR: 'OR',
+                LOGIN: 'Login',
+                CONNECTGUEST: 'Connect Guest',
+                REGISTER: 'Register',
+                NOTACCOUNT: 'You don\'t have an account ?',
+                STARTNEWGAME: 'Start new game',
+                ALLGAMES: 'All games',
+                NOGAMESSTARTED: 'There is no started games yet',
+                STARTED: 'Started',
+                WAITINGPLAYERS: 'Waiting for players',
+                FULLPLAYERS: 'Full players',
+                JOIN: 'Join',
+                STARTGAME: 'Start game now',
+                JOINED: 'joined',
+                JOINGAME: 'join the game',
+                CARD: 'card'
+            })
+            .translations('fr', {
+                EMAIL: 'Email',
+                PASSWORD: 'Mot de passe',
+                OR: 'OU',
+                LOGIN: 'Connexion',
+                CONNECTGUEST: 'Connexion en tant qu\'invité',
+                REGISTER: 'S\'inscrire',
+                NOTACCOUNT: 'Vous n\'avez pas de compte ?',
+                STARTNEWGAME: 'Créer une nouvelle partie',
+                ALLGAMES: 'Toutes les parties',
+                NOGAMESSTARTED: 'Il n\'y a pas encore de partie commencée',
+                STARTED: 'Commencée',
+                WAITINGPLAYERS: 'En attente de joueurs',
+                FULLPLAYERS: 'Partie complète',
+                JOIN: 'Rejoindre',
+                STARTGAME: 'Commencer à jouer',
+                JOINED: 'joueurs',
+                JOINGAME: 'a rejoint la partie',
+                CARD: 'carte'
+            })
+            .preferredLanguage('fr');
+    })
+;

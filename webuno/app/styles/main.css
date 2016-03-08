@@ -5816,6 +5816,12 @@ button.close {
 
 @media screen and (min-width: 200px) and (max-width: 640px) {
   #ingage {
+    font-size: 6vw; } }
+#connect-guest {
+  font-size: 2vw; }
+
+@media screen and (min-width: 200px) and (max-width: 640px) {
+  #connect-guest {
     font-size: 7vw; } }
 .btn {
   color: #FFF;
@@ -6204,5 +6210,11 @@ footer {
   box-shadow: 0 0 5px 0 #55aa55;
   font-size: 18pt;
   border: none; }
+
+.language {
+  width: 25px;
+  cursor: pointer; }
+  .language:hover {
+    transform: scale(1.1); }
 
 /*# sourceMappingURL=main.css.map */
