@@ -6,9 +6,8 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 import fr.unice.idse.db.DataBaseManagement;
-import fr.unice.idse.model.card.Card;
-import fr.unice.idse.model.card.Color;
-import fr.unice.idse.model.card.Value;;
+import fr.unice.idse.model.card.*;
+
 
 public class DataBaseManagementTest {
 	/*
