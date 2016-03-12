@@ -117,7 +117,8 @@ angular
      */
     .config(function ($translateProvider) {
         $translateProvider
-            .translations('en', {
+        .useSanitizeValueStrategy(null)
+        .translations('en_EN', {
                 EMAIL: 'Email',
                 NAME: 'Name',
                 PASSWORD: 'Password',
@@ -142,7 +143,7 @@ angular
                 TURN_YOUR: 'It\'s your turn !',
                 PICK_COLOR: 'Pick a color'
             })
-            .translations('fr', {
+            .translations('fr_FR', {
                 EMAIL: 'Email',
                 NAME: 'Nom',
                 PASSWORD: 'Mot de passe',
@@ -167,6 +168,6 @@ angular
                 TURN_YOUR: 'C\'est à toi de jouer !',
                 PICK_COLOR: 'Choisis ta couleur'
             })
-            .preferredLanguage('en');
+            .determinePreferredLanguage();
     })
 ;
