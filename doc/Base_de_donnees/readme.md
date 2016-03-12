@@ -116,7 +116,7 @@ Cette table est composée de 3 champs :
 
 La clé primaire de cette table est une clé composite de p_g_id,p_id_user. 
 Cette table permet d'enregistrer les utilisateurs présents dans une partie. Le nombre de joueur dans cette table pour une partie donnée ne pourra pas dépasser le nombre de joueur maximum saisie précédement. 
-De plus, l'enregistrement de la position permet d'avoir le joueur qui est entrain de jouer ainsi que de favoriser l'enregistrement du sens. 
+De plus, l'enregistrement de la position permet d'avoir le joueur qui est entrain de jouer ainsi que de favoriser l'enregistrement du sens, ou de permettre le départ d'un joueur et son remplacement à une position donnée.  
 
 
 
