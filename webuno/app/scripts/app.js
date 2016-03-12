@@ -137,7 +137,9 @@ angular
                 STARTGAME: 'Start game now',
                 JOINED: 'joined',
                 JOINGAME: 'join the game',
-                CARD: 'card'
+                CARD: 'card',
+                TURN: 'It\'s {{username}} turn !',
+                TURN_YOUR: 'It\'s your turn !'
             })
             .translations('fr', {
                 EMAIL: 'Email',
@@ -159,7 +161,9 @@ angular
                 STARTGAME: 'Commencer à jouer',
                 JOINED: 'joueurs',
                 JOINGAME: 'a rejoint la partie',
-                CARD: 'carte'
+                CARD: 'carte',
+                TURN: 'C\'est à {{username}} de jouer !',
+                TURN_YOUR: 'C\'est à toi de jouer !'
             })
             .preferredLanguage('en');
     })

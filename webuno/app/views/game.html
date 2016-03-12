@@ -1,51 +1,54 @@
 <div class="container">
-  <div class="players col-md-12">
-    <div data-ng-repeat="player in game.players" data-ng-if="player.name != user.name"
-         class="player col-md-{{12 / (game.players.length-1)}} {{(player.name == currentPlayer) ? 'current-player' : ''}}">
-      <span class="player-name">{{player.name}}</span>
-      <br/>
-      <span class="player-cartes">{{player.cartes}} {{'CARD' | translate}}{{(player.cartes > 1) ? "s" : ""}}</span>
+    <div class="players col-md-12">
+        <div data-ng-repeat="player in game.players" data-ng-if="player.name != user.name"
+             class="player col-md-{{12 / (game.players.length-1)}} {{(player.name == currentPlayer) ? 'current-player' : ''}}">
+            <span class="player-name">{{player.name}}</span>
+            <br/>
+            <span class="player-cartes">{{player.cartes}} {{'CARD' | translate}}{{(player.cartes > 1) ? "s" : ""}}</span>
+        </div>
     </div>
-  </div>
 </div>
 
 <div id="table-game">
-  <div id="pioche" data-ng-click="piocherCarte()"></div>
-  <div id="fausse" class="carte {{game.stack.family}}-{{game.stack.number | WordToNumber}}"></div>
+    <div id="pioche" data-ng-click="piocherCarte()"></div>
+    <div id="fausse" class="carte {{game.stack.family}}-{{game.stack.number | WordToNumber}}"></div>
 </div>
 
 <div id="main">
-  <ul>
-    <li data-ng-repeat="carte in cartes track by $index"
-        data-ng-click="jouerCarte(carte)"
-        class="carte {{carte.family}}-{{carte.number | WordToNumber}}"></li>
-  </ul>
+    <ul>
+        <li data-ng-repeat="carte in cartes track by $index"
+            data-ng-click="jouerCarte(carte)"
+            class="carte {{carte.family}}-{{carte.number | WordToNumber}}"></li>
+    </ul>
 </div>
 
 <div class="modal fade myModalCurrentPlayer" tabindex="-1" role="dialog" aria-labelledby="modalCurrentPlayer">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      It's {{ (currentPlayer == user.name) ? "your" : currentPlayer }} turn !
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" data-ng-if="currentPlayer == user.name">
+            {{'TURN_YOUR' | translate}}
+        </div>
+        <div class="modal-content" data-ng-if="currentPlayer != user.name">
+            {{'TURN' | translate: '{ username : "'+currentPlayer+'" }'}}
+        </div>
     </div>
-  </div>
 </div>
 
 <div class="modal fade myModalColorChoose" tabindex="-1" role="dialog" aria-labelledby="modalColorChoose">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      Pick a color
-      <div class="colorChoose">
-        <div class="colorChooseColumn">
-          <div class="colorChooseRow">
-            <div class="colorChooseContent colorChooseYellow"></div>
-            <div class="colorChooseContent colorChooseGreen"></div>
-          </div>
-          <div class="colorChooseRow">
-            <div class="colorChooseContent colorChooseBlue" style=";"></div>
-            <div class="colorChooseContent colorChooseRed"></div>
-          </div>
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            Pick a color
+            <div class="colorChoose">
+                <div class="colorChooseColumn">
+                    <div class="colorChooseRow">
+                        <div class="colorChooseContent colorChooseYellow"></div>
+                        <div class="colorChooseContent colorChooseGreen"></div>
+                    </div>
+                    <div class="colorChooseRow">
+                        <div class="colorChooseContent colorChooseBlue" style=";"></div>
+                        <div class="colorChooseContent colorChooseRed"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
