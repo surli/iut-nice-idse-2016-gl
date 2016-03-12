@@ -9,8 +9,6 @@ angular.module('unoApp')
         var timeoutStateGame;
         $scope.currentPlayer = '';
 
-        jQuery('.myModalColorChoose').modal();
-
         // Utilisation du service Game pour récupérer la main du joueur connecté
         Game.getUserHand($stateParams.name)
             .then(function (response) {
