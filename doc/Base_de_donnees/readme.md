@@ -76,3 +76,17 @@ Cette table est composée de 3 champs :
  >###### Explication des choix d'utilisations : 
 
   Les deux champs composent la clé primaire composite. Cette table permet d'inserer la notion de manche. Une partie est composée d'une ou plusieurs manches. Cette table sert de table de transition avec la table turn , hands_players_in_game, deck, stack
+
+   ### Table Turns
+
+   Cette table est composée 4 champs : 
+   - t_id qui correspond à la clé primaire de la table 
+   - t_m_id
+   - t_sens
+   - id_user_ready
+
+   >###### Explication des choix d'utilisations : 
+
+   Un tour correspond a une action de jeu d'un joueur. Ainsi si le joueur 1 joue cela correspond au tour 1, lorsque le joueur 2 joue cela correspond au tour 2, etc... De cette manière là, pour une partie donnée, une manché donnée, on enregistre le sens du jeu à un joueur donnée. Cela permet de reconstituer par la suite la partie lors d'une sauvegarde. 
+
+   - t_sens est pour le moment un ENUM. 
