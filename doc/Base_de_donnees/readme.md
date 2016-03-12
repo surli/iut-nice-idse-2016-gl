@@ -144,3 +144,16 @@ Cette table est composée de 3 champs :
 La clé primaire de cette table est une clé composite de s_t_id,s_m_id. 
 
 Cette table permet l'enregistrement des cartes qui ont été défaussé lors d'un tour. Ainsi, de cette manière il est possible de reconstituer la partie en sachant qui a défausser quoi à quel tour, de quel manche de quel partie. 
+
+### Table Stats
+
+Cette table est composée de 5 champs : 
+- st_g_id
+- st_u_id
+- nbr_of_cards_in_hand
+- nbr_of_strokes
+- st_score
+
+>###### Explication des choix d'utilisations : 
+
+Cette table permettra d'enregistrer les scors des joueurs pour une partie donnée. C'est grace à cette table que le tableau des meillieurs scores pourra être constitué. 
