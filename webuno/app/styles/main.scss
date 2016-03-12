@@ -464,3 +464,73 @@ footer {
     transform: scale(1.1);
   }
 }
+
+// Case de choix d'une couleur
+.colorChoose{
+  border: 1px solid white;
+  background-color: black;
+  border-radius: 10px;
+  width:155px;
+  height:390px;
+  padding:20px 25px 10px 40px;
+}
+
+.colorChooseColumn{
+  border:5px solid white;
+  border-top-left-radius:150px 200px;
+  border-top-right-radius:150px 200px;
+  border-bottom-left-radius:150px 200px;
+  border-bottom-right-radius:150px 200px;
+  transform:skew(-10deg);
+  margin-left:-10px;
+  margin-top:-10px;
+  width:150px;
+  height:390px;
+}
+
+.colorChooseRow{
+  clear:both;
+}
+
+.colorChooseContent{
+  float:left;
+  width:75px;
+  height:195px;
+}
+
+.colorChooseYellow{
+  border-top-left-radius:100px 200px;
+  background-color:rgb(255,255,0);
+}
+
+.colorChooseGreen{
+  border-top-right-radius:100px 200px;
+  background-color:rgb(0,150,0);
+}
+
+.colorChooseBlue{
+  border-bottom-left-radius:100px 200px;
+  background-color:rgb(0,0,255);
+}
+
+.colorChooseRed{
+  border-bottom-right-radius:100px 200px;
+  background-color:rgb(255,0,0);
+}
+
+.colorChooseYellow:hover{
+  background-color:rgba(255,255,0,0.9);
+}
+.colorChooseGreen:hover{
+  background-color:rgba(0,150,0,0.9);
+}
+
+.colorChooseBlue:hover{
+  background-color:rgba(0,0,255,0.9);
+}
+
+.colorChooseRed:hover{
+  background-color:rgba(255,0,0,0.9);
+}
+
+//Fin case Choix Couleur
