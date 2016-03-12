@@ -139,7 +139,8 @@ angular
                 JOINGAME: 'join the game',
                 CARD: 'card',
                 TURN: 'It\'s {{username}} turn !',
-                TURN_YOUR: 'It\'s your turn !'
+                TURN_YOUR: 'It\'s your turn !',
+                PICK_COLOR: 'Pick a color'
             })
             .translations('fr', {
                 EMAIL: 'Email',
@@ -163,7 +164,8 @@ angular
                 JOINGAME: 'a rejoint la partie',
                 CARD: 'carte',
                 TURN: 'C\'est à {{username}} de jouer !',
-                TURN_YOUR: 'C\'est à toi de jouer !'
+                TURN_YOUR: 'C\'est à toi de jouer !',
+                PICK_COLOR: 'Choisis ta couleur'
             })
             .preferredLanguage('en');
     })
