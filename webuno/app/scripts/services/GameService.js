@@ -136,16 +136,22 @@ angular.module('unoApp')
              * @returns {*}
              */
             playCard: function (gameName, carte) {
+                var data = {
+                    value: carte.number,
+                    color: carte.family
+                };
+
+                if (carte.setcolor) {
+                    data.setcolor = carte.setcolor;
+                }
+
                 return HttpRequest.send({
                     method: 'put',
                     url: 'rest/game/' + gameName + '/' + Auth.getUser().name,
                     headers: {
                         token: Auth.getUser().token
                     },
-                    data: {
-                        value: carte.number,
-                        color: carte.family
-                    }
+                    data: data
                 });
             },
 

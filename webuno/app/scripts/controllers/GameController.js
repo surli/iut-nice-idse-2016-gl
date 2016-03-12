@@ -9,6 +9,8 @@ angular.module('unoApp')
         var timeoutStateGame;
         $scope.currentPlayer = '';
 
+        jQuery('.myModalColorChoose').modal();
+
         // Utilisation du service Game pour récupérer la main du joueur connecté
         Game.getUserHand($stateParams.name)
             .then(function (response) {
@@ -78,21 +80,46 @@ angular.module('unoApp')
 
         // Fonction qui permet au joueur connecté de jouer une carte
         $scope.jouerCarte = function (carte) {
-            // Utilisation du service Game pour jouer une carte
-            Game.playCard($stateParams.name, carte)
-                .then(function () {
-                    // Utilisation du service Game pour récupérer la main du joueur connecté
-                    Game.getUserHand($stateParams.name)
-                        .then(function (response) {
-                            $scope.cartes = response.data.cartes;
-                        });
+            if (carte.family === 'Black') {
+                jQuery('.myModalColorChoose').modal();
 
-                    // Utilisation du service Game pour récupérer l'état du jeu
-                    Game.getGame($stateParams.name)
-                        .then(function (response) {
-                            $scope.game = response.data;
+                $scope.chooseColor = function(color) {
+                    carte.setcolor = color;
+                    // Utilisation du service Game pour jouer une carte
+                    Game.playCard($stateParams.name, carte)
+                        .then(function () {
+                            jQuery('.myModalColorChoose').modal('hide');
+
+                            // Utilisation du service Game pour récupérer la main du joueur connecté
+                            Game.getUserHand($stateParams.name)
+                                .then(function (response) {
+                                    $scope.cartes = response.data.cartes;
+                                });
+
+                            // Utilisation du service Game pour récupérer l'état du jeu
+                            Game.getGame($stateParams.name)
+                                .then(function (response) {
+                                    $scope.game = response.data;
+                                });
                         });
-                });
+                };
+            } else {
+                // Utilisation du service Game pour jouer une carte
+                Game.playCard($stateParams.name, carte)
+                    .then(function () {
+                        // Utilisation du service Game pour récupérer la main du joueur connecté
+                        Game.getUserHand($stateParams.name)
+                            .then(function (response) {
+                                $scope.cartes = response.data.cartes;
+                            });
+
+                        // Utilisation du service Game pour récupérer l'état du jeu
+                        Game.getGame($stateParams.name)
+                            .then(function (response) {
+                                $scope.game = response.data;
+                            });
+                    });
+            }
         };
 
         // Évènement qui permet d'arrêter la timer quand on quitte le contrôleur actuel

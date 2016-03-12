@@ -34,20 +34,16 @@
 </div>
 
 <div class="modal fade myModalColorChoose" tabindex="-1" role="dialog" aria-labelledby="modalColorChoose">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            {{'PICK_COLOR' | translate}}
-            <div class="colorChoose">
-                <div class="colorChooseColumn">
-                    <div class="colorChooseRow">
-                        <div class="colorChooseContent colorChooseYellow"></div>
-                        <div class="colorChooseContent colorChooseGreen"></div>
-                    </div>
-                    <div class="colorChooseRow">
-                        <div class="colorChooseContent colorChooseBlue"></div>
-                        <div class="colorChooseContent colorChooseRed"></div>
-                    </div>
-                </div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content colorChoose">
+            <h1>{{'PICK_COLOR' | translate}}</h1>
+            <div class="col-md-12 colorChooseRow">
+                <div class="colorChooseContent colorChooseYellow col-md-6" data-ng-click="chooseColor('Yellow')"></div>
+                <div class="colorChooseContent colorChooseGreen col-md-6" data-ng-click="chooseColor('Green')"></div>
+            </div>
+            <div class="col-md-12 colorChooseRow">
+                <div class="colorChooseContent colorChooseBlue col-md-6" data-ng-click="chooseColor('Blue')"></div>
+                <div class="colorChooseContent colorChooseRed col-md-6" data-ng-click="chooseColor('Red')"></div>
             </div>
         </div>
     </div>

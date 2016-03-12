@@ -439,20 +439,22 @@ footer {
   border: none;
 }
 
-.modal-content {
-  min-height: 100%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  color: $blanc;
-  text-align: center;
-  line-height: 100px;
-  background: $vert;
-  box-shadow: 0 0 5px 0 $vert;
-  font-size: 18pt;
-  border: none;
+.modal-sm {
+  .modal-content {
+    min-height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: $blanc;
+    text-align: center;
+    line-height: 100px;
+    background: $vert;
+    box-shadow: 0 0 5px 0 $vert;
+    font-size: 18pt;
+    border: none;
+  }
 }
 
 .language {
@@ -471,71 +473,64 @@ footer {
   }
 }
 
-// Case de choix d'une couleur
-.colorChoose{
-  border: 1px solid white;
-  background-color: black;
-  border-radius: 10px;
-  width:155px;
-  height:390px;
-  padding:20px 25px 10px 40px;
-}
 
-.colorChooseColumn{
-  border:5px solid white;
-  border-top-left-radius:150px 200px;
-  border-top-right-radius:150px 200px;
-  border-bottom-left-radius:150px 200px;
-  border-bottom-right-radius:150px 200px;
-  transform:skew(-10deg);
-  margin-left:-10px;
-  margin-top:-10px;
-  width:150px;
-  height:390px;
-}
+.modal-lg {
+  text-align: center;
+  height: 400px;
 
-.colorChooseRow{
-  clear:both;
-}
-
-.colorChooseContent{
-  float:left;
-  width:75px;
-  height:195px;
-}
-
-.colorChooseRed{
-  border-bottom-right-radius:100px 200px;
-  background-color: $rouge;
-
-  &:hover {
-    background-color: darken($rouge, 3%);
+  // Case de choix d'une couleur
+  .colorChoose{
+    border: 1px solid white;
+    background-color: black;
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
   }
-}
 
-.colorChooseYellow{
-  border-top-left-radius:100px 200px;
-  background-color: $orange;
-
-  &:hover {
-    background-color: darken($orange, 3%);
+  .colorChooseRow{
+    clear:both;
   }
-}
 
-.colorChooseBlue{
-  border-bottom-left-radius:100px 200px;
-  background-color: $bleu;
-
-  &:hover {
-    background-color: darken($bleu, 3%);
+  .colorChooseContent{
+    cursor: pointer !important;
+    float:left;
+    width:50%;
+    height:150px;
   }
-}
 
-.colorChooseGreen{
-  border-top-right-radius:100px 200px;
-  background-color: $vert;
+  .colorChooseRed{
+    border-bottom-right-radius:100px 200px;
+    background-color: $rouge;
 
-  &:hover {
-    background-color: darken($vert, 3%);
+    &:hover {
+      background-color: darken($rouge, 3%);
+    }
+  }
+
+  .colorChooseYellow{
+    border-top-left-radius:100px 200px;
+    background-color: $orange;
+
+    &:hover {
+      background-color: darken($orange, 3%);
+    }
+  }
+
+  .colorChooseBlue{
+    border-bottom-left-radius:100px 200px;
+    background-color: $bleu;
+
+    &:hover {
+      background-color: darken($bleu, 3%);
+    }
+  }
+
+  .colorChooseGreen{
+    border-top-right-radius:100px 200px;
+    background-color: $vert;
+
+    &:hover {
+      background-color: darken($vert, 3%);
+    }
   }
 }
