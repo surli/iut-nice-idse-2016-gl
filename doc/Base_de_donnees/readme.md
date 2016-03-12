@@ -67,4 +67,12 @@ Cette table est composée de 3 champs :
  
  - De cette manière un id d'un carte correspond à une seule couleure et une seule valeur, ce qui permet d'identifier n'importe quelle cartes et ainsi pourvoir savoir par la suite la composition de la main des différents joueurs. 
 
- 
+ ### Table Matchs
+
+ Cette table est composée de 2 champs :
+ - m_id
+ - m_g_id
+
+ >###### Explication des choix d'utilisations : 
+
+  Les deux champs composent la clé primaire composite. Cette table permet d'inserer la notion de manche. Une partie est composée d'une ou plusieurs manches. Cette table sert de table de transition avec la table turn , hands_players_in_game, deck, stack
