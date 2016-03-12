@@ -119,4 +119,16 @@ Cette table permet d'enregistrer les utilisateurs présents dans une partie. Le 
 De plus, l'enregistrement de la position permet d'avoir le joueur qui est entrain de jouer ainsi que de favoriser l'enregistrement du sens, ou de permettre le départ d'un joueur et son remplacement à une position donnée.  
 
 
+### Table Deck 
+
+Cette table est composée de 3 champs : 
+- d_t_id
+- d_m_id
+- d_c_id 
+
+>###### Explication des choix d'utilisations : 
+
+La clé primaire de cette table est une clé composite de d_t_id,d_m_id. 
+
+Cette table permet l'enregistrement des cartes qui ont été piochées lors d'un tour. Ainsi, de cette manière il est possible de reconstituer la partie en sachant qui a piocher quoi à quel tour, de quel manche de quel partie. 
 
