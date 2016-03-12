@@ -6214,8 +6214,61 @@ footer {
 .language {
   width: 25px;
   height: 18px;
-  cursor: pointer; }
+  cursor: pointer;
+  border-radius: 50% !important; }
   .language:hover {
     transform: scale(1.1); }
+
+.colorChoose {
+  border: 1px solid white;
+  background-color: black;
+  border-radius: 10px;
+  width: 155px;
+  height: 390px;
+  padding: 20px 25px 10px 40px; }
+
+.colorChooseColumn {
+  border: 5px solid white;
+  border-top-left-radius: 150px 200px;
+  border-top-right-radius: 150px 200px;
+  border-bottom-left-radius: 150px 200px;
+  border-bottom-right-radius: 150px 200px;
+  transform: skew(-10deg);
+  margin-left: -10px;
+  margin-top: -10px;
+  width: 150px;
+  height: 390px; }
+
+.colorChooseRow {
+  clear: both; }
+
+.colorChooseContent {
+  float: left;
+  width: 75px;
+  height: 195px; }
+
+.colorChooseRed {
+  border-bottom-right-radius: 100px 200px;
+  background-color: #ff5555; }
+  .colorChooseRed:hover {
+    background-color: #ff4646; }
+
+.colorChooseYellow {
+  border-top-left-radius: 100px 200px;
+  background-color: #ffaa00; }
+  .colorChooseYellow:hover {
+    background-color: #f0a000; }
+
+.colorChooseBlue {
+  border-bottom-left-radius: 100px 200px;
+  background-color: #5555ff; }
+  .colorChooseBlue:hover {
+    background-color: #4646ff; }
+
+.colorChooseGreen {
+  border-top-right-radius: 100px 200px;
+  background-color: #55aa55; }
+  .colorChooseGreen:hover {
+    background-color: #50a050; }
 
 /*# sourceMappingURL=main.css.map */

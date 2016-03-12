@@ -459,6 +459,12 @@ footer {
   width: 25px;
   height: 18px;
   cursor: pointer;
+  border-radius: 50% !important;
+  border: 1px outset transparent;
+
+  &.active {
+    border-color: #FFF;
+  }
 
   &:hover {
     transform: scale(1.1);
@@ -498,39 +504,38 @@ footer {
   height:195px;
 }
 
-.colorChooseYellow{
-  border-top-left-radius:100px 200px;
-  background-color:rgb(255,255,0);
+.colorChooseRed{
+  border-bottom-right-radius:100px 200px;
+  background-color: $rouge;
+
+  &:hover {
+    background-color: darken($rouge, 3%);
+  }
 }
 
-.colorChooseGreen{
-  border-top-right-radius:100px 200px;
-  background-color:rgb(0,150,0);
+.colorChooseYellow{
+  border-top-left-radius:100px 200px;
+  background-color: $orange;
+
+  &:hover {
+    background-color: darken($orange, 3%);
+  }
 }
 
 .colorChooseBlue{
   border-bottom-left-radius:100px 200px;
-  background-color:rgb(0,0,255);
+  background-color: $bleu;
+
+  &:hover {
+    background-color: darken($bleu, 3%);
+  }
 }
 
-.colorChooseRed{
-  border-bottom-right-radius:100px 200px;
-  background-color:rgb(255,0,0);
-}
+.colorChooseGreen{
+  border-top-right-radius:100px 200px;
+  background-color: $vert;
 
-.colorChooseYellow:hover{
-  background-color:rgba(255,255,0,0.9);
+  &:hover {
+    background-color: darken($vert, 3%);
+  }
 }
-.colorChooseGreen:hover{
-  background-color:rgba(0,150,0,0.9);
-}
-
-.colorChooseBlue:hover{
-  background-color:rgba(0,0,255,0.9);
-}
-
-.colorChooseRed:hover{
-  background-color:rgba(255,0,0,0.9);
-}
-
-//Fin case Choix Couleur
