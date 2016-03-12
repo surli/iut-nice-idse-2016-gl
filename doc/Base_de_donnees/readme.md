@@ -15,6 +15,26 @@ La base de donnée est actuellement composée de 11 tables :
 - Stack
 - Statistique
 
+### Table Games
+
+>###### Composition de la table 
+
+Cette table est composée de 5 champs : 
+- g_id qui correspond à la clé primaire de la table 
+- g_nom 
+- g_nbr_max_joueur
+- g_nbr_max_ia
+- g_etat
+
+>###### Explication des choix d'utilisations
+
+- Le champs g_nom est unique afin de permettre l'identification de la partie par son nom. 
+
+- Le champs g_nombre_max_joueur permets de définir le nombre maximum de joueur dans une partie. Ainsi dans la table player_in_game il ne pourra pas avoir plus de joueur associé à une partie que le nombre maximum de joueur saisi dans cette partie la. Le champs g_nbr_max_ia fonctionne de la même manière mais pour les IA. 
+
+- Le champ g_etat permet d'enregister l'état de la partie à savoir si elle est en attente de joueur, en cour, terminé, ... 
+
+
 ### Table Users
 
 >###### Composition de la table 
