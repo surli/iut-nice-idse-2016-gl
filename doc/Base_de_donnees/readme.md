@@ -76,34 +76,47 @@ Cette table est composée de 3 champs :
 
  >###### Explication des choix d'utilisations : 
 
-  Les deux champs composent la clé primaire composite. Cette table permet d'inserer la notion de manche. Une partie est composée d'une ou plusieurs manches. Cette table sert de table de transition avec la table turn , hands_players_in_game, deck, stack
+Les deux champs composent la clé primaire composite. Cette table permet d'inserer la notion de manche. Une partie est composée d'une ou plusieurs manches. Cette table sert de table de transition avec la table turn , hands_players_in_game, deck, stack
 
  ### Table Turns
 
-   Cette table est composée de 4 champs : 
-   - t_id qui correspond à la clé primaire de la table 
-   - t_m_id
-   - t_sens
-   - id_user_ready
+Cette table est composée de 4 champs : 
+- t_id qui correspond à la clé primaire de la table 
+- t_m_id
+- t_sens
+- id_user_ready
 
 >###### Explication des choix d'utilisations : 
 
-   Un tour correspond a une action de jeu d'un joueur. Ainsi si le joueur 1 joue cela correspond au tour 1, lorsque le joueur 2 joue cela correspond au tour 2, etc... De cette manière là, pour une partie donnée, une manché donnée, on enregistre le sens du jeu à un joueur donnée. Cela permet de reconstituer par la suite la partie lors d'une sauvegarde. 
+Un tour correspond a une action de jeu d'un joueur. Ainsi si le joueur 1 joue cela correspond au tour 1, lorsque le joueur 2 joue cela correspond au tour 2, etc... De cette manière là, pour une partie donnée, une manché donnée, on enregistre le sens du jeu à un joueur donnée. Cela permet de reconstituer par la suite la partie lors d'une sauvegarde. 
 
-   - t_sens est pour le moment un ENUM. 
+- t_sens est pour le moment un ENUM. 
 
 ### Table hands_players_in_game
 
-   Cette table est composée 4 champs : 
-   - h_id_match
-   - h_id_user
-   - h_id_cards
-   - h_tour
+Cette table est composée 4 champs : 
+- h_id_match
+- h_id_user
+- h_id_cards
+- h_tour
 
 >###### Explication des choix d'utilisations : 
 
 La clé primaire de cette table est une clé composite de h_id_match,h_id_user,h_id_card. 
 Ainsi de cette manière il est possible d'enregistrer a chaque tour pour un joueur, une manche, les cartes en main d'un joueur. Pour la sauvegarde cela permet de reconstituer la main des joueurs pour une partie et une manche. 
+
+### Table payer_in_game
+
+Cette table est composée de 3 champs : 
+- p_g_id
+- p_id_user
+- p_position
+
+>###### Explication des choix d'utilisations : 
+
+La clé primaire de cette table est une clé composite de p_g_id,p_id_user. 
+Cette table permet d'enregistrer les utilisateurs présents dans une partie. Le nombre de joueur dans cette table pour une partie donnée ne pourra pas dépasser le nombre de joueur maximum saisie précédement. 
+De plus, l'enregistrement de la position permet d'avoir le joueur qui est entrain de jouer ainsi que de favoriser l'enregistrement du sens. 
 
 
 
