@@ -4,13 +4,14 @@
 
 La base de donnée est actuellement composée de 11 tables :
 
-- Users
-- Statut_users
 - Games
+- Statut_users
+- Users
+- Cards
 - Matchs
+- Turns
 - Players_in_games
 - Hand_players_in _game
-- Cards
 - Deck
 - Stack
 - Statistique
@@ -77,16 +78,32 @@ Cette table est composée de 3 champs :
 
   Les deux champs composent la clé primaire composite. Cette table permet d'inserer la notion de manche. Une partie est composée d'une ou plusieurs manches. Cette table sert de table de transition avec la table turn , hands_players_in_game, deck, stack
 
-   ### Table Turns
+ ### Table Turns
 
-   Cette table est composée 4 champs : 
+   Cette table est composée de 4 champs : 
    - t_id qui correspond à la clé primaire de la table 
    - t_m_id
    - t_sens
    - id_user_ready
 
-   >###### Explication des choix d'utilisations : 
+>###### Explication des choix d'utilisations : 
 
    Un tour correspond a une action de jeu d'un joueur. Ainsi si le joueur 1 joue cela correspond au tour 1, lorsque le joueur 2 joue cela correspond au tour 2, etc... De cette manière là, pour une partie donnée, une manché donnée, on enregistre le sens du jeu à un joueur donnée. Cela permet de reconstituer par la suite la partie lors d'une sauvegarde. 
 
    - t_sens est pour le moment un ENUM. 
+
+### Table hands_players_in_game
+
+   Cette table est composée 4 champs : 
+   - h_id_match
+   - h_id_user
+   - h_id_cards
+   - h_tour
+
+>###### Explication des choix d'utilisations : 
+
+La clé primaire de cette table est une clé composite de h_id_match,h_id_user,h_id_card. 
+Ainsi de cette manière il est possible d'enregistrer a chaque tour pour un joueur, une manche, les cartes en main d'un joueur. Pour la sauvegarde cela permet de reconstituer la main des joueurs pour une partie et une manche. 
+
+
+
