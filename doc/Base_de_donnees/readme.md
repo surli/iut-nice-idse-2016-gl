@@ -132,3 +132,15 @@ La clé primaire de cette table est une clé composite de d_t_id,d_m_id.
 
 Cette table permet l'enregistrement des cartes qui ont été piochées lors d'un tour. Ainsi, de cette manière il est possible de reconstituer la partie en sachant qui a piocher quoi à quel tour, de quel manche de quel partie. 
 
+### Table Stack
+
+Cette table est composée de 3 champs : 
+- s_t_id
+- s_m_id
+- s_c_id 
+
+>###### Explication des choix d'utilisations : 
+
+La clé primaire de cette table est une clé composite de s_t_id,s_m_id. 
+
+Cette table permet l'enregistrement des cartes qui ont été défaussé lors d'un tour. Ainsi, de cette manière il est possible de reconstituer la partie en sachant qui a défausser quoi à quel tour, de quel manche de quel partie. 
