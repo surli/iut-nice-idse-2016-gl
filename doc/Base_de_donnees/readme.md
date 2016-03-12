@@ -56,3 +56,15 @@ Cette table est composée de 5 champs :
 		- Admin 
 Ces types utilisateur sont gérés dans la table statut_users. La table users est composé d'une clé étrangère Id_statut_users afin de pouvoir acceder aux données de la table Statut_users. 
 
+### Table Cards
+
+Cette table est composée de 3 champs : 
+- c_id qui correspond à la clé primaire de la table 
+- c_values
+- c_color
+
+>###### Explication des choix d'utilisations
+ 
+ - De cette manière un id d'un carte correspond à une seule couleure et une seule valeur, ce qui permet d'identifier n'importe quelle cartes et ainsi pourvoir savoir par la suite la composition de la main des différents joueurs. 
+
+ 
