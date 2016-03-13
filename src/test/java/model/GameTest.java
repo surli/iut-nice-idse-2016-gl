@@ -48,7 +48,6 @@ public class GameTest {
 		boolean b2 = game.addPlayer(p1);
 				
 		ArrayList<Player> players=new ArrayList<Player>();
-		players.add(host);
 		players.add(p1);
 		
 		assertTrue(b);
