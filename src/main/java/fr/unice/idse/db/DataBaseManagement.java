@@ -1,238 +1,230 @@
 package fr.unice.idse.db;
 
+import fr.unice.idse.constante.*;
+import fr.unice.idse.model.card.*;
+
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 public class DataBaseManagement {
-
-	private String port = "8889";
-	private String url = "jdbc:mysql://localhost:" + port + "/uno";
-	private String user = "root";
-	private String pass = "root";
 	private Connection con = null;
 	private PreparedStatement ps = null;
 	private ResultSet rs = null;
 
-	public void connect() {
+	public DataBaseManagement() {
 		rs = null;
 		ps = null;
 		con = null;
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(url, user, pass);
+			con = DriverManager.getConnection(Config.url, Config.user, Config.pass);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (SQLException e){
-			e.printStackTrace();
+		} catch (SQLException e) {
 		}
 	}
 
-	public void end() {
+	public void finalize() {
 		try {
 			rs.close();
 			ps.close();
 			con.close();
-		} catch (SQLException ignore) {
-		}
-	}
-
-	public int getCurrentAutoIncrementValueWithTableName(String tableName) {
-		String query = "SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
-		int result = 0;
-		try {
-			ps = con.prepareStatement(query);
-			ps.setString(1, "uno");
-			ps.setString(2, tableName);
-			rs = ps.executeQuery();
-			if (rs.next())
-				result = rs.getInt(1);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		return result;
 	}
 
-	public boolean userLoginIsCorrect(String email, String password) {
-		String query = "SELECT u_email, u_password FROM users WHERE u_email = ? AND u_password = ?";
+	public boolean sqlBased(String... args) {
+		String query = args[0];
+		boolean select = false;
+		if (query.indexOf("SELECT") != -1)
+			select = true;
 		try {
 			ps = con.prepareStatement(query);
-			ps.setString(1, email);
-			ps.setString(2, password);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				if (rs.getString("u_email").equals(email) && rs.getString("u_password").equals(password))
-					return true;
+			for (int i = 1; i < args.length; i++) {
+				if (StringUtils.isNumeric(args[i]))
+					ps.setInt(i, Integer.valueOf(args[i]));
 				else
-					return false;
+					ps.setString(i, args[i]);
+			}
+			if (select) {
+				rs = ps.executeQuery();
+				if (rs.next())
+					return true;
+			} else {
+				ps.executeUpdate();
+				return true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public int countPoints(ArrayList<Card> playerHand){
+		int result = 0;
+		for (Card c : playerHand){
+			switch(c.getValue().toString()){
+			case "Zero":
+				break;
+			case "One":
+				result += 1;
+				break;
+			case "Two":
+				result += 2;
+				break;
+			case "Three":
+				result += 3;
+				break;
+			case "Four":
+				result += 4;
+				break;
+			case "Five":
+				result += 5;
+				break;
+			case "Six":
+				result += 6;
+				break;
+			case "Seven":
+				result += 7;
+				break;
+			case "Eight":
+				result += 8;
+				break;
+			case "Nine":
+				result += 9;
+				break;
+			case "Skip":
+				result += 20;
+				break;
+			case "Reverse":
+				result += 20;
+				break;
+			case "DrawTwo":
+				result += 20;
+				break;
+			case "Wild":
+				result += 50;
+				break;
+			case "DrawFour":
+				result += 50;
+				break;
+			default:
+				throw new IllegalArgumentException("Invalide card value : " + c.getValue().toString());
+			}	
+		}
+		return result;
 	}
 
 	public String getPseudoWithEmail(String email) {
 		String query = "SELECT u_pseudo FROM users WHERE u_email = ?";
-		try {
-			ps = con.prepareStatement(query);
-			ps.setString(1, email);
-			rs = ps.executeQuery();
-			if (rs.next())
+		if (sqlBased(query, email))
+			try {
 				return rs.getString("u_pseudo");
-			else
-				return null;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			} catch (SQLException e) {
+			}
 		return null;
+	}
+
+	public int getCurrentAutoIncrementValueWithTableName(String tableName) {
+		String query = "SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = uno AND TABLE_NAME = ?";
+		if (sqlBased(query, tableName))
+			try {
+				return rs.getInt(1);
+			} catch (SQLException e) {
+			}
+
+		return 0;
 	}
 
 	public int getIdUserWithPseudo(String pseudo) {
 		String query = "SELECT u_id FROM users WHERE u_pseudo = ?";
-		int result = 0;
-		try {
-			ps = con.prepareStatement(query);
-			ps.setString(1, pseudo);
-			rs = ps.executeQuery();
-			if (rs.next())
-				result = rs.getInt(1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
+		if (sqlBased(query, pseudo))
+			try {
+				return rs.getInt(1);
+			} catch (SQLException e) {
+			}
+		return 0;
+	}
 
+	public int countCardsWithThisValueAndThisColor(String value, String color) {
+		String query = "SELECT COUNT(*) FROM cards WHERE c_value = ? AND c_color = ?";
+		if (sqlBased(query, value, color))
+			try {
+				return rs.getInt(1);
+			} catch (SQLException e) {
+			}
+		return 0;
+	}
+
+	public int getIdCard(String value, String color) {
+		String query = "SELECT c_id FROM cards WHERE c_value = ? AND c_color = ?";
+		if (sqlBased(query, value, color))
+			try {
+				return rs.getInt(1);
+			} catch (SQLException e) {
+			}
+		return 0;
+	}
+
+	public boolean userLoginIsCorrect(String email, String password) {
+		String query = "SELECT u_email, u_password, u_type FROM users WHERE u_email = ? AND u_password = ? AND (u_type = 'admin' OR u_type = 'member')";
+		if (sqlBased(query, email, password))
+			try {
+				if (rs.getString("u_email").equals(email) && rs.getString("u_password").equals(password))
+					return true;
+				else
+					return false;
+			} catch (SQLException e) {
+			}
+		return false;
 	}
 
 	public boolean ifUserAlreadyExistPseudoEmail(String pseudo, String email) {
-		String query1 = "SELECT u_pseudo FROM users WHERE u_pseudo = ?";
-		String query2 = "SELECT u_email FROM users WHERE u_email = ?";
-		try {
-			ps = con.prepareStatement(query1);
-			ps.setString(1, pseudo);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				return true;
-			} else {
-				ps = con.prepareStatement(query2);
-				ps.setString(1, email);
-				rs = ps.executeQuery();
-				if (rs.next()) {
-					return true;
-				} else
-					return false;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String query = "SELECT u_pseudo, u_email FROM users WHERE u_pseudo = ? OR u_email = ?";
+		if (sqlBased(query, pseudo, email))
+			return true;
 		return false;
 	}
 
 	public boolean ifUserAlreadyExistPseudo(String pseudo) {
-		String query1 = "SELECT u_pseudo FROM users WHERE u_pseudo = ?";
-		try {
-			ps = con.prepareStatement(query1);
-			ps.setString(1, pseudo);
-			rs = ps.executeQuery();
-			if (rs.next())
-				return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String query = "SELECT u_pseudo FROM users WHERE u_pseudo = ?";
+		if (sqlBased(query, pseudo))
+			return true;
 		return false;
 	}
 
 	public boolean ifUserAlreadyExistEmail(String email) {
-		String query1 = "SELECT u_email FROM users WHERE u_email = ?";
-		try {
-			ps = con.prepareStatement(query1);
-			ps.setString(1, email);
-			rs = ps.executeQuery();
-			if (rs.next())
-				return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String query = "SELECT u_pseudo FROM users WHERE u_pseudo = ?";
+		if (sqlBased(query, email))
+			return true;
 		return false;
 	}
 
-	public boolean addUser(String pseudo, String email, String password) {
+	public boolean addUser(String pseudo, String email, String password, String type) {
 		if (!ifUserAlreadyExistPseudoEmail(pseudo, email)) {
-			String query = "INSERT INTO users (u_pseudo, u_email, u_password) VALUES (?, ?, ?)";
-			try {
-				ps = con.prepareStatement(query);
-				ps.setString(1, pseudo);
-				ps.setString(2, email);
-				ps.setString(3, password);
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return true;
-		} else
-			return false;
+			String query = "INSERT INTO users (u_pseudo, u_email, u_password, u_type) VALUES (?, ?, ?, ?)";
+			if (sqlBased(query, pseudo, email, password, type))
+				return true;
+		}
+		return false;
 	}
 
 	public boolean deleteUserWithPseudo(String pseudo) {
 		if (ifUserAlreadyExistPseudo(pseudo)) {
 			String query = "DELETE FROM users WHERE u_pseudo = ?";
-			try {
-				ps = con.prepareStatement(query);
-				ps.setString(1, pseudo);
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return true;
-		} else
-			return false;
-	}
-
-	public int countCardsWithThisValueAndThisColor(String value, String color) {
-		String query = "SELECT COUNT(*) FROM cards WHERE c_value = ? AND c_color = ?";
-		int result = 0;
-		try {
-			ps = con.prepareStatement(query);
-			ps.setString(1, value);
-			ps.setString(2, color);
-			rs = ps.executeQuery();
-			if (rs.next())
-				result = rs.getInt(1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (sqlBased(query, pseudo))
+				return true;
 		}
-		return result;
-	}
-
-	public int getIdCard(String value, String color) {
-		String query = "SELECT c_id FROM cards WHERE c_value = ? AND c_color = ?";
-		int result = 0;
-		try {
-			ps = con.prepareStatement(query);
-			ps.setString(1, value);
-			ps.setString(2, color);
-			rs = ps.executeQuery();
-			if (rs.next())
-				result = rs.getInt(1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
+		return false;
 	}
 
 	/*
@@ -240,22 +232,14 @@ public class DataBaseManagement {
 	 * nine, skip, reverse, drawtwo, drawfour, wild && Possible color :
 	 * blue,green, red, yellow, black
 	 */
+
 	public boolean addCard(String value, String color) {
 		int nbCards = countCardsWithThisValueAndThisColor(value, color);
 		String query = "INSERT INTO cards (c_value, c_color) VALUES (?, ?)";
-		try {
-			ps = con.prepareStatement(query);
-			ps.setString(1, value);
-			ps.setString(2, color);
-			ps.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (countCardsWithThisValueAndThisColor(value, color) == nbCards + 1)
-			return true;
-		else
-			return false;
+		if (sqlBased(query, value, color))
+			if (countCardsWithThisValueAndThisColor(value, color) == nbCards + 1)
+				return true;
+		return false;
 	}
 
 	public boolean deleteCard(String value, String color) {
@@ -266,127 +250,74 @@ public class DataBaseManagement {
 		if (id == 0)
 			return false;
 		String query = "DELETE FROM cards WHERE c_id = ?";
-		try {
-			ps = con.prepareStatement(query);
-			ps.setInt(1, id);
-			ps.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (countCardsWithThisValueAndThisColor(value, color) == nbCards - 1)
-			return true;
-		else
-			return false;
+		if (sqlBased(query, Integer.toString(id)))
+			if (countCardsWithThisValueAndThisColor(value, color) == nbCards - 1)
+				return true;
+		return false;
 	}
 
 	public boolean updateUserEmail(String oldEmail, String password, String newEmail) {
 		if (userLoginIsCorrect(oldEmail, password) && !ifUserAlreadyExistEmail(newEmail)) {
 			String query = "UPDATE users SET u_email = ? WHERE u_email = ?";
-			try {
-				ps = con.prepareStatement(query);
-				ps.setString(1, newEmail);
-				ps.setString(2, oldEmail);
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (userLoginIsCorrect(newEmail, password))
-				return true;
-			else
-				return false;
-		} else
-			return false;
+			if (sqlBased(query, newEmail, oldEmail))
+				if (userLoginIsCorrect(newEmail, password))
+					return true;
+		}
+		return false;
 	}
 
 	public boolean updateUserPseudo(String email, String password, String newPseudo) {
 		if (userLoginIsCorrect(email, password) && !ifUserAlreadyExistPseudo(newPseudo)) {
 			String query = "UPDATE users SET u_pseudo = ? WHERE u_email = ?";
-			try {
-				ps = con.prepareStatement(query);
-				ps.setString(1, newPseudo);
-				ps.setString(2, email);
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (getPseudoWithEmail(email).equals(newPseudo))
-				return true;
-			else
-				return false;
-		} else
-			return false;
+			if (sqlBased(query, newPseudo, email))
+				if (getPseudoWithEmail(email).equals(newPseudo))
+					return true;
+		}
+		return false;
 	}
 
 	public boolean updateUserPassword(String email, String oldPassword, String newPassword) {
 		if (userLoginIsCorrect(email, oldPassword)) {
 			String query = "UPDATE users SET u_password = ? WHERE u_email = ?";
-			try {
-				ps = con.prepareStatement(query);
-				ps.setString(1, newPassword);
-				ps.setString(2, email);
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (userLoginIsCorrect(email, newPassword))
-				return true;
-			else
-				return false;
-		} else
-			return false;
+			if (sqlBased(query, newPassword, email))
+				if (userLoginIsCorrect(email, newPassword))
+					return true;
+		}
+		return false;
+	}
+	
+	public boolean updateUserType(String email, String password, String newType) {
+		if (userLoginIsCorrect(email, password)) {
+			String query = "UPDATE users SET u_type = ? WHERE u_email = ?";
+			if (sqlBased(query, newType, email))
+				if (userLoginIsCorrect(email, password))
+					return true;
+		}
+		return false;
 	}
 
 	public boolean ifGameAlreadyExistName(String name) {
-		String query1 = "SELECT g_nom FROM games WHERE g_nom = ?";
-		try {
-			ps = con.prepareStatement(query1);
-			ps.setString(1, name);
-			rs = ps.executeQuery();
-			if (rs.next())
-				return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String query = "SELECT g_nom FROM games WHERE g_nom = ?";
+		if (sqlBased(query, name))
+			return true;
 		return false;
 	}
 
 	public boolean addGame(String name, int nbrMaxJoueur, int nbrMaxIA) {
 		if (!ifGameAlreadyExistName(name)) {
-			String query = "INSERT INTO games (g_nom,g_nbr_max_joueur,g_nbr_max_ia) VALUES (?,?, ?)";
-			try {
-				ps = con.prepareStatement(query);
-				ps.setString(1, name);
-				ps.setInt(2, nbrMaxJoueur);
-				ps.setInt(3, nbrMaxIA);
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return true;
-		} else
-			return false;
+			String query = "INSERT INTO games (g_nom,g_nbr_max_joueur,g_nbr_max_ia) VALUES (?, ?, ?)";
+			if (sqlBased(query, name, Integer.toString(nbrMaxJoueur), Integer.toString(nbrMaxIA)))
+				return true;
+		}
+		return false;
 	}
 
 	public boolean deleteGameWithName(String nameOfTheGame) {
 		if (ifGameAlreadyExistName(nameOfTheGame)) {
 			String query = "DELETE FROM games WHERE g_nom = ?";
-			try {
-				ps = con.prepareStatement(query);
-				ps.setString(1, nameOfTheGame);
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return true;
-		} else
-			return false;
+			if (sqlBased(query, nameOfTheGame))
+				return true;
+		}
+		return false;
 	}
-
 }

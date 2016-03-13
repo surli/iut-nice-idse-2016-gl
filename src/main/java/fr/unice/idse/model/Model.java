@@ -3,6 +3,7 @@ package fr.unice.idse.model;
 import java.util.ArrayList;
 
 import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.player.Player;
 
 public class Model {
 	private ArrayList<Game> games;
@@ -14,8 +15,8 @@ public class Model {
 	 */
 	private Model()
 	{
-		this.games= new ArrayList<Game>();
-		this.players= new ArrayList<Player>();
+		this.games= new ArrayList<>();
+		this.players= new ArrayList<>();
 	}
 
 	/**
@@ -36,8 +37,10 @@ public class Model {
 
 	/**
 	 * Ajouter une partie
-	 * @param gameName
-	 * @return true/false
+	 * @param player Player
+	 * @param gameName String
+	 * @param numberPlayers Int
+	 * @return Boolean
 	 */
 	public boolean addGame(Player player, String gameName, int numberPlayers)
 	{
@@ -45,6 +48,7 @@ public class Model {
 		{
 			Game game = new Game(player,gameName,numberPlayers);
 			this.games.add(game);
+			addPlayerToGame(gameName, player);
 			return true;
 		}
 		return false;
@@ -53,7 +57,7 @@ public class Model {
 	/**
 	 * Créer un joueur s'il n'existe pas et l'ajoute dans la liste des joueurs
 	 * @param playerName, playerToken
-	 * @return true/false
+	 * @return Boolean
 	 */
 	public boolean createPlayer(String playerName, String playerToken)
 	{
@@ -67,10 +71,26 @@ public class Model {
 		}
 		return false;
 	}
+
+	/**
+	 * Supprimer un joueur de la liste des joueurs
+	 * @param playerToken String
+	 * @return Boolean
+	 */
+	public boolean removePlayer(String playerToken)
+	{
+		if(playerExistsInListByToken(playerToken))
+		{
+			Player player = getPlayerFromList(playerToken);
+			players.remove(player);
+			return true;
+		}
+		return false;
+	}
 	
 	/**
 	 * Retourne le player indiqué avec son token
-	 * @param playerToken
+	 * @param playerToken String
 	 * @return Player
 	 */
 	public Player getPlayerFromList(String playerToken)
@@ -86,9 +106,9 @@ public class Model {
 	}
 	
 	/**
-	 * Vérifie si le player existe dans la liste des joueurs
-	 * @param playerName
-	 * @return true/false
+	 * Vérifie si le player existe dans la liste des joueurs par son playername
+	 * @param playerName String
+	 * @return Boolean
 	 */
 	public boolean playerExistsInList(String playerName)
 	{
@@ -101,11 +121,28 @@ public class Model {
 		}
 		return false;
 	}
+
+	/**
+	 * Vérifie si le player existe dans la liste des joueurs par son token
+	 * @param playerToken String
+	 * @return Boolean
+	 */
+	public boolean playerExistsInListByToken(String playerToken)
+	{
+		for(Player player : players)
+		{
+			if(player.getToken().equals(playerToken))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	/**
-	 * Vérifie si le joueur indiqué existe dans les parties
-	 * @param playerToken
-	 * @return true/false
+	 * Vérifie si le joueur indiqué existe dans les parties par le token
+	 * @param playerToken String
+	 * @return Boolean
 	 */
 	public boolean playerExists(String playerToken)
 	{
@@ -124,8 +161,8 @@ public class Model {
 	
 	/**
 	 * Verifie si la partie existe
-	 * @param gameName
-	 * @return true/false
+	 * @param gameName String
+	 * @return Boolean
 	 */
 	public boolean existsGame(String gameName)
 	{
@@ -141,7 +178,7 @@ public class Model {
 
 	/**
 	 * Chercher la partie selon son nom
-	 * @param gameName
+	 * @param gameName String
 	 * @return Game/null
 	 */
 	public Game findGameByName(String gameName)
@@ -158,9 +195,9 @@ public class Model {
 	
 	/**
 	 * Ajoute un joueur à une partie si le joueur n'est pas déjà existant et que le nom de la partie est correct
-	 * @param gameName
-	 * @param player
-	 * @return true/false
+	 * @param gameName String
+	 * @param player Player
+	 * @return Boolean
 	 */
 	public boolean addPlayerToGame(String gameName,Player player)
 	{
@@ -174,17 +211,22 @@ public class Model {
 	}
 	
 	/**
-	 * Supprime joueur d'une partie
-	 * @param gameName
-	 * @param playerName
-	 * @return true/false
+	 * Supprime joueur d'une partie par son playername
+	 * @param gameName String
+	 * @param playerName String
+	 * @return Boolean
 	 */
 	public boolean removePlayerFromGameByName(String gameName, String playerName)
 	{
 		Game game = findGameByName(gameName);
 		if(game != null)
 		{
-			return game.removePlayerByName(playerName);
+			Player player = findPlayerByName(gameName, playerName);
+			if(game.removePlayerByName(playerName))
+			{
+				players.add(player);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -192,8 +234,8 @@ public class Model {
 	
 	/**
 	 * Chercher un joueur selon le nom de la partie et le nom du joueur renseignés
-	 * @param gameName
-	 * @param playerName
+	 * @param gameName String
+	 * @param playerName String
 	 * @return Player/null
 	 */
 	public Player findPlayerByName(String gameName,String playerName)
@@ -207,17 +249,22 @@ public class Model {
 	}
 	
 	/**
-	 * Supprime joueur d'une partie
-	 * @param gameName
-	 * @param playerToken
-	 * @return true/false
+	 * Supprime joueur d'une partie par son token
+	 * @param gameName String
+	 * @param playerToken String
+	 * @return Boolean
 	 */
 	public boolean removePlayerFromGameByToken(String gameName, String playerToken)
 	{
 		Game game = findGameByName(gameName);
 		if(game != null)
 		{
-			return game.removePlayerByToken(playerToken);
+			Player player = findPlayerByToken(gameName, playerToken);
+			if(game.removePlayerByToken(playerToken))
+			{
+				players.add(player);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -225,8 +272,8 @@ public class Model {
 	
 	/**
 	 * Chercher un joueur selon le nom de la partie et le nom du joueur renseignés
-	 * @param gameName
-	 * @param playerToken
+	 * @param gameName String
+	 * @param playerToken String
 	 * @return Player/null
 	 */
 	public Player findPlayerByToken(String gameName,String playerToken)
@@ -242,9 +289,10 @@ public class Model {
 	/**
 	 * Le joueur désigné joue une carte en fonction de la position de la carte
 	 * (cardPosition)dans la main du joueur, dans la partie indiquée  
-	 * @param playerName
-	 * @param cardPosition
-	 * @return true/false
+	 * @param gameName String
+	 * @param playerName String
+	 * @param cardPosition Int
+	 * @return Boolean
 	 */
 	public boolean play(String gameName,String playerName, int cardPosition)
 	{
@@ -259,9 +307,9 @@ public class Model {
 	 * Le joueur désigné joue une carte en fonction de la position de la carte
 	 * (cardPosition)dans la main du joueur, dans la partie indiquée et change de
 	 * couleur selon la couleur indiquée (0 -> Bleu, 1 -> Jaune, 2 -> Rouge, 3 -> Vert)
-	 * @param playerName
-	 * @param colorNumber
-	 * @return true/false
+	 * @param playerName String
+	 * @param colorNumber String
+	 * @return Boolean
 	 */
 	public boolean play(String gameName,String playerName,int cardPosition, int colorNumber)
 	{
@@ -275,10 +323,18 @@ public class Model {
 			Color color=null;
 			switch(colorNumber)
 			{
-				case 0: color=Color.Blue;
-				case 1: color=Color.Yellow;
-				case 2: color=Color.Red;
-				case 3: color=Color.Green;
+				case 0:
+					color=Color.Blue;
+					break;
+				case 1:
+					color=Color.Yellow;
+					break;
+				case 2:
+					color=Color.Red;
+					break;
+				case 3:
+					color=Color.Green;
+					break;
 			}
 			try{
 				board.changeColor(color);
@@ -294,9 +350,9 @@ public class Model {
 	
 	/**
 	 * Méthode qui permet de lancer une partie en vérifiant que l'hote de la partie est bien celui indiqué en paramètre
-	 * @param gameName
-	 * @param playerName
-	 * @return true/false
+	 * @param gameName String
+	 * @param playerName String
+	 * @return Boolean
 	 */
 	public boolean startGame(String gameName,String playerName)
 	{
@@ -316,4 +372,17 @@ public class Model {
 		return false;
 	}
 	 
+	/**
+	 * Méthode qui permet la suppression d'une partie
+	 */
+	public boolean removeGame(String gameName)
+	{
+		Game game=findGameByName(gameName);
+		if(game!=null)
+		{
+			games.remove(game);
+			return true;
+		}
+		return false;
+	}
 }

@@ -1,5 +1,12 @@
 'use strict';
 
+/**
+ * Filtre WordToNumber
+ * Permet de convertir un nombre à lettres en nombre à chiffres
+ *
+ * EX: Zero => 0
+ *
+ */
 angular.module('unoApp')
     .filter('WordToNumber', function() {
         var cards = {

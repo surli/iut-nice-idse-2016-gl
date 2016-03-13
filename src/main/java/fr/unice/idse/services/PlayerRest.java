@@ -1,7 +1,5 @@
 package fr.unice.idse.services;
 
-import java.util.Arrays;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -14,13 +12,17 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import fr.unice.idse.model.Model;
-import fr.unice.idse.model.Player;
+import fr.unice.idse.model.player.Player;
 
 /**
  * /player 
- * ├── GET             Retourne la liste des joueurs
+ * ├── GET             Retourne la liste des utilisateurs connecté (fait)
+ * ├── POST            Ajoute un utilisateur
+ * ├── CONNECT         Connecte un utilisateur
  * ├── /{playerName} 
- * │   ├── GET         Retourne les informations du joueur
+ * │   ├── GET         Retourne les informations de l'utilisateur (fait)
+ * │   ├── DELETE      Deconnecte l'utilisateurs
+ * │   ├── PUT         Mise a jouer des informations de l'utilisateur
  */
 
 @Path("/player")

@@ -7,14 +7,13 @@ public class EffectCard
 {
 	private Value value;
 	private Board board;
-
-	private boolean effect;
+	private boolean isColorChangingCard;
 	
 	public EffectCard(Board board, Value value)
 	{
 		this.value = value;
 		this.board = board;
-		effect = false;
+		this.isColorChangingCard=false;
 	}
 
 	public Value getValue()
@@ -25,6 +24,14 @@ public class EffectCard
 	public Board getBoard()
 	{
 		return board;
+	}
+
+	public boolean isColorChangingCard() {
+		return isColorChangingCard;
+	}
+
+	public void setColorChangingCard(boolean isColorChangingCard) {
+		this.isColorChangingCard = isColorChangingCard;
 	}
 
 	/**
@@ -43,33 +50,29 @@ public class EffectCard
 	 */
 	public boolean getEffect()
 	{
-		return effect;
+		return board.getCptDrawCard() > 1;
 	}
 	
-	public void setEffect()
-	{
-		effect = !effect;
-	}
-	
-	/**
-	 * A apellé pour change couleur et pioche 4 cartes
-	 * @param color
+	/***
+	 * Methode à override pour les changement de couleur
+	 * @param : Couleur demandé par le Joueur.
 	 */
 	public void changeColor(Color color)
 	{
-		if(board.getStack().topCard().getColor().equals(Color.Black))
-		{
-			board.changeColor(color);
-		}
+		
 	}
 	
-	//Methode à override pour les effets immediat
+	/***
+	 * Methode à override pour les effets immediats
+	 */
 	public void action()
 	{
 
 	}
 	
-	//Methode à override pour les effets contrable
+	/***
+	 * Methode à override pour les effets contrables
+	 */
 	public void effect()
 	{
 		

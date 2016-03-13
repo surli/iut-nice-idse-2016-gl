@@ -7,10 +7,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import javax.smartcardio.ResponseAPDU;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.security.NoSuchAlgorithmException;
@@ -63,7 +60,6 @@ public class AuthRest extends OriginRest{
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
         DataBaseManagement dataBase = new DataBaseManagement();
-        dataBase.connect();
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         if(!jsonObject.has("email")){
@@ -82,7 +78,6 @@ public class AuthRest extends OriginRest{
         }
 
         if(!dataBase.userLoginIsCorrect(jsonObject.getString("email"), generatePassword(jsonObject.getString("password")))){
-            dataBase.end();
             jsonResult.put("error", "Email or password incorrect");
             return sendResponse(405, jsonResult.toString(), "PUT");
         }
@@ -90,7 +85,6 @@ public class AuthRest extends OriginRest{
         String token = generateToken(jsonObject.getString("email"));
         String playerName = dataBase.getPseudoWithEmail(jsonObject.getString("email"));
         if(model.createPlayer(playerName, token)){
-            dataBase.end();
             jsonResult.put("token", token);
             jsonResult.put("playerName", playerName);
             return sendResponse(200, jsonResult.toString(), "PUT");
@@ -116,7 +110,6 @@ public class AuthRest extends OriginRest{
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
         DataBaseManagement dataBase = new DataBaseManagement();
-        dataBase.connect();
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         // Verification de l'existante des variables
@@ -144,8 +137,8 @@ public class AuthRest extends OriginRest{
         }
 
         // Insertion dans la bdd
-        if(!dataBase.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")))){
-            dataBase.end();
+        //TODO: Ajouter l'objet user type au JSON
+        if(!dataBase.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")), "member")){
             jsonResult.put("error", "Player already exist");
             return sendResponse(405, jsonResult.toString(), "POST");
         }
@@ -159,6 +152,31 @@ public class AuthRest extends OriginRest{
 
         jsonResult.put("error", "Player already exist");
         return sendResponse(405, jsonResult.toString(), "POST");
+    }
+
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response signOut(@HeaderParam("token") String token) throws JSONException {
+        JSONObject jsonResult = new JSONObject();
+        Model model = Model.getInstance();
+
+        if(token == null){
+            jsonResult.put("error", "Token miss");
+            return sendResponse(405, jsonResult.toString(), "DELETE");
+        }
+
+        if(model.getPlayerFromList(token) == null){
+            jsonResult.put("error", "Player not exist by token");
+            return sendResponse(405, jsonResult.toString(), "DELETE");
+        }
+
+        if(model.removePlayer(token)){
+            jsonResult.put("status", true);
+            return sendResponse(200, jsonResult.toString(), "DELETE");
+        }
+
+        jsonResult.put("status", false);
+        return sendResponse(405, jsonResult.toString(), "DELETE");
     }
 
 }

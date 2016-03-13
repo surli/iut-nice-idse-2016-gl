@@ -1,8 +1,8 @@
 package fr.unice.idse.model;
 
-import java.util.ArrayList;
+import fr.unice.idse.model.player.Player;
 
-import fr.unice.idse.model.card.Card;
+import java.util.ArrayList;
 
 public class Game {
 	
@@ -15,9 +15,7 @@ public class Game {
 	{
 			this.host = host;
 			this.gameName = gameName;
-			//this.players = new ArrayList<Player>();
 			this.board = new Board();
-			this.board.getPlayers().add(host);
 			this.numberPlayers = numberOfPlayers;
 	}
 
