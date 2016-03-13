@@ -7,10 +7,7 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import javax.smartcardio.ResponseAPDU;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.security.NoSuchAlgorithmException;
@@ -154,6 +151,31 @@ public class AuthRest extends OriginRest{
 
         jsonResult.put("error", "Player already exist");
         return sendResponse(405, jsonResult.toString(), "POST");
+    }
+
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response signOut(@HeaderParam("token") String token) throws JSONException {
+        JSONObject jsonResult = new JSONObject();
+        Model model = Model.getInstance();
+
+        if(token == null){
+            jsonResult.put("error", "Token miss");
+            return sendResponse(405, jsonResult.toString(), "DELETE");
+        }
+
+        if(model.getPlayerFromList(token) == null){
+            jsonResult.put("error", "Player not exist by token");
+            return sendResponse(405, jsonResult.toString(), "DELETE");
+        }
+
+        if(model.removePlayer(token)){
+            jsonResult.put("status", true);
+            return sendResponse(200, jsonResult.toString(), "DELETE");
+        }
+
+        jsonResult.put("status", false);
+        return sendResponse(405, jsonResult.toString(), "DELETE");
     }
 
 }
