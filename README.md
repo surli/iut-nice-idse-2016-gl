@@ -37,6 +37,18 @@ Tous les documents de chaque groupe se trouve dans le repertoire doc à la racin
 
 ###Release
 
+>######Version 0.4
+
+- Multi-langue
+- Pouvoir quitter une room
+- Pouvoir quitter une partie en cours
+- Se deconnecter 
+- Changement de couleur (+4 et carte changement couleur)
+- Ajout des actions des cartes spéciales
+- IA Basique
+- Refractoring IHM/REST
+
+
 >######Version 0.3.1
 
 - Correction de la distribution des cartes
