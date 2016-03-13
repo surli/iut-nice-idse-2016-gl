@@ -57,8 +57,26 @@ public class AuthRestTest extends JerseyTest {
         assertEquals(200, response.getStatus());
 
         jsonEntity = Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON);
-        Response response2 = target("/auth").request().post(jsonEntity);
-        assertEquals(405, response2.getStatus());
+        response = target("/auth").request().post(jsonEntity);
+        assertEquals(405, response.getStatus());
         assertEquals(1, model.getPlayers().size());
+    }
+
+    @Test
+    public void deconnecterUnJouerQuiExiste() throws JSONException{
+        jsonObject.put("playername", "cruptus");
+        Entity<String> jsonEntity = Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON);
+        Response response = target("/auth").request().post(jsonEntity);
+        assertEquals(200, response.getStatus());
+        assertEquals(1, model.getPlayers().size());
+
+        JSONObject jsonResult = new JSONObject(response.readEntity(String.class));
+        response = target("/auth").request().header("token", jsonResult.getString("token")).delete();
+
+        jsonResult = new JSONObject(response.readEntity(String.class));
+        System.out.println(jsonResult);
+        assertEquals(200, response.getStatus());
+        assertEquals(0, model.getPlayers().size());
+
     }
 }
