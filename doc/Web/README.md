@@ -1,37 +1,85 @@
-## Init Project
+# UNO Interface Web [IHM]
 
-Run `npm install` for install npm dependencies.
+### Table of contents
 
-Run `npm install bower -g` for install bower and `bower install` for install bower dependencies.
+- [Contributors](#contributors)
+- [Introduction](#introduction)
+- [Install](#install)
+- [Launch](#launch)
+- [Running test](#running-test)
+- [TODO](#todo)
+- [Documentation](#Documentation)
 
-Run `npm install grunt-cli -g` for install Grunt.
+### Contributors
 
-Run `gem install sass` for install Sass.
+* Jeremy Froment
+* Teva Locandro
+* Nicolas Claisse
 
-Run `gem install compass` for install Compass.
+### Introduction 
 
+##### Arbo structure
 
-## If gem don't run (Windows)
+```
+/webuno
+├── /app 
+│   ├── /images          
+│   ├── /scripts           
+│   ├── /styles 
+│   ├── /views 
+├── /bower_components
+├── /dist
+├── /test 
+├── /WEB-INF
+├── bower.json
+├── Gruntfile.js
+├── package.json
+```
 
-Go to `http://rubyinstaller.org/downloads/` and download `Ruby.2.1.7 or 2.1.7(x64)`
+#### Install
 
-If `2.1.7` or `2.1.7(x64)` download old version.
+Run this command for install npm dependencies :
+```
+npm install
+```
 
-Double click `ruby installer` click `add PATH environnement` and finish install.
+#### Development
 
-Source in french : http://www.codesscripts.fr/installer-ruby-sass-et-compass-avec-le-terminal-windows/
+Run this command for start development :
+```
+npm start
+```
 
+#### Testing
 
-## Build & Development
+Run this command for start run the unit tests with karma :
+```
+npm test
+```
 
-Run `grunt` or `grunt --force` for building and `grunt serve` for preview.
+#### Build
 
+Running this command for build (run build.sh) :
+```
+npm run build
+```
 
-## Testing
+### TODO
 
-Running `grunt test` will run the unit tests with karma.
+* Complete this README
+* Create a functional interface
+* Users can play UNO
 
+### Documentation
 
-## Documentation Yeoman
+#### Yeoman
 
 https://github.com/yeoman/generator-angular#readme
+
+#### AngularJS
+
+https://docs.angularjs.org/guide/
+
+#### GruntJs 
+
+http://gruntjs.com/getting-started

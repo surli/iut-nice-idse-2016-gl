@@ -52,7 +52,7 @@ public class Alternative
 	{
 		for (EffectCard rule : actions)
 		{
-			if (rule.isEffect(card) && rule.getEffect()) 
+			if (rule.isEffect(card))
 			{
 				return rule;
 			}

@@ -1,64 +1,103 @@
 'use strict';
 
 angular.module('unoApp')
-    .service('Auth', function (localStorageService, $http, $q) {
+    /**
+     * Service Auth
+     * Gère et centralise l'authentification (connexion/inscription) utilisateur
+     */
+    .service('Auth', function (localStorageService, HttpRequest) {
         return {
+            /**
+             * Retourne l'utilisateur en session
+             */
             getUser: function () {
                 return localStorageService.get('user');
             },
+            /**
+             * Permet la connexion d'un utilisateur avec pseudo et mot de passe
+             *
+             * @param newUser
+             * @returns {*}
+             */
             setUser: function (newUser) {
-                var deferred = $q.defer();
-
-                $http.put('/rest/auth', {
-                    email: newUser.email,
-                    password: sha1(newUser.password)
-                }).then(function (response) {
-                    deferred.resolve(response);
-                }, function (error) {
-                    deferred.reject(error);
+                return HttpRequest.send({
+                    method: 'put',
+                    url: 'rest/auth',
+                    data: {
+                        email: newUser.email,
+                        password: CryptoJS.SHA1(newUser.password)
+                    }
                 });
-
-                return deferred.promise;
             },
+            /**
+             * Permet la connexion d'un utilisateur en tant qu'invité
+             *
+             * @param playername
+             * @returns {*}
+             */
             setUserGuess: function (playername) {
-                var deferred = $q.defer();
-
-                $http.post('/rest/auth', {
-                    playername: playername
-                }).then(function (response) {
-                    deferred.resolve(response);
-                }, function (error) {
-                    deferred.reject(error);
+                return HttpRequest.send({
+                    method: 'post',
+                    url: 'rest/auth',
+                    data: {
+                        playername: playername
+                    }
                 });
-
-                return deferred.promise;
             },
+            /**
+             * Insert un utilisateur dans la session
+             *
+             * @param newUser
+             */
             connectUser: function (newUser) {
                 localStorageService.set('user', newUser);
             },
+            /**
+             * Retourne si l'utilisateur est connecté ou non
+             *
+             * @returns {boolean}
+             */
             isConnected: function () {
                 return !!localStorageService.get('user');
             },
+            /**
+             * Supprime l'utilisateur en session
+             */
             destroyUser: function () {
                 localStorageService.remove('user');
             },
-            registerUser: function (newUser) {
-                var deferred = $q.defer();
 
-                $http.post('/rest/auth/signup', {
+            /**
+             * Permet de déconnecter l'utilisateur courant
+             *
+             * @returns {*}
+             */
+            decoUser: function() {
+                return HttpRequest.send({
+                    method: 'delete',
+                    url: 'rest/auth',
+                    headers: {
+                        token: this.getUser().token
+                    }
+                });
+            },
+
+            /**
+             * Permet l'inscription d'un utilisateur
+             *
+             * @param newUser
+             * @returns {*}
+             */
+            registerUser: function (newUser) {
+                return HttpRequest.send({
+                    method: 'post',
+                    url: 'rest/auth/signup',
+                    data: {
                         email: newUser.email,
                         playerName: newUser.name,
-                        password: sha1(newUser.password)
-                    })
-                    .then(function (response) {
-                        console.log(response);
-                        deferred.resolve(response);
-                    }, function (error) {
-                        console.log(error);
-                        deferred.reject(error);
-                    });
-
-                return deferred.promise;
+                        password: CryptoJS.SHA1(newUser.password)
+                    }
+                });
             }
         };
     });

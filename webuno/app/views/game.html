@@ -1,9 +1,10 @@
 <div class="container">
     <div class="players col-md-12">
-        <div data-ng-repeat="player in game.players" data-ng-if="player.name != user.name" class="player col-md-{{12 / (game.players.length-1)}} {{(player.name == currentPlayer) ? 'current-player' : ''}}">
+        <div data-ng-repeat="player in game.players" data-ng-if="player.name != user.name"
+             class="player col-md-{{12 / (game.players.length-1)}} {{(player.name == currentPlayer) ? 'current-player' : ''}}">
             <span class="player-name">{{player.name}}</span>
-            <br />
-            <span class="player-cartes">{{player.cartes}} carte{{(player.cartes > 1) ? "s" : ""}}</span>
+            <br/>
+            <span class="player-cartes">{{player.cartes}} {{'CARD' | translate}}{{(player.cartes > 1) ? "s" : ""}}</span>
         </div>
     </div>
 </div>
@@ -23,8 +24,27 @@
 
 <div class="modal fade myModalCurrentPlayer" tabindex="-1" role="dialog" aria-labelledby="modalCurrentPlayer">
     <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            À {{ (currentPlayer == user.name) ? "toi" : currentPlayer }} de jouer !
+        <div class="modal-content" data-ng-if="currentPlayer == user.name">
+            {{'TURN_YOUR' | translate}}
+        </div>
+        <div class="modal-content" data-ng-if="currentPlayer != user.name">
+            {{'TURN' | translate: '{ username : "'+currentPlayer+'" }'}}
+        </div>
+    </div>
+</div>
+
+<div class="modal fade myModalColorChoose" tabindex="-1" role="dialog" aria-labelledby="modalColorChoose">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content colorChoose">
+            <h1>{{'PICK_COLOR' | translate}}</h1>
+            <div class="col-md-12 colorChooseRow">
+                <div class="colorChooseContent colorChooseYellow col-md-6" data-ng-click="chooseColor('Yellow')"></div>
+                <div class="colorChooseContent colorChooseGreen col-md-6" data-ng-click="chooseColor('Green')"></div>
+            </div>
+            <div class="col-md-12 colorChooseRow">
+                <div class="colorChooseContent colorChooseBlue col-md-6" data-ng-click="chooseColor('Blue')"></div>
+                <div class="colorChooseContent colorChooseRed col-md-6" data-ng-click="chooseColor('Red')"></div>
+            </div>
         </div>
     </div>
 </div>
