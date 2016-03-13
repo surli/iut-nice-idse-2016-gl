@@ -147,6 +147,8 @@ public class Board
 	 */
 	public void init()
 	{
+		for(Player player : players)
+			player.setCards(new ArrayList<>());
 		deck.initDeck();
 		for(int j = 0; j < 7; j++)
 		{
