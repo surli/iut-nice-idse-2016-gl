@@ -1,9 +1,8 @@
-package fr.unice.idse.model;
-
-
+package fr.unice.idse.model.player;
 import java.util.ArrayList;
 import java.util.Collections;
 import fr.unice.idse.model.card.*;
+import fr.unice.idse.model.Board;
 
 public class Player implements Comparable<Player>{
 	private String name;
@@ -13,7 +12,7 @@ public class Player implements Comparable<Player>{
 	private int score;
 	private boolean dealer;
 	private String token;
-	
+
 	public Player(String name, String token)
 	{
 		this.name = name;
@@ -71,8 +70,8 @@ public class Player implements Comparable<Player>{
 	public void setDealer(boolean dealer) {
 		this.dealer = dealer;
 	}
-	
-	
+
+
 	public String getToken() {
 		return token;
 	}
@@ -83,14 +82,14 @@ public class Player implements Comparable<Player>{
 
 	public boolean play(int cardPosition,Board board)
 	{
-		return false;	
+		return false;
 	}
-	
+
 	public void sortCards()
 	{
 		Collections.sort(this.cards);
 	}
-	
+
 	public void calculatePoints()
 	{
 		for(Card card:cards)
@@ -127,20 +126,20 @@ public class Player implements Comparable<Player>{
 					this.score+=9;
 					break;
 				case Skip: case Reverse: case DrawTwo:
-					this.score+=20;
-					break;
+				this.score+=20;
+				break;
 				case Wild: case DrawFour:
-					this.score+=50;
-					break;
+				this.score+=50;
+				break;
 			}
 		}
 	}
-	
+
 	@Override
 	public int compareTo(Player player) {
-		
+
 		return ((Integer)score).compareTo(player.getScore());
-		
+
 	}
 
 	@Override
@@ -194,7 +193,5 @@ public class Player implements Comparable<Player>{
 			return false;
 		return true;
 	}
-	
-	
-	
+
 }

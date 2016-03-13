@@ -3,7 +3,7 @@ package services;
 import fr.unice.idse.constante.Config;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
-import fr.unice.idse.model.Player;
+import fr.unice.idse.model.player.Player;
 import fr.unice.idse.services.AuthRest;
 import fr.unice.idse.services.GameRest;
 import org.codehaus.jettison.json.JSONException;

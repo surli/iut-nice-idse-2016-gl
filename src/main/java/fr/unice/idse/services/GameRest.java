@@ -14,7 +14,7 @@ import fr.unice.idse.model.Alternative;
 import fr.unice.idse.model.Board;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
-import fr.unice.idse.model.Player;
+import fr.unice.idse.model.player.Player;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;

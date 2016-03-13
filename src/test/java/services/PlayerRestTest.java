@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
-import fr.unice.idse.model.Player;
+import fr.unice.idse.model.player.Player;
 import fr.unice.idse.services.PlayerRest;
 
 import javax.ws.rs.core.Application;

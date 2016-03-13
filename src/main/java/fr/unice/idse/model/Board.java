@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.player.Player;
 
 public class Board 
 {

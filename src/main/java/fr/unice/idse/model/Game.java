@@ -1,5 +1,7 @@
 package fr.unice.idse.model;
 
+import fr.unice.idse.model.player.Player;
+
 import java.util.ArrayList;
 
 public class Game {

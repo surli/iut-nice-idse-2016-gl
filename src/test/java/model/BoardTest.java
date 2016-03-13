@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import fr.unice.idse.model.Board;
-import fr.unice.idse.model.Player;
+import fr.unice.idse.model.player.Player;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
