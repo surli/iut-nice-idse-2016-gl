@@ -70,6 +70,11 @@ jetty:run
 ├── /auth
 │   ├── POST            Authentifie un Guest en renvoyant un token
 │   ├── PUT             Authentifie un joueur avec ses identifiants
+│   ├── DELETE          Deconnecte un joueur 
+│   ├── /signup             
+│   │   ├── POST        Inscrit un joueur et l'ajoute dans la bdd
+
+
 ```
 
 Chaque route doit posseder un Token dans le header pour nom _token
