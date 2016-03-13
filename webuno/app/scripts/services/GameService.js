@@ -178,7 +178,6 @@ angular.module('unoApp')
              * @returns {*}
              */
             quitRoom: function (gameName) {
-                console.log("Auth", Auth.getUser());
                 return HttpRequest.send({
                     method: 'delete',
                     url: 'rest/game/' + gameName + '/' + Auth.getUser().name,
