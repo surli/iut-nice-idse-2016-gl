@@ -3,20 +3,20 @@
         <div data-ng-if="error" class="alert alert-danger">
             {{error}}
         </div>
-        <h1 class="title-uno">Game configuration</h1>
+        <h1 class="title-uno" translate="GAME_CONF"></h1>
         <br />
         <div class="panel panel-default">
             <div class="panel-body">
                 <form class="form-horizontal" data-ng-submit="goGame()">
                     <div class="form-group">
-                        <label for="username" class="col-md-4 control-label">Game name</label>
+                        <label for="username" class="col-md-4 control-label" translate="GAME_NAME"></label>
                         <div class="col-md-8">
-                            <input id="username" class="form-control input-lg" type="text" data-ng-model="game" placeholder="Game name"/>
+                            <input id="username" class="form-control input-lg" type="text" data-ng-model="game" placeholder="{{'GAME_NAME' | translate}}"/>
                         </div>
                     </div>
                     <hr style="border-color: rgba(0, 0, 0, 0.2);">
                     <div class="form-group">
-                        <label for="nbPlayers" class="col-md-4 control-label">Number players</label>
+                        <label for="nbPlayers" class="col-md-4 control-label" translate="NB_PLAYERS"></label>
                         <div class="col-md-8">
                             <select class="form-control input-lg" name="nbPlayers" data-ng-model="nbPlayers" id="nbPlayers">
                                 <option value="2">2</option>
@@ -29,7 +29,7 @@
                     </div>
                     <br />
                     <br />
-                    <button type="submit" class="btn btn-lg btn-success" style="font-size: 24pt;">GO !</button>
+                    <button type="submit" class="btn btn-lg btn-success" style="font-size: 24pt;" translate="GO"></button>
                 </form>
             </div>
         </div>

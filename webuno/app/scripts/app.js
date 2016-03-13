@@ -117,8 +117,8 @@ angular
      */
     .config(function ($translateProvider) {
         $translateProvider
-        .useSanitizeValueStrategy(null)
-        .translations('en_EN', {
+            .useSanitizeValueStrategy(null)
+            .translations('en_EN', {
                 EMAIL: 'Email',
                 NAME: 'Name',
                 PASSWORD: 'Password',
@@ -141,7 +141,11 @@ angular
                 CARD: 'card',
                 TURN: 'It\'s {{username}} turn',
                 TURN_YOUR: 'It\'s your turn',
-                PICK_COLOR: 'Pick a color'
+                PICK_COLOR: 'Pick a color',
+                GAME_CONF: 'Game configuration',
+                GAME_NAME: 'Game name',
+                NB_PLAYERS: 'Number players',
+                GO: 'Let\'s go !'
             })
             .translations('fr_FR', {
                 EMAIL: 'Email',
@@ -166,7 +170,11 @@ angular
                 CARD: 'carte',
                 TURN: 'C\'est à {{username}} de jouer',
                 TURN_YOUR: 'C\'est à toi de jouer',
-                PICK_COLOR: 'Choisis ta couleur'
+                PICK_COLOR: 'Choisis ta couleur',
+                GAME_CONF: 'Configuration de la partie',
+                GAME_NAME: 'Nom de partie',
+                NB_PLAYERS: 'Nombre de joueurs',
+                GO: 'C\'est parti !'
             })
             .determinePreferredLanguage();
     })
