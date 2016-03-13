@@ -6,17 +6,19 @@ angular.module('unoApp')
      * Gère le jeu/la partie du jeu uno
      */
     .controller('GameController', ['$rootScope', '$scope', '$http', '$state', '$stateParams', '$timeout', 'Game', function ($rootScope, $scope, $http, $state, $stateParams, $timeout, Game) {
+        // On récupère id de la room passé en paramètre dans l'url
+        $rootScope.gameName = $stateParams.name;
         var timeoutStateGame;
         $scope.currentPlayer = '';
 
         // Utilisation du service Game pour récupérer la main du joueur connecté
-        Game.getUserHand($stateParams.name)
+        Game.getUserHand($rootScope.gameName)
             .then(function (response) {
                 $scope.cartes = response.data.cartes;
             });
 
         // Utilisation du service Game pour récupérer le statut du jeu
-        Game.getGame($stateParams.name)
+        Game.getGame($rootScope.gameName)
             .then(function (response) {
                 if (response.data.error) {
                     $timeout.cancel(timeoutStateGame);
@@ -35,7 +37,7 @@ angular.module('unoApp')
             // Timer toutes les 2 secondes
             timeoutStateGame = $timeout(function () {
                 // Utilisation du service Game pour récupérer l'état du jeu
-                Game.getGame($stateParams.name)
+                Game.getGame($rootScope.gameName)
                     .then(function (response) {
                         if (response.data.error) {
                             $timeout.cancel(timeoutStateGame);
@@ -44,7 +46,7 @@ angular.module('unoApp')
                             $scope.game = response.data;
 
                             // Utilisation du service Game pour récupérer le joueur devant jouer
-                            Game.getCurrentPlayer($stateParams.name)
+                            Game.getCurrentPlayer($rootScope.gameName)
                                 .then(function (response) {
                                     // Si le joueur n'est pas le même qu'à la précédente requête
                                     // alors une modal apparait avec le nom du joueur devant jouer
@@ -58,7 +60,7 @@ angular.module('unoApp')
                                 });
 
                             // Utilisation du service Game pour récupérer la main du joueur connecté
-                            Game.getUserHand($stateParams.name)
+                            Game.getUserHand($rootScope.gameName)
                                 .then(function (response) {
                                     $scope.cartes = response.data.cartes;
                                 });
@@ -76,10 +78,10 @@ angular.module('unoApp')
         // Fonction qui permet au joueur connecté de piocher une carte
         $scope.piocherCarte = function () {
             // Utilisation du service Game pour piocher une carte
-            Game.drawCard($stateParams.name)
+            Game.drawCard($rootScope.gameName)
                 .then(function () {
                     // Utilisation du service Game pour récupérer la main du joueur connecté
-                    Game.getUserHand($stateParams.name)
+                    Game.getUserHand($rootScope.gameName)
                         .then(function (response) {
                             $scope.cartes = response.data.cartes;
                         });
@@ -94,18 +96,18 @@ angular.module('unoApp')
                 $scope.chooseColor = function(color) {
                     carte.setcolor = color;
                     // Utilisation du service Game pour jouer une carte
-                    Game.playCard($stateParams.name, carte)
+                    Game.playCard($rootScope.gameName, carte)
                         .then(function () {
                             jQuery('.myModalColorChoose').modal('hide');
 
                             // Utilisation du service Game pour récupérer la main du joueur connecté
-                            Game.getUserHand($stateParams.name)
+                            Game.getUserHand($rootScope.gameName)
                                 .then(function (response) {
                                     $scope.cartes = response.data.cartes;
                                 });
 
                             // Utilisation du service Game pour récupérer l'état du jeu
-                            Game.getGame($stateParams.name)
+                            Game.getGame($rootScope.gameName)
                                 .then(function (response) {
                                     $scope.game = response.data;
                                 });
@@ -113,16 +115,16 @@ angular.module('unoApp')
                 };
             } else {
                 // Utilisation du service Game pour jouer une carte
-                Game.playCard($stateParams.name, carte)
+                Game.playCard($rootScope.gameName, carte)
                     .then(function () {
                         // Utilisation du service Game pour récupérer la main du joueur connecté
-                        Game.getUserHand($stateParams.name)
+                        Game.getUserHand($rootScope.gameName)
                             .then(function (response) {
                                 $scope.cartes = response.data.cartes;
                             });
 
                         // Utilisation du service Game pour récupérer l'état du jeu
-                        Game.getGame($stateParams.name)
+                        Game.getGame($rootScope.gameName)
                             .then(function (response) {
                                 $scope.game = response.data;
                             });
@@ -133,13 +135,15 @@ angular.module('unoApp')
         // Évènement qui permet de stopper le timer et quitter la room quand on quitte le contrôleur RoomController
         $scope.$on('$destroy', function () {
             $timeout.cancel(timeoutStateGame);
-            if ($scope.game.state === false) {
-                Game.quitRoom($stateParams.name);
+            if ($scope.game.state === false && !$rootScope.logout) {
+                Game.quitRoom($rootScope.gameName);
             }
         });
 
         // Évènement qui permet de quitter la room quand on ferme l'onglet contenant la room
         window.onbeforeunload = function () {
-            Game.quitRoom($stateParams.name);
+            if (!$rootScope.logout) {
+                Game.quitRoom($rootScope.gameName);
+            }
         };
     }]);

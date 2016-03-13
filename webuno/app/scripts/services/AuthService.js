@@ -66,6 +66,22 @@ angular.module('unoApp')
             destroyUser: function () {
                 localStorageService.remove('user');
             },
+
+            /**
+             * Permet de déconnecter l'utilisateur courant
+             *
+             * @returns {*}
+             */
+            decoUser: function() {
+                return HttpRequest.send({
+                    method: 'delete',
+                    url: 'rest/auth',
+                    headers: {
+                        token: this.getUser().token
+                    }
+                });
+            },
+
             /**
              * Permet l'inscription d'un utilisateur
              *

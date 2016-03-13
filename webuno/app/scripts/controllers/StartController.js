@@ -32,7 +32,7 @@ angular.module('unoApp')
                         $scope.error = 'An error occured : ' + error;
                     });
             } else {
-                $scope.error = '3 characters minimum required to name the game';
+                $scope.error = '4 characters minimum required to name the game';
             }
         };
     }]);

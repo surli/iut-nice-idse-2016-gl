@@ -5,7 +5,7 @@ angular.module('unoApp')
      * Contrôleur global AppController de la route /app
      * Gère l'ensemble de l'application une fois un utilisateur connecté
      */
-    .controller('AppController', ['$rootScope', '$scope', '$state', '$translate', 'Auth', function ($rootScope, $scope, $state, $translate, Auth) {
+    .controller('AppController', ['$rootScope', '$scope', '$state', '$translate', 'Auth', 'Game', function ($rootScope, $scope, $state, $translate, Auth, Game) {
         // Si l'utilisateur n'est pas connecté alors il est redirigé vers la page de connexion
         // sinon $scope.user contient les données utlisateur
         if (!Auth.isConnected()) {
@@ -16,8 +16,29 @@ angular.module('unoApp')
 
         // Fonction qui permet de détruire l'utilisateur et de le rediriger vers la page de connexion
         $scope.goLogout = function() {
-            Auth.destroyUser();
-            $state.go('login');
+            if ($state.current.name === 'app.room' || $state.current.name === 'app.game') {
+                $rootScope.logout = true;
+                Game.quitRoom($rootScope.gameName)
+                    .then(function(response) {
+                        if (response.status === 200) {
+                            Auth.decoUser()
+                                .then(function(response) {
+                                    if (response.status === 200) {
+                                        Auth.destroyUser();
+                                        $state.go('login');
+                                    }
+                                });
+                        }
+                    });
+            } else {
+                Auth.decoUser()
+                    .then(function(response) {
+                        if (response.status === 200) {
+                            Auth.destroyUser();
+                            $state.go('login');
+                        }
+                    });
+            }
         };
 
         $rootScope.lang = $translate.use();
