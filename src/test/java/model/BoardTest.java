@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import fr.unice.idse.model.Board;
@@ -145,5 +147,102 @@ public class BoardTest
 		board.setCptDrawCard(3);
 		board.drawCard();
 		assertTrue(toto.getCards().size() == 3);
+	}
+	
+	@Test
+	public void testRotationSensHoraireDesJeuxDeCartesDesJoueurs()
+	{
+		Board board = new Board();
+		Player p1 = new Player("p1", "");
+		Player p2 = new Player("p2", "");
+		Player p3 = new Player("p3", "");
+		Player p4 = new Player("p4", "");
+		
+		ArrayList<Player> players=new ArrayList<Player>();
+		
+		players.add(p1);
+		players.add(p2);
+		players.add(p3);
+		players.add(p4);
+		
+		ArrayList<Card> deck1 = new ArrayList<Card>();
+		ArrayList<Card> deck2 = new ArrayList<Card>();
+		ArrayList<Card> deck3 = new ArrayList<Card>();
+		ArrayList<Card> deck4 = new ArrayList<Card>();
+
+		deck1.add(new Card(Value.Five ,Color.Blue));
+		deck1.add(new Card(Value.Six ,Color.Blue));
+		
+		deck2.add(new Card(Value.Five ,Color.Green));
+		deck2.add(new Card(Value.Six ,Color.Green));
+		
+		deck3.add(new Card(Value.Five ,Color.Red));
+		deck3.add(new Card(Value.Six ,Color.Red));
+		
+		deck4.add(new Card(Value.Five ,Color.Yellow));
+		deck4.add(new Card(Value.Six ,Color.Yellow));
+
+		p1.setCards(deck1);
+		p2.setCards(deck2);
+		p3.setCards(deck3);
+		p4.setCards(deck4);
+		
+		board.setPlayers(players);
+		board.rotatePlayerDecks();
+		
+		assertEquals(deck4,p1.getCards());
+		assertEquals(deck1,p2.getCards());
+		assertEquals(deck2,p3.getCards());
+		assertEquals(deck3,p4.getCards());
+	}
+	
+	@Test
+	public void testRotationSensNonHoraireDesJeuxDeCartesDesJoueurs()
+	{
+		Board board = new Board();
+		
+		board.changeMeaning();
+		
+		Player p1 = new Player("p1", "");
+		Player p2 = new Player("p2", "");
+		Player p3 = new Player("p3", "");
+		Player p4 = new Player("p4", "");
+		
+		ArrayList<Player> players=new ArrayList<Player>();
+		
+		players.add(p1);
+		players.add(p2);
+		players.add(p3);
+		players.add(p4);
+		
+		ArrayList<Card> deck1 = new ArrayList<Card>();
+		ArrayList<Card> deck2 = new ArrayList<Card>();
+		ArrayList<Card> deck3 = new ArrayList<Card>();
+		ArrayList<Card> deck4 = new ArrayList<Card>();
+
+		deck1.add(new Card(Value.Five ,Color.Blue));
+		deck1.add(new Card(Value.Six ,Color.Blue));
+		
+		deck2.add(new Card(Value.Five ,Color.Green));
+		deck2.add(new Card(Value.Six ,Color.Green));
+		
+		deck3.add(new Card(Value.Five ,Color.Red));
+		deck3.add(new Card(Value.Six ,Color.Red));
+		
+		deck4.add(new Card(Value.Five ,Color.Yellow));
+		deck4.add(new Card(Value.Six ,Color.Yellow));
+
+		p1.setCards(deck1);
+		p2.setCards(deck2);
+		p3.setCards(deck3);
+		p4.setCards(deck4);
+		
+		board.setPlayers(players);
+		board.rotatePlayerDecks();
+		
+		assertEquals(deck2,p1.getCards());
+		assertEquals(deck3,p2.getCards());
+		assertEquals(deck4,p3.getCards());
+		assertEquals(deck1,p4.getCards());
 	}
 }

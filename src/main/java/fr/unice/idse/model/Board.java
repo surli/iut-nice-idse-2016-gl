@@ -259,4 +259,33 @@ public class Board
 	{
 		return gameEnd;
 	}
+	
+	/**
+	 * Tourne les jeux dans le sens du jeu
+	 */
+	public void rotatePlayerDecks()
+	{
+		int numberOfPlayers = players.size();
+		if(numberOfPlayers>1)
+		{
+			if(meaning)
+			{
+				ArrayList<Card> temp=players.get(numberOfPlayers-1).getCards();
+				for(int i=numberOfPlayers-1;i>0;i--)
+				{
+					players.get(i).setCards(players.get(i-1).getCards());
+				}
+				players.get(0).setCards(temp);
+			}
+			else
+			{
+				ArrayList<Card> temp = players.get(0).getCards();
+				for(int i=0;i<numberOfPlayers-1;i++)
+				{
+					players.get(i).setCards(players.get(i+1).getCards());
+				}
+				players.get(numberOfPlayers-1).setCards(temp);
+			}
+		}	
+	}
 }
