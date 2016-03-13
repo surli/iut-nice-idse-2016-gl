@@ -139,8 +139,8 @@ angular
                 JOINED: 'joined',
                 JOINGAME: 'join the game',
                 CARD: 'card',
-                TURN: 'It\'s {{username}} turn !',
-                TURN_YOUR: 'It\'s your turn !',
+                TURN: 'It\'s {{username}} turn',
+                TURN_YOUR: 'It\'s your turn',
                 PICK_COLOR: 'Pick a color'
             })
             .translations('fr_FR', {
@@ -164,8 +164,8 @@ angular
                 JOINED: 'joueurs',
                 JOINGAME: 'a rejoint la partie',
                 CARD: 'carte',
-                TURN: 'C\'est à {{username}} de jouer !',
-                TURN_YOUR: 'C\'est à toi de jouer !',
+                TURN: 'C\'est à {{username}} de jouer',
+                TURN_YOUR: 'C\'est à toi de jouer',
                 PICK_COLOR: 'Choisis ta couleur'
             })
             .determinePreferredLanguage();

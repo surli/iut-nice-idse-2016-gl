@@ -14,6 +14,7 @@ angular.module('unoApp')
         Game.getGame($scope.gameName)
             .then(function (response) {
                 if (response.data.error) {
+                    $timeout.cancel(timeoutStateGame);
                     $state.go('login');
                 } else {
                     $scope.game = response.data;
@@ -21,6 +22,7 @@ angular.module('unoApp')
                 }
             }, function (error) {
                 if (error.data.error) {
+                    $timeout.cancel(timeoutStateGame);
                     $state.go('login');
                 } else {
                     $scope.requestStateGame();
@@ -86,6 +88,10 @@ angular.module('unoApp')
 
         // Évènement qui permet de quitter la room quand on ferme l'onglet contenant la room
         window.onbeforeunload = function () {
-            Game.quitRoom($scope.gameName);
+            if (confirm('Êtes-vous certain de vouloir quitter la partie ?')) {
+                Game.quitRoom($scope.gameName);
+            } else {
+                return null;
+            }
         };
     }]);
