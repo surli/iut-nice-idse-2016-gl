@@ -91,5 +91,59 @@ public class Player {
 	{
 		Collections.sort(this.cards);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cards == null) ? 0 : cards.hashCode());
+		result = prime * result + (dealer ? 1231 : 1237);
+		result = prime * result + ((lastCardPlayed == null) ? 0 : lastCardPlayed.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + score;
+		result = prime * result + ((token == null) ? 0 : token.hashCode());
+		result = prime * result + (turn ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Player other = (Player) obj;
+		if (cards == null) {
+			if (other.cards != null)
+				return false;
+		} else if (!cards.equals(other.cards))
+			return false;
+		if (dealer != other.dealer)
+			return false;
+		if (lastCardPlayed == null) {
+			if (other.lastCardPlayed != null)
+				return false;
+		} else if (!lastCardPlayed.equals(other.lastCardPlayed))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (score != other.score)
+			return false;
+		if (token == null) {
+			if (other.token != null)
+				return false;
+		} else if (!token.equals(other.token))
+			return false;
+		if (turn != other.turn)
+			return false;
+		return true;
+	}
+	
+	
 	
 }
