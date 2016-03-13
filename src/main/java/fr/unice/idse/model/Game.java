@@ -14,7 +14,6 @@ public class Game {
 			this.host = host;
 			this.gameName = gameName;
 			this.board = new Board();
-			this.board.getPlayers().add(host);
 			this.numberPlayers = numberOfPlayers;
 	}
 
