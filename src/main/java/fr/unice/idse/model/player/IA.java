@@ -25,5 +25,6 @@ public abstract class IA extends Player {
     public void reflexion(Board board) {
         System.out.println("C'est à l'IA de jouer");
     }
+   
 
 }

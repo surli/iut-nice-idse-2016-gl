@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fr.unice.idse.model.Game;
-import fr.unice.idse.model.Player;
+import fr.unice.idse.model.player.Player;
 
 
 public class GameTest {
