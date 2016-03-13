@@ -343,55 +343,6 @@ footer {
   }
 }
 
-/* OLD LOADER
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-#loader {
-  width: 4em;
-  height: 4em;
-  position: fixed;
-  left: 50%;
-  right: 50%;
-  top: 50%;
-  bottom: 50%;
-  margin-left: -2em;
-  margin-top: -2em;
-  content: "";
-  color: #FFF;
-  background-color: $rouge;
-  animation: rotate 2.5s infinite linear;
-  z-index: 9999;
-  transition: ease-out;
-  transition-duration: 2s;
-
-  &:before, &:after {
-    width: 4em;
-    height: 4em;
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-
-  &:before {
-    transform: rotate(60deg);
-    background-color: $vert;
-  }
-
-  &:after {
-    transform: rotate(-60deg);
-    background-color: $vert;
-  }
-}
-*/
-
 .players {
   padding: 10px;
 
@@ -532,5 +483,14 @@ footer {
     &:hover {
       background-color: darken($vert, 3%);
     }
+  }
+}
+
+.alert {
+  border: none;
+
+  &.alert-danger {
+    background-color: $rouge;
+    color: #FFF;
   }
 }

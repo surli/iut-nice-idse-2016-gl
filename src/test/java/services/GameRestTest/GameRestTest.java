@@ -359,9 +359,8 @@ public class GameRestTest extends JerseyTest {
          */
         Response response = target("/game").request().header("token", "token1223").post(jsonEntity);
         JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
-
-        assertEquals(500, response.getStatus());	
-        assertEquals("false", jsonObject.getString("message"));
+        assertEquals(405, response.getStatus());
+        assertEquals("Joueur inexistant", jsonObject.getString("error"));
 
     }
     
