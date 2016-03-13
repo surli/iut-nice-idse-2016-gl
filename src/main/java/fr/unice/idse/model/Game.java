@@ -2,8 +2,6 @@ package fr.unice.idse.model;
 
 import java.util.ArrayList;
 
-import fr.unice.idse.model.card.Card;
-
 public class Game {
 	
 	private Player host;

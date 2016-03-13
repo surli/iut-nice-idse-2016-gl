@@ -1,6 +1,8 @@
 package fr.unice.idse.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
@@ -287,5 +289,39 @@ public class Board
 				players.get(numberOfPlayers-1).setCards(temp);
 			}
 		}	
+	}
+	
+	/**
+	 * Calcul des points des joueurs
+	 */
+	public void calculatePoints()
+	{
+		if(gameEnd)
+		{
+			for(Player player:players)
+			{
+				player.calculatePoints();
+			}
+		}
+	}
+	
+	/**
+	 * Renvoie le classement de la partie
+	 * @return result
+	 */
+	public LinkedHashMap<String,Integer> ranking()
+	{
+		if(gameEnd)
+		{
+			LinkedHashMap<String,Integer> result=new LinkedHashMap<String, Integer>();
+			ArrayList<Player> players=(ArrayList<Player>) getPlayers().clone();
+			Collections.sort(players);
+			for(Player player:players)
+			{
+				result.put(player.getName(), player.getScore());
+			}
+			return result;
+		}
+		return null;
 	}
 }

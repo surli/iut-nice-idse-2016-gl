@@ -3,10 +3,9 @@ package fr.unice.idse.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import fr.unice.idse.model.card.*;
 
-import fr.unice.idse.model.card.Card;
-
-public class Player {
+public class Player implements Comparable<Player>{
 	private String name;
 	private ArrayList<Card> cards;
 	private boolean turn;
@@ -90,6 +89,58 @@ public class Player {
 	public void sortCards()
 	{
 		Collections.sort(this.cards);
+	}
+	
+	public void calculatePoints()
+	{
+		for(Card card:cards)
+		{
+			switch(card.getValue())
+			{
+				case Zero:
+					break;
+				case One:
+					this.score+=1;
+					break;
+				case Two:
+					this.score+=2;
+					break;
+				case Three:
+					this.score+=3;
+					break;
+				case Four:
+					this.score+=4;
+					break;
+				case Five:
+					this.score+=5;
+					break;
+				case Six:
+					this.score+=6;
+					break;
+				case Seven:
+					this.score+=7;
+					break;
+				case Eight:
+					this.score+=8;
+					break;
+				case Nine:
+					this.score+=9;
+					break;
+				case Skip: case Reverse: case DrawTwo:
+					this.score+=20;
+					break;
+				case Wild: case DrawFour:
+					this.score+=50;
+					break;
+			}
+		}
+	}
+	
+	@Override
+	public int compareTo(Player player) {
+		
+		return ((Integer)score).compareTo(player.getScore());
+		
 	}
 
 	@Override
