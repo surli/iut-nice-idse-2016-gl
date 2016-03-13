@@ -47,6 +47,7 @@ public class Model {
 		{
 			Game game = new Game(player,gameName,numberPlayers);
 			this.games.add(game);
+			addPlayerToGame(gameName, player);
 			return true;
 		}
 		return false;
