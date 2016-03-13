@@ -9,7 +9,18 @@ Pour cloner le projet :
 git clone https://{votrepseudo}@atlas.i3s.unice.fr/stash/scm/lpa/projet-s2.git
 ```
 
-Pour lancer installer les plugins et lancer le serveur REST :
+>Pour installer et tout lancer : 
+
+######Sous linux et windows : 
+```
+build.sh
+```
+######Sous Mac OS : 
+```
+sh build.sh
+```
+
+>Pour lancer installer les plugins et lancer le serveur REST :
 
 ######Sous Eclipse : 
 
