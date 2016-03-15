@@ -137,7 +137,7 @@ public class AuthRest extends OriginRest{
         }
 
         // Insertion dans la bdd
-        if(!dataBase.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")))){            jsonResult.put("error", "Player already exist");
+        if(!dataBase.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")), "4")){            jsonResult.put("error", "Player already exist");
             return sendResponse(405, jsonResult.toString(), "POST");
         }
 
