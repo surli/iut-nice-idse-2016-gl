@@ -35,6 +35,18 @@ CREATE TABLE IF NOT EXISTS `games`(
 UNIQUE (g_nom)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+--
+-- Structure de la table 'GAMES'
+-- Création de la table 
+--
+
+CREATE TABLE IF NOT EXISTS `statut`( 
+`s_id` INT(5) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+`s_libelle` VARCHAR (50),
+UNIQUE (s_libelle)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
 
 -- Structure de la table 'USERS'
 -- Création de la table 
@@ -44,9 +56,13 @@ CREATE TABLE IF NOT EXISTS `users`(
 `u_pseudo` VARCHAR (30) NOT NULL,
 `u_email` VARCHAR (50),
 `u_password` VARCHAR (64),
-`u_type` ENUM ('admin','member','bot','guest'),
+`u_statut` INT (5) NOT NULL,
 -- Ajout champ unique 
-UNIQUE (u_pseudo, u_email)
+UNIQUE (u_pseudo, u_email),
+-- Ajout des contraintes des clés étrangère
+CONSTRAINT fk_user_statut          
+		FOREIGN KEY (u_statut)            
+		REFERENCES statut(s_id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
