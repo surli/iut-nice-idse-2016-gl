@@ -249,12 +249,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `cards`
 --
 ALTER TABLE `cards`
-MODIFY `c_id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+MODIFY `c_id` int(5) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `games`
 --
 ALTER TABLE `games`
-MODIFY `g_id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+MODIFY `g_id` int(5) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `matchs`
 --
@@ -274,7 +274,7 @@ MODIFY `t_id` int(7) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-MODIFY `u_id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+MODIFY `u_id` int(5) NOT NULL AUTO_INCREMENT;
 --
 -- Contraintes pour les tables exportées
 --
