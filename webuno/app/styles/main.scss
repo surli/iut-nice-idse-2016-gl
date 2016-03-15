@@ -30,6 +30,16 @@ $carte-height: 360px*0.3;
 
 @media screen and (min-width: 200px) and (max-width: 640px) {
   #ingage {
+    font-size: 6vw;
+  }
+}
+
+#connect-guest {
+  font-size: 2vw;
+}
+
+@media screen and (min-width: 200px) and (max-width: 640px) {
+  #connect-guest {
     font-size: 7vw;
   }
 }
@@ -37,6 +47,8 @@ $carte-height: 360px*0.3;
 .btn {
   color: #FFF;
   border: none;
+  border-bottom: 3px outset;
+  border-radius: 15px;
 
   &:focus, &:focus:active {
     outline: none;
@@ -47,37 +59,45 @@ $carte-height: 360px*0.3;
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
   }
 
-  .btn-primary {
+  &.btn-primary {
+    border-color: darken($bleu, 10%);
+
     &:hover, &:active, &:visited, &:focus {
       background-color: $bleu;
     }
   }
 
-  .btn-danger {
+  &.btn-danger {
+    border-color: darken($rouge, 10%);
+
     &:hover, &:active, &:visited, &:focus {
       background-color: $rouge;
     }
   }
 
-  .btn-success {
+  &.btn-success {
+    border-color: darken($vert, 1%) !important;
+
     &:hover, &:active, &:visited, &:focus {
       background-color: $vert;
     }
   }
 
-  .btn-warning {
+  &.btn-warning {
+    border-color: darken($orange, 10%);
+
     &:hover, &:active, &:visited, &:focus {
       background-color: $orange;
     }
   }
 }
 
-input, select {
-  border: none;
+.form-control, input, select {
+  border: none !important;
   text-align: center;
   color: $gris;
   border-radius: 5px;
-  font-family: Cabin, Georgia, Times, serif;;
+  font-family: Cabin, Georgia, Times, serif;
 
   &:focus {
     outline: none;
@@ -254,10 +274,6 @@ footer {
   box-sizing: border-box;
 }
 
-#start {
-
-}
-
 #game {
   margin: 0;
   padding: 20px;
@@ -327,55 +343,6 @@ footer {
   }
 }
 
-/* OLD LOADER
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-#loader {
-  width: 4em;
-  height: 4em;
-  position: fixed;
-  left: 50%;
-  right: 50%;
-  top: 50%;
-  bottom: 50%;
-  margin-left: -2em;
-  margin-top: -2em;
-  content: "";
-  color: #FFF;
-  background-color: $rouge;
-  animation: rotate 2.5s infinite linear;
-  z-index: 9999;
-  transition: ease-out;
-  transition-duration: 2s;
-
-  &:before, &:after {
-    width: 4em;
-    height: 4em;
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-
-  &:before {
-    transform: rotate(60deg);
-    background-color: $vert;
-  }
-
-  &:after {
-    transform: rotate(-60deg);
-    background-color: $vert;
-  }
-}
-*/
-
 .players {
   padding: 10px;
 
@@ -423,18 +390,107 @@ footer {
   border: none;
 }
 
-.modal-content {
-  min-height: 100%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  color: $blanc;
+.modal-sm {
+  .modal-content {
+    min-height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: $blanc;
+    text-align: center;
+    line-height: 100px;
+    background: $vert;
+    box-shadow: 0 0 5px 0 $vert;
+    font-size: 18pt;
+    border: none;
+  }
+}
+
+.language {
+  width: 25px;
+  height: 18px;
+  cursor: pointer;
+  border-radius: 50% !important;
+  border: 1px outset transparent;
+
+  &.active {
+    border-color: #FFF;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+
+.modal-lg {
   text-align: center;
-  line-height: 100px;
-  background: $vert;
-  box-shadow: 0 0 5px 0 $vert;
-  font-size: 18pt;
+  height: 400px;
+
+  // Case de choix d'une couleur
+  .colorChoose{
+    border: 1px solid white;
+    background-color: black;
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .colorChooseRow{
+    clear:both;
+  }
+
+  .colorChooseContent{
+    cursor: pointer !important;
+    float:left;
+    width:50%;
+    height:150px;
+  }
+
+  .colorChooseRed{
+    border-bottom-right-radius:100px 200px;
+    background-color: $rouge;
+
+    &:hover {
+      background-color: darken($rouge, 3%);
+    }
+  }
+
+  .colorChooseYellow{
+    border-top-left-radius:100px 200px;
+    background-color: $orange;
+
+    &:hover {
+      background-color: darken($orange, 3%);
+    }
+  }
+
+  .colorChooseBlue{
+    border-bottom-left-radius:100px 200px;
+    background-color: $bleu;
+
+    &:hover {
+      background-color: darken($bleu, 3%);
+    }
+  }
+
+  .colorChooseGreen{
+    border-top-right-radius:100px 200px;
+    background-color: $vert;
+
+    &:hover {
+      background-color: darken($vert, 3%);
+    }
+  }
+}
+
+.alert {
   border: none;
+
+  &.alert-danger {
+    background-color: $rouge;
+    color: #FFF;
+  }
 }

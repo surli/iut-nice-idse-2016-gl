@@ -1,27 +1,27 @@
 <div class="jumbotron">
   <button class="btn btn-success" id="ingage" data-ui-sref="app.start">
-    Start new game
+    {{'STARTNEWGAME' | translate}}
   </button>
 </div>
 <div class="col-md-8 col-md-offset-2">
   <div class="panel panel-default">
-    <div class="panel-heading text-center">All games</div>
+    <div class="panel-heading text-center">{{'ALLGAMES' | translate}}</div>
     <div class="panel-body text-center" style="padding:0;">
       <table class="table" data-ng-if="games.length > 0" style="margin: 0;">
         <tr data-ng-repeat="game in games">
           <td>{{game.gamename}}</td>
           <td>{{game.numberplayer}}/{{game.maxplayer}}</td>
-          <td>{{(game.state == "true") ? "Started" : ((game.numberplayer == game.maxplayer) ? "Full Players" : "Waiting for Players")}}</td>
+          <td>{{(game.state == "true") ? ('STARTED'|translate) : ((game.numberplayer == game.maxplayer) ? ('FULLPLAYERS'|translate) : ('WAITINGPLAYERS'|translate))}}</td>
           <td>
             <button class="btn btn-warning btn-sm"
                     data-ng-if="game.numberplayer != game.maxplayer"
                     data-ng-click="joinGame(game.gamename)">
-              Join
+              {{'JOIN' | translate}}
             </button>
           </td>
         </tr>
       </table>
-      <p style="padding: 15px;" data-ng-if="games.length == 0">There is no started games yet</p>
+      <p style="padding: 15px;" data-ng-if="games.length == 0">{{'NOGAMESSTARTED' | translate}}</p>
     </div>
   </div>
 </div>

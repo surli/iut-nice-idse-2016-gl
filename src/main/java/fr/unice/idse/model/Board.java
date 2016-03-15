@@ -1,9 +1,12 @@
 package fr.unice.idse.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.player.Player;
 
 public class Board 
 {
@@ -33,6 +36,7 @@ public class Board
 	}	
 
 	public void setActualColor(Color actualColor){ this.actualColor = actualColor; }
+	public Color getActualColor(){return this.actualColor; }
 
 	
 	public Alternative getAlternative()
@@ -146,6 +150,8 @@ public class Board
 	 */
 	public void init()
 	{
+		for(Player player : players)
+			player.setCards(new ArrayList<>());
 		deck.initDeck();
 		for(int j = 0; j < 7; j++)
 		{
@@ -178,7 +184,7 @@ public class Board
 	
 	/**
 	 * Retourne si une carte est jouable
-	 * @param Card
+	 * @param card
 	 */
 	public boolean askPlayableCard(Card card)
 	{
@@ -258,5 +264,68 @@ public class Board
 	public boolean gameEnd()
 	{
 		return gameEnd;
+	}
+	
+	/**
+	 * Tourne les jeux dans le sens du jeu
+	 */
+	public void rotatePlayerDecks()
+	{
+		int numberOfPlayers = players.size();
+		if(numberOfPlayers>1)
+		{
+			if(meaning)
+			{
+				ArrayList<Card> temp=players.get(numberOfPlayers-1).getCards();
+				for(int i=numberOfPlayers-1;i>0;i--)
+				{
+					players.get(i).setCards(players.get(i-1).getCards());
+				}
+				players.get(0).setCards(temp);
+			}
+			else
+			{
+				ArrayList<Card> temp = players.get(0).getCards();
+				for(int i=0;i<numberOfPlayers-1;i++)
+				{
+					players.get(i).setCards(players.get(i+1).getCards());
+				}
+				players.get(numberOfPlayers-1).setCards(temp);
+			}
+		}	
+	}
+	
+	/**
+	 * Calcul des points des joueurs
+	 */
+	public void calculatePoints()
+	{
+		if(gameEnd)
+		{
+			for(Player player:players)
+			{
+				player.calculatePoints();
+			}
+		}
+	}
+	
+	/**
+	 * Renvoie le classement de la partie
+	 * @return result
+	 */
+	public LinkedHashMap<String,Integer> ranking()
+	{
+		if(gameEnd)
+		{
+			LinkedHashMap<String,Integer> result=new LinkedHashMap<String, Integer>();
+			ArrayList<Player> players=(ArrayList<Player>) getPlayers().clone();
+			Collections.sort(players);
+			for(Player player:players)
+			{
+				result.put(player.getName(), player.getScore());
+			}
+			return result;
+		}
+		return null;
 	}
 }
