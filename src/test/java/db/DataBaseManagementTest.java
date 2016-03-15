@@ -24,7 +24,7 @@ public class DataBaseManagementTest {
 	//ajouter un parametre pour le statut dans addUser
 	@Test
 	public void addDeleteUpdateUserIsCorrect() throws SQLException {
-		assertTrue(dataBaseManagement.addUser("titi", "titi@gmail.com", "mypass", "4"));
+		assertTrue(dataBaseManagement.addUser("titi", "titi@gmail.com", "mypass", 4));
 		assertTrue(dataBaseManagement.userLoginIsCorrect("titi@gmail.com", "mypass"));
 		assertTrue(dataBaseManagement.getPseudoWithEmail("titi@gmail.com").equals("titi"));
 		assertTrue(dataBaseManagement.updateUserPseudo("titi@gmail.com", "mypass", "newtiti"));
