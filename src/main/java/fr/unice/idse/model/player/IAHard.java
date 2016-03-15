@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class IAHard extends IA {
 
-    public IAHard(String name, String token){
-        super(name, token);
+    public IAHard(String name, String token, int difficulty) {
+        super(name, token, difficulty);
     }
 
 }

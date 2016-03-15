@@ -8,65 +8,62 @@ import java.util.ArrayList;
 
 public class IAMedium extends IA {
 
-    public IAMedium(String name, String token){
-        super(name, token);
+    public IAMedium(String name, String token , int difficulty){
+        super(name, token , difficulty);
     }
-    
-    public Color chooseColor(Board board)
+	
+    public Color chooseColor(ArrayList<Card> mainIA)
 	{
-		ArrayList<Card> mainIA = board.getActualPlayer().getCards();
-		
 		int countB = 0;
 		int countG = 0;
 		int countR = 0;
 		int countY = 0;
 		int bestCount = countB;
 		Color bestColor = Color.Blue;
-		
+
 		for(Card aCard : mainIA)
 		{
 			if(aCard.getColor()== Color.Blue)
 			{
-				countB = countB +=1;
+				countB +=1;
 			}
-			
+
 			if(aCard.getColor()== Color.Green)
 			{
-				countG = countG +=1;
+				countG +=1;
 			}
-			
+
 			if(aCard.getColor()== Color.Red)
 			{
-				countR = countR +=1;
+				countR +=1;
 			}
-			
+
 			if(aCard.getColor()== Color.Yellow)
 			{
-				countY = countY +=1;
+				countY +=1;
 			}
 		}
-		
+
 		if(bestCount< countR)
 		{
-			countR = bestCount; 
+            bestCount = countR;
 			bestColor = Color.Red;
 		}
-	
+
 		if(bestCount < countG)
 		{
-			countG = bestCount;
+            bestCount = countG;
 			bestColor = Color.Green;
 		}
-		
+
 		if(bestCount < countY)
 		{
-			countY = bestCount;
+            bestCount = countY;
 			bestColor = Color.Yellow;
 		}
-		
-		
+
+
 		return bestColor;
 	}
-
 
 }
