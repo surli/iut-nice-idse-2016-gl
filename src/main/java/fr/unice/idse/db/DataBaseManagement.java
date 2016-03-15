@@ -1,12 +1,9 @@
 package fr.unice.idse.db;
 
 import fr.unice.idse.constante.*;
-import fr.unice.idse.model.card.*;
-
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -42,6 +39,14 @@ public class DataBaseManagement {
 		}
 	}
 
+	public boolean isSafeString(String str) {
+		return (str.matches("[a-zA-Z]*") || str.matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)+$"));
+	}
+
+	public boolean isSafeStatut(String statut) {
+		return (Integer.valueOf(statut) > 0 && Integer.valueOf(statut) < 6);
+	}
+
 	public boolean sqlBased(String... args) {
 		String query = args[0];
 		boolean select = false;
@@ -52,8 +57,10 @@ public class DataBaseManagement {
 			for (int i = 1; i < args.length; i++) {
 				if (StringUtils.isNumeric(args[i]))
 					ps.setInt(i, Integer.valueOf(args[i]));
-				else
+				else if (isSafeString(args[i]))
 					ps.setString(i, args[i]);
+				else
+					return false;
 			}
 			if (select) {
 				rs = ps.executeQuery();
@@ -67,61 +74,6 @@ public class DataBaseManagement {
 			e.printStackTrace();
 		}
 		return false;
-	}
-	
-	public int countPoints(ArrayList<Card> playerHand){
-		int result = 0;
-		for (Card c : playerHand){
-			switch(c.getValue().toString()){
-			case "Zero":
-				break;
-			case "One":
-				result += 1;
-				break;
-			case "Two":
-				result += 2;
-				break;
-			case "Three":
-				result += 3;
-				break;
-			case "Four":
-				result += 4;
-				break;
-			case "Five":
-				result += 5;
-				break;
-			case "Six":
-				result += 6;
-				break;
-			case "Seven":
-				result += 7;
-				break;
-			case "Eight":
-				result += 8;
-				break;
-			case "Nine":
-				result += 9;
-				break;
-			case "Skip":
-				result += 20;
-				break;
-			case "Reverse":
-				result += 20;
-				break;
-			case "DrawTwo":
-				result += 20;
-				break;
-			case "Wild":
-				result += 50;
-				break;
-			case "DrawFour":
-				result += 50;
-				break;
-			default:
-				throw new IllegalArgumentException("Invalide card value : " + c.getValue().toString());
-			}	
-		}
-		return result;
 	}
 
 	public String getPseudoWithEmail(String email) {
@@ -176,7 +128,7 @@ public class DataBaseManagement {
 	}
 
 	public boolean userLoginIsCorrect(String email, String password) {
-		String query = "SELECT u_email, u_password, u_type FROM users WHERE u_email = ? AND u_password = ? AND (u_type = 'admin' OR u_type = 'member')";
+		String query = "SELECT u_email, u_password FROM users WHERE u_email = ? AND u_password = ?";
 		if (sqlBased(query, email, password))
 			try {
 				if (rs.getString("u_email").equals(email) && rs.getString("u_password").equals(password))
@@ -190,29 +142,27 @@ public class DataBaseManagement {
 
 	public boolean ifUserAlreadyExistPseudoEmail(String pseudo, String email) {
 		String query = "SELECT u_pseudo, u_email FROM users WHERE u_pseudo = ? OR u_email = ?";
-		if (sqlBased(query, pseudo, email))
-			return true;
-		return false;
+		return (sqlBased(query, pseudo, email));
 	}
 
 	public boolean ifUserAlreadyExistPseudo(String pseudo) {
 		String query = "SELECT u_pseudo FROM users WHERE u_pseudo = ?";
-		if (sqlBased(query, pseudo))
-			return true;
-		return false;
+		return (sqlBased(query, pseudo));
 	}
 
 	public boolean ifUserAlreadyExistEmail(String email) {
 		String query = "SELECT u_pseudo FROM users WHERE u_pseudo = ?";
-		if (sqlBased(query, email))
-			return true;
-		return false;
+		return (sqlBased(query, email));
 	}
 
-	public boolean addUser(String pseudo, String email, String password, String type) {
-		if (!ifUserAlreadyExistPseudoEmail(pseudo, email)) {
-			String query = "INSERT INTO users (u_pseudo, u_email, u_password, u_type) VALUES (?, ?, ?, ?)";
-			if (sqlBased(query, pseudo, email, password, type))
+	/*
+	 * 1 banned 2 bot 3 guest 4 member 5 admin
+	 */
+
+	public boolean addUser(String pseudo, String email, String password, String statut) {
+		if (!ifUserAlreadyExistPseudoEmail(pseudo, email) && isSafeStatut(statut)) {
+			String query = "INSERT INTO users (u_pseudo, u_email, u_password, u_statut) VALUES (?, ?, ?, ?)";
+			if (sqlBased(query, pseudo, email, password, statut))
 				return true;
 		}
 		return false;
@@ -285,22 +235,10 @@ public class DataBaseManagement {
 		}
 		return false;
 	}
-	
-	public boolean updateUserType(String email, String password, String newType) {
-		if (userLoginIsCorrect(email, password)) {
-			String query = "UPDATE users SET u_type = ? WHERE u_email = ?";
-			if (sqlBased(query, newType, email))
-				if (userLoginIsCorrect(email, password))
-					return true;
-		}
-		return false;
-	}
 
 	public boolean ifGameAlreadyExistName(String name) {
 		String query = "SELECT g_nom FROM games WHERE g_nom = ?";
-		if (sqlBased(query, name))
-			return true;
-		return false;
+		return (sqlBased(query, name));
 	}
 
 	public boolean addGame(String name, int nbrMaxJoueur, int nbrMaxIA) {
