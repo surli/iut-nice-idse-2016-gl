@@ -151,7 +151,7 @@ public class Board
 	public void init()
 	{
 		for(Player player : players)
-			player.setCards(new ArrayList<>());
+			player.setCards(new ArrayList<Card>());
 		deck.initDeck();
 		for(int j = 0; j < 7; j++)
 		{
