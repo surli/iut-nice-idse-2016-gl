@@ -23,17 +23,20 @@
 ```
 /webuno
 ├── /app 
-│   ├── /images          
-│   ├── /scripts           
-│   ├── /styles 
-│   ├── /views 
-├── /bower_components
-├── /dist
-├── /test 
-├── /WEB-INF
-├── bower.json
-├── Gruntfile.js
-├── package.json
+│
+│   ├── /images         -> contient les images
+│   ├── /scripts        -> contient les appels des routes de l'apiREST, les controllers des vues et les fonctions permettant de pouvoir jouer au UNO et faire fonctionner l'application       
+│   ├── /styles         -> contient les styles
+│   ├── /views          -> contient les vues de l'application web.
+│
+├── /bower_components    -> composants permettant de faire fonctionner bower
+├── /node_modules        -> tout les modules permettant au bon fonctionnement de npm.
+├── /dist                -> 
+├── /test                -> contient les tests pour chaque controller
+├── /WEB-INF             ->
+├── bower.json           -> contient les packages pour bower
+├── Gruntfile.js         -> contient les packages pour grunt
+├── package.json         -> contient les packages pour npm
 ```
 
 #### Install
