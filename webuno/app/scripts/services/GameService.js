@@ -58,6 +58,22 @@ angular.module('unoApp')
             },
 
             /**
+             * Retourne la liste de toutes mes parties
+             *
+             * @param playerName
+             * @returns {*}
+             */
+            //getMyGames: function (playerName) {
+            //  return HttpRequest.send({
+            //    method: 'get',
+            //    url: 'rest/'+ playerName +'games',
+            //    headers: {
+            //      token: Auth.getUser().token
+            //    }
+            //  });
+            //},
+
+            /**
              * Retourne la main du joueur connecté
              *
              * @param gameName

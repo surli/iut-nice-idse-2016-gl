@@ -25,26 +25,27 @@
     </div>
   </div>
 </div>
+
 <!-- Mes parties -->
-<div class="col-md-4">
+<div class="col-md-4" >
     <div class="panel panel-default">
         <div class="panel-heading text-center">{{'MYGAMES' | translate}}</div>
         <div class="panel-body text-center" style="padding:0;">
-            <table class="table" data-ng-if=" games.playerName == 'toto' " style="margin: 0;">
-                <tr data-ng-repeat="game in games" >
-                    <td>{{game.gamename}}</td>
-                    <td>{{game.numberplayer}}/{{game.maxplayer}}</td>
-                    <td>Etat Partie</td>
+            <table class="table" data-ng-if=" games.playerName == user.name " style="margin: 0;">
+                <tr data-ng-repeat="mygame in mygames" >
+                    <td>{{mygame.gamename}}</td>
+                    <td>{{mygame.numberplayer}}/{{mygame.maxplayer}}</td>
+                    <td>Date</td>
                   <td>
                     <button class="btn btn-warning btn-sm"
-                            data-ng-if="game.numberplayer != game.maxplayer"
+                            data-ng-if="mygame.numberplayer != mygame.maxplayer"
                             data-ng-click="ResumeGame(game.gamename)">
                       {{'RESUME' | translate}}
                     </button>
                   </td>
                 </tr>
             </table>
-            <p style="padding: 15px;" data-ng-if="games.playerName != 'toto' ">{{'NOMYGAMESSTARTED' | translate}}</p>
+            <p style="padding: 15px;" data-ng-if="mygames.playerName != user.name ">{{'NOMYGAMESSTARTED' | translate}}</p>
         </div>
     </div>
 </div>
