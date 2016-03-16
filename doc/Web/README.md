@@ -30,7 +30,7 @@
 │   ├── /views          -> contient les vues de l'application web.
 │
 ├── /bower_components    -> composants permettant de faire fonctionner bower
-├── /node_modules        -> tout les modules permettant au bon fonctionnement de npm.
+├── /node_modules        -> tout les modules permettant au bon fonctionnement de npm
 ├── /dist                -> 
 ├── /test                -> contient les tests pour chaque controller
 ├── /WEB-INF             ->
