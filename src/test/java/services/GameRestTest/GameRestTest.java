@@ -58,28 +58,7 @@ public class GameRestTest extends JerseyTest {
      * Doit retourner un tableau vide vu qu'aucune partie n'a été créé
      * @throws JSONException
      */
-    @Test
-    public void retourneUnTableauVideSiAucuneGame() throws JSONException{
-        model.setGames(new ArrayList<Game>());
-        assertTrue(model.createPlayer("Aladin", "azertyuiop"));
-        Response response = target("/game").request().header("token", "azertyuiop").get();
-        assertEquals(200, response.getStatus());
 
-        // Parse la reponse en JSON
-        JSONObject json = new JSONObject(response.readEntity(String.class));
-        assertEquals(0, json.getJSONArray("games").length());
-    }
-
-    @Test
-    public void retourneUnTableauAvecUneGame() throws JSONException{
-        assertTrue(model.createPlayer("Aladin", "azertyuiop"));
-        Response response = target("/game").request().header("token", "azertyuiop").get();
-        assertEquals(200, response.getStatus());
-
-        // Parse la reponse en JSON
-        JSONObject json = new JSONObject(response.readEntity(String.class));
-        assertEquals(1, json.getJSONArray("games").length());
-    }
 
     @Test
     public void pickacardTest() throws JSONException{
