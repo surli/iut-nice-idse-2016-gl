@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Mar 15 Mars 2016 à 10:38
+-- Généré le :  Jeu 17 Mars 2016 à 16:21
 -- Version du serveur :  5.6.20-log
--- Version de PHP :  5.4.31
+-- Version de PHP :  5.5.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,7 +19,9 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `uno`
 --
-CREATE DATABASE IF NOT EXISTS `uno` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+CREATE DATABASE IF NOT EXISTS `uno` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; 
+ 
 USE `uno`;
 
 -- --------------------------------------------------------
@@ -29,9 +31,9 @@ USE `uno`;
 --
 
 CREATE TABLE IF NOT EXISTS `cards` (
-`c_id` int(5) NOT NULL,
-  `c_value` enum('zero','one','two','three','four','five','six','seven','eight','nine','skip','reverse','drawtwo','drawfour','wild') DEFAULT NULL,
-  `c_color` enum('blue','green','red','yellow','black') DEFAULT NULL
+  `c_id` int(5) NOT NULL,
+  `c_value` varchar(25) DEFAULT NULL,
+  `c_color` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -53,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `deck` (
 --
 
 CREATE TABLE IF NOT EXISTS `games` (
-`g_id` int(5) NOT NULL,
+  `g_id` int(5) NOT NULL,
   `g_nom` varchar(50) NOT NULL,
   `g_nbr_max_joueur` int(2) DEFAULT NULL,
   `g_nbr_max_ia` int(2) DEFAULT NULL,
@@ -129,20 +131,19 @@ CREATE TABLE IF NOT EXISTS `stats` (
 --
 
 CREATE TABLE IF NOT EXISTS `statut` (
-`s_id` int(5) NOT NULL,
+  `s_id` int(5) NOT NULL,
   `s_libelle` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Contenu de la table `statut`
 --
 
 INSERT INTO `statut` (`s_id`, `s_libelle`) VALUES
-(5, 'admin'),
-(1, 'banned'),
-(2, 'bot'),
-(3, 'guest'),
-(4, 'member');
+(4, 'admin'),
+(1, 'bot'),
+(2, 'guest'),
+(3, 'member');
 
 -- --------------------------------------------------------
 
@@ -151,9 +152,9 @@ INSERT INTO `statut` (`s_id`, `s_libelle`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `turns` (
-`t_id` int(7) NOT NULL,
+  `t_id` int(7) NOT NULL,
   `t_m_id` int(7) NOT NULL,
-  `t_sens` enum('normal','reverse') DEFAULT NULL,
+  `t_sens` tinyint(1) NOT NULL,
   `id_user_ready` int(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -164,11 +165,12 @@ CREATE TABLE IF NOT EXISTS `turns` (
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-`u_id` int(5) NOT NULL,
+  `u_id` int(5) NOT NULL,
   `u_pseudo` varchar(30) NOT NULL,
   `u_email` varchar(50) DEFAULT NULL,
   `u_password` varchar(64) DEFAULT NULL,
-  `u_statut` int(5) NOT NULL
+  `u_statut` int(5) NOT NULL,
+  `u_banned` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -264,7 +266,7 @@ MODIFY `m_id` int(7) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT pour la table `statut`
 --
 ALTER TABLE `statut`
-MODIFY `s_id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+MODIFY `s_id` int(5) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `turns`
 --

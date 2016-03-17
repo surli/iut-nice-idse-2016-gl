@@ -1,15 +1,17 @@
 package fr.unice.idse.db;
 
 import fr.unice.idse.constante.*;
+import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.card.Value;
+
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-
-import org.apache.commons.lang3.StringUtils;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+
+import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class DataBaseManagement {
 	private Connection con = null;
@@ -25,7 +27,6 @@ public class DataBaseManagement {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(Config.url, Config.user, Config.pass);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
 		}
@@ -40,12 +41,19 @@ public class DataBaseManagement {
 		}
 	}
 
+	// For alphanumerics and emails formats only
 	public boolean isSafeString(String str) {
 		return (str.matches("[a-zA-Z]*") || str.matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)+$"));
 	}
 
+	// 1 bot 2 guest 3 member 4 admin
 	public boolean isSafeStatut(int statut) {
-		return (statut > 0 && statut < 6);
+		return (statut > 0 && statut < 5);
+	}
+
+	// 0 banned off 1 bannec on
+	public boolean isSafeBanned(int banned) {
+		return (banned == 0 || banned == 1);
 	}
 
 	public String[] convertObjectArrayToStringArray(Object[] o) {
@@ -56,14 +64,24 @@ public class DataBaseManagement {
 		return s;
 	}
 
+	/*
+	 * This fonction is present in the others fonctions who need to interact
+	 * with de database. She allow to detect the sort of query and primitive
+	 * types.
+	 */
 	public boolean executeSQL(Object... args) {
 		String[] argsToString = convertObjectArrayToStringArray(args);
+		// The first argument is always the query
 		String query = argsToString[0];
 		boolean select = false;
 		if (query.indexOf("SELECT") != -1)
 			select = true;
 		try {
 			ps = con.prepareStatement(query);
+			/*
+			 * For each argument, detect if a number or String and put it in the
+			 * prepared statement
+			 */
 			for (int i = 1; i < argsToString.length; i++) {
 				if (StringUtils.isNumeric(argsToString[i]))
 					ps.setInt(i, Integer.valueOf(argsToString[i]));
@@ -73,15 +91,18 @@ public class DataBaseManagement {
 					return false;
 			}
 			if (select) {
+				// for query used a SELECT
 				rs = ps.executeQuery();
 				if (rs.next())
 					return true;
 			} else {
+				// for query used INSERT, DELETE or UPDATE
 				ps.executeUpdate();
 				return true;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 		return false;
 	}
@@ -165,10 +186,7 @@ public class DataBaseManagement {
 		return (executeSQL(query, email));
 	}
 
-	/*
-	 * 1 banned 2 bot 3 guest 4 member 5 admin
-	 */
-
+	// 1 bot 2 guest 3 member 4 admin
 	public boolean addUser(String pseudo, String email, String password, int statut) {
 		if (!ifUserAlreadyExistPseudoEmail(pseudo, email) && isSafeStatut(statut)) {
 			String query = "INSERT INTO users (u_pseudo, u_email, u_password, u_statut) VALUES (?, ?, ?, ?)";
@@ -192,8 +210,9 @@ public class DataBaseManagement {
 	 * nine, skip, reverse, drawtwo, drawfour, wild && Possible color :
 	 * blue,green, red, yellow, black
 	 */
-
 	public boolean addCard(String value, String color) {
+		if (!EnumUtils.isValidEnum(Value.class, value) || !EnumUtils.isValidEnum(Color.class, color))
+			return false;
 		int nbCards = countCardsWithThisValueAndThisColor(value, color);
 		String query = "INSERT INTO cards (c_value, c_color) VALUES (?, ?)";
 		if (executeSQL(query, value, color))
@@ -242,6 +261,15 @@ public class DataBaseManagement {
 			if (executeSQL(query, newPassword, email))
 				if (userLoginIsCorrect(email, newPassword))
 					return true;
+		}
+		return false;
+	}
+
+	public boolean updateUserBanned(String email, String password, int newBanned) {
+		if (userLoginIsCorrect(email, password) && isSafeBanned(newBanned)) {
+			String query = "UPDATE users SET u_banned = ? WHERE u_email = ?";
+			if (executeSQL(query, newBanned, email))
+				return true;
 		}
 		return false;
 	}
