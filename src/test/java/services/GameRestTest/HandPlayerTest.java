@@ -44,8 +44,6 @@ public class HandPlayerTest extends JerseyTest{
 
     @Test
     public void getHandDunJoueur() throws JSONException {
-
-
         Response response = target("/game/tata/toto").request().header("token", "token").get();
         assertEquals(200, response.getStatus());
         JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));

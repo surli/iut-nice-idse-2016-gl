@@ -46,53 +46,6 @@ public class GameRestTest extends JerseyTest {
         model.addGame(model.getPlayerFromList("token"), "tata", 4);
     }
 
-
-
-
-    @Test
-    public void lancerUnePartieSansTousLesJoueurs() throws JSONException{
-        String json = "{playerName: 'toto'}";
-        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata/command").request().header("token", "token").put(jsonEntity);
-
-        assertEquals(500, response.getStatus());
-        JSONObject reponse = new JSONObject(response.readEntity(String.class));
-        assertEquals("Game not tucked", reponse.getString("error"));
-    }
-
-    @Test
-    public void lancerUnePartieQuiADejaCommencer() throws JSONException{
-        for(int i = 0; i < 3; i++) {
-            assertTrue(model.createPlayer("azert"+i, "token"+i));
-            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
-        }
-        assertTrue(model.findGameByName("tata").start());
-
-        String json = "{playerName: 'toto'}";
-        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata/command").request().header("token", "token").put(jsonEntity);
-
-        assertEquals(500, response.getStatus());
-        JSONObject reponse = new JSONObject(response.readEntity(String.class));
-        assertEquals("Game started", reponse.getString("error"));
-    }
-
-    @Test
-    public void lancerUnePartieAvecTousLesJoueurs() throws JSONException{
-        for(int i = 0; i < 3; i++) {
-            assertTrue(model.createPlayer("azert"+i, "token"+i));
-            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
-        }
-
-        String json = "{playerName: 'toto'}";
-        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata/command").request().header("token", "token").put(jsonEntity);
-
-        assertEquals(200, response.getStatus());
-        JSONObject reponse = new JSONObject(response.readEntity(String.class));
-        assertTrue(reponse.getBoolean("status"));
-    }
-
     @Test
     public void createGameTest(){
         /**
