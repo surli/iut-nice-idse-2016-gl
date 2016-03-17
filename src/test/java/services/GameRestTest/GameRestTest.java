@@ -46,19 +46,7 @@ public class GameRestTest extends JerseyTest {
         model.addGame(model.getPlayerFromList("token"), "tata", 4);
     }
 
-    @Test
-    public void getHandDunJoueur() throws JSONException{
-        for(int i = 0; i < 3; i++) {
-            assertTrue(model.createPlayer("azert" + i, "token" + i));
-            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
-        }
-        assertTrue(model.findGameByName("tata").start());
 
-        Response response = target("/game/tata/toto").request().header("token", "token").get();
-        assertEquals(200, response.getStatus());
-        JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
-        assertEquals(7, jsonresponse.getJSONArray("cartes").length());
-    }
 
 
     @Test
