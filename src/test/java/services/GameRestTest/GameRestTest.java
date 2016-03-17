@@ -46,34 +46,6 @@ public class GameRestTest extends JerseyTest {
         model.addGame(model.getPlayerFromList("token"), "tata", 4);
     }
 
-    @Test
-    public void retourneFalseSiLaPartieExisteMaisPasCommencer() throws JSONException{
-        Response response = target("/game/tata").request().header("token", "token").get();
-        assertEquals(200, response.getStatus());
-        JSONObject json = new JSONObject(response.readEntity(String.class));
-        assertFalse(json.getBoolean("state"));
-    }
-
-    @Test
-    public void retourneTrueSiLaPartieEstLanceeAvecTousLesJoueurs() throws JSONException{
-        for(int i = 0; i < 3; i++){
-            assertTrue(model.createPlayer("azert"+i, "token"+i));
-            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
-        }
-        assertTrue(model.findGameByName("tata").start());
-
-        Response response = target("/game/tata").request().header("token", "token").get();
-        assertEquals(200, response.getStatus());
-        JSONObject json = new JSONObject(response.readEntity(String.class));
-        assertTrue(json.getBoolean("state"));
-        assertEquals(4, json.getJSONArray("players").length());
-    }
-
-    @Test
-    public void retourneUneErreur404SiPartieNexistePas() {
-        Response response = target("/game/sdsdsdss").request().header("token", "token").get();
-        assertEquals(405, response.getStatus());
-    }
 
     @Test
     public void ajouteUnJoueurInexistantDansUnePartie() throws JSONException{

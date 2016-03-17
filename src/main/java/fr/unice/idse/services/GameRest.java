@@ -146,7 +146,7 @@ public class GameRest extends OriginRest{
 
         if(token == null){
             jsonObject.put("error", "Missing token");
-            return sendResponse(404, jsonObject.toString(), "GET");
+            return sendResponse(405, jsonObject.toString(), "GET");
         }
 
         if(model.findGameByName(gamename) == null) {
