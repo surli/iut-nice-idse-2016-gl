@@ -46,35 +46,6 @@ public class GameRestTest extends JerseyTest {
         model.addGame(model.getPlayerFromList("token"), "tata", 4);
     }
 
-
-    @Test
-    public void ajouteUnJoueurInexistantDansUnePartie() throws JSONException{
-        model.createPlayer("titi", "jdqsdhsqd");
-        String json = "{playerName: 'titi'}";
-        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata").request().header("token", "jdqsdhsqd").put(jsonEntity);
-
-        assertEquals(200, response.getStatus());
-        JSONObject jsonresponse = new JSONObject(response.readEntity(String.class));
-        assertTrue(jsonresponse.getBoolean("status"));
-    }
-
-    @Test
-    public void ajouteUnJoueurExistantDansUnePartiePleine() throws JSONException{
-        for(int i = 0; i < 3; i++) {
-            assertTrue(model.createPlayer("azert" + i, "token" + i));
-            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
-        }
-        model.createPlayer("Aladin", "letokendelamort");
-        String json = "{playerName : 'Aladin'}";
-        Entity<String> jsonEntity = Entity.entity(json, MediaType.APPLICATION_JSON);
-        Response response = target("/game/tata").request().header("token", "letokendelamort").put(jsonEntity);
-
-        JSONObject lareponsejson = new JSONObject(response.readEntity(String.class));
-        assertEquals(200, response.getStatus());
-        assertFalse(lareponsejson.getBoolean("status"));
-    }
-
     @Test
     public void getHandDunJoueur() throws JSONException{
         for(int i = 0; i < 3; i++) {
