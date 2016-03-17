@@ -47,35 +47,6 @@ public class GameRestTest extends JerseyTest {
     }
 
     @Test
-    public void retourneLeJoueurActuelDeLaPartie() throws JSONException {
-        // Init the game
-        for(int i = 0; i < 3; i++){
-            assertTrue(model.createPlayer("azert"+i, "token"+i));
-            assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
-        }
-        assertTrue(model.findGameByName("tata").start());
-
-        // Test the methods
-        Response response = target("/game/tata/command").request().header("token", "token").get();
-        JSONObject json = new JSONObject(response.readEntity(String.class));
-
-        // Assert
-        assertEquals(200, response.getStatus());
-        assertEquals("toto", json.getString("playerName"));
-    }
-
-    @Test
-    public void retourneErreur401SiLaPartieEstPasDemarre() throws JSONException {
-        // Test the methods
-        Response response = target("/game/tata/command").request().get();
-        JSONObject json = new JSONObject(response.readEntity(String.class));
-
-        // Assert
-        assertEquals(401, response.getStatus());
-        assertEquals("Game has not begin", json.getString("error"));
-    }
-
-    @Test
     public void retourneFalseSiLaPartieExisteMaisPasCommencer() throws JSONException{
         Response response = target("/game/tata").request().header("token", "token").get();
         assertEquals(200, response.getStatus());
