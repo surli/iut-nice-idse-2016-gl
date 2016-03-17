@@ -1,14 +1,17 @@
 package fr.unice.idse.db;
 
 import fr.unice.idse.constante.*;
+import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.card.Value;
+
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import org.apache.commons.lang3.StringUtils;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+
+import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class DataBaseManagement {
 	private Connection con = null;
@@ -46,6 +49,11 @@ public class DataBaseManagement {
 	// 1 bot 2 guest 3 member 4 admin
 	public boolean isSafeStatut(int statut) {
 		return (statut > 0 && statut < 5);
+	}
+
+	// 0 banned off 1 bannec on
+	public boolean isSafeBanned(int banned) {
+		return (banned == 0 || banned == 1);
 	}
 
 	public String[] convertObjectArrayToStringArray(Object[] o) {
@@ -202,8 +210,9 @@ public class DataBaseManagement {
 	 * nine, skip, reverse, drawtwo, drawfour, wild && Possible color :
 	 * blue,green, red, yellow, black
 	 */
-
 	public boolean addCard(String value, String color) {
+		if (!EnumUtils.isValidEnum(Value.class, value) || !EnumUtils.isValidEnum(Color.class, color))
+			return false;
 		int nbCards = countCardsWithThisValueAndThisColor(value, color);
 		String query = "INSERT INTO cards (c_value, c_color) VALUES (?, ?)";
 		if (executeSQL(query, value, color))
@@ -252,6 +261,15 @@ public class DataBaseManagement {
 			if (executeSQL(query, newPassword, email))
 				if (userLoginIsCorrect(email, newPassword))
 					return true;
+		}
+		return false;
+	}
+
+	public boolean updateUserBanned(String email, String password, int newBanned) {
+		if (userLoginIsCorrect(email, password) && isSafeBanned(newBanned)) {
+			String query = "UPDATE users SET u_banned = ? WHERE u_email = ?";
+			if (executeSQL(query, newBanned, email))
+				return true;
 		}
 		return false;
 	}

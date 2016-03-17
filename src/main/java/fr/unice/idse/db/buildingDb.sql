@@ -31,7 +31,7 @@ USE `uno`;
 --
 
 CREATE TABLE IF NOT EXISTS `cards` (
-`c_id` int(5) NOT NULL,
+  `c_id` int(5) NOT NULL,
   `c_value` varchar(25) DEFAULT NULL,
   `c_color` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `deck` (
 --
 
 CREATE TABLE IF NOT EXISTS `games` (
-`g_id` int(5) NOT NULL,
+  `g_id` int(5) NOT NULL,
   `g_nom` varchar(50) NOT NULL,
   `g_nbr_max_joueur` int(2) DEFAULT NULL,
   `g_nbr_max_ia` int(2) DEFAULT NULL,
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `stats` (
 --
 
 CREATE TABLE IF NOT EXISTS `statut` (
-`s_id` int(5) NOT NULL,
+  `s_id` int(5) NOT NULL,
   `s_libelle` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
@@ -152,9 +152,9 @@ INSERT INTO `statut` (`s_id`, `s_libelle`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `turns` (
-`t_id` int(7) NOT NULL,
+  `t_id` int(7) NOT NULL,
   `t_m_id` int(7) NOT NULL,
-  `t_sens` enum('normal','reverse') DEFAULT NULL,
+  `t_sens` tinyint(1) NOT NULL,
   `id_user_ready` int(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -165,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `turns` (
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-`u_id` int(5) NOT NULL,
+  `u_id` int(5) NOT NULL,
   `u_pseudo` varchar(30) NOT NULL,
   `u_email` varchar(50) DEFAULT NULL,
   `u_password` varchar(64) DEFAULT NULL,

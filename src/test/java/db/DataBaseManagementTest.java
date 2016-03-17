@@ -21,7 +21,6 @@ public class DataBaseManagementTest {
 		assertFalse(dataBaseManagement.ifUserAlreadyExistPseudo("toto"));
 	}
 
-	//ajouter un parametre pour le statut dans addUser
 	@Test
 	public void addDeleteUpdateUserIsCorrect() throws SQLException {
 		assertTrue(dataBaseManagement.addUser("titi", "titi@gmail.com", "mypass", 4));
@@ -30,13 +29,14 @@ public class DataBaseManagementTest {
 		assertTrue(dataBaseManagement.updateUserPseudo("titi@gmail.com", "mypass", "newtiti"));
 		assertTrue(dataBaseManagement.updateUserEmail("titi@gmail.com", "mypass", "newtiti@gmail.com"));
 		assertTrue(dataBaseManagement.updateUserPassword("newtiti@gmail.com", "mypass", "mynewpass"));
+		assertTrue(dataBaseManagement.updateUserBanned("newtiti@gmail.com", "mynewpass", 1));
 		assertTrue(dataBaseManagement.deleteUserWithPseudo("newtiti"));
 	}
 
 	@Test
 	public void addDeleteCardIsCorrect() throws SQLException {
-		assertTrue(dataBaseManagement.addCard("zero", "blue"));
-		assertTrue(dataBaseManagement.deleteCard("zero", "blue"));
+		assertTrue(dataBaseManagement.addCard("Zero", "Blue"));
+		assertTrue(dataBaseManagement.deleteCard("Zero", "Blue"));
 	}
 
 	@Test
