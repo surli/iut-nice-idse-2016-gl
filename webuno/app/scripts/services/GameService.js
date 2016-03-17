@@ -66,7 +66,7 @@ angular.module('unoApp')
             //getMyGames: function (playerName) {
             //  return HttpRequest.send({
             //    method: 'get',
-            //    url: 'rest/'+ playerName +'games',
+            //    url: 'rest/'+ playerName +'/games',
             //    headers: {
             //      token: Auth.getUser().token
             //    }
