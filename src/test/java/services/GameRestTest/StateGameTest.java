@@ -20,7 +20,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-public class StateGame extends JerseyTest{
+public class StateGameTest extends JerseyTest{
     @Override
     protected Application configure() {
         return new ResourceConfig(GameRest.class);
