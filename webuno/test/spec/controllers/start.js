@@ -1,7 +1,3 @@
-/**
- * Created by Teva on 17/03/2016.
- */
-
 'use strict';
 
 describe('Controller: StartController', function () {
@@ -35,6 +31,14 @@ describe('Controller: StartController', function () {
 
   it('test de la variable user.name qui est le nom user connecté', function () {
     expect(scope.user.name).toBeDefined();
+  });
+
+  it('test de la variable user.game.length, on verifie si le nom de la partie et supérieur à 3', function () {
+    expect(scope.user.game.length).toBeGreaterThan(3);
+  });
+
+  it('test de la valeur data.status on teste si elle est bien egal à 200', function () {
+    expect(data.status).toEqual(200);
   });
 
 });
