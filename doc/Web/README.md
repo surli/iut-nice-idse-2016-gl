@@ -18,6 +18,17 @@
 
 ### Introduction 
 
+Pour réalisé la partie IHM de ce projet nous avons décidé d'utilisées les outils suivant:
+
+    - AngularJS 
+    - Grunt
+    - bower
+    - Bootstrap
+    - Compass 
+    - Sass
+    - Karma 
+    - Jahsmin
+    
 ##### Arbo structure
 
 ```
@@ -31,9 +42,9 @@
 │
 ├── /bower_components    -> composants permettant de faire fonctionner bower
 ├── /node_modules        -> tout les modules permettant au bon fonctionnement de npm
-├── /dist                -> 
+├── /dist                -> contient le webapp qui sera build
 ├── /test                -> contient les tests pour chaque controller
-├── /WEB-INF             ->
+├── /WEB-INF             -> contient le web.xml qui configure l'app une fois le serveur jetty lancé (url du /rest, CORS, etc...)
 ├── bower.json           -> contient les packages pour bower
 ├── Gruntfile.js         -> contient les packages pour grunt
 ├── package.json         -> contient les packages pour npm
