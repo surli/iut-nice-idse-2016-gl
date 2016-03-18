@@ -7,7 +7,6 @@ angular.module('unoApp')
      */
     .controller('HomeController', ['$scope', '$timeout', '$http', '$state', 'Game', function ($scope, $timeout, $http, $state, Game) {
         var timeoutListGames;
-        //var timeoutListMyGames;
 
         // Utilisation du service Game pour récupérer la liste de toutes les parties avec leur état
         Game.getAllGames()
@@ -65,31 +64,23 @@ angular.module('unoApp')
       /**
        * MES PARTIES
        */
-      // Utilisation du service My Game pour récupérer la liste de toutes mes parties
-      //Game.getMyGames()
-      //  .then(function (response) {
-      //    $scope.mygames = response.data.mygames; //pas sur
-      //    // On appelle la fonctio requestListGames() pour lancer le timer (l'actualisation des parties)
-      //    $scope.requestListMyGames();
-      //  }, function () {
-      //    $scope.requestListMyGames();
-      //  });
-      //
-      //// Fonction qui permet de récupérer la liste mes parties toutes les 2 secondes à améliorer en fuisonnant les deux listes
-      //$scope.requestListMyGames = function () {
-      //    // Timer de 2 secondes
-      //    timeoutListMyGames = $timeout(function () {
-      //
-      //          Game.getMyGames()
-      //              .then(function (response) {
-      //                  $scope.mygames = response.data.mygames;
-      //                  // La fonction s'appelle elle même
-      //                  $scope.requestListMyGames();
-      //              }, function () {
-      //                  // La fonction s'appelle elle même si la précédente requête a échoué
-      //                  $scope.requestListMyGames();
-      //              });
-      //    }, 2000);
-      //};
+       //Utilisation du service My Game pour récupérer la liste de toutes mes parties
+        Game.getMyGames()
+          .then(function (response) {
+            var data = { games : [
+                                {
+                                  gamename: 'Partie test 1',
+                                  maxplayer: 2,
+                                  dategame: '2016/03/08 12:10' },
+                                {
+                                  gamename: 'Partie test 2',
+                                  maxplayer: 3,
+                                  dategame: '2016/03/08 11:10'}
+                                ]
+                        } ;
+            $scope.mygames = data.games; // fictif en attendant la vrai route
+            console.log($scope.mygames);
+            // On appelle la fonctio requestMYListGames() pour lancer le timer (l'actualisation des parties)
+          });
 
     }]);
