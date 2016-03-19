@@ -247,7 +247,7 @@ public class Board
 			deck.removeTopCard();
 			cpt--;
 		}
-		
+		cptDrawCard = 1;
 	}
 	
 	/**
