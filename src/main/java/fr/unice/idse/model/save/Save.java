@@ -11,6 +11,9 @@ public class Save {
 		dbm = new DataBaseManagement();
 		
 	}
-	
+
+	public DataBaseManagement getDbm() {
+		return dbm;
+	}
 	
 }
