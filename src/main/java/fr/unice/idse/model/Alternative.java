@@ -36,19 +36,7 @@ public class Alternative
 		actions.add(action);
 	}
 	
-	public EffectCard isEffectCardAfterPose(Card card)
-	{
-		for (EffectCard rule : actions)
-		{
-			if (rule.isEffect(card)) 
-			{
-				return rule;
-			}
-		}
-		return null;
-	}
-	
-	public EffectCard isEffectCardBeforePlay(Card card)
+	public EffectCard getEffectCard(Card card)
 	{
 		for (EffectCard rule : actions)
 		{

@@ -30,8 +30,8 @@ public class IAEasy extends IA {
                     System.out.println("Carte joué : " + myCard);
 
                     if (myCard.getColor() == Color.Black) {
-                        board.getAlternative().isEffectCardBeforePlay(myCard).changeColor(chooseColor(mainIA));
-                        board.getAlternative().isEffectCardBeforePlay(myCard).action();
+                        board.getAlternative().getEffectCard(myCard).changeColor(chooseColor(mainIA));
+                        board.getAlternative().getEffectCard(myCard).action();
                     }
                     turnPlay = true;
                 }

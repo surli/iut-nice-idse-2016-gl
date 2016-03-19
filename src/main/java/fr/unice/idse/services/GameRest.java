@@ -10,15 +10,10 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import fr.unice.idse.model.Alternative;
-import fr.unice.idse.model.Board;
-import fr.unice.idse.model.Game;
-import fr.unice.idse.model.Model;
+import fr.unice.idse.model.*;
 import fr.unice.idse.model.player.Player;
-import fr.unice.idse.model.card.Card;
-import fr.unice.idse.model.card.Color;
-import fr.unice.idse.model.card.Value;
-import fr.unice.idse.model.regle.EffectCard;
+import fr.unice.idse.model.card.*;
+import fr.unice.idse.model.regle.*;
 
 /**
  * /game
@@ -510,9 +505,9 @@ public class GameRest extends OriginRest{
 
         // Finalement la carte est jouer
         model.findGameByName(gameName).getBoard().poseCard(card);
-
-        if(model.findGameByName(gameName).getBoard().getAlternative().isEffectCardBeforePlay(card) != null){
-            if(model.findGameByName(gameName).getBoard().getAlternative().isEffectCardBeforePlay(card).isColorChangingCard()){
+        EffectCard rule = model.findGameByName(gameName).getAlternative().getEffectCard(card);
+        if(rule != null){
+            if(rule.isColorChangingCard()){
                 if(!json.has("setcolor")){
                     jsonObject.put("error", "The card need new color");
                     return sendResponse(405, jsonObject.toString(), "PUT");
@@ -535,12 +530,17 @@ public class GameRest extends OriginRest{
                         jsonObject.put("error", "Setcolor not accepted");
                         return sendResponse(405, jsonObject.toString(), "PUT");
                 }
-                model.findGameByName(gameName).getBoard().getAlternative().isEffectCardBeforePlay(card).changeColor(color);
+                rule.changeColor(color);
             }
-            model.findGameByName(gameName).getBoard().getAlternative().isEffectCardBeforePlay(card).action();
+            rule.action();
         }
 
         model.findGameByName(gameName).getBoard().nextPlayer();
+        
+        if(rule.getEffect())
+        {
+        	rule.effect();
+        }
         
         jsonObject.put("success", true);
         return sendResponse(200, jsonObject.toString(), "PUT");
