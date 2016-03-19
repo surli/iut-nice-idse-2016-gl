@@ -13,6 +13,6 @@ public class SaveTest extends Save{
 	@Test
 	public void testInitClass()
 	{	
-		assertNotNull(dbm);
+		assertNotNull(bq);
 	}
 }

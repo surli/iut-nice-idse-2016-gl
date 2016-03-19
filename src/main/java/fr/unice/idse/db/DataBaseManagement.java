@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,42 @@ public class DataBaseManagement {
 			e.printStackTrace();
 		} catch (SQLException e) {
 		}
+	}
+	
+	/**
+	 * Insert the data and return is key
+	 * @param query An Insert query string
+	 * @return int The id of the insered query
+	 */
+	public int insert(String query) {
+		int key = -1;
+		try {
+			Statement statement = con.createStatement();
+			statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			ResultSet res = statement.getGeneratedKeys();
+			res.next();
+			key = res.getInt(1);
+			res.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return key;
+	}
+	
+	/**
+	 * Execute a query
+	 * @param query An executable query
+	 * @return boolean If the satement sucesfully run
+	 */
+	public boolean exec(String query) {
+		boolean run = false;
+		try {
+			Statement statement = con.createStatement();
+			run = statement.execute(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return run;
 	}
 
 	public void finalize() {

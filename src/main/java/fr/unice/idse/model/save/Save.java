@@ -3,22 +3,33 @@ package fr.unice.idse.model.save;
 import java.util.Observable;
 import java.util.Observer;
 
-import fr.unice.idse.db.DataBaseManagement;
+import fr.unice.idse.model.Game;
 
 public class Save implements Observer {
-	protected DataBaseManagement dbm;
+	protected BusinessQuery bq;
 
 	public Save() {
-		dbm = new DataBaseManagement();
+		bq = new BusinessQuery();
 	}
 
-	public DataBaseManagement getDbm() {
-		return dbm;
+	public BusinessQuery getDbm() {
+		return bq;
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO : Implement the notification
+		if(o instanceof Game) {
+			this.saveNewGame((Game)o);
+		}
+	}
+	
+	/*
+	 * Sauvegarde d'une nouvelle partie
+	 * @param Game game
+	 */
+	private void saveNewGame(Game game) {
+		// gl & hf
+		//	BusinessQuery.newGame(new Game(new Player("Roger", "Espadon"), "Test", 3));
 	}
 
 }
