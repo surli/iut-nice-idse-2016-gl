@@ -1,6 +1,5 @@
 package fr.unice.idse.services;
 
-
 import fr.unice.idse.db.DataBaseManagement;
 import fr.unice.idse.model.Model;
 import org.codehaus.jettison.json.JSONException;
@@ -137,9 +136,8 @@ public class AuthRest extends OriginRest{
         }
 
         // Insertion dans la bdd
-        //TODO: Ajouter l'objet user type au JSON
-        if(!dataBase.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")), "member")){
-            jsonResult.put("error", "Player already exist");
+        // WARNING !!! adapter le json avec le nouveau champs statut du user
+        if(!dataBase.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")), (int)4)){            jsonResult.put("error", "Player already exist");
             return sendResponse(405, jsonResult.toString(), "POST");
         }
 
