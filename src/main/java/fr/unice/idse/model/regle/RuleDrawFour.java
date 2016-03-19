@@ -24,6 +24,7 @@ public class RuleDrawFour extends EffectCard
 		getBoard().setCptDrawCard(4);
 	}
 	
+	@Override
 	public void effect()
 	{
 		getBoard().drawCard();
