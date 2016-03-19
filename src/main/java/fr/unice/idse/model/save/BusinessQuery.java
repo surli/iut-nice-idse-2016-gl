@@ -22,7 +22,7 @@ public class BusinessQuery {
 	}
 	
 	public static int newMatch(int gameId) {
-		String query = String.format("INSERT INTO matchs (	m_g_id) VALUES ('%s')",gameId);
+		String query = String.format("INSERT INTO matchs (m_g_id) VALUES ('%s')",gameId);
 		return dbm.insert(query);
 	}
 	
