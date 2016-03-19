@@ -8,6 +8,9 @@ import java.util.Observer;
 
 import fr.unice.idse.db.DataBaseManagement;
 import fr.unice.idse.model.Game;
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.card.Value;
 import fr.unice.idse.model.player.Player;
 
 public class Save implements Observer {
@@ -40,12 +43,30 @@ public class Save implements Observer {
 		
 		List<Player>array_player=game.getPlayers();
 		
+		
 		 for(int i=0; i<array_player.size();i++){
 			 BusinessQuery.addPlayerToGame(gameId, dbm.getIdUserWithPseudo(array_player.get(i).getName()) , i);
 		 }
 
-		 BusinessQuery.newMatch(gameId);
-		 BusinessQuery.newTurn(matchId, inversed, playerId);
+		Integer matchId = BusinessQuery.newMatch(gameId);
+
+		int firstPLayer=dbm.getIdUserWithPseudo(array_player.get(0).getName());
+
+		Integer  turnId = BusinessQuery.newTurn(matchId, false, dbm.getIdUserWithPseudo(array_player.get(0).getName()));
+		
+		ArrayList<Card> topCard = game.getBoard().getStack().getStack();
+			Value valueTopCard = topCard.get(0).getValue();
+			Color colorTopCard = topCard.get(0).getColor();
+			
+		Integer cardId = dbm.getIdCard(valueTopCard, colorTopCard);
+			
+		BusinessQuery.addCardToStack(matchId, turnId, cardId);
+		
+	 for(int i=0; i<array_player.size();i++){
+
+		BusinessQuery.addCardToPlayerHand(matchId,  dbm.getIdUserWithPseudo(array_player.get(i).getName()), cardId, turnId);
+	 }
+	 
 	}
 	
 }
