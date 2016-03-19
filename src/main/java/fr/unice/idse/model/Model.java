@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.player.Player;
+import fr.unice.idse.model.save.Save;
 
 public class Model {
 	private ArrayList<Game> games;
 	private ArrayList<Player> players;
+	private Save save;
 	private static Model model=null;
 	
 	/**
@@ -17,6 +19,7 @@ public class Model {
 	{
 		this.games= new ArrayList<>();
 		this.players= new ArrayList<>();
+		this.save = new Save();
 	}
 
 	/**
@@ -48,6 +51,12 @@ public class Model {
 		{
 			Game game = new Game(player,gameName,numberPlayers);
 			this.games.add(game);
+			
+			boolean saveEnable = true;
+			if(saveEnable){
+				game.addObserver(save);
+			}
+			
 			addPlayerToGame(gameName, player);
 			return true;
 		}
@@ -380,6 +389,8 @@ public class Model {
 		Game game=findGameByName(gameName);
 		if(game!=null)
 		{
+			game.deleteObserver(save);
+			
 			games.remove(game);
 			return true;
 		}
