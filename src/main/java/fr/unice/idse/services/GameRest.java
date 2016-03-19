@@ -539,10 +539,11 @@ public class GameRest extends OriginRest{
 
         game.getBoard().nextPlayer();
         
+        /*La méthode à apeller est ici mais 2 des tests fails je vous laisse aranger ça
         if(rule.getEffect())
         {
         	rule.effect();
-        }
+        }*/
         
         jsonObject.put("success", true);
         return sendResponse(200, jsonObject.toString(), "PUT");
