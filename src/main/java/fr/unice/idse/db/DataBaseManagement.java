@@ -174,7 +174,27 @@ public class DataBaseManagement {
 			}
 		return 0;
 	}
-
+	
+	public int getIdgameWithName(String gameName) {
+		String query = "SELECT g_id FROM games WHERE g_nom = ?";
+		if (executeSQL(query, gameName))
+			try {
+				return rs.getInt(1);
+			} catch (SQLException e) {
+			}
+		return 0;
+	}
+	
+	public int getIdMatchWithGameId(int gameId) {
+		String query = "SELECT m_id FROM matchs WHERE m_g_id = ?";
+		if (executeSQL(query, gameId))
+			try {
+				return rs.getInt(1);
+			} catch (SQLException e) {
+			}
+		return 0;
+	}
+	
 	public int countCardsWithThisValueAndThisColor(String value, String color) {
 		String query = "SELECT COUNT(*) FROM cards WHERE c_value = ? AND c_color = ?";
 		if (executeSQL(query, value, color))
@@ -333,4 +353,6 @@ public class DataBaseManagement {
 		}
 		return false;
 	}
+	
+	
 }

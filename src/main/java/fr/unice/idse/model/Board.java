@@ -3,12 +3,13 @@ package fr.unice.idse.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.Observable;
 
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.player.Player;
 
-public class Board 
+public class Board extends Observable
 {
 	
 	private ArrayList<Player> players;
@@ -59,6 +60,15 @@ public class Board
 		meaning = !meaning;
 	}
 	
+	
+	public boolean getDirection() {
+		return meaning;
+	}
+
+	public void setMeaning(boolean meaning) {
+		this.meaning = meaning;
+	}
+
 	/**
 	 * Change le nombre de carte à piocher.
 	 * @param i
@@ -94,6 +104,8 @@ public class Board
 				actualPlayer += players.size();
 			}
 		}
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**

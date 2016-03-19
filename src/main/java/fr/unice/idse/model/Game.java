@@ -4,8 +4,9 @@ import fr.unice.idse.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
-public class Game extends Observable {
+public class Game extends Observable implements Observer {
 	
 	private Player host;
 	private String gameName;
@@ -194,6 +195,12 @@ public class Game extends Observable {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		setChanged();
+		notifyObservers(board);
 	}
 
 }

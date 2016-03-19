@@ -40,4 +40,5 @@ public class BusinessQuery {
 		String query = String.format("INSERT INTO hands_players_in_game (h_id_match,h_id_user,h_id_card,h_tour) VALUES (%s, %s, %s, %s)", matchId, userId, cardId, turnId);
 		dbm.exec(query);
 	}
+	
 }
