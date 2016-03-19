@@ -55,17 +55,17 @@ public class Save implements Observer {
 		Integer  turnId = BusinessQuery.newTurn(matchId, false, dbm.getIdUserWithPseudo(array_player.get(0).getName()));
 		
 		ArrayList<Card> topCard = game.getBoard().getStack().getStack();
-			Value valueTopCard = topCard.get(0).getValue();
-			Color colorTopCard = topCard.get(0).getColor();
+			String valueTopCard = topCard.get(0).getValue().toString();
+			String colorTopCard = topCard.get(0).getColor().toString();
 			
 		Integer cardId = dbm.getIdCard(valueTopCard, colorTopCard);
 			
 		BusinessQuery.addCardToStack(matchId, turnId, cardId);
 		
-	 for(int i=0; i<array_player.size();i++){
-
-		BusinessQuery.addCardToPlayerHand(matchId,  dbm.getIdUserWithPseudo(array_player.get(i).getName()), cardId, turnId);
-	 }
+		 for(int i=0; i<array_player.size();i++){
+	
+			BusinessQuery.addCardToPlayerHand(matchId,  dbm.getIdUserWithPseudo(array_player.get(i).getName()), cardId, turnId);
+		 }
 	 
 	}
 	

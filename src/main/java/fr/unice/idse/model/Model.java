@@ -52,7 +52,7 @@ public class Model {
 			Game game = new Game(player,gameName,numberPlayers);
 			this.games.add(game);
 			
-			boolean saveEnable = true;
+			boolean saveEnable = false;
 			if(saveEnable){
 				game.addObserver(save);
 			}
