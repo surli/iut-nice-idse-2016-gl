@@ -52,7 +52,7 @@ public class Save implements Observer {
 
 		int firstPLayer=dbm.getIdUserWithPseudo(array_player.get(0).getName());
 
-		Integer  turnId = BusinessQuery.newTurn(matchId, false, dbm.getIdUserWithPseudo(array_player.get(0).getName()));
+		Integer  turnId = BusinessQuery.newTurn(matchId, false, firstPLayer);
 		
 		ArrayList<Card> topCard = game.getBoard().getStack().getStack();
 			String valueTopCard = topCard.get(0).getValue().toString();
