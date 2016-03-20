@@ -3,7 +3,7 @@
     {{'STARTNEWGAME' | translate}}
   </button>
 </div>
-<div class="col-md-8 col-md-offset-2">
+<div class="col-md-4 col-md-offset-2">
   <div class="panel panel-default">
     <div class="panel-heading text-center">{{'ALLGAMES' | translate}}</div>
     <div class="panel-body text-center" style="padding:0;">
@@ -25,20 +25,32 @@
     </div>
   </div>
 </div>
-<!-- Mes parties en pause car pas encore défini la méthode.
-<div class="col-md-8 col-md-offset-2">
+
+<!-- Mes parties -->
+<div class="col-md-4" >
     <div class="panel panel-default">
-        <div class="panel-heading text-center">My games</div>
+        <div class="panel-heading text-center">{{'MYGAMES' | translate}}</div>
         <div class="panel-body text-center" style="padding:0;">
-            <table class="table" data-ng-if=" games.playerName == 'toto' " style="margin: 0;">
-                <tr data-ng-repeat="game in games" >
-                    <td>{{game.gamename}}</td>
-                    <td>{{game.numberplayer}}/{{game.maxplayer}}</td>
-                    <td>{{(game.numberplayer == game.maxplayer) ? "Started" : "Waiting for Players"}}</td>
-                    <td>{{game.playerName}}</td>
+            <table class="table" data-ng-if=" mygames.length > 0 " style="margin: 0;">
+                <tr data-ng-repeat="mygame in mygames" >
+                    <td>{{mygame.gamename}}</td>
+                    <td>{{mygame.maxplayer}}</td>
+                    <td>{{mygame.dategame}}</td>
+                  <td>
+                    <button class="btn btn-warning btn-sm"
+                            data-ng-click="ResumeGame(mygame.gamename)">
+                      {{'RESUME' | translate}}
+                    </button>
+                  </td>
+                  <td>
+                    <button class="btn btn-danger btn-sm"
+                            data-ng-click="DeleteGame(mygame.gamename)">
+                      {{'DELETE' | translate}}
+                    </button>
+                  </td>
                 </tr>
             </table>
-            <p style="padding: 15px;" data-ng-if="games.playerName != 'toto' ">No game with you as created</p>
+            <p style="padding: 15px;" data-ng-if="mygames.length == 0 ">{{'NOMYGAMESSTARTED' | translate}}</p>
         </div>
     </div>
-</div>-->
+</div>

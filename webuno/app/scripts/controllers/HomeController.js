@@ -60,4 +60,27 @@ angular.module('unoApp')
         $scope.$on('$destroy', function () {
             $timeout.cancel(timeoutListGames);
         });
+
+      /**
+       * MES PARTIES
+       */
+       //Utilisation du service My Game pour récupérer la liste de toutes mes parties
+        Game.getMyGames()
+          .then(function (response) {
+            var data = { games : [
+                                {
+                                  gamename: 'Partie test 1',
+                                  maxplayer: 2,
+                                  dategame: '2016/03/08 12:10' },
+                                {
+                                  gamename: 'Partie test 2',
+                                  maxplayer: 3,
+                                  dategame: '2016/03/08 11:10'}
+                                ]
+                        } ;
+            $scope.mygames = data.games; // fictif en attendant la vrai route
+            console.log($scope.mygames);
+            // On appelle la fonctio requestMYListGames() pour lancer le timer (l'actualisation des parties)
+          });
+
     }]);
