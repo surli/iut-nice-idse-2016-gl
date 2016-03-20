@@ -15,5 +15,5 @@ public enum Value {
 	Reverse,
 	DrawTwo,
 	Wild,
-	DrawFour,
+	DrawFour
 }

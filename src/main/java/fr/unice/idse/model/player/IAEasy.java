@@ -29,11 +29,12 @@ public class IAEasy extends IA {
                     board.poseCard(myCard);
                     System.out.println("Carte joué : " + myCard);
 
-                    if (myCard.getColor() == Color.Black) {
+                    if (board.getAlternative().getEffectCard(myCard).isColorChangingCard()) {
                         board.getAlternative().getEffectCard(myCard).changeColor(chooseColor(mainIA));
                         board.getAlternative().getEffectCard(myCard).action();
                     }
                     turnPlay = true;
+                    break;
                 }
             }
             i++;
