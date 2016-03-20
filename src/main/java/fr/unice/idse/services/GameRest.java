@@ -173,6 +173,7 @@ public class GameRest extends OriginRest{
             jsonStack.put("number", model.findGameByName(gamename).getBoard().getStack().topCard().getValue());
             jsonStack.put("family", model.findGameByName(gamename).getBoard().getStack().topCard().getColor());
             jsonObject.put("stack", jsonStack);
+            jsonObject.put("gameEnd", model.findGameByName(gamename).gameEnd());
             return sendResponse(200, jsonObject.toString(), "GET");
         }
 
