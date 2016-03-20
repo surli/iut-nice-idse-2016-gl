@@ -271,7 +271,101 @@ public class PlayCardTest extends JerseyTest {
         assertEquals("The card can't be played", json.getString("error"));
 
         response = target("/game/tata/azert0").request().header("token", "token0").post(Entity.entity(jsonEntity.toString(), MediaType.APPLICATION_JSON));
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
+        assertTrue(jsonObject.getBoolean("return"));
         assertEquals(12, model.findGameByName("tata").getPlayers().get(1).getCards().size());
+        assertEquals("azert1", model.findGameByName("tata").getBoard().getActualPlayer().getName());
+        assertEquals(1, model.findGameByName("tata").getBoard().getCptDrawCard());
+    }
+
+    @Test
+    public void jouerUnPlus2EtJoueurSuivantPioche() throws JSONException{
+        assertTrue(model.findGameByName("tata").start());
+
+        // Ajout des cartes aux joueurs
+        model.findGameByName("tata").getBoard().getPlayers().get(0).getCards().add(new Card(Value.DrawTwo, Color.Red));
+        model.findGameByName("tata").getBoard().getPlayers().get(1).getCards().add(new Card(Value.Five, Color.Red));
+
+        // Ajout d'un couleur rouge au stack
+        model.findGameByName("tata").getBoard().getStack().addCard(new Card(Value.Five, Color.Red));
+        model.findGameByName("tata").getBoard().setActualColor(Color.Red);
+        assertEquals(8, model.findGameByName("tata").getPlayers().get(1).getCards().size());
+
+
+        JSONObject jsonEntity = new JSONObject();
+        jsonEntity.put("value", "DrawTwo");
+        jsonEntity.put("color", "Red");
+        Response response = target("/game/tata/toto").request().header("token", "token").put(Entity.entity(jsonEntity.toString(), MediaType.APPLICATION_JSON));
+
+        assertEquals(200, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertTrue(json.getBoolean("success"));
+        assertEquals("Red", model.findGameByName("tata").getBoard().getActualColor().toString());
+        assertEquals("azert0", model.findGameByName("tata").getBoard().getActualPlayer().getName());
+
+        jsonEntity.put("value", "Five");
+        jsonEntity.put("color", "Red");
+
+        response = target("/game/tata/azert0").request().header("token", "token0").put(Entity.entity(jsonEntity.toString(), MediaType.APPLICATION_JSON));
+
+        assertEquals(405, response.getStatus());
+        json = new JSONObject(response.readEntity(String.class));
+        assertEquals("The card can't be played", json.getString("error"));
+
+        response = target("/game/tata/azert0").request().header("token", "token0").post(Entity.entity(jsonEntity.toString(), MediaType.APPLICATION_JSON));
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
+        assertTrue(jsonObject.getBoolean("return"));
+        assertEquals(10, model.findGameByName("tata").getPlayers().get(1).getCards().size());
+        assertEquals("azert1", model.findGameByName("tata").getBoard().getActualPlayer().getName());
+        assertEquals(1, model.findGameByName("tata").getBoard().getCptDrawCard());
+    }
+
+    @Test
+    public void jouerUnPlus2EtJoueurSuivantJouePlus2EtJoueurDapresPioche4Cartes() throws JSONException{
+        assertTrue(model.findGameByName("tata").start());
+
+        // Ajout des cartes aux joueurs
+        model.findGameByName("tata").getBoard().getPlayers().get(0).getCards().add(new Card(Value.DrawTwo, Color.Red));
+        model.findGameByName("tata").getBoard().getPlayers().get(1).getCards().add(new Card(Value.DrawTwo, Color.Blue));
+
+        // Ajout d'un couleur rouge au stack
+        model.findGameByName("tata").getBoard().getStack().addCard(new Card(Value.Five, Color.Red));
+        model.findGameByName("tata").getBoard().setActualColor(Color.Red);
+        assertEquals(8, model.findGameByName("tata").getPlayers().get(1).getCards().size());
+
+
+        JSONObject jsonEntity = new JSONObject();
+        jsonEntity.put("value", "DrawTwo");
+        jsonEntity.put("color", "Red");
+        Response response = target("/game/tata/toto").request().header("token", "token").put(Entity.entity(jsonEntity.toString(), MediaType.APPLICATION_JSON));
+
+        assertEquals(200, response.getStatus());
+        // Parse la reponse en JSON
+        JSONObject json = new JSONObject(response.readEntity(String.class));
+        assertTrue(json.getBoolean("success"));
+        assertEquals("Red", model.findGameByName("tata").getBoard().getActualColor().toString());
+        assertEquals("azert0", model.findGameByName("tata").getBoard().getActualPlayer().getName());
+
+        jsonEntity.put("value", "DrawTwo");
+        jsonEntity.put("color", "Blue");
+
+        response = target("/game/tata/azert0").request().header("token", "token0").put(Entity.entity(jsonEntity.toString(), MediaType.APPLICATION_JSON));
+
+        json = new JSONObject(response.readEntity(String.class));
+        assertTrue(json.getBoolean("success"));
+        assertEquals("Blue", model.findGameByName("tata").getBoard().getActualColor().toString());
+        assertEquals("azert1", model.findGameByName("tata").getBoard().getActualPlayer().getName());
+
+        response = target("/game/tata/azert1").request().header("token", "token1").post(Entity.entity(jsonEntity.toString(), MediaType.APPLICATION_JSON));
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+
+        assertTrue(jsonObject.getBoolean("return"));
+        assertEquals(11, model.findGameByName("tata").getPlayers().get(2).getCards().size());
+        assertEquals("azert2", model.findGameByName("tata").getBoard().getActualPlayer().getName());
+        assertEquals(1, model.findGameByName("tata").getBoard().getCptDrawCard());
     }
 }
 

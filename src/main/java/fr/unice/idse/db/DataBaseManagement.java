@@ -1,17 +1,17 @@
 package fr.unice.idse.db;
 
 import fr.unice.idse.constante.*;
-import fr.unice.idse.model.card.*;
+import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.card.Value;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
-import org.apache.commons.lang3.StringUtils;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+
+import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class DataBaseManagement {
 	private Connection con = null;
@@ -27,7 +27,6 @@ public class DataBaseManagement {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(Config.url, Config.user, Config.pass);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
 		}
@@ -42,91 +41,75 @@ public class DataBaseManagement {
 		}
 	}
 
-	public boolean sqlBased(String... args) {
-		String query = args[0];
+	// For alphanumerics and emails formats only
+	public boolean isSafeString(String str) {
+		return (str.matches("[a-zA-Z]*") || str.matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)+$"));
+	}
+
+	// 1 bot 2 guest 3 member 4 admin
+	public boolean isSafeStatut(int statut) {
+		return (statut > 0 && statut < 5);
+	}
+
+	// 0 banned off 1 bannec on
+	public boolean isSafeBanned(int banned) {
+		return (banned == 0 || banned == 1);
+	}
+
+	public String[] convertObjectArrayToStringArray(Object[] o) {
+		String[] s = new String[o.length];
+		for (int i = 0; i < o.length; i++) {
+			s[i] = o[i].toString();
+		}
+		return s;
+	}
+
+	/*
+	 * This fonction is present in the others fonctions who need to interact
+	 * with de database. She allow to detect the sort of query and primitive
+	 * types.
+	 */
+	public boolean executeSQL(Object... args) {
+		String[] argsToString = convertObjectArrayToStringArray(args);
+		// The first argument is always the query
+		String query = argsToString[0];
 		boolean select = false;
 		if (query.indexOf("SELECT") != -1)
 			select = true;
 		try {
 			ps = con.prepareStatement(query);
-			for (int i = 1; i < args.length; i++) {
-				if (StringUtils.isNumeric(args[i]))
-					ps.setInt(i, Integer.valueOf(args[i]));
+			/*
+			 * For each argument, detect if a number or String and put it in the
+			 * prepared statement
+			 */
+			for (int i = 1; i < argsToString.length; i++) {
+				if (StringUtils.isNumeric(argsToString[i]))
+					ps.setInt(i, Integer.valueOf(argsToString[i]));
+				else if (isSafeString(argsToString[i]))
+					ps.setString(i, argsToString[i]);
 				else
-					ps.setString(i, args[i]);
+					return false;
 			}
 			if (select) {
+				// for query used a SELECT
 				rs = ps.executeQuery();
 				if (rs.next())
 					return true;
 			} else {
+				// for query used INSERT, DELETE or UPDATE
 				ps.executeUpdate();
 				return true;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 		return false;
-	}
-	
-	public int countPoints(ArrayList<Card> playerHand){
-		int result = 0;
-		for (Card c : playerHand){
-			switch(c.getValue().toString()){
-			case "Zero":
-				break;
-			case "One":
-				result += 1;
-				break;
-			case "Two":
-				result += 2;
-				break;
-			case "Three":
-				result += 3;
-				break;
-			case "Four":
-				result += 4;
-				break;
-			case "Five":
-				result += 5;
-				break;
-			case "Six":
-				result += 6;
-				break;
-			case "Seven":
-				result += 7;
-				break;
-			case "Eight":
-				result += 8;
-				break;
-			case "Nine":
-				result += 9;
-				break;
-			case "Skip":
-				result += 20;
-				break;
-			case "Reverse":
-				result += 20;
-				break;
-			case "DrawTwo":
-				result += 20;
-				break;
-			case "Wild":
-				result += 50;
-				break;
-			case "DrawFour":
-				result += 50;
-				break;
-			default:
-				throw new IllegalArgumentException("Invalide card value : " + c.getValue().toString());
-			}	
-		}
-		return result;
 	}
 
 	public String getPseudoWithEmail(String email) {
 		String query = "SELECT u_pseudo FROM users WHERE u_email = ?";
-		if (sqlBased(query, email))
+		if (executeSQL(query, email))
 			try {
 				return rs.getString("u_pseudo");
 			} catch (SQLException e) {
@@ -136,7 +119,7 @@ public class DataBaseManagement {
 
 	public int getCurrentAutoIncrementValueWithTableName(String tableName) {
 		String query = "SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = uno AND TABLE_NAME = ?";
-		if (sqlBased(query, tableName))
+		if (executeSQL(query, tableName))
 			try {
 				return rs.getInt(1);
 			} catch (SQLException e) {
@@ -147,7 +130,7 @@ public class DataBaseManagement {
 
 	public int getIdUserWithPseudo(String pseudo) {
 		String query = "SELECT u_id FROM users WHERE u_pseudo = ?";
-		if (sqlBased(query, pseudo))
+		if (executeSQL(query, pseudo))
 			try {
 				return rs.getInt(1);
 			} catch (SQLException e) {
@@ -157,7 +140,7 @@ public class DataBaseManagement {
 
 	public int countCardsWithThisValueAndThisColor(String value, String color) {
 		String query = "SELECT COUNT(*) FROM cards WHERE c_value = ? AND c_color = ?";
-		if (sqlBased(query, value, color))
+		if (executeSQL(query, value, color))
 			try {
 				return rs.getInt(1);
 			} catch (SQLException e) {
@@ -167,7 +150,7 @@ public class DataBaseManagement {
 
 	public int getIdCard(String value, String color) {
 		String query = "SELECT c_id FROM cards WHERE c_value = ? AND c_color = ?";
-		if (sqlBased(query, value, color))
+		if (executeSQL(query, value, color))
 			try {
 				return rs.getInt(1);
 			} catch (SQLException e) {
@@ -176,8 +159,8 @@ public class DataBaseManagement {
 	}
 
 	public boolean userLoginIsCorrect(String email, String password) {
-		String query = "SELECT u_email, u_password, u_type FROM users WHERE u_email = ? AND u_password = ? AND (u_type = 'admin' OR u_type = 'member')";
-		if (sqlBased(query, email, password))
+		String query = "SELECT u_email, u_password FROM users WHERE u_email = ? AND u_password = ?";
+		if (executeSQL(query, email, password))
 			try {
 				if (rs.getString("u_email").equals(email) && rs.getString("u_password").equals(password))
 					return true;
@@ -190,29 +173,24 @@ public class DataBaseManagement {
 
 	public boolean ifUserAlreadyExistPseudoEmail(String pseudo, String email) {
 		String query = "SELECT u_pseudo, u_email FROM users WHERE u_pseudo = ? OR u_email = ?";
-		if (sqlBased(query, pseudo, email))
-			return true;
-		return false;
+		return (executeSQL(query, pseudo, email));
 	}
 
 	public boolean ifUserAlreadyExistPseudo(String pseudo) {
 		String query = "SELECT u_pseudo FROM users WHERE u_pseudo = ?";
-		if (sqlBased(query, pseudo))
-			return true;
-		return false;
+		return (executeSQL(query, pseudo));
 	}
 
 	public boolean ifUserAlreadyExistEmail(String email) {
 		String query = "SELECT u_pseudo FROM users WHERE u_pseudo = ?";
-		if (sqlBased(query, email))
-			return true;
-		return false;
+		return (executeSQL(query, email));
 	}
 
-	public boolean addUser(String pseudo, String email, String password, String type) {
-		if (!ifUserAlreadyExistPseudoEmail(pseudo, email)) {
-			String query = "INSERT INTO users (u_pseudo, u_email, u_password, u_type) VALUES (?, ?, ?, ?)";
-			if (sqlBased(query, pseudo, email, password, type))
+	// 1 bot 2 guest 3 member 4 admin
+	public boolean addUser(String pseudo, String email, String password, int statut) {
+		if (!ifUserAlreadyExistPseudoEmail(pseudo, email) && isSafeStatut(statut)) {
+			String query = "INSERT INTO users (u_pseudo, u_email, u_password, u_statut) VALUES (?, ?, ?, ?)";
+			if (executeSQL(query, pseudo, email, password, statut))
 				return true;
 		}
 		return false;
@@ -221,7 +199,7 @@ public class DataBaseManagement {
 	public boolean deleteUserWithPseudo(String pseudo) {
 		if (ifUserAlreadyExistPseudo(pseudo)) {
 			String query = "DELETE FROM users WHERE u_pseudo = ?";
-			if (sqlBased(query, pseudo))
+			if (executeSQL(query, pseudo))
 				return true;
 		}
 		return false;
@@ -232,11 +210,12 @@ public class DataBaseManagement {
 	 * nine, skip, reverse, drawtwo, drawfour, wild && Possible color :
 	 * blue,green, red, yellow, black
 	 */
-
 	public boolean addCard(String value, String color) {
+		if (!EnumUtils.isValidEnum(Value.class, value) || !EnumUtils.isValidEnum(Color.class, color))
+			return false;
 		int nbCards = countCardsWithThisValueAndThisColor(value, color);
 		String query = "INSERT INTO cards (c_value, c_color) VALUES (?, ?)";
-		if (sqlBased(query, value, color))
+		if (executeSQL(query, value, color))
 			if (countCardsWithThisValueAndThisColor(value, color) == nbCards + 1)
 				return true;
 		return false;
@@ -250,7 +229,7 @@ public class DataBaseManagement {
 		if (id == 0)
 			return false;
 		String query = "DELETE FROM cards WHERE c_id = ?";
-		if (sqlBased(query, Integer.toString(id)))
+		if (executeSQL(query, Integer.toString(id)))
 			if (countCardsWithThisValueAndThisColor(value, color) == nbCards - 1)
 				return true;
 		return false;
@@ -259,7 +238,7 @@ public class DataBaseManagement {
 	public boolean updateUserEmail(String oldEmail, String password, String newEmail) {
 		if (userLoginIsCorrect(oldEmail, password) && !ifUserAlreadyExistEmail(newEmail)) {
 			String query = "UPDATE users SET u_email = ? WHERE u_email = ?";
-			if (sqlBased(query, newEmail, oldEmail))
+			if (executeSQL(query, newEmail, oldEmail))
 				if (userLoginIsCorrect(newEmail, password))
 					return true;
 		}
@@ -269,7 +248,7 @@ public class DataBaseManagement {
 	public boolean updateUserPseudo(String email, String password, String newPseudo) {
 		if (userLoginIsCorrect(email, password) && !ifUserAlreadyExistPseudo(newPseudo)) {
 			String query = "UPDATE users SET u_pseudo = ? WHERE u_email = ?";
-			if (sqlBased(query, newPseudo, email))
+			if (executeSQL(query, newPseudo, email))
 				if (getPseudoWithEmail(email).equals(newPseudo))
 					return true;
 		}
@@ -279,34 +258,31 @@ public class DataBaseManagement {
 	public boolean updateUserPassword(String email, String oldPassword, String newPassword) {
 		if (userLoginIsCorrect(email, oldPassword)) {
 			String query = "UPDATE users SET u_password = ? WHERE u_email = ?";
-			if (sqlBased(query, newPassword, email))
+			if (executeSQL(query, newPassword, email))
 				if (userLoginIsCorrect(email, newPassword))
 					return true;
 		}
 		return false;
 	}
-	
-	public boolean updateUserType(String email, String password, String newType) {
-		if (userLoginIsCorrect(email, password)) {
-			String query = "UPDATE users SET u_type = ? WHERE u_email = ?";
-			if (sqlBased(query, newType, email))
-				if (userLoginIsCorrect(email, password))
-					return true;
+
+	public boolean updateUserBanned(String email, String password, int newBanned) {
+		if (userLoginIsCorrect(email, password) && isSafeBanned(newBanned)) {
+			String query = "UPDATE users SET u_banned = ? WHERE u_email = ?";
+			if (executeSQL(query, newBanned, email))
+				return true;
 		}
 		return false;
 	}
 
 	public boolean ifGameAlreadyExistName(String name) {
 		String query = "SELECT g_nom FROM games WHERE g_nom = ?";
-		if (sqlBased(query, name))
-			return true;
-		return false;
+		return (executeSQL(query, name));
 	}
 
 	public boolean addGame(String name, int nbrMaxJoueur, int nbrMaxIA) {
 		if (!ifGameAlreadyExistName(name)) {
 			String query = "INSERT INTO games (g_nom,g_nbr_max_joueur,g_nbr_max_ia) VALUES (?, ?, ?)";
-			if (sqlBased(query, name, Integer.toString(nbrMaxJoueur), Integer.toString(nbrMaxIA)))
+			if (executeSQL(query, name, Integer.toString(nbrMaxJoueur), Integer.toString(nbrMaxIA)))
 				return true;
 		}
 		return false;
@@ -315,7 +291,7 @@ public class DataBaseManagement {
 	public boolean deleteGameWithName(String nameOfTheGame) {
 		if (ifGameAlreadyExistName(nameOfTheGame)) {
 			String query = "DELETE FROM games WHERE g_nom = ?";
-			if (sqlBased(query, nameOfTheGame))
+			if (executeSQL(query, nameOfTheGame))
 				return true;
 		}
 		return false;

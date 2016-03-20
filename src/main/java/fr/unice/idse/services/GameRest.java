@@ -146,7 +146,7 @@ public class GameRest extends OriginRest{
 
         if(token == null){
             jsonObject.put("error", "Missing token");
-            return sendResponse(404, jsonObject.toString(), "GET");
+            return sendResponse(405, jsonObject.toString(), "GET");
         }
 
         if(model.findGameByName(gamename) == null) {
@@ -394,6 +394,7 @@ public class GameRest extends OriginRest{
             jsonReturn.put("error", "Partie inconnue");
             return sendResponse(404, jsonReturn.toString(), "POST");
         }
+        Game game = model.findGameByName(gameName);
 
         // Vérification de l'authentification
         if(token == null){
@@ -414,26 +415,29 @@ public class GameRest extends OriginRest{
         
 
         // verifie que la partie est bien lancée
-        if(!model.findGameByName(gameName).gameBegin()){
+        if(!game.gameBegin()){
             jsonReturn.put("error", "Game not started");
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
+        Board board = game.getBoard();
 
         // Verifcation du joueur actuel
-        if(!model.findGameByName(gameName).getBoard().getActualPlayer().getToken().equals(token)){
+        if(!board.getActualPlayer().getToken().equals(token)){
             jsonReturn.put("error", "It's not this player to play");
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
 
-        int cartes = model.findGameByName(gameName).getBoard().getActualPlayer().getCards().size();
-        model.findGameByName(gameName).getBoard().drawCard();
+        int card = board.getActualPlayer().getCards().size();
+        int drawCard = board.getCptDrawCard();
 
-        if(model.findGameByName(gameName).getBoard().getActualPlayer().getCards().size() != cartes+1){
+        board.drawCard();
+
+        if(board.getActualPlayer().getCards().size() != card+drawCard){
             jsonReturn.put("return", false);
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
         jsonReturn.put("return", true);
-        model.findGameByName(gameName).getBoard().nextPlayer();
+        board.nextPlayer();
         return sendResponse(200, jsonReturn.toString(), "POST");
     }
 
@@ -460,7 +464,9 @@ public class GameRest extends OriginRest{
             jsonObject.put("error", "The game does not exist");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
-        if(!model.findGameByName(gameName).gameBegin()) {
+        Game game = model.findGameByName(gameName);
+
+        if(!game.gameBegin()) {
             jsonObject.put("error", "The game does hasn't begun");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
@@ -487,7 +493,7 @@ public class GameRest extends OriginRest{
         }
 
         // Verifie que le joueur peut jouer
-        if(!model.findGameByName(gameName).getBoard().getActualPlayer().getToken().equals(token)) {
+        if(!game.getBoard().getActualPlayer().getToken().equals(token)) {
             jsonObject.put("error", "The player can't play");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
@@ -503,16 +509,17 @@ public class GameRest extends OriginRest{
 
 
             // Verifie que la carte est jouable
-        if(!model.findGameByName(gameName).getBoard().askPlayableCard(card)) {
+        if(!game.getBoard().askPlayableCard(card)) {
             jsonObject.put("error", "The card can't be played");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
 
         // Finalement la carte est jouer
         model.findGameByName(gameName).getBoard().poseCard(card);
+        Alternative alternative = game.getBoard().getAlternative();
 
-        if(model.findGameByName(gameName).getBoard().getAlternative().isEffectCardBeforePlay(card) != null){
-            if(model.findGameByName(gameName).getBoard().getAlternative().isEffectCardBeforePlay(card).isColorChangingCard()){
+        if(alternative.isEffectCardBeforePlay(card) != null){
+            if(alternative.isEffectCardBeforePlay(card).isColorChangingCard()){
                 if(!json.has("setcolor")){
                     jsonObject.put("error", "The card need new color");
                     return sendResponse(405, jsonObject.toString(), "PUT");
@@ -535,12 +542,12 @@ public class GameRest extends OriginRest{
                         jsonObject.put("error", "Setcolor not accepted");
                         return sendResponse(405, jsonObject.toString(), "PUT");
                 }
-                model.findGameByName(gameName).getBoard().getAlternative().isEffectCardBeforePlay(card).changeColor(color);
+                alternative.isEffectCardBeforePlay(card).changeColor(color);
             }
-            model.findGameByName(gameName).getBoard().getAlternative().isEffectCardBeforePlay(card).action();
+            alternative.isEffectCardBeforePlay(card).action();
         }
 
-        model.findGameByName(gameName).getBoard().nextPlayer();
+        game.getBoard().nextPlayer();
         
         jsonObject.put("success", true);
         return sendResponse(200, jsonObject.toString(), "PUT");
@@ -584,6 +591,8 @@ public class GameRest extends OriginRest{
             return sendResponse(405, jsonReturn.toString(), "DELETE");
         }
 
+        Game game = model.findGameByName(gameName);
+
         // Vérification du joueur
         if(model.findPlayerByName(gameName, playerName) == null){
             jsonReturn.put("error", "Player not found");
@@ -595,8 +604,8 @@ public class GameRest extends OriginRest{
         }
 
         // Si la partie a commencer supprimer tous les joueurs ainsi que la partie
-        if(model.findGameByName(gameName).gameBegin()){
-            int taille = model.findGameByName(gameName).getPlayers().size();
+        if(game.gameBegin()){
+            int taille = game.getPlayers().size();
             for(int i = 0; i < taille; i++) {
                 model.removePlayerFromGameByName(gameName, model.findGameByName(gameName).getPlayers().get(0).getName());
             }
@@ -606,9 +615,9 @@ public class GameRest extends OriginRest{
         }
 
         // Si le joueur est l'hôte de la partie
-        if(model.findGameByName(gameName).getHost().getName().equals(playerName)){
+        if(game.getHost().getName().equals(playerName)){
             // s'il ne reste qu'un joueur dans la partie
-            if(model.findGameByName(gameName).getPlayers().size() == 1){
+            if(game.getPlayers().size() == 1){
                 if(model.removePlayerFromGameByName(gameName, playerName))
                     if(model.removeGame(gameName)){
                         jsonReturn.put("status", true);
@@ -617,7 +626,7 @@ public class GameRest extends OriginRest{
             // S'il y a d'autre joueur dans la partie
             } else {
                 if(model.removePlayerFromGameByName(gameName, playerName)){
-                    model.findGameByName(gameName).setHost(model.findGameByName(gameName).getPlayers().get(0));
+                    game.setHost(model.findGameByName(gameName).getPlayers().get(0));
                     jsonReturn.put("status", true);
                     return sendResponse(200, jsonReturn.toString(), "DELETE");
                 }

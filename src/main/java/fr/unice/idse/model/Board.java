@@ -38,6 +38,8 @@ public class Board
 	public void setActualColor(Color actualColor){ this.actualColor = actualColor; }
 	public Color getActualColor(){return this.actualColor; }
 
+	public void setGameBegin(Boolean value){ this.gameBegin = value; }
+
 	
 	public Alternative getAlternative()
 	{
@@ -245,7 +247,7 @@ public class Board
 			deck.removeTopCard();
 			cpt--;
 		}
-		
+		cptDrawCard = 1;
 	}
 	
 	/**
