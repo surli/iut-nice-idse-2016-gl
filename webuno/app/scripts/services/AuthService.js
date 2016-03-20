@@ -7,12 +7,14 @@ angular.module('unoApp')
      */
     .service('Auth', function (localStorageService, HttpRequest) {
         return {
+
             /**
              * Retourne l'utilisateur en session
              */
             getUser: function () {
                 return localStorageService.get('user');
             },
+
             /**
              * Permet la connexion d'un utilisateur avec pseudo et mot de passe
              *
@@ -29,6 +31,7 @@ angular.module('unoApp')
                     }
                 });
             },
+
             /**
              * Permet la connexion d'un utilisateur en tant qu'invité
              *
@@ -44,6 +47,7 @@ angular.module('unoApp')
                     }
                 });
             },
+
             /**
              * Insert un utilisateur dans la session
              *
@@ -52,6 +56,7 @@ angular.module('unoApp')
             connectUser: function (newUser) {
                 localStorageService.set('user', newUser);
             },
+
             /**
              * Retourne si l'utilisateur est connecté ou non
              *
@@ -60,6 +65,7 @@ angular.module('unoApp')
             isConnected: function () {
                 return !!localStorageService.get('user');
             },
+
             /**
              * Supprime l'utilisateur en session
              */
