@@ -8,6 +8,10 @@
 - [Package card] (#package-card)
 - [Package player] (#package-player)
 - [Package regle] (#package-regle)
+- [Class Alternative] (#class-alternative)
+- [Class Board && Game] (#class-board&&game)
+- [Class Deck && Stack] (#class-deck&&stack)
+- [class Model] (#class-model)
 
 ### Contributors
 
@@ -56,3 +60,15 @@ Pour savoi si l'effect de la carte correspond à un changement de couleur une m�
 La méthode boolean getEffect()(possibilité de renommer la méthode) renvoi true si le compteur du nombre de carte à piocher à changer et n'est plus à sa valeur de 1 par défault.
 Dans ce Cas il est nécessaire d'utiliser la méthode void effect() arpès avoir changer de joueur pour appliquer la règle sur le joueur actuel.
 ```
+
+### Class Alternative
+
+C'est la classe qui permet de répertorier toute les règles qui est initialiser dans le board et qui propose des accesseurs aux EffectCards.
+
+### Class Board && Game
+
+C'est ici que se déroule tout les actions du jeux.
+
+### Class Deck && Stack
+
+### Class Model
