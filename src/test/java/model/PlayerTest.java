@@ -40,9 +40,9 @@ public class PlayerTest {
 		
 		expected.add(new Card(Value.Six, Color.Blue));
 		expected.add(new Card(Value.Eight, Color.Blue));
-		expected.add(new Card(Value.Six, Color.Red));
 		expected.add(new Card(Value.Two, Color.Green));
 		expected.add(new Card(Value.DrawTwo, Color.Green));
+		expected.add(new Card(Value.Six, Color.Red));
 		expected.add(new Card(Value.DrawFour, Color.Black));
 		
 		assertEquals(expected, player.getCards());
