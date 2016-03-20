@@ -69,6 +69,17 @@ C'est la classe qui permet de répertorier toute les règles qui est initialiser
 
 C'est ici que se déroule tout les actions du jeux.
 
+Ajouter des joueurs dans la partie en utilisant addPlayer(Player player) prennant un joueur en paramètre.
+Pour lancer la partie utiliser la méthode boolean start() de Game retournant true si la partie a bien été initliliser.
+> Todo : Ajouter un constructeur avec Alternative pour choisir la variante du jeu.
+
+Après avoir lancer la partie et qu'elle a bien été initialiser, on peut utiliser les méthodes de Board suivante :
+ - askPlayerCanPlay(Player player) renvoi true si le joueur en paramètre est le joueur actuel et qu'il peut jouer une carte de sa main.
+ - playableCards() retourne la liste des cartes quele joueur actuel peut jouer.
+ - poseCard(Card ) pose la carte de la main du joueur actuel dans la fosse si elle peut être jouée sinon rien. Met fin à la partie si le joueur à plus de carte en main.
+ - drawCard() le joueur actuel pioche le nombre de carte que le compteur cptDrawCard indique.
+ - nextPlayer() passe au joueur suivant en respectant le sens du jeu.
+
 ### Class Deck && Stack
 
 Composé de list de carte, ces deux classes représentent la fosse et la pioche.
