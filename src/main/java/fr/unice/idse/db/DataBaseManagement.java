@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 public class DataBaseManagement {
 	private Connection con = null;
@@ -116,6 +118,23 @@ public class DataBaseManagement {
 			} catch (SQLException e) {
 			}
 		return null;
+	}
+
+	public JSONObject verifLogin(String email, String password){
+		JSONObject jsonObject = new JSONObject();
+		String query = "SELECT u_pseudo, u_statut, u_banned FROM users WHERE u_email = ? AND u_password = ?";
+		try{
+			if(executeSQL(query, email, password)){
+				jsonObject.put("pseudo", rs.getString(1));
+				jsonObject.put("rang", rs.getInt(2));
+				jsonObject.put("banned", rs.getBoolean(3));
+			}
+		}catch (JSONException e){
+			e.printStackTrace();
+		}catch (SQLException e){
+			e.printStackTrace();
+		}
+		return jsonObject;
 	}
 
 	public int getCurrentAutoIncrementValueWithTableName(String tableName) {
