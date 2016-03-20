@@ -71,4 +71,10 @@ C'est ici que se déroule tout les actions du jeux.
 
 ### Class Deck && Stack
 
+Composé de list de carte, ces deux classes représentent la fosse et la pioche.
+Elles sont presque identique à quelque différence près, il serait interressant de proposer une classe mère et de les mettre dans un sous package.
+
+La Pioche propose la méthode vode initDeck() a appelé en début de partie pour remplir la pioche de toute les cartes composant le uno et la mélanger.
+Lorsque la pioche est vide, il faut utiliser la méthode void reassembleDeck(Stack stack) prenant en paramètre la fosse du board pour reformer la pioche.
+
 ### Class Model
