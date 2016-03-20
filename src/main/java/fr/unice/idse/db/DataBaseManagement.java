@@ -85,10 +85,11 @@ public class DataBaseManagement {
 			for (int i = 1; i < argsToString.length; i++) {
 				if (StringUtils.isNumeric(argsToString[i]))
 					ps.setInt(i, Integer.valueOf(argsToString[i]));
-				else if (isSafeString(argsToString[i]))
-					ps.setString(i, argsToString[i]);
 				else
-					return false;
+				//else if (isSafeString(argsToString[i]))
+					ps.setString(i, argsToString[i]);
+				//else
+				//	return false;
 			}
 			if (select) {
 				// for query used a SELECT
