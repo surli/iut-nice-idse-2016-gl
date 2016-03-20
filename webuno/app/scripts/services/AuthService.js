@@ -16,6 +16,35 @@ angular.module('unoApp')
             },
 
             /**
+             * Insert un utilisateur dans la session
+             *
+             * @param newUser
+             */
+            connectUser: function (newUser) {
+                localStorageService.set('user', newUser);
+            },
+
+            /**
+             * Retourne si l'utilisateur est connecté ou non
+             *
+             * @returns {boolean}
+             */
+            isConnected: function () {
+                return !!localStorageService.get('user');
+            },
+
+            isAdmin: function () {
+                return this.getUser().type === 4;
+            },
+
+            /**
+             * Supprime l'utilisateur en session
+             */
+            destroyUser: function () {
+                localStorageService.remove('user');
+            },
+
+            /**
              * Permet la connexion d'un utilisateur avec pseudo et mot de passe
              *
              * @param newUser
@@ -48,31 +77,6 @@ angular.module('unoApp')
                         playername: playername
                     }
                 }, callback, callbackError);
-            },
-
-            /**
-             * Insert un utilisateur dans la session
-             *
-             * @param newUser
-             */
-            connectUser: function (newUser) {
-                localStorageService.set('user', newUser);
-            },
-
-            /**
-             * Retourne si l'utilisateur est connecté ou non
-             *
-             * @returns {boolean}
-             */
-            isConnected: function () {
-                return !!localStorageService.get('user');
-            },
-
-            /**
-             * Supprime l'utilisateur en session
-             */
-            destroyUser: function () {
-                localStorageService.remove('user');
             },
 
             /**

@@ -107,6 +107,11 @@ angular
                 url: '/game/:name',
                 templateUrl: 'views/game.html',
                 controller: 'GameController'
+            })
+            .state('app.admin', {
+                url: '/admin',
+                templateUrl: 'views/admin.html',
+                controller: 'AdminController'
             });
 
         $urlRouterProvider.otherwise('/login');

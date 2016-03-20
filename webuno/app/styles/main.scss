@@ -108,8 +108,22 @@ $carte-height: 360px*0.3;
 .nav > li > a {
   &:hover, &:focus {
     background-color: transparent;
-    color: $rouge;
     outline: none;
+    color: $blanc;
+  }
+
+  .fa-dashboard {
+    margin: -2px 10px !important;
+
+    &:hover {
+      color: $orange;
+    }
+  }
+
+  .fa-sign-out {
+    &:hover {
+      color: $rouge;
+    }
   }
 }
 
