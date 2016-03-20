@@ -175,6 +175,10 @@ public class Board extends Observable
 				deck.removeTopCard();
 			}
 		}
+		for(Player player : players)
+		{
+			player.sortCards();
+		}
 		stack.initStack(deck);
 		actualColor = stack.topCard().getColor();
 		gameBegin = true;
@@ -256,6 +260,7 @@ public class Board extends Observable
 				getDeck().reassembleDeck(getStack());
 			}
 			getActualPlayer().getCards().add(deck.topCard());
+			getActualPlayer().sortCards();
 			deck.removeTopCard();
 			cpt--;
 		}

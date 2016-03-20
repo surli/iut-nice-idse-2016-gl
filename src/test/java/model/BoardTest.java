@@ -140,12 +140,16 @@ public class BoardTest
 	{
 		Board board = new Board();
 		Player toto = new Player("toto","");
-		board.getStack().getStack().add(new Card(Value.One, Color.Blue));
-		board.getStack().getStack().add(new Card(Value.Two, Color.Blue));
-		board.getStack().getStack().add(new Card(Value.Three, Color.Blue));
+		board.getDeck().getDeck().add(new Card(Value.One, Color.Blue));
+		board.getDeck().getDeck().add(new Card(Value.Two, Color.Blue));
+		board.getDeck().getDeck().add(new Card(Value.Three, Color.Blue));
 		board.getPlayers().add(toto);
+
 		board.setCptDrawCard(3);
 		board.drawCard();
+
+
+
 		assertTrue(toto.getCards().size() == 3);
 	}
 	
