@@ -52,8 +52,12 @@ angular.module('unoApp')
                         $scope.cartes = data.cartes;
                     });
 
-                    // La fonction s'appelle elle même
-                    $scope.requestStateGame();
+                    if ($scope.game.gameEnd) {
+                        $timeout.cancel(timeoutStateGame);
+                    } else {
+                        // La fonction s'appelle elle même
+                        $scope.requestStateGame();
+                    }
                 }, function () {
                     $timeout.cancel(timeoutStateGame);
                     $state.go('login');
@@ -114,15 +118,17 @@ angular.module('unoApp')
         // Évènement qui permet de stopper le timer et quitter la room quand on quitte le contrôleur RoomController
         $scope.$on('$destroy', function () {
             $timeout.cancel(timeoutStateGame);
-            if ($scope.game.state === false && !$rootScope.logout) {
+            if ($scope.game.state === false && !$rootScope.logout && !$scope.game.gameEnd) {
                 Game.quitRoom($rootScope.gameName);
             }
         });
 
         // Évènement qui permet de quitter la room quand on ferme l'onglet contenant la room
+        /*
         window.onbeforeunload = function () {
             if (!$rootScope.logout) {
                 Game.quitRoom($rootScope.gameName);
             }
         };
+        */
     }]);

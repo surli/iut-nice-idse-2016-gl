@@ -64,9 +64,11 @@ angular.module('unoApp')
         });
 
         // Évènement qui permet de quitter la room quand on ferme l'onglet contenant la room
+        /*
         window.onbeforeunload = function () {
             if (!$rootScope.logout) {
                 Game.quitRoom($rootScope.gameName);
             }
         };
+        */
     }]);
