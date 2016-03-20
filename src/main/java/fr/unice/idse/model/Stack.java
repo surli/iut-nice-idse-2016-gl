@@ -78,6 +78,25 @@ public class Stack {
 	}
 	
 	/**
+	 * Retourne le nombre de cartes du talon
+	 * @return
+	 */
+	public int countCards(){
+		return stack.size();
+	}
+	
+	/**
+	 * Permet de vérifier si le talon est vide
+	 * @return
+	 */
+	public boolean isEmpty(){
+		if(countCards()==0){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * toString du talon
 	 */
 	public String toString() {
