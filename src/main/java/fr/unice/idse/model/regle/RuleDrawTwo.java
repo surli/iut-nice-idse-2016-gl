@@ -24,6 +24,7 @@ public class RuleDrawTwo extends EffectCard
 		}
 	}
 	
+	@Override
 	public void effect()
 	{
 		if(!getBoard().askPlayerCanPlay(getBoard().getActualPlayer()))

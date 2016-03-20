@@ -20,19 +20,11 @@ angular.module('unoApp')
         // Cette fonction est appelée à l'envoi du formulaire html
         $scope.goLogin = function () {
             // Utilisation du service Auth qui permet de connecter un utilisateur en renvoyant un token
-            Auth.setUser($scope.newUser)
-                .then(function (response) {
-                    // Si le pseudo et le mot de passe sont incorrecte
-                    // alors un message d'erreur est affiché
-                    // sinon l'utilisateur est connecté et redirigé vers la page d'accueil de l'application
-                    if (response.data.error) {
-                        $scope.error = response.data.error;
-                    } else {
-                        response.data.name = response.data.playerName;
-                        // Utilisation du service Auth pour setter les informations utilisateur dans la session
-                        Auth.connectUser(response.data);
-                        $state.go('app.home');
-                    }
+            Auth.setUser($scope.newUser, function (data) {
+                    data.name = data.playerName;
+                    // Utilisation du service Auth pour setter les informations utilisateur dans la session
+                    Auth.connectUser(data);
+                    $state.go('app.home');
                 });
         };
 
@@ -40,20 +32,11 @@ angular.module('unoApp')
         $scope.goLoginGuess = function () {
             var name = 'Anonymous' + Math.floor((Math.random() * (1000 - 1) + 1));
             // Utilisation du service Auth qui permet de connecter un utilisateur en tant qu'invité en renvoyant un token
-            Auth.setUserGuess(name)
-                .then(function (response) {
-                    response.data.name = name;
+            Auth.setUserGuess(name, function (data) {
+                    data.name = name;
                     // Utilisation du service Auth pour setter les informations utilisateur dans la session
-                    Auth.connectUser(response.data);
+                    Auth.connectUser(data);
                     $state.go('app.home');
                 });
-        };
-
-        $rootScope.lang = $translate.use();
-        // Fonction qui permet de changer la langue
-        $scope.changeLanguage = function (langKey) {
-            // Utilisation de la dépendance $translate pour changer la langue de l'app
-            $rootScope.lang = langKey;
-            $translate.use(langKey);
         };
     }]);

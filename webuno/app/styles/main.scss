@@ -108,8 +108,22 @@ $carte-height: 360px*0.3;
 .nav > li > a {
   &:hover, &:focus {
     background-color: transparent;
-    color: $rouge;
     outline: none;
+    color: $blanc;
+  }
+
+  .fa-dashboard {
+    margin: -2px 10px !important;
+
+    &:hover {
+      color: $orange;
+    }
+  }
+
+  .fa-sign-out {
+    &:hover {
+      color: $rouge;
+    }
   }
 }
 
@@ -302,10 +316,12 @@ footer {
       top: 80px;
       left: 70px;
 
-      &:hover {
-        transform: scale(1.1);
-        box-shadow: 0 0 15px 1px $gris;
-        cursor: pointer;
+      &.current-player {
+        &:hover {
+          transform: scale(1.1);
+          box-shadow: 0 0 15px 1px $gris;
+          cursor: pointer;
+        }
       }
     }
 
@@ -331,12 +347,14 @@ footer {
         margin-left: -($carte-width/3);
         box-shadow: 0 0 15px 1px $gris;
 
-        &:hover {
-          margin-right: ($carte-width/3);
-          margin-left: -($carte-width/4);
-          transform: scale(1.1);
-          cursor: pointer;
-          z-index: 9999;
+        &.current-player {
+          &:hover {
+            margin-right: ($carte-width/3);
+            margin-left: -($carte-width/4);
+            transform: scale(1.1);
+            cursor: pointer;
+            z-index: 9999;
+          }
         }
       }
     }
@@ -493,4 +511,8 @@ footer {
     background-color: $rouge;
     color: #FFF;
   }
+}
+
+rect {
+  fill: transparent;
 }

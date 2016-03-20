@@ -2,26 +2,14 @@ package db;
 
 import static org.junit.Assert.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
 import org.junit.Test;
 import fr.unice.idse.db.DataBaseManagement;
-import fr.unice.idse.model.card.*;
+
 
 
 public class DataBaseManagementTest {
 	/*
 	DataBaseManagement dataBaseManagement = new DataBaseManagement();
-	
-	@Test
-	public void voidIfCountPointsIsCorrect(){
-		ArrayList<Card> totoHand = new ArrayList<Card>();
-		totoHand.add(new Card(Value.One,Color.Green));
-		totoHand.add(new Card(Value.Seven,Color.Blue));
-		totoHand.add(new Card(Value.Skip,Color.Red));
-		totoHand.add(new Card(Value.Wild,Color.Black));
-		assertEquals(dataBaseManagement.countPoints(totoHand),78);
-	}
 	
 	@Test
 	public void ifUserAlreadyExistPseudoEmailIsCorrect() throws SQLException {
@@ -35,20 +23,20 @@ public class DataBaseManagementTest {
 
 	@Test
 	public void addDeleteUpdateUserIsCorrect() throws SQLException {
-		assertTrue(dataBaseManagement.addUser("titi", "titi@gmail.com", "mypass", "member"));
+		assertTrue(dataBaseManagement.addUser("titi", "titi@gmail.com", "mypass", 4));
 		assertTrue(dataBaseManagement.userLoginIsCorrect("titi@gmail.com", "mypass"));
 		assertTrue(dataBaseManagement.getPseudoWithEmail("titi@gmail.com").equals("titi"));
 		assertTrue(dataBaseManagement.updateUserPseudo("titi@gmail.com", "mypass", "newtiti"));
 		assertTrue(dataBaseManagement.updateUserEmail("titi@gmail.com", "mypass", "newtiti@gmail.com"));
 		assertTrue(dataBaseManagement.updateUserPassword("newtiti@gmail.com", "mypass", "mynewpass"));
-		assertTrue(dataBaseManagement.updateUserType("newtiti@gmail.com", "mynewpass", "admin"));
+		assertTrue(dataBaseManagement.updateUserBanned("newtiti@gmail.com", "mynewpass", 1));
 		assertTrue(dataBaseManagement.deleteUserWithPseudo("newtiti"));
 	}
 
 	@Test
 	public void addDeleteCardIsCorrect() throws SQLException {
-		assertTrue(dataBaseManagement.addCard("zero", "blue"));
-		assertTrue(dataBaseManagement.deleteCard("zero", "blue"));
+		assertTrue(dataBaseManagement.addCard("Zero", "Blue"));
+		assertTrue(dataBaseManagement.deleteCard("Zero", "Blue"));
 	}
 
 	@Test

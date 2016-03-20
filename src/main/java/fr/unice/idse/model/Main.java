@@ -34,11 +34,6 @@ public class Main
             {
                 Player actualPlayer = board.getActualPlayer();
                 Card actualCardInStack = board.getStack().topCard();
-                EffectCard effectCardBeforePlay = variante.isEffectCardBeforePlay(actualCardInStack);
-                if(effectCardBeforePlay != null)
-                {
-                    effectCardBeforePlay.effect();
-                }
                 System.out.println("Main du joueur " + actualPlayer.getName());
                 for (int i = 0 ; i < actualPlayer.getCards().size() ; i++)
                 {
@@ -87,7 +82,7 @@ public class Main
                                     {
                                         System.out.println("Uno");
                                     }
-                                    EffectCard effectCard = variante.isEffectCardAfterPose(card);
+                                    EffectCard effectCard = variante.getEffectCard(card);
                                     if(effectCard != null)
                                     {
                                         if(card.getColor().equals(Color.Black))
@@ -136,6 +131,10 @@ public class Main
                                         effectCard.action();
                                     }
                                     board.nextPlayer();
+                                    if(effectCard != null && effectCard.getEffect())
+                                    {
+                                        effectCard.effect();
+                                    }
                                 }
                             }
                         }

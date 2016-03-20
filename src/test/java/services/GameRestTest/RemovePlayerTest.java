@@ -1,7 +1,10 @@
 package services.GameRestTest;
 
+import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
+import fr.unice.idse.model.player.Player;
 import fr.unice.idse.services.GameRest;
+
 import org.codehaus.jettison.json.JSONException;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
@@ -25,8 +28,8 @@ public class RemovePlayerTest extends JerseyTest {
     @Before
     public void init() {
         model = Model.getInstance();
-        model.setGames(new ArrayList<>());
-        model.setPlayers(new ArrayList<>());
+        model.setGames(new ArrayList<Game>());
+        model.setPlayers(new ArrayList<Player>());
         model.createPlayer("toto", "token");
         model.addGame(model.getPlayerFromList("token"), "tata", 4);
     }
