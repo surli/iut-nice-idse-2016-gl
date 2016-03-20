@@ -420,6 +420,11 @@ public class GameRest extends OriginRest{
             jsonReturn.put("error", "Game not started");
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
+        // verifie si la partie est terminé
+        if(game.gameEnd()){
+            jsonReturn.put("error", "Game terminated");
+            return sendResponse(405, jsonReturn.toString(), "POST");
+        }
         Board board = game.getBoard();
 
         // Verifcation du joueur actuel
@@ -470,6 +475,11 @@ public class GameRest extends OriginRest{
         if(!game.gameBegin()) {
             jsonObject.put("error", "The game does hasn't begun");
             return sendResponse(405, jsonObject.toString(), "PUT");
+        }
+        // verifie si la partie est terminé
+        if(game.gameEnd()){
+            jsonObject.put("error", "Game terminated");
+            return sendResponse(405, jsonObject.toString(), "POST");
         }
 
         // Verification de l'authentification
