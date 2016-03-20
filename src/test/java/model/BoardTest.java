@@ -153,6 +153,9 @@ public class BoardTest
 		assertTrue(toto.getCards().size() == 3);
 	}
 	
+	/**
+	 * Voir description de la méthode rotatePlayerDecks dans la classe Board
+	 */
 	@Test
 	public void testRotationSensHoraireDesJeuxDeCartesDesJoueurs()
 	{
@@ -200,6 +203,9 @@ public class BoardTest
 		assertEquals(deck3,p4.getCards());
 	}
 	
+	/**
+	 * Voir description de la méthode rotatePlayerDecks dans la classe Board
+	 */
 	@Test
 	public void testRotationSensNonHoraireDesJeuxDeCartesDesJoueurs()
 	{

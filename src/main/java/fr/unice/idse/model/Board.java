@@ -287,6 +287,10 @@ public class Board extends Observable
 	
 	/**
 	 * Tourne les jeux dans le sens du jeu
+	 * Exemple :
+	 * Il y a 3 joueurs dans la partie; le jeu est dans le sens horaire.
+	 * Lors de l'appel de cette méthode le joueur 1 donne son jeu au joueur 2,
+	 * le joueur 2 donne son jeu au joueur 3 et enfin le joueur 3 donne son jeu au joueur 1.
 	 */
 	public void rotatePlayerDecks()
 	{
