@@ -2,6 +2,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +21,7 @@ public class StackTest {
 	@Before
 	public void initialize(){
 		stack = new Stack(); 
+		deck = new Deck();
 		oneBlue = new Card(Value.One, Color.Blue);
 		twoRed = new Card(Value.Two, Color.Red);
 		threeYellow = new Card(Value.Three, Color.Yellow);
@@ -30,6 +33,12 @@ public class StackTest {
 	@Test
 	public void talonInitialiseEstVide(){
 		assertTrue(stack.isEmpty());
+	}
+	
+	@Test
+	public void addCardAjouteBienLaCarteAuTalon(){
+		stack.addCard(oneBlue);
+		assertEquals(oneBlue, stack.topCard());
 	}
 	
 	@Test
@@ -78,5 +87,22 @@ public class StackTest {
 		stack.addCard(twoRed);
 		stack.changeColor(Color.Yellow);
 		assertEquals(Color.Yellow, stack.topCard().getColor());
+	}
+	
+	@Test
+	public void initStackInitialiseLeTalonAvecUneCarte(){
+		deck.initDeck();
+		stack.initStack(deck);
+		assertEquals(1, stack.countCards());
+	}
+	
+	@Test
+	public void setStackRemplitLeTalonAvecUneArrayListDonnee(){
+		ArrayList<Card> listCard = new ArrayList<Card>();
+		listCard.add(oneBlue);
+		listCard.add(twoRed);
+		listCard.add(threeYellow);
+		stack.setStack(listCard);
+		assertEquals(listCard, stack.getStack());
 	}
 }
