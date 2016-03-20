@@ -1,7 +1,5 @@
 package fr.unice.idse.model.player;
 
-import fr.unice.idse.model.Board;
-
 public class IA extends Player {
 
     public IA(String name, String token  , int difficulty){

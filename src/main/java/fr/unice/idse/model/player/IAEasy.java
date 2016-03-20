@@ -12,7 +12,7 @@ public class IAEasy extends IA {
         super(name, token, difficulty);
     }
 
-    public void reflexion(Board board) {
+    public static void reflexion(Board board) {
 
         ArrayList<Card> mainIA = board.getActualPlayer().getCards();
         ArrayList<Card> playableCards = board.playableCards();
@@ -29,11 +29,12 @@ public class IAEasy extends IA {
                     board.poseCard(myCard);
                     System.out.println("Carte joué : " + myCard);
 
-                    if (myCard.getColor() == Color.Black) {
+                    if (board.getAlternative().getEffectCard(myCard).isColorChangingCard()) {
                         board.getAlternative().getEffectCard(myCard).changeColor(chooseColor(mainIA));
                         board.getAlternative().getEffectCard(myCard).action();
                     }
                     turnPlay = true;
+                    break;
                 }
             }
             i++;
@@ -44,7 +45,7 @@ public class IAEasy extends IA {
         }
     }
 
-    public Color chooseColor(ArrayList<Card> mainIA) {
+    public static Color chooseColor(ArrayList<Card> mainIA) {
         Color color = mainIA.get(0).getColor();
 
         return color;

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.unice.idse.model.player.IAEasy;
 import fr.unice.idse.model.player.Player;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
@@ -47,4 +48,22 @@ public class PlayerTest {
 		
 		assertEquals(expected, player.getCards());
 	}
+
+/*
+	@Test
+	public void  testDuChangeColorDuJoueur()
+	{
+		IAEasy monIA = new IAEasy("Test","tok",1);
+		ArrayList<Card> mainIA = new ArrayList<Card>();
+
+		mainIA.add(new Card(Value.Two, Color.Blue));
+		monIA.setCards(mainIA);
+
+		Color colorExpected = Color.Blue;
+		
+		assertEquals(colorExpected, IAEasy.chooseColor(monIA.getCards()));
+		
+	}
+
+	*/
 }

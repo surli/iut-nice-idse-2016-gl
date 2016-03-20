@@ -133,7 +133,7 @@ public class Main
                                     board.nextPlayer();
                                     if(effectCard != null && effectCard.getEffect())
                                     {
-                                    	effectCard.effect();
+                                        effectCard.effect();
                                     }
                                 }
                             }
