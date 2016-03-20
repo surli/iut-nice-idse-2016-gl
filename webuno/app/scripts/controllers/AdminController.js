@@ -10,7 +10,7 @@ angular.module('unoApp')
             $state.go('login');
         }
 
-        Game.getAllGames(function(data) {
-           $scope.games = data;
+        Game.getAllGames(function (data) {
+            $scope.games = data.games;
         });
     }]);

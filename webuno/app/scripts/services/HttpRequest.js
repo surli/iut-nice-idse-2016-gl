@@ -29,7 +29,9 @@ angular.module('unoApp')
                     // Si elle est 200 alors on execute la callback, sinon on affiche une erreur
                     ErrorService.test(response, callback, callbackError);
                 }, function(response) {
-                    callbackError();
+                    if (callbackError && isFunction(callbackError)) {
+                        callbackError();
+                    }
                     $rootScope.error = response.data.error;
                 });
             }
