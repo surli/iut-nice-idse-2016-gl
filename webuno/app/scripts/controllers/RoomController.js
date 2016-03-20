@@ -45,8 +45,6 @@ angular.module('unoApp')
             // Utilisation du service Game pour lancer une partie
             // Le bouton qui lance cette fonction n'apparaît que si le nombre de joueurs maximum est atteint
             // et que le joueur connecté est le créateur de la partie
-            // Si le statut est 200 alors le créateur de la partie est redirigé vers la partie commencée
-            // sinon un message d'erreur apparait
             Game.startGame($rootScope.gameName, function () {
                 Game.getGame($rootScope.gameName, function (data) {
                     $scope.game = data;

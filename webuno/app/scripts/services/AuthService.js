@@ -33,8 +33,31 @@ angular.module('unoApp')
                 return !!localStorageService.get('user');
             },
 
+            /**
+             * Test si l'utilisateur est un Guest
+             *
+             * @returns {boolean}
+             */
+            isGuest: function () {
+                return this.getUser().rang === 2;
+            },
+
+            /**
+             * Test si l'utilisateur est un Register
+             *
+             * @returns {boolean}
+             */
+            isRegister: function () {
+                return this.getUser().rang === 3;
+            },
+
+            /**
+             * Test si l'utilisateur est un Admin
+             *
+             * @returns {boolean}
+             */
             isAdmin: function () {
-                return this.getUser().type === 4;
+                return this.getUser().rang === 4;
             },
 
             /**
