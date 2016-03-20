@@ -46,3 +46,13 @@ Un joueur peut être humain ou IA, il est défini de manière général par un n
 Certaines cartes peuvent avoir un effet au cour de la partie.
 La classe EffectCard permet attribuer un effet sur la valeur d'une carte.
 Elle a besoin de connaitre le plateau de jeu(Board) sur lequel elle interagie ainsi que la valeur de la carte sur lequel elle sera affectée pour être initialiser.
+
+```
+Pour utiliser l'effect d'une carte, il suffit d'appeler la méthode void action().
+
+Si on est dans le cas d'un chagement de couleur de jeu la méthode void changeColor(Color couleur) peut être appelé prenant en paramètre la nouvelle couleur de jeu.
+Pour savoi si l'effect de la carte correspond à un changement de couleur une méthode booelan isColorChangingCard() existe retournant true si c'est le cas.
+
+La méthode boolean getEffect()(possibilité de renommer la méthode) renvoi true si le compteur du nombre de carte à piocher à changer et n'est plus à sa valeur de 1 par défault.
+Dans ce Cas il est nécessaire d'utiliser la méthode void effect() arpès avoir changer de joueur pour appliquer la règle sur le joueur actuel.
+```
