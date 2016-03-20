@@ -13,6 +13,8 @@ import java.sql.Statement;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 public class DataBaseManagement {
 	private Connection con = null;
@@ -122,10 +124,11 @@ public class DataBaseManagement {
 			for (int i = 1; i < argsToString.length; i++) {
 				if (StringUtils.isNumeric(argsToString[i]))
 					ps.setInt(i, Integer.valueOf(argsToString[i]));
-				else if (isSafeString(argsToString[i]))
-					ps.setString(i, argsToString[i]);
 				else
-					return false;
+				//else if (isSafeString(argsToString[i]))
+					ps.setString(i, argsToString[i]);
+				//else
+				//	return false;
 			}
 			if (select) {
 				// for query used a SELECT
@@ -152,6 +155,23 @@ public class DataBaseManagement {
 			} catch (SQLException e) {
 			}
 		return null;
+	}
+
+	public JSONObject verifLogin(String email, String password){
+		JSONObject jsonObject = new JSONObject();
+		String query = "SELECT u_pseudo, u_statut, u_banned FROM users WHERE u_email = ? AND u_password = ?";
+		try{
+			if(executeSQL(query, email, password)){
+				jsonObject.put("pseudo", rs.getString(1));
+				jsonObject.put("rang", rs.getInt(2));
+				jsonObject.put("banned", rs.getBoolean(3));
+			}
+		}catch (JSONException e){
+			e.printStackTrace();
+		}catch (SQLException e){
+			e.printStackTrace();
+		}
+		return jsonObject;
 	}
 
 	public int getCurrentAutoIncrementValueWithTableName(String tableName) {

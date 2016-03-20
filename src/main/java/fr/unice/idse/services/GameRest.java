@@ -168,6 +168,7 @@ public class GameRest extends OriginRest{
             jsonStack.put("number", model.findGameByName(gamename).getBoard().getStack().topCard().getValue());
             jsonStack.put("family", model.findGameByName(gamename).getBoard().getStack().topCard().getColor());
             jsonObject.put("stack", jsonStack);
+            jsonObject.put("gameEnd", model.findGameByName(gamename).gameEnd());
             return sendResponse(200, jsonObject.toString(), "GET");
         }
 
@@ -389,6 +390,7 @@ public class GameRest extends OriginRest{
             jsonReturn.put("error", "Partie inconnue");
             return sendResponse(404, jsonReturn.toString(), "POST");
         }
+        Game game = model.findGameByName(gameName);
 
         // Vérification de l'authentification
         if(token == null){
@@ -409,26 +411,34 @@ public class GameRest extends OriginRest{
         
 
         // verifie que la partie est bien lancée
-        if(!model.findGameByName(gameName).gameBegin()){
+        if(!game.gameBegin()){
             jsonReturn.put("error", "Game not started");
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
+        // verifie si la partie est terminé
+        if(game.gameEnd()){
+            jsonReturn.put("error", "Game terminated");
+            return sendResponse(405, jsonReturn.toString(), "POST");
+        }
+        Board board = game.getBoard();
 
         // Verifcation du joueur actuel
-        if(!model.findGameByName(gameName).getBoard().getActualPlayer().getToken().equals(token)){
+        if(!board.getActualPlayer().getToken().equals(token)){
             jsonReturn.put("error", "It's not this player to play");
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
 
-        int cartes = model.findGameByName(gameName).getBoard().getActualPlayer().getCards().size();
-        model.findGameByName(gameName).getBoard().drawCard();
+        int card = board.getActualPlayer().getCards().size();
+        int drawCard = board.getCptDrawCard();
 
-        if(model.findGameByName(gameName).getBoard().getActualPlayer().getCards().size() != cartes+1){
+        board.drawCard();
+
+        if(board.getActualPlayer().getCards().size() != card+drawCard){
             jsonReturn.put("return", false);
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
         jsonReturn.put("return", true);
-        model.findGameByName(gameName).getBoard().nextPlayer();
+        board.nextPlayer();
         return sendResponse(200, jsonReturn.toString(), "POST");
     }
 
@@ -460,6 +470,11 @@ public class GameRest extends OriginRest{
         if(!game.gameBegin()) {
             jsonObject.put("error", "The game does hasn't begun");
             return sendResponse(405, jsonObject.toString(), "PUT");
+        }
+        // verifie si la partie est terminé
+        if(game.gameEnd()){
+            jsonObject.put("error", "Game terminated");
+            return sendResponse(405, jsonObject.toString(), "POST");
         }
 
         // Verification de l'authentification

@@ -264,7 +264,7 @@ public class Board extends Observable
 			deck.removeTopCard();
 			cpt--;
 		}
-		
+		cptDrawCard = 1;
 	}
 	
 	/**
