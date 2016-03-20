@@ -48,12 +48,4 @@ angular.module('unoApp')
                     $state.go('app.home');
                 });
         };
-
-        $rootScope.lang = $translate.use();
-        // Fonction qui permet de changer la langue
-        $scope.changeLanguage = function (langKey) {
-            // Utilisation de la dépendance $translate pour changer la langue de l'app
-            $rootScope.lang = langKey;
-            $translate.use(langKey);
-        };
     }]);
