@@ -12,7 +12,7 @@ public class IAEasy extends IA {
         super(name, token, difficulty);
     }
 
-    public void reflexion(Board board) {
+    public static void reflexion(Board board) {
 
         ArrayList<Card> mainIA = board.getActualPlayer().getCards();
         ArrayList<Card> playableCards = board.playableCards();
@@ -44,7 +44,7 @@ public class IAEasy extends IA {
         }
     }
 
-    public Color chooseColor(ArrayList<Card> mainIA) {
+    public static Color chooseColor(ArrayList<Card> mainIA) {
         Color color = mainIA.get(0).getColor();
 
         return color;

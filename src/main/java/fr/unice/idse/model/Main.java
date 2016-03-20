@@ -1,5 +1,4 @@
 package fr.unice.idse.model;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,20 +9,18 @@ import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.regle.EffectCard;
 import fr.unice.idse.model.regle.RuleChangeColor;
 import fr.unice.idse.model.player.*;
-
-
 public class Main
 {
-
     public static void main(String[] args)
     {
         Player playerHostTest = new Player("PlayerHostTest","tok1");
-        Player playerTest2 = new Player("Test","tok2");
-        Player playerTest3 = new Player("Toto","tok3");
+        IAEasy playerTest2 = new IAEasy("Test","tok2",1);
+//      IA playerTest3 = new IA("Toto","tok3",2);
+//      IA playerTest4 = new IA("Toto","tok3",3);
         Game gameTest = new Game(playerHostTest, "GameTest", 3);
-
         gameTest.addPlayer(playerTest2);
-        gameTest.addPlayer(playerTest3);
+//      gameTest.addPlayer(playerTest3);
+//      gameTest.addPlayer(playerTest4);
         if (gameTest.start())
         {
             Board board = gameTest.getBoard();
@@ -48,96 +45,120 @@ public class Main
                     boolean played = false;
                     while(!played)
                     {
-                        int numberCardsPlayer = actualPlayer.getCards().size();
-                        System.out.println("Entrez une valeure qui est entre crochet pour jouer une carte.");
-                        BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-                        String input = "";
-                        try
-                        {
-                            input = bufferRead.readLine();
-                        }
-                        catch (IOException e)
-                        {
-                            e.printStackTrace();
-                        }
-                        int numberCard = Integer.parseInt(input);
-                        if(input != "" && numberCard < actualPlayer.getCards().size())
-                        {
-
-                            Card card = actualPlayer.getCards().get(numberCard);
-                            board.poseCard(card);
-                            if(gameTest.gameEnd())
+                        if(actualPlayer instanceof IAEasy) {
+                        	((IAEasy) actualPlayer).reflexion(board);
+                            //IA Reflexion
+                        	if(gameTest.gameEnd())
                             {
                                 winner = actualPlayer;
                                 played = true;
-                                System.out.println("Le joueur joue : " + card);
+                                //System.out.println("Le joueur joue : " + card);
                             }
                             else
                             {
-                                if(numberCardsPlayer > actualPlayer.getCards().size())
+                            played = true;
+                            }
+                        }
+                        else {
+                        	
+                        	int numberCardsPlayer = actualPlayer.getCards().size();
+                            System.out.println("Entrez une valeur qui est entre crochet pour jouer une carte.");
+                            BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+                            String input = "";
+                            try
+                            {
+                                input = bufferRead.readLine();
+                            }
+                            catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+                            int numberCard = Integer.parseInt(input);
+                            if(!input.equals("") && numberCard < actualPlayer.getCards().size())
+                            {
+                                Card card = actualPlayer.getCards().get(numberCard);
+                                board.poseCard(card);
+                                if(gameTest.gameEnd())
                                 {
+                                    winner = actualPlayer;
                                     played = true;
                                     System.out.println("Le joueur joue : " + card);
-                                    if(actualPlayer.getCards().size() == 1)
+                                }
+                                else
+                                {
+                                    if(numberCardsPlayer > actualPlayer.getCards().size())
                                     {
-                                        System.out.println("Uno");
-                                    }
-                                    EffectCard effectCard = variante.getEffectCard(card);
-                                    if(effectCard != null)
-                                    {
-                                        if(card.getColor().equals(Color.Black))
+                                        played = true;
+                                        System.out.println("Le joueur joue : " + card);
+                                        if(actualPlayer.getCards().size() == 1)
                                         {
-                                            boolean chooseColor = false;
-                                            while (!chooseColor)
+                                            System.out.println("Uno");
+                                        }
+                                        EffectCard effectCard = variante.getEffectCard(card);
+                                        if(effectCard != null)
+                                        {
+                                            if(card.getColor().equals(Color.Black))
                                             {
-                                                System.out.println("Choisie une couleur :  1 pour Red, 2 pour Blue, 3 pour Yellow, 4 pour Green");
-                                                input = "";
-                                                try
+                                                boolean chooseColor = false;
+                                                while (!chooseColor)
                                                 {
-                                                    input = bufferRead.readLine();
-                                                }
-                                                catch (IOException e)
-                                                {
-                                                    e.printStackTrace();
-                                                }
-                                                int choose = Integer.parseInt(input);
-                                                switch(choose)
-                                                {
-                                                    case 1 :
-                                                        effectCard.changeColor(Color.Red);
-                                                        chooseColor = true;
-                                                        System.out.println("Le joueur a choisie : Red");
-                                                        break;
-                                                    case 2 :
-                                                        effectCard.changeColor(Color.Blue);
-                                                        System.out.println("Le joueur a choisie : Blue");
-                                                        chooseColor = true;
-                                                        break;
-                                                    case 3 :
-                                                        effectCard.changeColor(Color.Yellow);
-                                                        System.out.println("Le joueur a choisie : Yellow");
-                                                        chooseColor = true;
-                                                        break;
-                                                    case 4 :
-                                                        effectCard.changeColor(Color.Green);
-                                                        System.out.println("Le joueur a choisie : Green");
-                                                        chooseColor = true;
-                                                        break;
-                                                    default :
-                                                        break;
+                                                    int choose = 0;
+                                                    if(actualPlayer instanceof IA) {
+                                                        //int choose = actualPlayer reflexion
+                                                        choose = 1;
+                                                    }
+                                                    else {
+                                                        System.out.println("Choisie une couleur :  1 pour Red, 2 pour Blue, 3 pour Yellow, 4 pour Green");
+                                                        input = "";
+                                                        try
+                                                        {
+                                                            input = bufferRead.readLine();
+                                                        }
+                                                        catch (IOException e)
+                                                        {
+                                                            e.printStackTrace();
+                                                        }
+                                                        choose = Integer.parseInt(input);
+                                                    }
+                                                    switch(choose)
+                                                    {
+                                                        case 1 :
+                                                            effectCard.changeColor(Color.Red);
+                                                            chooseColor = true;
+                                                            System.out.println("Le joueur a choisie : Red");
+                                                            break;
+                                                        case 2 :
+                                                            effectCard.changeColor(Color.Blue);
+                                                            System.out.println("Le joueur a choisie : Blue");
+                                                            chooseColor = true;
+                                                            break;
+                                                        case 3 :
+                                                            effectCard.changeColor(Color.Yellow);
+                                                            System.out.println("Le joueur a choisie : Yellow");
+                                                            chooseColor = true;
+                                                            break;
+                                                        case 4 :
+                                                            effectCard.changeColor(Color.Green);
+                                                            System.out.println("Le joueur a choisie : Green");
+                                                            chooseColor = true;
+                                                            break;
+                                                        default :
+                                                            break;
+                                                    }
                                                 }
                                             }
+                                            effectCard.action();
                                         }
-                                        effectCard.action();
-                                    }
-                                    board.nextPlayer();
-                                    if(effectCard != null && effectCard.getEffect())
-                                    {
-                                    	effectCard.effect();
+                                        board.nextPlayer();
+                                        if(effectCard != null && effectCard.getEffect())
+                                        {
+                                            effectCard.effect();
+                                        }
                                     }
                                 }
                             }
                         }
+                        
                     }
                 }
                 else
@@ -149,7 +170,6 @@ public class Main
                         board.nextPlayer();
                     }
                 }
-
             }
             System.out.println("Fin de la partie. Vainqueur : " + winner.getName());
         }
