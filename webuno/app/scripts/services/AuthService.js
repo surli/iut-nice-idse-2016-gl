@@ -19,33 +19,35 @@ angular.module('unoApp')
              * Permet la connexion d'un utilisateur avec pseudo et mot de passe
              *
              * @param newUser
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            setUser: function (newUser) {
-                return HttpRequest.send({
+            setUser: function (newUser, callback, callbackError) {
+                HttpRequest.send({
                     method: 'put',
                     url: 'rest/auth',
                     data: {
                         email: newUser.email,
                         password: CryptoJS.SHA1(newUser.password)
                     }
-                });
+                }, callback, callbackError);
             },
 
             /**
              * Permet la connexion d'un utilisateur en tant qu'invité
              *
              * @param playername
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            setUserGuess: function (playername) {
-                return HttpRequest.send({
+            setUserGuess: function (playername, callback, callbackError) {
+                HttpRequest.send({
                     method: 'post',
                     url: 'rest/auth',
                     data: {
                         playername: playername
                     }
-                });
+                }, callback, callbackError);
             },
 
             /**
@@ -76,26 +78,28 @@ angular.module('unoApp')
             /**
              * Permet de déconnecter l'utilisateur courant
              *
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            decoUser: function() {
-                return HttpRequest.send({
+            decoUser: function(callback, callbackError) {
+                HttpRequest.send({
                     method: 'delete',
                     url: 'rest/auth',
                     headers: {
                         token: this.getUser().token
                     }
-                });
+                }, callback, callbackError);
             },
 
             /**
              * Permet l'inscription d'un utilisateur
              *
              * @param newUser
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            registerUser: function (newUser) {
-                return HttpRequest.send({
+            registerUser: function (newUser, callback, callbackError) {
+                HttpRequest.send({
                     method: 'post',
                     url: 'rest/auth/signup',
                     data: {
@@ -103,7 +107,7 @@ angular.module('unoApp')
                         playerName: newUser.name,
                         password: CryptoJS.SHA1(newUser.password)
                     }
-                });
+                }, callback, callbackError);
             }
         };
     });

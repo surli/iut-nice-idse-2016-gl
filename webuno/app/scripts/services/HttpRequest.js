@@ -20,21 +20,18 @@ angular.module('unoApp')
      * }
      *
      */
-    .service('HttpRequest', function ($http, $q) {
+    .service('HttpRequest', function (ErrorService, $http, $rootScope) {
         return {
-            send: function(req) {
-                var deferred = $q.defer();
-
+            send: function(req, callback, callbackError) {
                 // Execute une requête http par rapport à la configuration définie
                 $http(req).then(function(response) {
-                    console.log(req.url + ': ', response);
-                    deferred.resolve(response);
-                }, function(error) {
-                    console.error(req.url + ': ', error);
-                    deferred.resolve(error);
+                    // Utilisation du service ErrorService pour tester la requete
+                    // Si elle est 200 alors on execute la callback, sinon on affiche une erreur
+                    ErrorService.test(response, callback, callbackError);
+                }, function(response) {
+                    callbackError();
+                    $rootScope.error = response.data.error;
                 });
-
-                return deferred.promise;
             }
         };
     });

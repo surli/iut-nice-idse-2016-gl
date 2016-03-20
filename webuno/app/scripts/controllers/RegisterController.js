@@ -13,26 +13,18 @@ angular.module('unoApp')
             $state.go('app.home');
         }
 
-        $scope.newUser  = {};
-        $scope.error    = '';
+        $scope.newUser = {};
+        $scope.error = '';
 
         // Fonction qui permet l'inscription d'un nouvel utilisateur
         // Cette fonction est appelée à l'envoi du formulaire html
         $scope.goRegister = function () {
             // Utilisation du service Auth qui permet d'inscrire un nouvel utilisateur
-            Auth.registerUser($scope.newUser)
-                .then(function (response) {
-                    // Si les informations données sont incorrecte ou que l'utilisateur existe déjà
-                    // alors un message d'erreur est affiché
-                    // sinon l'utilisateur est connecté et redirigé vers la page d'accueil de l'application
-                    if (response.data.error) {
-                        $scope.error = response.data.error;
-                    } else {
-                        response.data.name = $scope.newUser.name;
-                        // Utilisation du service Auth pour setter les informations utilisateur dans la session
-                        Auth.connectUser(response.data);
-                        $state.go('app.home');
-                    }
-                });
+            Auth.registerUser($scope.newUser, function (data) {
+                data.name = $scope.newUser.name;
+                // Utilisation du service Auth pour setter les informations utilisateur dans la session
+                Auth.connectUser(data);
+                $state.go('app.home');
+            });
         };
     }]);

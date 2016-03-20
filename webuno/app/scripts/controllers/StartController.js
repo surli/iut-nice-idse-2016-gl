@@ -17,22 +17,11 @@ angular.module('unoApp')
             // sinon on affiche l'erreur correspondante
             if ($scope.game && $scope.game.length > 3 && $scope.user.name) {
                 // Utilisation du service Game pour créer une nouvelle partie
-                Game.createGame($scope.game, $scope.nbPlayers)
-                    .then(function(data) {
-                        // Si le statut renvoyé est 200 alors on entre dans la room
-                        // sinon on affiche une erreur
-                        switch (data.status) {
-                            case 200 :
-                                $state.go('app.room', { name: $scope.game });
-                                break;
-                            default:
-                                $scope.error = data.error;
-                        }
-                    }, function(error) {
-                        $scope.error = 'An error occured : ' + error;
-                    });
+                Game.createGame($scope.game, $scope.nbPlayers, function() {
+                    $state.go('app.room', { name: $scope.game });
+                });
             } else {
-                $scope.error = '4 characters minimum required to name the game';
+                $rootScope.error = '4 characters minimum required to name the game';
             }
         };
     }]);

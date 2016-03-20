@@ -11,43 +11,32 @@ angular.module('unoApp')
         var timeoutStateGame;
 
         // Utilisation du service Game pour récupérer l'état de la partie
-        Game.getGame($rootScope.gameName)
-            .then(function (response) {
-                if (response.data.error) {
-                    $timeout.cancel(timeoutStateGame);
-                    $state.go('login');
-                } else {
-                    $scope.game = response.data;
-                    $scope.requestStateGame();
-                }
-            }, function (error) {
-                if (error.data.error) {
-                    $timeout.cancel(timeoutStateGame);
-                    $state.go('login');
-                } else {
-                    $scope.requestStateGame();
-                }
-            });
+        Game.getGame($rootScope.gameName, function (data) {
+            $scope.game = data;
+            $scope.requestStateGame();
+        }, function () {
+            $timeout.cancel(timeoutStateGame);
+            $state.go('login');
+        });
 
         // Fonction qui permet de requêter toutes les 2 secondes sur l'état de la partie
         $scope.requestStateGame = function () {
             // Timer de 2 secondes
             timeoutStateGame = $timeout(function () {
                 // Utilisation du service Game qui permet de récupérer l'état de la partie
-                Game.getGame($rootScope.gameName)
-                    .then(function (response) {
-                        $scope.game = response.data;
-                        // Si l'état est à true
-                        // alors la partie est lancée et les joueurs sont redirigés vers la partie commencée
-                        // sinon la fonction s'appelle elle même
-                        if ($scope.game.state) {
-                            $state.go('app.game', {name: $rootScope.gameName});
-                        } else {
-                            $scope.requestStateGame();
-                        }
-                    }, function () {
+                Game.getGame($rootScope.gameName, function (data) {
+                    $scope.game = data;
+                    // Si l'état est à true
+                    // alors la partie est lancée et les joueurs sont redirigés vers la partie commencée
+                    // sinon la fonction s'appelle elle même
+                    if ($scope.game.state) {
+                        $state.go('app.game', {name: $rootScope.gameName});
+                    } else {
                         $scope.requestStateGame();
-                    });
+                    }
+                }, function () {
+                    $scope.requestStateGame();
+                });
             }, 2000);
         };
 
@@ -58,24 +47,12 @@ angular.module('unoApp')
             // et que le joueur connecté est le créateur de la partie
             // Si le statut est 200 alors le créateur de la partie est redirigé vers la partie commencée
             // sinon un message d'erreur apparait
-            Game.startGame($rootScope.gameName)
-                .then(function (response) {
-                    switch (response.status) {
-                        case 200 :
-                            if (response.data.status) {
-                                Game.getGame($rootScope.gameName)
-                                    .then(function(response) {
-                                        $scope.game = response.data;
-                                        $state.go('app.game', {name: $rootScope.gameName});
-                                    });
-                            } else {
-                                console.error(response);
-                            }
-                            break;
-                        default:
-                            console.error(response);
-                    }
+            Game.startGame($rootScope.gameName, function () {
+                Game.getGame($rootScope.gameName, function (data) {
+                    $scope.game = data;
+                    $state.go('app.game', {name: $rootScope.gameName});
                 });
+            });
         };
 
         // Évènement qui permet de stopper le timer et quitter la room quand on quitte le contrôleur RoomController

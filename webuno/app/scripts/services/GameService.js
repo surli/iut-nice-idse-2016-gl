@@ -9,10 +9,11 @@ angular.module('unoApp')
              *
              * @param game
              * @param nbPlayers
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            createGame: function (game, nbPlayers) {
-                return HttpRequest.send({
+            createGame: function (game, nbPlayers, callback, callbackError) {
+                HttpRequest.send({
                     method: 'post',
                     url: 'rest/game',
                     headers: {
@@ -23,79 +24,84 @@ angular.module('unoApp')
                         player: Auth.getUser().name,
                         numberplayers: nbPlayers
                     }
-                });
+                }, callback, callbackError);
             },
 
             /**
              * Retourne l'état de la partie passée en paramètre
              *
              * @param gameName
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            getGame: function (gameName) {
-                return HttpRequest.send({
+            getGame: function (gameName, callback, callbackError) {
+                HttpRequest.send({
                     method: 'get',
                     url: 'rest/game/' + gameName,
                     headers: {
                         token: Auth.getUser().token
                     }
-                });
+                }, callback, callbackError);
             },
 
             /**
              * Retourne la liste de toutes les parties
              *
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            getAllGames: function () {
-                return HttpRequest.send({
+            getAllGames: function (callback, callbackError) {
+                HttpRequest.send({
                     method: 'get',
                     url: 'rest/game',
                     headers: {
                         token: Auth.getUser().token
                     }
-                });
+                }, callback, callbackError);
             },
 
             /**
              * Retourne la liste de toutes mes parties
              *
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            getMyGames: function () {
-              return HttpRequest.send({
+            getMyGames: function (callback, callbackError) {
+               HttpRequest.send({
                 method: 'get',
                 url: 'rest/'+ Auth.getUser().name +'/games',
                 headers: {
                   token: Auth.getUser().token
                 }
-              });
+              }, callback, callbackError);
             },
 
             /**
              * Retourne la main du joueur connecté
              *
              * @param gameName
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            getUserHand: function (gameName) {
-                return HttpRequest.send({
+            getUserHand: function (gameName, callback, callbackError) {
+                HttpRequest.send({
                     method: 'get',
                     url: 'rest/game/' + gameName + '/' + Auth.getUser().name,
                     headers: {
                         token: Auth.getUser().token
                     }
-                });
+                }, callback, callbackError);
             },
 
             /**
              * Permet de rejoindre une partie
              *
              * @param gameName
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            joinGame: function (gameName) {
-                return HttpRequest.send({
+            joinGame: function (gameName, callback, callbackError) {
+                HttpRequest.send({
                     method: 'put',
                     url: 'rest/game/' + gameName,
                     headers: {
@@ -104,17 +110,18 @@ angular.module('unoApp')
                     data: {
                         playerName: Auth.getUser().name
                     }
-                });
+                }, callback, callbackError);
             },
 
             /**
              * Permet de démarrer une partie
              *
              * @param gameName
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            startGame: function (gameName) {
-                return HttpRequest.send({
+            startGame: function (gameName, callback, callbackError) {
+                HttpRequest.send({
                     method: 'put',
                     url: 'rest/game/' + gameName + '/command',
                     headers: {
@@ -123,24 +130,25 @@ angular.module('unoApp')
                     data: {
                         playerName: Auth.getUser().name
                     }
-                });
+                }, callback, callbackError);
             },
 
             /**
              * Permet de piocher une carte
              *
              * @param gameName
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            drawCard: function (gameName) {
-                return HttpRequest.send({
+            drawCard: function (gameName, callback, callbackError) {
+                HttpRequest.send({
                     method: 'post',
                     url: 'rest/game/' + gameName + '/' + Auth.getUser().name,
                     headers: {
                         token: Auth.getUser().token
                     },
                     data: {}
-                });
+                }, callback, callbackError);
             },
 
             /**
@@ -148,9 +156,10 @@ angular.module('unoApp')
              *
              * @param gameName
              * @param carte
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            playCard: function (gameName, carte) {
+            playCard: function (gameName, carte, callback, callbackError) {
                 var data = {
                     value: carte.number,
                     color: carte.family
@@ -160,46 +169,48 @@ angular.module('unoApp')
                     data.setcolor = carte.setcolor;
                 }
 
-                return HttpRequest.send({
+                HttpRequest.send({
                     method: 'put',
                     url: 'rest/game/' + gameName + '/' + Auth.getUser().name,
                     headers: {
                         token: Auth.getUser().token
                     },
                     data: data
-                });
+                }, callback, callbackError);
             },
 
             /**
              * Retourne le nom du joueur devant jouer
              *
              * @param gameName
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            getCurrentPlayer: function (gameName) {
-                return HttpRequest.send({
+            getCurrentPlayer: function (gameName, callback, callbackError) {
+                HttpRequest.send({
                     method: 'get',
                     url: 'rest/game/' + gameName + '/command',
                     headers: {
                         token: Auth.getUser().token
                     }
-                });
+                }, callback, callbackError);
             },
 
             /**
              * Permet de quitter la room passée en paramètre
              *
              * @param gameName
-             * @returns {*}
+             * @param callback
+             * @param callbackError
              */
-            quitRoom: function (gameName) {
-                return HttpRequest.send({
+            quitRoom: function (gameName, callback, callbackError) {
+                HttpRequest.send({
                     method: 'delete',
                     url: 'rest/game/' + gameName + '/' + Auth.getUser().name,
                     headers: {
                         token: Auth.getUser().token
                     }
-                });
+                }, callback, callbackError);
             }
         };
     });

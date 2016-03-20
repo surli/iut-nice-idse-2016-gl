@@ -18,26 +18,17 @@ angular.module('unoApp')
         $scope.goLogout = function () {
             if ($state.current.name === 'app.room' || $state.current.name === 'app.game') {
                 $rootScope.logout = true;
-                Game.quitRoom($rootScope.gameName)
-                    .then(function (response) {
-                        if (response.status === 200) {
-                            Auth.decoUser()
-                                .then(function (response) {
-                                    if (response.status === 200) {
-                                        Auth.destroyUser();
-                                        $state.go('login');
-                                    }
-                                });
-                        }
+                Game.quitRoom($rootScope.gameName, function () {
+                    Auth.decoUser(function () {
+                        Auth.destroyUser();
+                        $state.go('login');
                     });
+                });
             } else {
-                Auth.decoUser()
-                    .then(function (response) {
-                        if (response.status === 200) {
-                            Auth.destroyUser();
-                            $state.go('login');
-                        }
-                    });
+                Auth.decoUser(function () {
+                    Auth.destroyUser();
+                    $state.go('login');
+                });
             }
         };
     }]);
