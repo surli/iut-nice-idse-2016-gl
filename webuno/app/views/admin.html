@@ -4,7 +4,7 @@
     </div>
     <div class="col-md-8">
         <div class="panel panel-default">
-            <div class="panel-heading text-center">{{'ALLGAMES' | translate}}</div>
+            <div class="panel-heading text-center">{{games.length}} partie{{(games.length > 1) ? 's' : ''}}</div>
             <div class="panel-body text-center" style="padding:0;">
                 <table class="table" data-ng-if="games.length > 0" style="margin: 0;">
                     <tr data-ng-repeat="game in games">
@@ -24,6 +24,14 @@
                     </tr>
                 </table>
                 <p style="padding: 15px;" data-ng-if="games.length == 0">{{'NOGAMESSTARTED' | translate}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">Stats</div>
+            <div class="panel-body text-center" style="padding:0;">
+                <div id="piechart" style="width: 100%; height: 100%; background: transparent;"</div>
             </div>
         </div>
     </div>
