@@ -3,12 +3,13 @@ package fr.unice.idse.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.Observable;
 
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.player.Player;
 
-public class Board 
+public class Board extends Observable
 {
 	
 	private ArrayList<Player> players;
@@ -38,6 +39,8 @@ public class Board
 	public void setActualColor(Color actualColor){ this.actualColor = actualColor; }
 	public Color getActualColor(){return this.actualColor; }
 
+	public void setGameBegin(Boolean value){ this.gameBegin = value; }
+
 	
 	public Alternative getAlternative()
 	{
@@ -57,6 +60,15 @@ public class Board
 		meaning = !meaning;
 	}
 	
+	
+	public boolean getDirection() {
+		return meaning;
+	}
+
+	public void setMeaning(boolean meaning) {
+		this.meaning = meaning;
+	}
+
 	/**
 	 * Change le nombre de carte à piocher.
 	 * @param i
@@ -92,6 +104,8 @@ public class Board
 				actualPlayer += players.size();
 			}
 		}
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**
@@ -151,7 +165,7 @@ public class Board
 	public void init()
 	{
 		for(Player player : players)
-			player.setCards(new ArrayList<>());
+			player.setCards(new ArrayList<Card>());
 		deck.initDeck();
 		for(int j = 0; j < 7; j++)
 		{
@@ -160,6 +174,10 @@ public class Board
 				player.getCards().add(deck.topCard());
 				deck.removeTopCard();
 			}
+		}
+		for(Player player : players)
+		{
+			player.sortCards();
 		}
 		stack.initStack(deck);
 		actualColor = stack.topCard().getColor();
@@ -242,10 +260,11 @@ public class Board
 				getDeck().reassembleDeck(getStack());
 			}
 			getActualPlayer().getCards().add(deck.topCard());
+			getActualPlayer().sortCards();
 			deck.removeTopCard();
 			cpt--;
 		}
-		
+		cptDrawCard = 1;
 	}
 	
 	/**
@@ -268,6 +287,10 @@ public class Board
 	
 	/**
 	 * Tourne les jeux dans le sens du jeu
+	 * Exemple :
+	 * Il y a 3 joueurs dans la partie; le jeu est dans le sens horaire.
+	 * Lors de l'appel de cette méthode le joueur 1 donne son jeu au joueur 2,
+	 * le joueur 2 donne son jeu au joueur 3 et enfin le joueur 3 donne son jeu au joueur 1.
 	 */
 	public void rotatePlayerDecks()
 	{

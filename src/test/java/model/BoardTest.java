@@ -140,15 +140,22 @@ public class BoardTest
 	{
 		Board board = new Board();
 		Player toto = new Player("toto","");
-		board.getStack().getStack().add(new Card(Value.One, Color.Blue));
-		board.getStack().getStack().add(new Card(Value.Two, Color.Blue));
-		board.getStack().getStack().add(new Card(Value.Three, Color.Blue));
+		board.getDeck().getDeck().add(new Card(Value.One, Color.Blue));
+		board.getDeck().getDeck().add(new Card(Value.Two, Color.Blue));
+		board.getDeck().getDeck().add(new Card(Value.Three, Color.Blue));
 		board.getPlayers().add(toto);
+
 		board.setCptDrawCard(3);
 		board.drawCard();
+
+
+
 		assertTrue(toto.getCards().size() == 3);
 	}
 	
+	/**
+	 * Voir description de la méthode rotatePlayerDecks dans la classe Board
+	 */
 	@Test
 	public void testRotationSensHoraireDesJeuxDeCartesDesJoueurs()
 	{
@@ -196,6 +203,9 @@ public class BoardTest
 		assertEquals(deck3,p4.getCards());
 	}
 	
+	/**
+	 * Voir description de la méthode rotatePlayerDecks dans la classe Board
+	 */
 	@Test
 	public void testRotationSensNonHoraireDesJeuxDeCartesDesJoueurs()
 	{

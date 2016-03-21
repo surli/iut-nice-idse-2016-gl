@@ -94,44 +94,7 @@ public class Player implements Comparable<Player>{
 	{
 		for(Card card:cards)
 		{
-			switch(card.getValue())
-			{
-				case Zero:
-					break;
-				case One:
-					this.score+=1;
-					break;
-				case Two:
-					this.score+=2;
-					break;
-				case Three:
-					this.score+=3;
-					break;
-				case Four:
-					this.score+=4;
-					break;
-				case Five:
-					this.score+=5;
-					break;
-				case Six:
-					this.score+=6;
-					break;
-				case Seven:
-					this.score+=7;
-					break;
-				case Eight:
-					this.score+=8;
-					break;
-				case Nine:
-					this.score+=9;
-					break;
-				case Skip: case Reverse: case DrawTwo:
-				this.score+=20;
-				break;
-				case Wild: case DrawFour:
-				this.score+=50;
-				break;
-			}
+			this.score+=card.getValue().getPoints();
 		}
 	}
 

@@ -3,8 +3,10 @@ package fr.unice.idse.model;
 import fr.unice.idse.model.player.Player;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Game {
+public class Game extends Observable implements Observer {
 	
 	private Player host;
 	private String gameName;
@@ -186,9 +188,19 @@ public class Game {
 		if(numberOfPlayers()==numberPlayers)
 		{
 			board.init();
+			
+			setChanged();
+			notifyObservers();
+			
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		setChanged();
+		notifyObservers(board);
 	}
 
 }

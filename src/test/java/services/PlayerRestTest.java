@@ -21,7 +21,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class PlayerRestTest extends JerseyTest {
-	private Model model;
+
+	Model model;
 	
 	@Override
 	protected Application configure() {
@@ -35,12 +36,6 @@ public class PlayerRestTest extends JerseyTest {
 		model.setGames(new ArrayList<Game>());
 	}
 	
-    /*
-     * ******************************************************************************************************
-     * *************************************** List player test ****************************************
-     * ******************************************************************************************************
-     */
-	
 	@Test
 	public void retourneUnTableauVideSiAucunJoueurNEstPresent() throws JSONException {
 		Response response = target("/player").request().get();
@@ -52,7 +47,6 @@ public class PlayerRestTest extends JerseyTest {
 	
 	@Test
 	public void retourneLaListeDeJoueur() throws JSONException {
-		Model model = Model.getInstance();
 		model.createPlayer("John", "dunnowhatitis");
 		model.createPlayer("Marcel", "wellexplain");
 		
@@ -71,8 +65,6 @@ public class PlayerRestTest extends JerseyTest {
 	
 	@Test
 	public void retourneErreur405SiLePlayerNExistePasDansLeModel() throws JSONException {
-		Model model = Model.getInstance();
-		
 		Response response = target("/player/John").request().get();
 		JSONObject json = new JSONObject(response.readEntity(String.class));
 		
@@ -82,7 +74,6 @@ public class PlayerRestTest extends JerseyTest {
 	
 	@Test
 	public void retourneLesDonneesDuJoueur() throws JSONException {
-		Model model = Model.getInstance();
 		model.createPlayer("John", "dunnowhatitis");
 		
 		Response response = target("/player/John").request().get();

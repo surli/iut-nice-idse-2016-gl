@@ -15,37 +15,20 @@ angular.module('unoApp')
         }
 
         // Fonction qui permet de détruire l'utilisateur et de le rediriger vers la page de connexion
-        $scope.goLogout = function() {
+        $scope.goLogout = function () {
             if ($state.current.name === 'app.room' || $state.current.name === 'app.game') {
                 $rootScope.logout = true;
-                Game.quitRoom($rootScope.gameName)
-                    .then(function(response) {
-                        if (response.status === 200) {
-                            Auth.decoUser()
-                                .then(function(response) {
-                                    if (response.status === 200) {
-                                        Auth.destroyUser();
-                                        $state.go('login');
-                                    }
-                                });
-                        }
+                Game.quitRoom($rootScope.gameName, function () {
+                    Auth.decoUser(function () {
+                        Auth.destroyUser();
+                        $state.go('login');
                     });
+                });
             } else {
-                Auth.decoUser()
-                    .then(function(response) {
-                        if (response.status === 200) {
-                            Auth.destroyUser();
-                            $state.go('login');
-                        }
-                    });
+                Auth.decoUser(function () {
+                    Auth.destroyUser();
+                    $state.go('login');
+                });
             }
-        };
-
-        $rootScope.lang = $translate.use();
-        // Fonction qui permet de changer la langue
-        $scope.changeLanguage = function (langKey) {
-            // Utilisation de la dépendance $translate pour changer la langue de l'app
-            $rootScope.lang = langKey;
-            $translate.use(langKey);
         };
     }]);
