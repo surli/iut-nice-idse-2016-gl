@@ -18,7 +18,12 @@ angular.module('unoApp')
                     if (callbackError && isFunction(callbackError)) {
                         callbackError();
                     }
-                    $rootScope.error = response.data.error;
+
+                    if (response.status === 404) {
+                        $rootScope.error = "404 NOT FOUND";
+                    } else {
+                        $rootScope.error = response.data.error;
+                    }
                 }
             }
         };

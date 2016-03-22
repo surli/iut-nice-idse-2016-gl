@@ -1,53 +1,54 @@
 <div class="jumbotron">
-  <button class="btn btn-success" id="ingage" data-ui-sref="app.start">
-    {{'STARTNEWGAME' | translate}}
-  </button>
+    <button class="btn btn-success" id="ingage" data-ui-sref="app.start">
+        {{'STARTNEWGAME' | translate}}
+    </button>
 </div>
 <div class="col-md-6">
-  <div class="panel panel-default">
-    <div class="panel-heading text-center">{{'ALLGAMES' | translate}}</div>
-    <div class="panel-body text-center" style="padding:0;">
-      <table class="table" data-ng-if="games.length > 0" style="margin: 0;">
-        <tr data-ng-repeat="game in games">
-          <td>{{game.gamename}}</td>
-          <td>{{game.numberplayer}}/{{game.maxplayer}}</td>
-          <td>{{(game.state == "true") ? ('STARTED'|translate) : ((game.numberplayer == game.maxplayer) ? ('FULLPLAYERS'|translate) : ('WAITINGPLAYERS'|translate))}}</td>
-          <td>
-            <button class="btn btn-warning btn-sm"
-                    data-ng-if="game.numberplayer != game.maxplayer"
-                    data-ng-click="joinGame(game.gamename)">
-              {{'JOIN' | translate}}
-            </button>
-          </td>
-        </tr>
-      </table>
-      <p style="padding: 15px;" data-ng-if="games.length == 0">{{'NOGAMESSTARTED' | translate}}</p>
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">{{'ALLGAMES' | translate}}</div>
+        <div class="panel-body text-center" style="padding:0;">
+            <table class="table" data-ng-if="games.length > 0" style="margin: 0;">
+                <tr data-ng-repeat="game in games">
+                    <td>{{game.gamename}}</td>
+                    <td>{{game.numberplayer}}/{{game.maxplayer}}</td>
+                    <td>{{(game.state == "true") ? ('STARTED'|translate) : ((game.numberplayer == game.maxplayer) ?
+                        ('FULLPLAYERS'|translate) : ('WAITINGPLAYERS'|translate))}}
+                    </td>
+                    <td>
+                        <button class="btn btn-warning btn-sm"
+                                data-ng-if="game.numberplayer != game.maxplayer"
+                                data-ng-click="joinGame(game.gamename)">
+                            {{'JOIN' | translate}}
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <p style="padding: 15px;" data-ng-if="games.length == 0">{{'NOGAMESSTARTED' | translate}}</p>
+        </div>
     </div>
-  </div>
 </div>
 
-<!-- Mes parties -->
-<div class="col-md-6" >
+<div class="col-md-6">
     <div class="panel panel-default">
         <div class="panel-heading text-center">{{'MYGAMES' | translate}}</div>
         <div class="panel-body text-center" style="padding:0;">
             <table class="table" data-ng-if=" mygames.length > 0 " style="margin: 0;">
-                <tr data-ng-repeat="mygame in mygames" >
+                <tr data-ng-repeat="mygame in mygames">
                     <td>{{mygame.gamename}}</td>
                     <td>{{mygame.maxplayer}}</td>
                     <td>{{mygame.dategame}}</td>
-                  <td>
-                    <button class="btn btn-warning btn-sm"
-                            data-ng-click="ResumeGame(mygame.gamename)">
-                      {{'RESUME' | translate}}
-                    </button>
-                  </td>
-                  <td>
-                    <button class="btn btn-danger btn-sm"
-                            data-ng-click="DeleteGame(mygame.gamename)">
-                      {{'DELETE' | translate}}
-                    </button>
-                  </td>
+                    <td>
+                        <button class="btn btn-warning btn-sm"
+                                data-ng-click="ResumeGame(mygame.gamename)">
+                            {{'RESUME' | translate}}
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm"
+                                data-ng-click="DeleteGame(mygame.gamename)">
+                            {{'DELETE' | translate}}
+                        </button>
+                    </td>
                 </tr>
             </table>
             <p style="padding: 15px;" data-ng-if="mygames.length == 0 ">{{'NOMYGAMESSTARTED' | translate}}</p>

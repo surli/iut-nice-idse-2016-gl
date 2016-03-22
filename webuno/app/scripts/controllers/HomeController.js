@@ -15,9 +15,12 @@ angular.module('unoApp')
                 // Utilisation du service Game qui permet de récupérer la liste des toutes les parties avec leur statut
                 Game.getAllGames(function (data) {
                     $scope.games = data.games;
+                    // La fonction s'appelle elle même
+                    $scope.requestListGames();
+                }, function () {
+                    // La fonction s'appelle elle même
+                    $scope.requestListGames();
                 });
-                // La fonction s'appelle elle même
-                $scope.requestListGames();
             }, 2000);
         };
 
@@ -61,7 +64,6 @@ angular.module('unoApp')
             };
             $scope.mygames = data.games; // fictif en attendant la vrai route
             console.log($scope.mygames);
-            // On appelle la fonctio requestMYListGames() pour lancer le timer (l'actualisation des parties)
         });
 
     }]);
