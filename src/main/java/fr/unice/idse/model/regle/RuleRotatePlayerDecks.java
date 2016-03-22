@@ -11,6 +11,6 @@ public class RuleRotatePlayerDecks extends EffectCard{
 	
 	@Override
 	public void action() {
-		getBoard().rotatePlayerDecks();
+		getBoard().rotatePlayersDecks();
 	}
 }
