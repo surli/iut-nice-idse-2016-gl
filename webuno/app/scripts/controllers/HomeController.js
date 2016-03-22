@@ -45,9 +45,10 @@ angular.module('unoApp')
             $timeout.cancel(timeoutListGames);
         });
 
-
         // Utilisation du service Game pour récupérer la liste de toutes mes parties
-        Game.getMyGames(function () {
+        Game.getMyGames(function (data) {
+            // SUCCESS
+        }, function () {
             var data = {
                 games: [
                     {
