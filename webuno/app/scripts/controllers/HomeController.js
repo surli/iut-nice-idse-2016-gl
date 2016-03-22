@@ -46,7 +46,7 @@ angular.module('unoApp')
         });
 
         // Utilisation du service Game pour récupérer la liste de toutes mes parties
-        Game.getMyGames(function (data) {
+        Game.getMyGames(function () {
             // SUCCESS
         }, function () {
             var data = {
