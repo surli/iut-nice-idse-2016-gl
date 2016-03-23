@@ -43,6 +43,22 @@ angular.module('unoApp')
                     }
                 }, callback, callbackError);
             },
+      /**
+       * Permet à un Admin de supprimer la game passée en paramètre
+       *
+       * @param gameName
+       * @param callback
+       * @param callbackError
+       */
+      deleteGame: function (gameName, callback, callbackError) {
+        HttpRequest.send({
+          method: 'delete',
+          url: 'rest/admin/game/' + gameName,
+          headers: {
+            token: Auth.getUser().token
+          }
+        }, callback, callbackError);
+      },
 
             /**
              * Retourne la liste de toutes les parties
