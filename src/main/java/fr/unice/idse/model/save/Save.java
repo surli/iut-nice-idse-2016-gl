@@ -6,7 +6,7 @@ import java.util.ListIterator;
 import java.util.Observable;
 import java.util.Observer;
 
-import fr.unice.idse.db.DataBaseManagement;
+import fr.unice.idse.db.DataBaseOrigin;
 import fr.unice.idse.model.Board;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
@@ -16,7 +16,7 @@ import fr.unice.idse.model.player.Player;
 
 public class Save implements Observer {
 	protected BusinessQuery bq;
-	protected DataBaseManagement dbm;
+	protected DataBaseOrigin dbm;
 
 	public Save() {
 		bq = new BusinessQuery();

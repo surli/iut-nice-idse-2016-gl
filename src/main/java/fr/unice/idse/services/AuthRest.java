@@ -1,6 +1,6 @@
 package fr.unice.idse.services;
 
-import fr.unice.idse.db.DataBaseManagement;
+import fr.unice.idse.db.DataBaseOrigin;
 import fr.unice.idse.model.Model;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -59,7 +59,7 @@ public class AuthRest extends OriginRest{
         JSONObject jsonObject = new JSONObject(json);
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
-        DataBaseManagement dataBase = new DataBaseManagement();
+        DataBaseOrigin dataBase = new DataBaseOrigin();
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         if(!jsonObject.has("email")){
@@ -116,7 +116,7 @@ public class AuthRest extends OriginRest{
         JSONObject jsonObject = new JSONObject(json);
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
-        DataBaseManagement dataBase = new DataBaseManagement();
+        DataBaseOrigin dataBase = new DataBaseOrigin();
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         // Verification de l'existante des variables
