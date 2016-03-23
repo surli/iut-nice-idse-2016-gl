@@ -34,10 +34,12 @@ public class DataBaseManagement {
 		} catch (SQLException e) {
 		}
 	}
-	
+
 	/**
 	 * Insert the data and return is key
-	 * @param query An Insert query string
+	 * 
+	 * @param query
+	 *            An Insert query string
 	 * @return int The id of the insered query
 	 */
 	public int insert(String query) {
@@ -54,10 +56,12 @@ public class DataBaseManagement {
 		}
 		return key;
 	}
-	
+
 	/**
 	 * Execute a query
-	 * @param query An executable query
+	 * 
+	 * @param query
+	 *            An executable query
 	 * @return boolean If the satement sucesfully run
 	 */
 	public boolean exec(String query) {
@@ -78,11 +82,6 @@ public class DataBaseManagement {
 			con.close();
 		} catch (SQLException e) {
 		}
-	}
-
-	// For alphanumerics and emails formats only
-	public boolean isSafeString(String str) {
-		return (str.matches("[a-zA-Z]*") || str.matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)+$"));
 	}
 
 	// 1 bot 2 guest 3 member 4 admin
@@ -125,10 +124,7 @@ public class DataBaseManagement {
 				if (StringUtils.isNumeric(argsToString[i]))
 					ps.setInt(i, Integer.valueOf(argsToString[i]));
 				else
-				//else if (isSafeString(argsToString[i]))
 					ps.setString(i, argsToString[i]);
-				//else
-				//	return false;
 			}
 			if (select) {
 				// for query used a SELECT
@@ -157,18 +153,18 @@ public class DataBaseManagement {
 		return null;
 	}
 
-	public JSONObject verifLogin(String email, String password){
+	public JSONObject verifLogin(String email, String password) {
 		JSONObject jsonObject = new JSONObject();
 		String query = "SELECT u_pseudo, u_statut, u_banned FROM users WHERE u_email = ? AND u_password = ?";
-		try{
-			if(executeSQL(query, email, password)){
+		try {
+			if (executeSQL(query, email, password)) {
 				jsonObject.put("pseudo", rs.getString(1));
 				jsonObject.put("rang", rs.getInt(2));
 				jsonObject.put("banned", rs.getBoolean(3));
 			}
-		}catch (JSONException e){
+		} catch (JSONException e) {
 			e.printStackTrace();
-		}catch (SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return jsonObject;
@@ -194,7 +190,7 @@ public class DataBaseManagement {
 			}
 		return 0;
 	}
-	
+
 	public int getIdgameWithName(String gameName) {
 		String query = "SELECT g_id FROM games WHERE g_nom = ?";
 		if (executeSQL(query, gameName))
@@ -204,7 +200,7 @@ public class DataBaseManagement {
 			}
 		return 0;
 	}
-	
+
 	public int getIdMatchWithGameId(int gameId) {
 		String query = "SELECT m_id FROM matchs WHERE m_g_id = ?";
 		if (executeSQL(query, gameId))
@@ -214,7 +210,7 @@ public class DataBaseManagement {
 			}
 		return 0;
 	}
-	
+
 	public int countCardsWithThisValueAndThisColor(String value, String color) {
 		String query = "SELECT COUNT(*) FROM cards WHERE c_value = ? AND c_color = ?";
 		if (executeSQL(query, value, color))
@@ -237,15 +233,7 @@ public class DataBaseManagement {
 
 	public boolean userLoginIsCorrect(String email, String password) {
 		String query = "SELECT u_email, u_password FROM users WHERE u_email = ? AND u_password = ?";
-		if (executeSQL(query, email, password))
-			try {
-				if (rs.getString("u_email").equals(email) && rs.getString("u_password").equals(password))
-					return true;
-				else
-					return false;
-			} catch (SQLException e) {
-			}
-		return false;
+		return (executeSQL(query, email, password));
 	}
 
 	public boolean ifUserAlreadyExistPseudoEmail(String pseudo, String email) {
@@ -373,6 +361,5 @@ public class DataBaseManagement {
 		}
 		return false;
 	}
-	
-	
+
 }
