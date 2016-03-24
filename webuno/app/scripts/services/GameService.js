@@ -92,6 +92,22 @@ angular.module('unoApp')
               }, callback, callbackError);
             },
 
+          /**
+           * Retourne le nombre de parties jouées dont les perdus et les gagnants
+           * mode statique
+           * @param callback
+           * @param callbackError
+           */
+          getChartNbPlayed: function (callback, callbackError) {
+            HttpRequest.send({
+              method: 'get',
+              url: 'rest/'+ Auth.getUser().name +'/games/stats',// va changer plus tard cette route n'existe pas
+              headers: {
+                token: Auth.getUser().token
+              }
+            }, callback, callbackError);
+          },
+
             /**
              * Retourne la main du joueur connecté
              *
