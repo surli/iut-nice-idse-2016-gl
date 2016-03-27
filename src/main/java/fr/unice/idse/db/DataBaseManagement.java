@@ -1,6 +1,7 @@
 package fr.unice.idse.db;
 
 import fr.unice.idse.constante.*;
+import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
 
@@ -205,6 +206,22 @@ public class DataBaseManagement {
 			}
 
 		return listPlayersTemp;
+	}
+	
+
+	public ArrayList<Card> getStackWithMatchId(int matchId) {
+		String query = "SELECT c_id, c_value, c_color FROM cards,stack WHERE s_m_id = ?";
+	    ArrayList<Card> listStackCard = new ArrayList<Card>();
+
+		if (executeSQL(query, matchId))
+			try {
+				 while (rs.next()) {
+					 listStackCard.add(new Card( Value.valueOf(rs.getString("c_value")),Color.valueOf(rs.getString("c_color"))));
+			        }
+					return listStackCard;
+			} catch (SQLException e) {
+			}
+		return listStackCard;
 	}
 	
 	

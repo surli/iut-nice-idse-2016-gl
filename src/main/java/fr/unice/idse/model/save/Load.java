@@ -3,6 +3,7 @@ package fr.unice.idse.model.save;
 import java.util.ArrayList;
 import fr.unice.idse.db.DataBaseManagement;
 import fr.unice.idse.model.Game;
+import fr.unice.idse.model.card.Card;
 
 public class Load {
 	protected DataBaseManagement dbm;
@@ -24,7 +25,17 @@ public class Load {
 	}
 	
 	
-	private void initStack(Game game){
+	@SuppressWarnings("unused")
+	private void initLoadStack(Game game){
+		String gameName = game.getName();
+		
+		int gameId = dbm.getIdgameWithName(gameName);
+		
+		int matchId = dbm.getIdMatchWithGameId(gameId);
+		
+		ArrayList<Card> listStack = dbm.getStackWithMatchId(matchId);
+		
+		game.getBoard().getStack().setStack(listStack);
 		
 	}
 	
