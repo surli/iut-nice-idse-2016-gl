@@ -27,6 +27,12 @@ public class DataBaseUser extends DataBaseOrigin {
 		return null;
 	}
 
+	/**
+	 * Vérification de login et renvoie les informations nécessaires s'il existe
+	 * @param email String
+	 * @param password	String
+     * @return JSONObject
+     */
 	public JSONObject verifLogin(String email, String password) {
 		JSONObject jsonObject = new JSONObject();
 		String query = "SELECT u_pseudo, u_statut, u_banned FROM users WHERE u_email = ? AND u_password = ?";
@@ -43,6 +49,19 @@ public class DataBaseUser extends DataBaseOrigin {
 		}
 		return jsonObject;
 	}
+
+	public int getRang(String pseudo){
+		String query = "SELECT u_statut FROM users WHERE u_pseudo = ?";
+		try {
+			if(executeSQL(query, pseudo)){
+				return rs.getInt(1);
+			}
+		} catch (SQLException e){
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
 	
 	public boolean userLoginIsCorrect(String email, String password) {
 		String query = "SELECT u_email, u_password FROM users WHERE u_email = ? AND u_password = ?";
