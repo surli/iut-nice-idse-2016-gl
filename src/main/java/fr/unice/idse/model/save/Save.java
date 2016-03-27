@@ -28,95 +28,79 @@ public class Save implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-        if(arg instanceof Board) {
-
-            this.saveNewGame((Game)o);
-
-        }else if(o instanceof Game){
-
-            this.saveTurn((Game)o);
-
-        }
+		try {
+			if (arg instanceof Board) {
+					this.saveNewGame((Game) o);
+			} else if (o instanceof Game) {
+				this.saveTurn((Game) o);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	/*
 	 * Sauvegarde d'une nouvelle partie
+	 * 
 	 * @param Game game
 	 */
-	private void saveNewGame(Game game) {
-		// gl & hf
-		//	BusinessQuery.newGame(new Game(new Player("Roger", "Espadon"), "Test", 3));
-		Integer gameId= BusinessQuery.newGame(game);
-		
-		List<Player>array_player=game.getPlayers();
-		
-		
-		 for(int i=0; i<array_player.size();i++){
-			 BusinessQuery.addPlayerToGame(gameId, dbm.getIdUserWithPseudo(array_player.get(i).getName()) , i);
-		 }
+	private void saveNewGame(Game game) throws Exception {
+		BusinessQuery.newGame(game);
 
-		Integer matchId = BusinessQuery.newMatch(gameId);
+		List<Player> arrayPlayer = game.getPlayers();
 
-		int firstPLayer=dbm.getIdUserWithPseudo(array_player.get(0).getName());
+		for (int i = 0; i < arrayPlayer.size(); i++) {
+			BusinessQuery.addPlayerToGame(game, arrayPlayer.get(i), i);
+		}
 
-		Integer  turnId = BusinessQuery.newTurn(matchId, false, firstPLayer);
-		
+		Integer matchId = BusinessQuery.newMatch(game);
+		Integer turnId = BusinessQuery.newTurn(game.getBoard()
+				.getActualPlayer(), matchId, false);
+
 		ArrayList<Card> topCard = game.getBoard().getStack().getStack();
-			String valueTopCard = topCard.get(0).getValue().toString();
-			String colorTopCard = topCard.get(0).getColor().toString();
-			
-		Integer cardId = dbm.getIdCard(valueTopCard, colorTopCard);
-			
-		BusinessQuery.addCardToStack(matchId, turnId, cardId);
-		
-		
-		 for(int i=0; i<array_player.size();i++){
-	
-			BusinessQuery.addCardToPlayerHand(matchId,  dbm.getIdUserWithPseudo(array_player.get(i).getName()), cardId, turnId);
-		 }
-	 
+
+		BusinessQuery.addCardToStack(topCard.get(0), matchId, turnId);
+
+		for (int i = 0; i < arrayPlayer.size(); i++) {
+			for (int j = 0; j < arrayPlayer.get(i).getCards().size(); j++) {
+				BusinessQuery.addCardToPlayerHand(arrayPlayer.get(i),
+						arrayPlayer.get(i).getCards().get(j), matchId, turnId);
+			}
+		}
 	}
-	
-	private void saveTurn(Game game){
-		
-		/*
-		 * Player id a partir du nom de l'actualPlayer
-		 */
-		String actualPlayer = game.getBoard().getActualPlayer().getName();
-		int playerId = dbm.getIdUserWithPseudo(actualPlayer);
-		
+
+	private void saveTurn(Game game) throws Exception {
 		/*
 		 * Game id a partir du gameName
 		 */
 		String gameName = game.getGameName();
 		int gameId = dbm.getIdgameWithName(gameName);
-		
+
 		/*
 		 * MatchId a partir du GameId
 		 */
 		int matchId = dbm.getIdMatchWithGameId(gameId);
-		
+
 		boolean inversed = game.getBoard().getDirection();
-	
 
-		int turnId = BusinessQuery.newTurn(matchId, inversed, playerId);
-	
+		int turnId = BusinessQuery.newTurn(game.getBoard().getActualPlayer(),
+				matchId, inversed);
+
 		ArrayList<Card> topCard = game.getBoard().getStack().getStack();
-			String valueTopCard = topCard.get(0).getValue().toString();
-			String colorTopCard = topCard.get(0).getColor().toString();
-		
-		Integer cardId = dbm.getIdCard(valueTopCard, colorTopCard);
-	
-		BusinessQuery.addCardToStack(matchId, turnId, cardId);
-		
-		
-		List<Player>array_player=game.getPlayers();
+		BusinessQuery.addCardToStack(topCard.get(0), matchId, turnId);
 
-		 for(int i=0; i<array_player.size();i++){
-				
-				BusinessQuery.addCardToPlayerHand(matchId,  dbm.getIdUserWithPseudo(array_player.get(i).getName()), cardId, turnId);
-			 }
+		List<Player> arrayPlayer = game.getPlayers();
+
+		for (int i = 0; i < arrayPlayer.size(); i++) {
+			for (int j = 0; j < arrayPlayer.get(i).getCards().size(); j++) {
+				BusinessQuery.addCardToPlayerHand(arrayPlayer.get(i),
+						arrayPlayer.get(i).getCards().get(j), matchId, turnId);
+			}
+		}
 	}
+<<<<<<< HEAD
 
 	
+=======
+>>>>>>> moteur
 }
