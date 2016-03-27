@@ -67,4 +67,43 @@ angular.module('unoApp')
             console.log($scope.mygames);
         });
 
+        // Utilisation du service Game pour récupérer la liste des stats d'un joueur
+        Game.getChartNbPlayed(function () {
+
+        }, function () {
+          $scope.gamestats = {
+            NbPartyWin: 9,
+            NbPartyLoose: 6
+          };
+
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(function () {
+            var stats = [
+              ['Parties', 'Nombre de parties'],
+              ['Gagnés', $scope.gamestats.NbPartyWin],
+              ['Perdus', $scope.gamestats.NbPartyLoose]
+            ];
+
+            var options = {
+              colors: ['#f0ad4e', '#ff2222'],
+              pieSliceTextStyle: {
+                color: 'white',
+                fontName: 'Lobster, Georgia, Times, serif',
+                fontSize: '12'
+              },
+              legend: {
+                textStyle: {
+                  color: 'white',
+                  fontName: 'Lobster, Georgia, Times, serif',
+                  fontSize: '18'
+                }
+              },
+              is3D: true
+            }
+
+            var chart = new google.visualization.PieChart(document.getElementById('donutschart'));
+            chart.draw(google.visualization.arrayToDataTable(stats), options, {});
+          });
+        });
+
     }]);
