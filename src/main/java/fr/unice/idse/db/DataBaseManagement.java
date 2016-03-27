@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -414,6 +416,30 @@ public class DataBaseManagement {
 			}
 		}
 		return game;
+	}
+
+	public Map<String, ArrayList<Card>> getLastHandPlayers(int matchId) {
+		String query = "SELECT u_pseudo, c_value, c_color "
+				+ "FROM `hands_players_in_game`, users, cards "
+				+ "WHERE `h_id_user`=u_id "
+				+ "AND `h_id_card`=c_id "
+				+ "AND `h_tour`= (SELECT MAX(t_id) FROM turns WHERE t_m_id = ?)";
+		
+		Map<String, ArrayList<Card>> map = new HashMap<String, ArrayList<Card>>();
+		if(executeSQL(query, matchId)) {
+			try {
+				while(rs.next()) {
+					String key = rs.getString("u_pseudo");
+					if(!map.containsKey(key)) {
+						map.put(key, new ArrayList<Card>());
+					}
+					map.get(key).add(new Card( Value.valueOf(rs.getString("c_value")),Color.valueOf(rs.getString("c_color"))));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return map;
 	}
 	
 	

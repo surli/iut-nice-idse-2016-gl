@@ -1,28 +1,23 @@
 package fr.unice.idse.model.save;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import fr.unice.idse.db.DataBaseManagement;
 import fr.unice.idse.model.Deck;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.player.Player;
 
 public class Load {
 	protected DataBaseManagement dbm;
-	protected ArrayList listPlayers;
-	protected ArrayList listHandplayers;
-	protected ArrayList listStack;
 	
 	public Load() {
 		dbm = new DataBaseManagement();
-		listPlayers= new ArrayList<>();
-		listHandplayers = new ArrayList<>();
-		listStack = new ArrayList<>();
-
 	}
 	
 	
-	public Game Load(String gameName) throws Exception{
+	public Game load(String gameName) throws Exception{
 		Game game = dbm.getGameWithName(gameName);
 		
 		if(game == null) {
@@ -39,7 +34,6 @@ public class Load {
 	}
 	
 	
-	@SuppressWarnings("unused")
 	private void initLoadStack(Game game){
 		String gameName = game.getName();
 		
@@ -60,9 +54,16 @@ public class Load {
 	}
 	
 	private void initHands(Game game){
+		int gameId = dbm.getIdgameWithName(game.getGameName());
+		int matchId = dbm.getIdMatchWithGameId(gameId);
+		
+		Map<String, ArrayList<Card>> map = dbm.getLastHandPlayers(matchId);
+		
+		for (Player player : game.getPlayers()) {
+			player.setCards(map.get(player.getName()));
+		}
 		
 	}
-	
 	
 	private void initPlayer(Game game){
 		
