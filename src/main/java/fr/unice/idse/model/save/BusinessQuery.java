@@ -1,6 +1,6 @@
 package fr.unice.idse.model.save;
 
-import fr.unice.idse.db.DataBaseManagement;
+import fr.unice.idse.db.DataBaseOrigin;
 import fr.unice.idse.model.Game;
 
 /**
@@ -9,7 +9,7 @@ import fr.unice.idse.model.Game;
  */
 
 public class BusinessQuery {
-	private static DataBaseManagement dbm = new DataBaseManagement();;
+	private static DataBaseOrigin dbm = new DataBaseOrigin();;
 	
 	public static int newGame(Game game) {
 		String query = String.format("INSERT INTO games (g_nom,g_nbr_max_joueur,g_nbr_max_ia) VALUES ('%s', %s, %s)",game.getGameName(), game.getNumberPlayers(), 0);

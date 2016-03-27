@@ -9,6 +9,6 @@ public final class Config {
 	public static String _salt = "projetIDSEUNO";
 	private static String port = "3306";
 	public static String url = "jdbc:mysql://localhost:" + port + "/uno";
-	public static String user = "root";
-	public static String pass = "root";
+	public static String user = "uno";
+	public static String pass = "uno";
 }
