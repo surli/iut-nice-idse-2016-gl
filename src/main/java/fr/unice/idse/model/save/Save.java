@@ -104,9 +104,5 @@ public class Save implements Observer {
 			}
 		}
 	}
-<<<<<<< HEAD
 
-	
-=======
->>>>>>> moteur
 }
