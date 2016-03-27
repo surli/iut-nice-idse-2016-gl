@@ -15,7 +15,7 @@
         <div id="fausse" class="carte {{game.stack.family}}-{{game.stack.number | WordToNumber}}"></div>
     </div>
 
-    <div id="main">
+    <div id="main" data-ng-class="{ 'current-player' : currentPlayer === user.name }">
         <ul>
             <li data-ng-repeat="carte in cartes track by $index"
                 data-ng-click="(currentPlayer === user.name) ? jouerCarte(carte) : ''"
