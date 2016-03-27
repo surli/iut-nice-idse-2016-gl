@@ -2,6 +2,7 @@ package fr.unice.idse.model.regle;
 
 import fr.unice.idse.model.*;
 import fr.unice.idse.model.card.*;
+import fr.unice.idse.model.player.Player;
 
 public class EffectCard
 {
@@ -60,6 +61,15 @@ public class EffectCard
 	public void changeColor(Color color)
 	{
 		
+	}
+	
+	/***
+	 * Methode à override pour l'échange des jeux de cartes du joueur actuel avec un autre
+	 * @param : joueur souhaité pour réaliser l'échange.
+	 */
+	public boolean tradeDecks(String playerName)
+	{
+		return false;
 	}
 	
 	/***
