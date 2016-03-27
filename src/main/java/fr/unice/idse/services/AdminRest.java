@@ -7,10 +7,7 @@ import fr.unice.idse.model.player.Player;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -80,6 +77,38 @@ public class AdminRest extends OriginRest{
             list.add(jsonFils);
         }
         jsonReturn.put("games", list);
+
+        return sendResponse(200, jsonReturn.toString(), "GET");
+    }
+
+    @Path("game/{gameName}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response infoGames(@HeaderParam("token") String token, @PathParam("gameName") String gameName) throws JSONException{
+        Model model = Model.getInstance();
+        JSONObject jsonReturn = new JSONObject();
+
+        // verification de l'admin
+        String verif = verifAdmin(token);
+        if(verif != null){
+            jsonReturn.put("error", verif);
+            return sendResponse(405, jsonReturn.toString(), "GET");
+        }
+
+        // verification de la game
+        if(!model.existsGame(gameName)){
+            jsonReturn.put("error", "Game not exist");
+            return sendResponse(405, jsonReturn.toString(), "GET");
+        }
+
+        // retourne les informtations
+        Game game = model.findGameByName(gameName);
+        jsonReturn.put("gameName", gameName);
+        jsonReturn.put("state", game.gameBegin());
+        ArrayList<String> players = new ArrayList<>();
+        for(Player player : game.getPlayers())
+            players.add(player.getName());
+        jsonReturn.put("players", players);
 
         return sendResponse(200, jsonReturn.toString(), "GET");
     }
