@@ -1,6 +1,7 @@
 package fr.unice.idse.model;
 
 import fr.unice.idse.model.player.Player;
+import fr.unice.idse.model.save.SaveListEnum;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -190,7 +191,7 @@ public class Game extends Observable implements Observer {
 			board.init();
 			
 			setChanged();
-			notifyObservers();
+			notifyObservers(SaveListEnum.NewGameSave);
 			
 			return true;
 		}
@@ -200,7 +201,7 @@ public class Game extends Observable implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		setChanged();
-		notifyObservers(board);
+		notifyObservers(SaveListEnum.SaveTurn);
 	}
 
 }

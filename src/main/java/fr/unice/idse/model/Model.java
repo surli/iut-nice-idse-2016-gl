@@ -55,6 +55,7 @@ public class Model {
 			boolean saveEnable = false;
 			if(saveEnable){
 				game.addObserver(save);
+				game.getBoard().addObserver(game);
 			}
 			
 			addPlayerToGame(gameName, player);
