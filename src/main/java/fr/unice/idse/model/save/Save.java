@@ -6,7 +6,7 @@ import java.util.ListIterator;
 import java.util.Observable;
 import java.util.Observer;
 
-import fr.unice.idse.db.DataBaseManagement;
+import fr.unice.idse.db.*;
 import fr.unice.idse.model.Board;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
@@ -16,7 +16,9 @@ import fr.unice.idse.model.player.Player;
 
 public class Save implements Observer {
 	protected BusinessQuery bq;
-	protected DataBaseManagement dbm;
+	protected DataBaseUser dbu;
+	protected DataBaseCard dbc;
+	protected DataBaseGame dbg;
 
 	public Save() {
 		bq = new BusinessQuery();
@@ -52,12 +54,12 @@ public class Save implements Observer {
 		
 		
 		 for(int i=0; i<array_player.size();i++){
-			 BusinessQuery.addPlayerToGame(gameId, dbm.getIdUserWithPseudo(array_player.get(i).getName()) , i);
+			 BusinessQuery.addPlayerToGame(gameId, dbu.getIdUserWithPseudo(array_player.get(i).getName()) , i);
 		 }
 
 		Integer matchId = BusinessQuery.newMatch(gameId);
 
-		int firstPLayer=dbm.getIdUserWithPseudo(array_player.get(0).getName());
+		int firstPLayer=dbu.getIdUserWithPseudo(array_player.get(0).getName());
 
 		Integer  turnId = BusinessQuery.newTurn(matchId, false, firstPLayer);
 		
@@ -65,14 +67,14 @@ public class Save implements Observer {
 			String valueTopCard = topCard.get(0).getValue().toString();
 			String colorTopCard = topCard.get(0).getColor().toString();
 			
-		Integer cardId = dbm.getIdCard(valueTopCard, colorTopCard);
+		Integer cardId = dbc.getIdCard(valueTopCard, colorTopCard);
 			
 		BusinessQuery.addCardToStack(matchId, turnId, cardId);
 		
 		
 		 for(int i=0; i<array_player.size();i++){
 	
-			BusinessQuery.addCardToPlayerHand(matchId,  dbm.getIdUserWithPseudo(array_player.get(i).getName()), cardId, turnId);
+			BusinessQuery.addCardToPlayerHand(matchId,  dbu.getIdUserWithPseudo(array_player.get(i).getName()), cardId, turnId);
 		 }
 	 
 	}
@@ -83,18 +85,18 @@ public class Save implements Observer {
 		 * Player id a partir du nom de l'actualPlayer
 		 */
 		String actualPlayer = game.getBoard().getActualPlayer().getName();
-		int playerId = dbm.getIdUserWithPseudo(actualPlayer);
+		int playerId = dbu.getIdUserWithPseudo(actualPlayer);
 		
 		/*
 		 * Game id a partir du gameName
 		 */
 		String gameName = game.getGameName();
-		int gameId = dbm.getIdgameWithName(gameName);
+		int gameId = dbg.getIdgameWithName(gameName);
 		
 		/*
 		 * MatchId a partir du GameId
 		 */
-		int matchId = dbm.getIdMatchWithGameId(gameId);
+		int matchId = dbg.getIdMatchWithGameId(gameId);
 		
 		boolean inversed = game.getBoard().getDirection();
 	
@@ -105,7 +107,7 @@ public class Save implements Observer {
 			String valueTopCard = topCard.get(0).getValue().toString();
 			String colorTopCard = topCard.get(0).getColor().toString();
 		
-		Integer cardId = dbm.getIdCard(valueTopCard, colorTopCard);
+		Integer cardId = dbc.getIdCard(valueTopCard, colorTopCard);
 	
 		BusinessQuery.addCardToStack(matchId, turnId, cardId);
 		
@@ -114,7 +116,7 @@ public class Save implements Observer {
 
 		 for(int i=0; i<array_player.size();i++){
 				
-				BusinessQuery.addCardToPlayerHand(matchId,  dbm.getIdUserWithPseudo(array_player.get(i).getName()), cardId, turnId);
+				BusinessQuery.addCardToPlayerHand(matchId,  dbu.getIdUserWithPseudo(array_player.get(i).getName()), cardId, turnId);
 			 }
 	}
 	
