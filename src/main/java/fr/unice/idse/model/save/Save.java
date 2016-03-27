@@ -2,16 +2,12 @@ package fr.unice.idse.model.save;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Observable;
 import java.util.Observer;
 
 import fr.unice.idse.db.DataBaseManagement;
-import fr.unice.idse.model.Board;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
-import fr.unice.idse.model.card.Color;
-import fr.unice.idse.model.card.Value;
 import fr.unice.idse.model.player.Player;
 
 public class Save implements Observer {
@@ -29,10 +25,20 @@ public class Save implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		try {
-			if (arg instanceof Board) {
-					this.saveNewGame((Game) o);
-			} else if (o instanceof Game) {
-				this.saveTurn((Game) o);
+			if(!(arg instanceof SaveListEnum)) {
+				throw new Exception("ERROR : Expecting a SaveListEnum");
+			}
+			SaveListEnum sle = (SaveListEnum)arg;
+			
+			switch (sle) {
+				case NewGameSave:
+					this.saveNewGame((Game) o);				
+					break;
+				case SaveTurn:
+					this.saveTurn((Game) o);
+					break;
+				default:
+					break;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
