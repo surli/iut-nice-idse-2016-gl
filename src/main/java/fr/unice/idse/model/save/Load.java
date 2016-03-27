@@ -66,6 +66,14 @@ public class Load {
 	}
 	
 	private void initPlayer(Game game){
+		String gameName = game.getName();
+		
+		int gameId = dbm.getIdgameWithName(gameName);
+		
+		ArrayList<Player> listPlayers = dbm.getIdUserAndPositionWithGameId(gameId);
+		
+		game.setPlayers(listPlayers);
+		
 		
 	}
 	
