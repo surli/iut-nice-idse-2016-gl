@@ -81,10 +81,17 @@ public class AdminRest extends OriginRest{
         return sendResponse(200, jsonReturn.toString(), "GET");
     }
 
+    /**
+     * Retourne l'état d'une partie avec ses joueurs
+     * @param token String
+     * @param gameName String
+     * @return Response
+     * @throws JSONException
+     */
     @Path("game/{gameName}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response infoGames(@HeaderParam("token") String token, @PathParam("gameName") String gameName) throws JSONException{
+    public Response infoGame(@HeaderParam("token") String token, @PathParam("gameName") String gameName) throws JSONException{
         Model model = Model.getInstance();
         JSONObject jsonReturn = new JSONObject();
 
@@ -111,5 +118,40 @@ public class AdminRest extends OriginRest{
         jsonReturn.put("players", players);
 
         return sendResponse(200, jsonReturn.toString(), "GET");
+    }
+
+    /**
+     * Route permettant de supprimer une partie
+     * @param token String
+     * @param gameName String
+     * @return Response
+     * @throws JSONException
+     */
+    @Path("game/{gameName}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteGame(@HeaderParam("token") String token, @PathParam("gameName") String gameName) throws JSONException{
+        Model model = Model.getInstance();
+        JSONObject jsonReturn = new JSONObject();
+
+        // verification de l'admin
+        String verif = verifAdmin(token);
+        if(verif != null){
+            jsonReturn.put("error", verif);
+            return sendResponse(405, jsonReturn.toString(), "DELETE");
+        }
+
+        // verification de la game
+        if(!model.existsGame(gameName)){
+            jsonReturn.put("error", "Game not exist");
+            return sendResponse(405, jsonReturn.toString(), "DELETE");
+        }
+
+        if(model.removeGame(gameName)){
+            jsonReturn.put("state", true);
+            return sendResponse(200, jsonReturn.toString(), "DELETE");
+        }
+        jsonReturn.put("error", "Error when delete game");
+        return sendResponse(405, jsonReturn.toString(), "DELETE");
     }
 }
