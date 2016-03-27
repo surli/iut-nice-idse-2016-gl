@@ -6,6 +6,7 @@ import fr.unice.idse.db.DataBaseManagement;
 import fr.unice.idse.model.Deck;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.player.Player;
 
 public class Load {
 	protected DataBaseManagement dbm;
@@ -65,6 +66,14 @@ public class Load {
 	
 	
 	private void initPlayer(Game game){
+		String gameName = game.getName();
+		
+		int gameId = dbm.getIdgameWithName(gameName);
+		
+		ArrayList<Player> listPlayers = dbm.getIdUserAndPositionWithGameId(gameId);
+		
+		game.setPlayers(listPlayers);
+		
 		
 	}
 	
