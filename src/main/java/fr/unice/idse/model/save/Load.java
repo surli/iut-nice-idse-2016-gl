@@ -33,7 +33,7 @@ public class Load {
 		
 		initPlayer(game);
 		initHands(game);
-		initStack(game);
+		initLoadStack(game);
 		
 		return game;
 	}
