@@ -37,7 +37,7 @@ angular.module('unoApp')
                         // DEV ?
                         //$rootScope.error = '404 NOT FOUND';
                     } else {
-                        $rootScope.error = response.data.error;
+                        //$rootScope.error = response.data.error;
                     }
                 });
             }

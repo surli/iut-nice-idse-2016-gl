@@ -99,7 +99,7 @@ angular.module('unoApp')
                 }
               },
               is3D: true
-            }
+            };
 
             var chart = new google.visualization.PieChart(document.getElementById('donutschart'));
             chart.draw(google.visualization.arrayToDataTable(stats), options, {});
