@@ -1,6 +1,7 @@
 package fr.unice.idse.model.save;
 
 import java.util.ArrayList;
+
 import fr.unice.idse.db.DataBaseManagement;
 import fr.unice.idse.model.Game;
 
@@ -11,16 +12,28 @@ public class Load {
 	protected ArrayList listStack;
 	
 	public Load() {
-		ArrayList listPlayers= new ArrayList<>();
-		ArrayList listHandplayers = new ArrayList<>();
-		ArrayList listStack = new ArrayList<>();
+		dbm = new DataBaseManagement();
+		listPlayers= new ArrayList<>();
+		listHandplayers = new ArrayList<>();
+		listStack = new ArrayList<>();
 
 	}
 	
 	
-	public Game Load(String gameName){
+	public Game Load(String gameName) throws Exception{
+		Game game = dbm.getGameWithName(gameName);
 		
-		return null;
+		if(game == null) {
+			throw new Exception("ERROR : No game exist with this name");
+		}
+		
+		game.getBoard().getDeck().initDeck();
+		
+		initPlayer(game);
+		initHands(game);
+		initStack(game);
+		
+		return game;
 	}
 	
 	

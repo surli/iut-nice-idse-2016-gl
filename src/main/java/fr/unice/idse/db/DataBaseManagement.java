@@ -1,8 +1,10 @@
 package fr.unice.idse.db;
 
 import fr.unice.idse.constante.*;
+import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
+import fr.unice.idse.model.player.Player;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -375,6 +377,27 @@ public class DataBaseManagement {
 				return true;
 		}
 		return false;
+	}
+
+	public Game getGameWithName(String gameName) {
+		Game game = null;
+		if(ifGameAlreadyExistName(gameName)) {
+			String query = "SELECT g_nom, g_nbr_max_joueur, u_pseudo "
+					+ "FROM  players_in_game` , games, users "
+					+ "WHERE  p_g_id = g_id "
+					+ "AND p_id_user= u_id "
+					+ "AND g_id = ?"
+					+ "AND p_position = 0;";
+			int gameId = getIdgameWithName(gameName);
+			if(executeSQL(query, gameId)) {
+				try {
+					game = new Game(new Player(rs.getString("u_pseudo"), "dafuq"), rs.getString("g_nom"), rs.getInt("g_nbr_max_joueur"));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return game;
 	}
 	
 	
