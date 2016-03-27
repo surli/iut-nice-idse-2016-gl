@@ -15,8 +15,39 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 
+/**
+ * /admin
+ * │   ├── game             Liste des parties (Fait)
+ * │   │   ├── GET
+ * │   │   ├── /{gamename}
+ * │   │   │   ├── GET         Retourne l'état de la game avec les joueurs
+ * │   │   │   ├── DELETE      Supprime une partie
+ */
+
 @Path("admin")
 public class AdminRest extends OriginRest{
+
+    /**
+     * Methode permettant de verifier si l'utilisateur est un admin
+     * @param token String
+     * @return String
+     */
+    private String verifAdmin(String token){
+        if(token == null){
+            return "Token not found";
+        }
+        Player player = Model.getInstance().getPlayerFromList(token);
+        if(player == null){
+            return "Player not found";
+        }
+
+        // Vérification admin
+        DataBaseUser dataBaseUser = new DataBaseUser();
+        if(dataBaseUser.getRang(player.getName()) != 4){
+            return  "Player is not admin";
+        }
+        return null;
+    }
 
     /**
      * Renvoie toutes les parties (commencée / en attente)
@@ -31,21 +62,10 @@ public class AdminRest extends OriginRest{
         Model model = Model.getInstance();
         JSONObject jsonReturn = new JSONObject();
 
-        // verification du token
-        if(token == null){
-            jsonReturn.put("error", "Token not found");
-            return sendResponse(405, jsonReturn.toString(), "GET");
-        }
-        Player player = model.getPlayerFromList(token);
-        if(player == null){
-            jsonReturn.put("error", "Player not found");
-            return sendResponse(405, jsonReturn.toString(), "GET");
-        }
-
-        // Vérification admin
-        DataBaseUser dataBaseUser = new DataBaseUser();
-        if(dataBaseUser.getRang(player.getName()) != 4){
-            jsonReturn.put("error", "Player is not admin");
+        // verification de l'admin
+        String verif = verifAdmin(token);
+        if(verif != null){
+            jsonReturn.put("error", verif);
             return sendResponse(405, jsonReturn.toString(), "GET");
         }
 
