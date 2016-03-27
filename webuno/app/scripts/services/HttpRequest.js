@@ -34,7 +34,8 @@ angular.module('unoApp')
                     }
 
                     if (response.status === 404) {
-                        $rootScope.error = '404 NOT FOUND';
+                        // DEV ?
+                        //$rootScope.error = '404 NOT FOUND';
                     } else {
                         $rootScope.error = response.data.error;
                     }
