@@ -189,17 +189,14 @@ public class DataBaseManagement {
 		return 0;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public ArrayList getIdUserAndPositionWithGameId(int gameId) {
-		String query = "SELECT * FROM players_in_game WHERE p_g_id = ?";
-	    ArrayList listPlayersTemp = new ArrayList();
+	public ArrayList<Player> getIdUserAndPositionWithGameId(int gameId) {
+		String query = "SELECT u_id, u_pseudo, u_statut, p_g_id, p_position FROM players_in_game, users  WHERE p_g_id = ? ORDER BY p_position";
+	    ArrayList<Player> listPlayersTemp = new ArrayList<Player>();
 
 	    if (executeSQL(query, gameId))
 			try {
 		        while (rs.next()) {
-		        	listPlayersTemp.add(rs.getInt("p_g_id"));
-		        	listPlayersTemp.add(rs.getInt("p_id_user"));
-		        	listPlayersTemp.add(rs.getInt("p_position"));
+		        	listPlayersTemp.add(new Player(rs.getString("u_pseudo"), "123azer"));
 		        }
 				return listPlayersTemp;
 			} catch (SQLException e) {
