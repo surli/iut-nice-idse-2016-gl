@@ -1,5 +1,8 @@
 package fr.unice.idse.model.save;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import fr.unice.idse.db.DataBaseManagement;
 import fr.unice.idse.model.Game;
 
@@ -40,5 +43,6 @@ public class BusinessQuery {
 		String query = String.format("INSERT INTO hands_players_in_game (h_id_match,h_id_user,h_id_card,h_tour) VALUES (%s, %s, %s, %s)", matchId, userId, cardId, turnId);
 		dbm.exec(query);
 	}
+
 	
 }

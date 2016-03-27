@@ -117,5 +117,6 @@ public class Save implements Observer {
 				BusinessQuery.addCardToPlayerHand(matchId,  dbm.getIdUserWithPseudo(array_player.get(i).getName()), cardId, turnId);
 			 }
 	}
+
 	
 }

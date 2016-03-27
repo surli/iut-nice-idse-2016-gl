@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -184,6 +186,27 @@ public class DataBaseManagement {
 			}
 		return 0;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList getIdUserAndPositionWithGameId(int gameId) {
+		String query = "SELECT * FROM players_in_game WHERE p_g_id = ?";
+	    ArrayList listPlayersTemp = new ArrayList();
+
+	    if (executeSQL(query, gameId))
+			try {
+		        while (rs.next()) {
+		        	listPlayersTemp.add(rs.getInt("p_g_id"));
+		        	listPlayersTemp.add(rs.getInt("p_id_user"));
+		        	listPlayersTemp.add(rs.getInt("p_position"));
+		        }
+				return listPlayersTemp;
+			} catch (SQLException e) {
+			
+			}
+
+		return listPlayersTemp;
+	}
+	
 	
 	public int getIdMatchWithGameId(int gameId) {
 		String query = "SELECT m_id FROM matchs WHERE m_g_id = ?";
