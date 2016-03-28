@@ -68,7 +68,7 @@ angular.module('unoApp')
              * @param callback
              * @param callbackError
              */
-            deleteGame: function (gameName, callback, callbackError) {
+             deleteGame: function (gameName, callback, callbackError) {
                 HttpRequest.send({
                     method: 'delete',
                     url: 'rest/admin/game/' + gameName,
