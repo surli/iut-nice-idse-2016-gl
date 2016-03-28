@@ -59,6 +59,10 @@ Tous les documents de chaque groupe se trouve dans le repertoire doc à la racin
 
 ###Release
 
+>######Version 0.6.1
+
+- Correction build.sh (ajout du --force car problème de droit)
+
 >######Version 0.6
 
 - Admin 
