@@ -141,10 +141,4 @@ angular
             $rootScope.lang = langKey;
             $translate.use(langKey);
         };
-    })
-;
-
-function isFunction(functionToCheck) {
-    var getType = {};
-    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-}
+    });

@@ -1,6 +1,6 @@
 package fr.unice.idse.services;
 
-import fr.unice.idse.db.DataBaseManagement;
+import fr.unice.idse.db.*;
 import fr.unice.idse.model.Model;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -59,7 +59,7 @@ public class AuthRest extends OriginRest{
         JSONObject jsonObject = new JSONObject(json);
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
-        DataBaseManagement dataBase = new DataBaseManagement();
+        DataBaseUser dataBaseUser = new DataBaseUser();
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         if(!jsonObject.has("email")){
@@ -77,7 +77,7 @@ public class AuthRest extends OriginRest{
             return sendResponse(405, jsonResult.toString(), "PUT");
         }
 
-        JSONObject jsonDB = dataBase.verifLogin(jsonObject.getString("email"), generatePassword(jsonObject.getString("password")));
+        JSONObject jsonDB = dataBaseUser.verifLogin(jsonObject.getString("email"), generatePassword(jsonObject.getString("password")));
         if(jsonDB.length() == 0){
             jsonResult.put("error", "Email or password incorrect");
             return sendResponse(405, jsonResult.toString(), "PUT");
@@ -116,7 +116,7 @@ public class AuthRest extends OriginRest{
         JSONObject jsonObject = new JSONObject(json);
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
-        DataBaseManagement dataBase = new DataBaseManagement();
+        DataBaseUser dataBaseUser = new DataBaseUser();
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         // Verification de l'existante des variables
@@ -144,7 +144,7 @@ public class AuthRest extends OriginRest{
         }
 
         // Insertion dans la bdd
-        if(!dataBase.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")), 3)){
+        if(!dataBaseUser.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")), 3)){
             jsonResult.put("error", "Player already exist");
             return sendResponse(405, jsonResult.toString(), "POST");
         }

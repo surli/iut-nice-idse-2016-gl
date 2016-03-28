@@ -43,6 +43,22 @@ angular.module('unoApp')
                     }
                 }, callback, callbackError);
             },
+      /**
+       * Permet à un Admin de supprimer la game passée en paramètre
+       *
+       * @param gameName
+       * @param callback
+       * @param callbackError
+       */
+      deleteGame: function (gameName, callback, callbackError) {
+        HttpRequest.send({
+          method: 'delete',
+          url: 'rest/admin/game/' + gameName,
+          headers: {
+            token: Auth.getUser().token
+          }
+        }, callback, callbackError);
+      },
 
             /**
              * Retourne la liste de toutes les parties
@@ -75,6 +91,22 @@ angular.module('unoApp')
                 }
               }, callback, callbackError);
             },
+
+          /**
+           * Retourne le nombre de parties jouées dont les perdus et les gagnants
+           * mode statique
+           * @param callback
+           * @param callbackError
+           */
+          getChartNbPlayed: function (callback, callbackError) {
+            HttpRequest.send({
+              method: 'get',
+              url: 'rest/'+ Auth.getUser().name +'/games/stats',// va changer plus tard cette route n'existe pas
+              headers: {
+                token: Auth.getUser().token
+              }
+            }, callback, callbackError);
+          },
 
             /**
              * Retourne la main du joueur connecté
