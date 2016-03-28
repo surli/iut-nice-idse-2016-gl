@@ -339,6 +339,12 @@ ADD CONSTRAINT `fk_user_turns` FOREIGN KEY (`id_user_ready`) REFERENCES `users` 
 ALTER TABLE `users`
 ADD CONSTRAINT `fk_user_statut` FOREIGN KEY (`u_statut`) REFERENCES `statut` (`s_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
+--
+-- Insertion bdd
+--
+INSERT INTO users (u_id, u_pseudo, u_email, u_password, u_statut, u_banned) VALUES (1, 'admin', 'admin@admin.fr', '4xB/NgBysNuegEkv5fQ7vg==', 4, 0);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
