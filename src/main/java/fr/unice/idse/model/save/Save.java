@@ -2,16 +2,12 @@ package fr.unice.idse.model.save;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Observable;
 import java.util.Observer;
 
 import fr.unice.idse.db.*;
-import fr.unice.idse.model.Board;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
-import fr.unice.idse.model.card.Color;
-import fr.unice.idse.model.card.Value;
 import fr.unice.idse.model.player.Player;
 
 public class Save implements Observer {
@@ -30,63 +26,58 @@ public class Save implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-        if(arg instanceof Board) {
-
-            this.saveNewGame((Game)o);
-
-        }else if(o instanceof Game){
-
-            this.saveTurn((Game)o);
-
-        }
+		try {
+			if(!(arg instanceof SaveListEnum)) {
+				throw new Exception("ERROR : Expecting a SaveListEnum");
+			}
+			SaveListEnum sle = (SaveListEnum)arg;
+			
+			switch (sle) {
+				case NewGameSave:
+					this.saveNewGame((Game) o);				
+					break;
+				case SaveTurn:
+					this.saveTurn((Game) o);
+					break;
+				default:
+					break;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	/*
 	 * Sauvegarde d'une nouvelle partie
+	 * 
 	 * @param Game game
 	 */
-	private void saveNewGame(Game game) {
-		// gl & hf
-		//	BusinessQuery.newGame(new Game(new Player("Roger", "Espadon"), "Test", 3));
-		Integer gameId= BusinessQuery.newGame(game);
-		
-		List<Player>array_player=game.getPlayers();
-		
-		
-		 for(int i=0; i<array_player.size();i++){
-			 BusinessQuery.addPlayerToGame(gameId, dbu.getIdUserWithPseudo(array_player.get(i).getName()) , i);
-		 }
+	private void saveNewGame(Game game) throws Exception {
+		BusinessQuery.newGame(game);
 
-		Integer matchId = BusinessQuery.newMatch(gameId);
+		List<Player> arrayPlayer = game.getPlayers();
 
-		int firstPLayer=dbu.getIdUserWithPseudo(array_player.get(0).getName());
+		for (int i = 0; i < arrayPlayer.size(); i++) {
+			BusinessQuery.addPlayerToGame(game, arrayPlayer.get(i), i);
+		}
 
-		Integer  turnId = BusinessQuery.newTurn(matchId, false, firstPLayer);
-		
+		Integer matchId = BusinessQuery.newMatch(game);
+		Integer turnId = BusinessQuery.newTurn(game.getBoard()
+				.getActualPlayer(), matchId, false);
+
 		ArrayList<Card> topCard = game.getBoard().getStack().getStack();
-			String valueTopCard = topCard.get(0).getValue().toString();
-			String colorTopCard = topCard.get(0).getColor().toString();
-			
-		Integer cardId = dbc.getIdCard(valueTopCard, colorTopCard);
-			
-		BusinessQuery.addCardToStack(matchId, turnId, cardId);
-		
-		
-		 for(int i=0; i<array_player.size();i++){
-	
-			BusinessQuery.addCardToPlayerHand(matchId,  dbu.getIdUserWithPseudo(array_player.get(i).getName()), cardId, turnId);
-		 }
-	 
+
+		BusinessQuery.addCardToStack(topCard.get(0), matchId, turnId);
+
+		for (int i = 0; i < arrayPlayer.size(); i++) {
+			for (int j = 0; j < arrayPlayer.get(i).getCards().size(); j++) {
+				BusinessQuery.addCardToPlayerHand(arrayPlayer.get(i),
+						arrayPlayer.get(i).getCards().get(j), matchId, turnId);
+			}
+		}
 	}
-	
-	private void saveTurn(Game game){
-		
-		/*
-		 * Player id a partir du nom de l'actualPlayer
-		 */
-		String actualPlayer = game.getBoard().getActualPlayer().getName();
-		int playerId = dbu.getIdUserWithPseudo(actualPlayer);
-		
+
+	private void saveTurn(Game game) throws Exception {
 		/*
 		 * Game id a partir du gameName
 		 */
@@ -97,27 +88,22 @@ public class Save implements Observer {
 		 * MatchId a partir du GameId
 		 */
 		int matchId = dbg.getIdMatchWithGameId(gameId);
-		
 		boolean inversed = game.getBoard().getDirection();
-	
 
-		int turnId = BusinessQuery.newTurn(matchId, inversed, playerId);
-	
+		int turnId = BusinessQuery.newTurn(game.getBoard().getActualPlayer(),
+				matchId, inversed);
+
 		ArrayList<Card> topCard = game.getBoard().getStack().getStack();
-			String valueTopCard = topCard.get(0).getValue().toString();
-			String colorTopCard = topCard.get(0).getColor().toString();
-		
-		Integer cardId = dbc.getIdCard(valueTopCard, colorTopCard);
-	
-		BusinessQuery.addCardToStack(matchId, turnId, cardId);
-		
-		
-		List<Player>array_player=game.getPlayers();
+		BusinessQuery.addCardToStack(topCard.get(0), matchId, turnId);
 
-		 for(int i=0; i<array_player.size();i++){
-				
-				BusinessQuery.addCardToPlayerHand(matchId,  dbu.getIdUserWithPseudo(array_player.get(i).getName()), cardId, turnId);
-			 }
+		List<Player> arrayPlayer = game.getPlayers();
+
+		for (int i = 0; i < arrayPlayer.size(); i++) {
+			for (int j = 0; j < arrayPlayer.get(i).getCards().size(); j++) {
+				BusinessQuery.addCardToPlayerHand(arrayPlayer.get(i),
+						arrayPlayer.get(i).getCards().get(j), matchId, turnId);
+			}
+		}
 	}
-	
+
 }

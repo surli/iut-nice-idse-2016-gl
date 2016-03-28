@@ -292,7 +292,7 @@ public class Board extends Observable
 	 * Lors de l'appel de cette méthode le joueur 1 donne son jeu au joueur 2,
 	 * le joueur 2 donne son jeu au joueur 3 et enfin le joueur 3 donne son jeu au joueur 1.
 	 */
-	public void rotatePlayerDecks()
+	public void rotatePlayersDecks()
 	{
 		int numberOfPlayers = players.size();
 		if(numberOfPlayers>1)
@@ -316,6 +316,18 @@ public class Board extends Observable
 				players.get(numberOfPlayers-1).setCards(temp);
 			}
 		}	
+	}
+	
+	/**
+	 * Echange les jeux de cartes de 2 joueurs
+	 * @param player1
+	 * @param player2
+	 */
+	public void tradePlayersDecks(Player player1, Player player2)
+	{
+		ArrayList<Card> temp=player1.getCards();
+		player1.setCards(player2.getCards());
+		player2.setCards(temp);
 	}
 	
 	/**
@@ -351,4 +363,20 @@ public class Board extends Observable
 		}
 		return null;
 	}
+	
+	/**
+	 * Cherche joueur en fonction de son nom
+	 * @param playerName
+	 * @return Player
+	 */
+	public Player findPlayerByName(String playerName)
+	{
+		for(Player player : getPlayers())
+		{
+			if(player.getName().equals(playerName))
+				return player;
+		}
+		return null;
+	}
+	
 }
