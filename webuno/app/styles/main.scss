@@ -304,6 +304,7 @@ footer {
     position: relative;
 
     #pioche {
+      opacity: 0.2;
       width: $carte-width;
       height: $carte-height;
       border-radius: 12px;
@@ -317,6 +318,8 @@ footer {
       left: 70px;
 
       &.current-player {
+        opacity: 1;
+
         &:hover {
           transform: scale(1.1);
           box-shadow: 0 0 15px 1px $gris;
@@ -333,10 +336,15 @@ footer {
   }
 
   #main {
+    opacity: 0.4;
     width: 100%;
     height: $carte-height;
     margin: 50px auto 30px auto;
     text-align: center;
+
+    &.current-player {
+      opacity: 1;
+    }
 
     ul {
       display: inline-block;

@@ -195,7 +195,7 @@ public class BoardTest
 		p4.setCards(deck4);
 		
 		board.setPlayers(players);
-		board.rotatePlayerDecks();
+		board.rotatePlayersDecks();
 		
 		assertEquals(deck4,p1.getCards());
 		assertEquals(deck1,p2.getCards());
@@ -248,7 +248,7 @@ public class BoardTest
 		p4.setCards(deck4);
 		
 		board.setPlayers(players);
-		board.rotatePlayerDecks();
+		board.rotatePlayersDecks();
 		
 		assertEquals(deck2,p1.getCards());
 		assertEquals(deck3,p2.getCards());

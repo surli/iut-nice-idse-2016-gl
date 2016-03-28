@@ -12,12 +12,13 @@
                         <td>{{game.numberplayer}}/{{game.maxplayer}}</td>
                         <td>{{(game.state == "true") ? ('STARTED'|translate) : ((game.numberplayer == game.maxplayer) ? ('FULLPLAYERS'|translate) : ('WAITINGPLAYERS'|translate))}}</td>
                         <td>
-                            <a href="javascript:alert('Visualisation indisponible')">
+                            <a href data-ng-click="goVisualisation(game.gamename)">
                                 <i class="fa fa-eye"></i>
                             </a>
                         </td>
                         <td>
-                            <a href="javascript:alert('Suppression indisponible')">
+                            <a href data-confirmed-click="goDelete(game.gamename)"
+                               ng-confirm-click="Êtes-vous certain de vouloir supprimer cette partie ?">
                                 <i class="fa fa-times"></i>
                             </a>
                         </td>
@@ -27,11 +28,28 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4" data-ng-if="games.length > 0">
         <div class="panel panel-default">
             <div class="panel-heading text-center">Stats</div>
             <div class="panel-body text-center" style="padding:0;">
-                <div id="piechart" style="width: 100%; height: 100%; background: transparent;"</div>
+                <div id="piechart" style="width: 100%; height: 100%; background: transparent;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade modalVisuGame" tabindex="-1" role="dialog" aria-labelledby="modalVisuGame">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content text-center" style="overflow: scroll">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Partie {{gameVisu.gameName}}</div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <tr data-ng-repeat="player in gameVisu.players">
+                                <td>{{player}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

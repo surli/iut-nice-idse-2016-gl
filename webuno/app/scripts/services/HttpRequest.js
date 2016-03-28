@@ -29,10 +29,16 @@ angular.module('unoApp')
                     // Si elle est 200 alors on execute la callback, sinon on affiche une erreur
                     ErrorService.test(response, callback, callbackError);
                 }, function(response) {
-                    if (callbackError && isFunction(callbackError)) {
+                    if (callbackError && angular.isFunction(callbackError)) {
                         callbackError();
                     }
-                    $rootScope.error = response.data.error;
+
+                    if (response.status === 404) {
+                        // DEV ?
+                        //$rootScope.error = '404 NOT FOUND';
+                    } else {
+                        $rootScope.error = response.data.error;
+                    }
                 });
             }
         };

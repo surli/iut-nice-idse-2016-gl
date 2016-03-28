@@ -11,14 +11,21 @@ angular.module('unoApp')
                 // Si le statut est 200 alors j'execute la callback
                 // sinon j'affiche l'erreur
                 if (response.status === 200) {
-                    if (callback && isFunction(callback)) {
+                    $rootScope.error = null;
+                    if (callback && angular.isFunction(callback)) {
                         callback(response.data);
                     }
                 } else {
-                    if (callbackError && isFunction(callbackError)) {
+                    if (callbackError && angular.isFunction(callbackError)) {
                         callbackError();
                     }
-                    $rootScope.error = response.data.error;
+
+                    if (response.status === 404) {
+                        // DEV ?
+                        //$rootScope.error = '404 NOT FOUND';
+                    } else {
+                        $rootScope.error = response.data.error;
+                    }
                 }
             }
         };

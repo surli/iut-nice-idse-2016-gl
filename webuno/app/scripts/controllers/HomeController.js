@@ -15,9 +15,12 @@ angular.module('unoApp')
                 // Utilisation du service Game qui permet de récupérer la liste des toutes les parties avec leur statut
                 Game.getAllGames(function (data) {
                     $scope.games = data.games;
+                    // La fonction s'appelle elle même
+                    $scope.requestListGames();
+                }, function () {
+                    // La fonction s'appelle elle même
+                    $scope.requestListGames();
                 });
-                // La fonction s'appelle elle même
-                $scope.requestListGames();
             }, 2000);
         };
 
@@ -42,9 +45,10 @@ angular.module('unoApp')
             $timeout.cancel(timeoutListGames);
         });
 
-
         // Utilisation du service Game pour récupérer la liste de toutes mes parties
         Game.getMyGames(function () {
+            // SUCCESS
+        }, function () {
             var data = {
                 games: [
                     {
@@ -61,7 +65,45 @@ angular.module('unoApp')
             };
             $scope.mygames = data.games; // fictif en attendant la vrai route
             console.log($scope.mygames);
-            // On appelle la fonctio requestMYListGames() pour lancer le timer (l'actualisation des parties)
+        });
+
+        // Utilisation du service Game pour récupérer la liste des stats d'un joueur
+        Game.getChartNbPlayed(function () {
+
+        }, function () {
+          $scope.gamestats = {
+            NbPartyWin: 9,
+            NbPartyLoose: 6
+          };
+
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(function () {
+            var stats = [
+              ['Parties', 'Nombre de parties'],
+              ['Gagnés', $scope.gamestats.NbPartyWin],
+              ['Perdus', $scope.gamestats.NbPartyLoose]
+            ];
+
+            var options = {
+              colors: ['#f0ad4e', '#ff2222'],
+              pieSliceTextStyle: {
+                color: 'white',
+                fontName: 'Lobster, Georgia, Times, serif',
+                fontSize: '12'
+              },
+              legend: {
+                textStyle: {
+                  color: 'white',
+                  fontName: 'Lobster, Georgia, Times, serif',
+                  fontSize: '18'
+                }
+              },
+              is3D: true
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('donutschart'));
+            chart.draw(google.visualization.arrayToDataTable(stats), options, {});
+          });
         });
 
     }]);
