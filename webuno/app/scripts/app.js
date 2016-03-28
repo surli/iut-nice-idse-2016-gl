@@ -133,7 +133,7 @@ angular
             })
             .determinePreferredLanguage('fr');
     })
-    .run(function($rootScope, $translate) {
+    .run(function ($rootScope, $translate) {
         $rootScope.lang = 'fr';
         // Fonction qui permet de changer la langue
         $rootScope.changeLanguage = function (langKey) {
@@ -141,4 +141,19 @@ angular
             $rootScope.lang = langKey;
             $translate.use(langKey);
         };
-    });
+    })
+    .directive('ngConfirmClick', [
+        function () {
+            return {
+                link: function (scope, element, attr) {
+                    var msg = attr.ngConfirmClick || 'Are you sure?';
+                    var clickAction = attr.confirmedClick;
+                    element.bind('click', function () {
+                        if (window.confirm(msg)) {
+                            scope.$eval(clickAction);
+                        }
+                    });
+                }
+            };
+        }])
+;
