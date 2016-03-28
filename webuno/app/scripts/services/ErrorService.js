@@ -11,6 +11,7 @@ angular.module('unoApp')
                 // Si le statut est 200 alors j'execute la callback
                 // sinon j'affiche l'erreur
                 if (response.status === 200) {
+                    $rootScope.error = null;
                     if (callback && angular.isFunction(callback)) {
                         callback(response.data);
                     }
