@@ -11,7 +11,7 @@
     </div>
 
     <div id="table-game">
-        <div id="pioche" data-ng-click="piocherCarte()" data-ng-class="{ 'current-player' : currentPlayer === user.name }"></div>
+        <div id="pioche" data-ng-click="(currentPlayer === user.name) ? piocherCarte() : ''" data-ng-class="{ 'current-player' : currentPlayer === user.name }"></div>
         <div id="fausse" class="carte {{game.stack.family}}-{{game.stack.number | WordToNumber}}"></div>
     </div>
 
