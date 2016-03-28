@@ -68,6 +68,7 @@ Tous les documents de chaque groupe se trouve dans le repertoire doc à la racin
 - Refacto Bdd
 - Amélioration script bdd
 - Correction de quelques bugs sur l'IHM
+- Variante 7
 
 >######Version 0.5
 
