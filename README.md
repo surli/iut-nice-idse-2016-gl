@@ -59,13 +59,23 @@ Tous les documents de chaque groupe se trouve dans le repertoire doc à la racin
 
 ###Release
 
+>######Version 0.6
+
+- Admin 
+    - Voir les parties
+    - Voir les joueurs dans une partie
+    - Détruire une partie
+- Refacto Bdd
+- Amélioration script bdd
+- Correction de quelques bugs sur l'IHM
+
 >######Version 0.5
 
 - Jeu basique oppérationnel
 - Ajout des rangs dans les utilisateurs (1 Bot, 2 Guest, 3 Register, 4 Admin)
 - Sauvegarder une partie (pas encore implémenter dans IHM / REST) 
 - Ajout de l'IA medium
-- Refractorisation niveau REST
+- Refactorisation niveau REST
 - Creation de la vue admin
 - Script pour installation de la base de donnée
 
