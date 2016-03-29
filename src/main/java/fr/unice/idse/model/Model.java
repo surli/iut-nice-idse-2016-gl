@@ -9,7 +9,6 @@ import fr.unice.idse.model.save.Save;
 public class Model {
 	private ArrayList<Game> games;
 	private ArrayList<Player> players;
-	private Save save;
 	private static Model model=null;
 	
 	/**
@@ -19,7 +18,6 @@ public class Model {
 	{
 		this.games= new ArrayList<>();
 		this.players= new ArrayList<>();
-		this.save = new Save();
 	}
 
 	/**
@@ -54,7 +52,7 @@ public class Model {
 			
 			boolean saveEnable = false;
 			if(saveEnable){
-				game.addObserver(save);
+				game.addObserver(Save.getInstance());
 				game.getBoard().addObserver(game);
 			}
 			
@@ -390,7 +388,7 @@ public class Model {
 		Game game=findGameByName(gameName);
 		if(game!=null)
 		{
-			game.deleteObserver(save);
+			game.deleteObserver(Save.getInstance());
 			
 			games.remove(game);
 			return true;

@@ -13,11 +13,19 @@ import fr.unice.idse.model.player.Player;
 public class Save implements Observer {
 	protected BusinessQuery bq;
 	protected DataBaseManagement dbm;
-
-	public Save() {
+	private static Save instance;
+	
+	private Save() {
 		bq = new BusinessQuery();
 	}
 
+	public static Save getInstance() {
+		if(instance == null) {
+			instance = new Save();
+		}
+		return instance;
+	}
+	
 	public BusinessQuery getDbm() {
 		return bq;
 	}

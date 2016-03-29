@@ -1,8 +1,5 @@
 package fr.unice.idse.model.save;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import fr.unice.idse.db.DataBaseManagement;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
