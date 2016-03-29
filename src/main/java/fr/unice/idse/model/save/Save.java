@@ -15,7 +15,7 @@ public class Save implements Observer {
 	protected DataBaseManagement dbm;
 	private static Save instance;
 	
-	private Save() {
+	protected Save() {
 		bq = new BusinessQuery();
 	}
 
