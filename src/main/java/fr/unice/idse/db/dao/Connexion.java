@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import fr.unice.idse.constante.Config;
 
 public class Connexion {
-	private static Connection connect = null;
+	private Connection connect = null;
 	
-	public static Connection getInstance(){
+	public Connection getConnection(){
 		if(connect == null){
 			try {
 				connect = DriverManager.getConnection(Config.url, Config.user, Config.pass);

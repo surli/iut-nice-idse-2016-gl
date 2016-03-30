@@ -1,5 +1,7 @@
 package fr.unice.idse.db.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,31 +11,39 @@ import org.slf4j.LoggerFactory;
 
 import fr.unice.idse.db.dao.object.UserObject;
 
+// TODO : Speak about the password thing
+
 public class UserDAO extends DAO<UserObject> {
 	private Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
-	public UserDAO(Connexion conn) {
-		this.conn = Connexion.getInstance();
+	public UserDAO() {
+		this.conn = new Connexion().getConnection();
+	}
+	
+	public UserDAO(Connection conn) {
+		this.conn = conn;
 	}
 
 	@Override
-	public boolean create(UserObject obj) {
+	public boolean create(UserObject obj) throws SQLException {
 		try {
-			if (find(obj.getId()) != null) {
-				throw new Exception("The user already exist");
-			}
-			String query = String
-					.format("INSERT INTO users (u_pseudo, u_email, u_password, u_statut) VALUES (%s, %s, %s, %s)",
-							obj.getPseudo(), obj.getEmail(), obj.getPassword(),
-							obj.getStatus());
-			Statement stmt = conn.prepareStatement(query);
-			stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+			String query = "INSERT INTO users (u_pseudo, u_email, u_password, u_statut) VALUES (?, ?, ?, ?)";
+			PreparedStatement stmt = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+			
+			int count = 1;
+			stmt.setString(count++, obj.getPseudo());
+			stmt.setString(count++, obj.getEmail());
+			stmt.setString(count++, obj.getPassword());
+			stmt.setInt(count, obj.getStatus());
+			
+			stmt.execute();
+			conn.commit();
 			stmt.getGeneratedKeys().next();
-			obj.setId(stmt.getGeneratedKeys().getInt(0));
+			obj.setId(stmt.getGeneratedKeys().getInt("GENERATED_KEY"));
 			return true;
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e.getCause());
-			return false;
+			throw e;
 		}
 
 	}
@@ -89,9 +99,11 @@ public class UserDAO extends DAO<UserObject> {
 	public UserObject find(int id) {
 		UserObject value = new UserObject();
 		try {
-			ResultSet result = this.conn.createStatement().executeQuery(
-					String.format("SELECT * FROM users WHERE u_id = %i", id));
-			if (result.first())
+			String query = "SELECT u_pseudo, u_email, u_password, u_statut, u_banned FROM users WHERE u_id = ?";
+			PreparedStatement stmt = this.conn.prepareStatement(query);
+			stmt.setInt(1, id);
+			ResultSet result = stmt.executeQuery();
+			if (result.next())
 				value = new UserObject(id, 
 						result.getString("u_pseudo"),
 						result.getString("u_email"),
@@ -109,7 +121,7 @@ public class UserDAO extends DAO<UserObject> {
 		UserObject value = new UserObject();
 		try {
 			ResultSet result = this.conn.createStatement().executeQuery(
-					String.format("SELECT * FROM users WHERE u_pseudo = %s", pseudo));
+					String.format("SELECT u_id, u_email, u_password, u_statut, u_banned  FROM users WHERE u_pseudo = %s", pseudo));
 			if (result.first())
 				value = new UserObject(
 						result.getInt("u_id"), 
