@@ -5,14 +5,27 @@ public class UserObject {
 	private String pseudo, email, password;
 	private boolean banned;
 
-	public UserObject(int id, int status, String pseudo, String email,
-			String password, boolean banned) {
+	public UserObject(int id, String pseudo, String email,
+			String password, int status, boolean banned) {
 		this.id = id;
 		this.status = status;
 		this.pseudo = pseudo;
 		this.email = email;
 		this.password = password;
 		this.banned = banned;
+	}
+	
+	public UserObject(String pseudo, String email, String password,
+			int status, boolean banned) {
+		this(0, pseudo, email, password, status, banned);
+	}
+	
+	public UserObject(String pseudo, String email, String password) {
+		this(0, pseudo, email, password, 0, false);
+	}
+
+	public UserObject(String pseudo) {
+		this.pseudo = pseudo;
 	}
 
 	public UserObject() {

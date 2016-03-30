@@ -1,6 +1,7 @@
 package fr.unice.idse.db.dao;
 
-import com.mysql.jdbc.Connection;
+import java.sql.Connection;
+import java.util.List;
 
 public abstract class DAO<T> {
 	protected Connection conn;
@@ -8,10 +9,8 @@ public abstract class DAO<T> {
 	public abstract boolean create(T obj);
 
 	public abstract boolean delete(T obj);
-
+	
 	public abstract boolean update(T obj);
-
-	public abstract T selectAll();
 
 	public abstract T find(int id);
 }
