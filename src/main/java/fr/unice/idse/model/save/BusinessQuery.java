@@ -1,6 +1,9 @@
 package fr.unice.idse.model.save;
 
-import fr.unice.idse.db.DataBaseManagement;
+import fr.unice.idse.db.DataBaseCard;
+import fr.unice.idse.db.DataBaseGame;
+import fr.unice.idse.db.DataBaseUser;
+
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.player.Player;
@@ -10,8 +13,10 @@ import fr.unice.idse.model.player.Player;
  */
 
 public class BusinessQuery {
-	private static DataBaseManagement dbm = new DataBaseManagement();;
-	
+	private static DataBaseGame dbmG = new DataBaseGame();
+	private static DataBaseUser dbmU = new DataBaseUser();
+	private static DataBaseCard dbmC = new DataBaseCard();
+
 	/**
 	 * Insert a new game in the base
 	 * @param game The game instance
@@ -20,11 +25,11 @@ public class BusinessQuery {
 	 * @throws Exception if the game name already exist in the base
 	 */
 	public static int newGame(Game game) throws Exception {
-		if(dbm.ifGameAlreadyExistName(game.getGameName())) {
+		if(dbmG.ifGameAlreadyExistName(game.getGameName())) {
 			throw new Exception("ERROR : Game name already exist");
 		}
 		String query = String.format("INSERT INTO games (g_nom,g_nbr_max_joueur,g_nbr_max_ia) VALUES ('%s', %s, %s)",game.getGameName(), game.getNumberPlayers(), 0);
-		return dbm.insert(query);
+		return dbmG.insert(query);
 	}
 	
 	/**
@@ -35,16 +40,16 @@ public class BusinessQuery {
 	 * @throws Exception 
 	 */
 	public static void addPlayerToGame(Game game, Player player, int position) throws Exception {
-		int playerId = dbm.getIdUserWithPseudo(player.getName());
+		int playerId = dbmU.getIdUserWithPseudo(player.getName());
 		if(playerId == 0) {
 			throw new Exception("ERROR : Player does not exist in the base");
 		}
-		int gameId = dbm.getIdgameWithName(game.getGameName());
+		int gameId = dbmG.getIdgameWithName(game.getGameName());
 		if(gameId == 0) {
 			throw new Exception("ERROR : Game does not exist in the base");
 		}
 		String query = String.format("INSERT INTO players_in_game (p_g_id,p_id_user,p_position) VALUES (%s, %s, %s)", gameId, playerId, position);
-		dbm.exec(query);
+		dbmG.exec(query);
 	}
 	
 	/**
@@ -54,12 +59,12 @@ public class BusinessQuery {
 	 * @throws Exception 
 	 */
 	public static int newMatch(Game game) throws Exception {
-		int gameId = dbm.getIdgameWithName(game.getGameName());
+		int gameId = dbmG.getIdgameWithName(game.getGameName());
 		if(gameId == 0) {
 			throw new Exception("ERROR : Game does not exist in the base");
 		}
 		String query = String.format("INSERT INTO matchs (m_g_id) VALUES ('%s')",gameId);
-		return dbm.insert(query);
+		return dbmG.insert(query);
 	}
 	
 	/**
@@ -71,12 +76,12 @@ public class BusinessQuery {
 	 * @throws Exception
 	 */
 	public static int newTurn(Player player, int matchId, boolean inversed) throws Exception {
-		int playerId = dbm.getIdUserWithPseudo(player.getName());
+		int playerId = dbmU.getIdUserWithPseudo(player.getName());
 		if(playerId == 0) {
 			throw new Exception("ERROR : Player does not exist in the base");
 		}
 		String query = String.format("INSERT INTO turns(t_m_id, t_sens, id_user_ready) VALUES (%s, %s, %s)",matchId, inversed, playerId);
-		return dbm.insert(query);
+		return dbmG.insert(query);
 	}
 
 	/**
@@ -87,13 +92,13 @@ public class BusinessQuery {
 	 * @throws Exception
 	 */
 	public static void addCardToStack(Card card, int matchId, int turnId) throws Exception {
-		int cardId = dbm.getIdCard(card.getValue().toString(), card.getColor().toString());
+		int cardId = dbmC.getIdCard(card.getValue().toString(), card.getColor().toString());
 		if(cardId == 0) {
 			throw new Exception("ERROR : Card does not exist in the base");
 		}
 		
 		String query = String.format("INSERT INTO stack (s_t_id,s_m_id,s_c_id) VALUES (%s, %s, %s)", turnId, matchId, cardId);
-		dbm.exec(query);
+		dbmG.exec(query);
 	}
 	
 	/**
@@ -105,17 +110,17 @@ public class BusinessQuery {
 	 * @throws Exception
 	 */
 	public static void addCardToPlayerHand(Player player, Card card, int matchId, int turnId) throws Exception {
-		int cardId = dbm.getIdCard(card.getValue().toString(), card.getColor().toString());
+		int cardId = dbmC.getIdCard(card.getValue().toString(), card.getColor().toString());
 		if(cardId == 0) {
 			throw new Exception("ERROR : Card does not exist in the base");
 		}
-		int playerId = dbm.getIdUserWithPseudo(player.getName());
+		int playerId = dbmU.getIdUserWithPseudo(player.getName());
 		if(playerId == 0) {
 			throw new Exception("ERROR : Player does not exist in the base");
 		}
 		
 		String query = String.format("INSERT INTO hands_players_in_game (h_id_match,h_id_user,h_id_card,h_tour) VALUES (%s, %s, %s, %s)", matchId, playerId, cardId, turnId);
-		dbm.exec(query);
+		dbmG.exec(query);
 	}
 
 }

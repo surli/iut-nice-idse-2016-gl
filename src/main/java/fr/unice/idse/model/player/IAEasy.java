@@ -2,54 +2,63 @@ package fr.unice.idse.model.player;
 
 import fr.unice.idse.model.Board;
 import fr.unice.idse.model.card.Card;
-import fr.unice.idse.model.card.Color;
 
 import java.util.ArrayList;
 
 public class IAEasy extends IA {
 
+    //CONSTANTE
+    private static Card myCard;
+    private static boolean turnPlay = false;
+
+
+    //GETTER
+    public Card getMyCard() {
+        return myCard;
+    }
+
+    public boolean getTurnPlay () {
+        return turnPlay;
+    }
+
+
+    //SETTER
+    public void setMyCard(Card myCard) {
+        this.myCard = myCard;
+    }
+
+
+    //CONSTRUCTEUR
     public IAEasy(String name, String token, int difficulty) {
         super(name, token, difficulty);
     }
 
-    public static void reflexion(Board board) {
+
+    public void reflexion(Board board) {
 
         ArrayList<Card> mainIA = board.getActualPlayer().getCards();
         ArrayList<Card> playableCards = board.playableCards();
         System.out.println("Carte jouable : " + playableCards.toString());
-        boolean turnPlay = false;
+
+        myCard = chooseCardToPlay(mainIA, playableCards);
+        playCard(board, myCard, mainIA, turnPlay);
+    }
+
+
+    @Override
+    public Card chooseCardToPlay (ArrayList<Card> mainIA, ArrayList<Card> playableCards) {
+        System.out.println("Carte jouable : " + playableCards.toString());
         int i = 0;
-        Card myCard;
 
         while (i < mainIA.size() && !turnPlay) {
             myCard = mainIA.get(i);
 
-            for (Card aCard : playableCards) {
-                if (myCard == aCard) {
-                    board.poseCard(myCard);
-                    System.out.println("Carte joué : " + myCard);
-
-                    if (board.getAlternative().getEffectCard(myCard).isColorChangingCard()) {
-                        board.getAlternative().getEffectCard(myCard).changeColor(chooseColor(mainIA));
-                        board.getAlternative().getEffectCard(myCard).action();
-                    }
-                    turnPlay = true;
-                    break;
-                }
+            if (playableCards.contains(myCard)) {
+                turnPlay = true;
             }
             i++;
         }
 
-        if (!turnPlay) {
-            board.drawCard();
-        }
+        return myCard;
     }
-
-    public static Color chooseColor(ArrayList<Card> mainIA) {
-        Color color = mainIA.get(0).getColor();
-
-        return color;
-    }
-
-
 }

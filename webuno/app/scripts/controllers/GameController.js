@@ -8,28 +8,22 @@ angular.module('unoApp')
     .controller('GameController', ['$rootScope', '$scope', '$http', '$state', '$stateParams', '$timeout', 'Game', function ($rootScope, $scope, $http, $state, $stateParams, $timeout, Game) {
         // On récupère id de la room passé en paramètre dans l'url
         $rootScope.gameName = $stateParams.name;
-        var timeoutStateGame;
         $scope.currentPlayer = '';
+        var timeoutStateGame;
 
         // Utilisation du service Game pour récupérer la main du joueur connecté
-        Game.getUserHand($rootScope.gameName)
-            .then(function (response) {
-                $scope.cartes = response.data.cartes;
-            });
+        Game.getUserHand($rootScope.gameName, function (data) {
+            $scope.cartes = data.cartes;
+        });
 
         // Utilisation du service Game pour récupérer le statut du jeu
-        Game.getGame($rootScope.gameName)
-            .then(function (response) {
-                if (response.data.error) {
-                    $timeout.cancel(timeoutStateGame);
-                    $state.go('login');
-                } else {
-                    $scope.game = response.data;
-                    $scope.requestStateGame();
-                }
-            }, function () {
-                $scope.requestStateGame();
-            });
+        Game.getGame($rootScope.gameName, function (data) {
+            $scope.game = data;
+            $scope.requestStateGame();
+        }, function () {
+            $timeout.cancel(timeoutStateGame);
+            $state.go('login');
+        });
 
         // Fonction qui contient un timer permet de requêter toutes les 2 secondes
         // sur l'état du jeu afin de le mettre à jour
@@ -37,55 +31,49 @@ angular.module('unoApp')
             // Timer toutes les 2 secondes
             timeoutStateGame = $timeout(function () {
                 // Utilisation du service Game pour récupérer l'état du jeu
-                Game.getGame($rootScope.gameName)
-                    .then(function (response) {
-                        if (response.data.error) {
-                            $timeout.cancel(timeoutStateGame);
-                            $state.go('login');
-                        } else {
-                            $scope.game = response.data;
+                Game.getGame($rootScope.gameName, function (data) {
+                    $scope.game = data;
 
-                            // Utilisation du service Game pour récupérer le joueur devant jouer
-                            Game.getCurrentPlayer($rootScope.gameName)
-                                .then(function (response) {
-                                    // Si le joueur n'est pas le même qu'à la précédente requête
-                                    // alors une modal apparait avec le nom du joueur devant jouer
-                                    if ($scope.currentPlayer !== response.data.playerName) {
-                                        $scope.currentPlayer = response.data.playerName;
-                                        jQuery('.myModalCurrentPlayer').modal();
-                                        $timeout(function () {
-                                            jQuery('.myModalCurrentPlayer').modal('hide');
-                                        }, 2000);
-                                    }
-                                });
-
-                            // Utilisation du service Game pour récupérer la main du joueur connecté
-                            Game.getUserHand($rootScope.gameName)
-                                .then(function (response) {
-                                    $scope.cartes = response.data.cartes;
-                                });
-
-                            // La fonction s'appelle elle même
-                            $scope.requestStateGame();
+                    // Utilisation du service Game pour récupérer le joueur devant jouer
+                    Game.getCurrentPlayer($rootScope.gameName, function (data) {
+                        // Si le joueur n'est pas le même qu'à la précédente requête
+                        // alors une modal apparait avec le nom du joueur devant jouer
+                        if ($scope.currentPlayer !== data.playerName) {
+                            $scope.currentPlayer = data.playerName;
+                            jQuery('.myModalCurrentPlayer').modal();
+                            $timeout(function () {
+                                jQuery('.myModalCurrentPlayer').modal('hide');
+                            }, 2000);
                         }
-                    }, function () {
-                        // La fonction s'appelle elle même si la requête précédente a échoué
-                        $scope.requestStateGame();
                     });
-            }, 500);
+
+                    // Utilisation du service Game pour récupérer la main du joueur connecté
+                    Game.getUserHand($rootScope.gameName, function (data) {
+                        $scope.cartes = data.cartes;
+                    });
+
+                    if ($scope.game.gameEnd) {
+                        $timeout.cancel(timeoutStateGame);
+                    } else {
+                        // La fonction s'appelle elle même
+                        $scope.requestStateGame();
+                    }
+                }, function () {
+                    $timeout.cancel(timeoutStateGame);
+                    $state.go('login');
+                });
+            });
         };
 
         // Fonction qui permet au joueur connecté de piocher une carte
         $scope.piocherCarte = function () {
             // Utilisation du service Game pour piocher une carte
-            Game.drawCard($rootScope.gameName)
-                .then(function () {
-                    // Utilisation du service Game pour récupérer la main du joueur connecté
-                    Game.getUserHand($rootScope.gameName)
-                        .then(function (response) {
-                            $scope.cartes = response.data.cartes;
-                        });
+            Game.drawCard($rootScope.gameName, function () {
+                // Utilisation du service Game pour récupérer la main du joueur connecté
+                Game.getUserHand($rootScope.gameName, function (data) {
+                    $scope.cartes = data.cartes;
                 });
+            });
         };
 
         // Fonction qui permet au joueur connecté de jouer une carte
@@ -93,41 +81,36 @@ angular.module('unoApp')
             if (carte.family === 'Black') {
                 jQuery('.myModalColorChoose').modal();
 
-                $scope.chooseColor = function(color) {
+                $scope.chooseColor = function (color) {
                     carte.setcolor = color;
                     // Utilisation du service Game pour jouer une carte
-                    Game.playCard($rootScope.gameName, carte)
-                        .then(function () {
-                            jQuery('.myModalColorChoose').modal('hide');
+                    Game.playCard($rootScope.gameName, carte, function () {
+                        jQuery('.myModalColorChoose').modal('hide');
 
-                            // Utilisation du service Game pour récupérer la main du joueur connecté
-                            Game.getUserHand($rootScope.gameName)
-                                .then(function (response) {
-                                    $scope.cartes = response.data.cartes;
-                                });
-
-                            // Utilisation du service Game pour récupérer l'état du jeu
-                            Game.getGame($rootScope.gameName)
-                                .then(function (response) {
-                                    $scope.game = response.data;
-                                });
+                        // Utilisation du service Game pour récupérer la main du joueur connecté
+                        Game.getUserHand($rootScope.gameName, function (data) {
+                            $scope.cartes = data.cartes;
                         });
+
+                        // Utilisation du service Game pour récupérer l'état du jeu
+                        Game.getGame($rootScope.gameName, function (data) {
+                            $scope.game = data;
+                        });
+                    });
                 };
             } else {
                 // Utilisation du service Game pour jouer une carte
                 Game.playCard($rootScope.gameName, carte)
                     .then(function () {
                         // Utilisation du service Game pour récupérer la main du joueur connecté
-                        Game.getUserHand($rootScope.gameName)
-                            .then(function (response) {
-                                $scope.cartes = response.data.cartes;
-                            });
+                        Game.getUserHand($rootScope.gameName, function (data) {
+                            $scope.cartes = data.cartes;
+                        });
 
                         // Utilisation du service Game pour récupérer l'état du jeu
-                        Game.getGame($rootScope.gameName)
-                            .then(function (response) {
-                                $scope.game = response.data;
-                            });
+                        Game.getGame($rootScope.gameName, function (data) {
+                            $scope.game = data;
+                        });
                     });
             }
         };
@@ -135,15 +118,17 @@ angular.module('unoApp')
         // Évènement qui permet de stopper le timer et quitter la room quand on quitte le contrôleur RoomController
         $scope.$on('$destroy', function () {
             $timeout.cancel(timeoutStateGame);
-            if ($scope.game.state === false && !$rootScope.logout) {
+            if ($scope.game.state === false && !$rootScope.logout && !$scope.game.gameEnd) {
                 Game.quitRoom($rootScope.gameName);
             }
         });
 
         // Évènement qui permet de quitter la room quand on ferme l'onglet contenant la room
+        /*
         window.onbeforeunload = function () {
             if (!$rootScope.logout) {
                 Game.quitRoom($rootScope.gameName);
             }
         };
+        */
     }]);

@@ -22,6 +22,8 @@ public class Board extends Observable
 	private boolean gameBegin;
 	private boolean gameEnd;
 	private int cptDrawCard;
+
+	private int nextPlayer;
 	
 	public Board()
 	{
@@ -34,7 +36,26 @@ public class Board extends Observable
 		gameBegin = false;
 		gameEnd = false;
 		cptDrawCard = 1;
-	}	
+	}
+
+	/**
+	 * Retourne le joueur suivant
+	 */
+	public int getNextPlayer () {
+		if(meaning)
+		{
+			nextPlayer = (actualPlayer+1)%players.size();
+		}
+		else
+		{
+			nextPlayer = (actualPlayer-1)%players.size();
+			if(nextPlayer < 0)
+			{
+				nextPlayer += players.size();
+			}
+		}
+		return nextPlayer;
+	}
 
 	public void setActualColor(Color actualColor){ this.actualColor = actualColor; }
 	public Color getActualColor(){return this.actualColor; }
@@ -264,7 +285,7 @@ public class Board extends Observable
 			deck.removeTopCard();
 			cpt--;
 		}
-		
+		cptDrawCard = 1;
 	}
 	
 	/**

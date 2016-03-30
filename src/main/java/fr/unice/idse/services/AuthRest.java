@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import fr.unice.idse.db.DataBaseManagement;
+import fr.unice.idse.db.DataBaseUser;
 import fr.unice.idse.model.Model;
 
 @Path("auth")
@@ -43,6 +43,7 @@ public class AuthRest extends OriginRest{
         String token = generateToken(jsonObject.getString("playername"));
         if(model.createPlayer(jsonObject.getString("playername"), token)){
             jsonReturn.put("token", token);
+            jsonReturn.put("rang", 2);
             return sendResponse(200, jsonReturn.toString(), "POST");
         }
 
@@ -62,7 +63,7 @@ public class AuthRest extends OriginRest{
         JSONObject jsonObject = new JSONObject(json);
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
-        DataBaseManagement dataBase = new DataBaseManagement();
+        DataBaseUser dataBaseUser = new DataBaseUser();
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         if(!jsonObject.has("email")){
@@ -80,16 +81,23 @@ public class AuthRest extends OriginRest{
             return sendResponse(405, jsonResult.toString(), "PUT");
         }
 
-        if(!dataBase.userLoginIsCorrect(jsonObject.getString("email"), generatePassword(jsonObject.getString("password")))){
+        JSONObject jsonDB = dataBaseUser.verifLogin(jsonObject.getString("email"), generatePassword(jsonObject.getString("password")));
+        if(jsonDB.length() == 0){
             jsonResult.put("error", "Email or password incorrect");
             return sendResponse(405, jsonResult.toString(), "PUT");
         }
 
+        if(jsonDB.getBoolean("banned")){
+            jsonResult.put("error", "Compte banni");
+            return sendResponse(405, jsonResult.toString(), "PUT");
+        }
+
         String token = generateToken(jsonObject.getString("email"));
-        String playerName = dataBase.getPseudoWithEmail(jsonObject.getString("email"));
+        String playerName = jsonDB.getString("pseudo");
         if(model.createPlayer(playerName, token)){
             jsonResult.put("token", token);
             jsonResult.put("playerName", playerName);
+            jsonResult.put("rang", jsonDB.getInt("rang"));
             return sendResponse(200, jsonResult.toString(), "PUT");
         }
 
@@ -112,7 +120,7 @@ public class AuthRest extends OriginRest{
         JSONObject jsonObject = new JSONObject(json);
         JSONObject jsonResult = new JSONObject();
         Model model = Model.getInstance();
-        DataBaseManagement dataBase = new DataBaseManagement();
+        DataBaseUser dataBaseUser = new DataBaseUser();
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
         // Verification de l'existante des variables
@@ -140,8 +148,8 @@ public class AuthRest extends OriginRest{
         }
 
         // Insertion dans la bdd
-        // WARNING !!! adapter le json avec le nouveau champs statut du user
-        if(!dataBase.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")), (int)4)){            jsonResult.put("error", "Player already exist");
+        if(!dataBaseUser.addUser(jsonObject.getString("playerName"), jsonObject.getString("email"), generatePassword(jsonObject.getString("password")), 3)){
+            jsonResult.put("error", "Player already exist");
             return sendResponse(405, jsonResult.toString(), "POST");
         }
 

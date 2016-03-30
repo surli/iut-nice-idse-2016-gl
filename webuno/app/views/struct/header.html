@@ -14,11 +14,16 @@
         <div class="collapse navbar-collapse" id="navbar-toggle">
             <ul class="nav navbar-nav navbar-right">
                 <li style="padding: 0 15px;">
-                    <img class="language" data-ng-class="{'active': lang == 'fr_FR'}" src="images/fr.png" alt="Français" data-ng-click="changeLanguage('fr_FR')">
-                    <img class="language" data-ng-class="{'active': lang == 'en_EN'}" src="images/en.jpg" alt="English" data-ng-click="changeLanguage('en_EN')">
+                    <img class="language" data-ng-class="{'active': lang == 'fr'}" src="images/fr.png" alt="Français" data-ng-click="changeLanguage('fr')">
+                    <img class="language" data-ng-class="{'active': lang == 'en'}" src="images/en.jpg" alt="English" data-ng-click="changeLanguage('en')">
                 </li>
                 <li>
                     {{user.name}}
+                </li>
+                <li data-ng-if="user.rang === 4">
+                    <a href data-ui-sref="app.admin">
+                        <i class="fa fa-dashboard"></i>
+                    </a>
                 </li>
                 <li>
                     <a href data-ng-click="goLogout()">
@@ -29,3 +34,11 @@
         </div>
     </div>
 </nav>
+
+<div class="row" data-ng-if="$root.error">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="alert alert-danger text-center">
+            <strong>{{$root.error}}</strong>
+        </div>
+    </div>
+</div>

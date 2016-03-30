@@ -3,22 +3,25 @@ package fr.unice.idse.model.save;
 import java.util.ArrayList;
 import java.util.Map;
 
-import fr.unice.idse.db.DataBaseManagement;
+import fr.unice.idse.db.DataBaseCard;
+import fr.unice.idse.db.DataBaseGame;
 import fr.unice.idse.model.Deck;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.player.Player;
 
 public class Load {
-	protected DataBaseManagement dbm;
-	
+	protected DataBaseGame dbg;
+	protected DataBaseCard dbc;
+
 	public Load() {
-		dbm = new DataBaseManagement();
+		dbg = new DataBaseGame();
+		dbc = new DataBaseCard();
 	}
 	
 	
 	public Game load(String gameName) throws Exception{
-		Game game = dbm.getGameWithName(gameName);
+		Game game = dbg.getGameWithName(gameName);
 		
 		if(game == null) {
 			throw new Exception("ERROR : No game exist with this name");
@@ -37,11 +40,11 @@ public class Load {
 	private void initLoadStack(Game game){
 		String gameName = game.getName();
 		
-		int gameId = dbm.getIdgameWithName(gameName);
+		int gameId = dbg.getIdgameWithName(gameName);
 		
-		int matchId = dbm.getIdMatchWithGameId(gameId);
+		int matchId = dbg.getIdMatchWithGameId(gameId);
 		
-		ArrayList<Card> listStack = dbm.getStackWithMatchId(matchId);
+		ArrayList<Card> listStack = dbg.getStackWithMatchId(matchId);
 		
 		game.getBoard().getStack().setStack(listStack);
 
@@ -54,10 +57,10 @@ public class Load {
 	}
 	
 	private void initHands(Game game){
-		int gameId = dbm.getIdgameWithName(game.getGameName());
-		int matchId = dbm.getIdMatchWithGameId(gameId);
+		int gameId = dbg.getIdgameWithName(game.getGameName());
+		int matchId = dbg.getIdMatchWithGameId(gameId);
 		
-		Map<String, ArrayList<Card>> map = dbm.getLastHandPlayers(matchId);
+		Map<String, ArrayList<Card>> map = dbg.getLastHandPlayers(matchId);
 		
 		for (Player player : game.getPlayers()) {
 			player.setCards(map.get(player.getName()));
@@ -68,9 +71,9 @@ public class Load {
 	private void initPlayer(Game game){
 		String gameName = game.getName();
 		
-		int gameId = dbm.getIdgameWithName(gameName);
+		int gameId = dbg.getIdgameWithName(gameName);
 		
-		ArrayList<Player> listPlayers = dbm.getIdUserAndPositionWithGameId(gameId);
+		ArrayList<Player> listPlayers = dbg.getIdUserAndPositionWithGameId(gameId);
 		
 		game.setPlayers(listPlayers);
 		

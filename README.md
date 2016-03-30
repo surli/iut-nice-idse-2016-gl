@@ -9,6 +9,8 @@ Pour cloner le projet :
 git clone https://{votrepseudo}@atlas.i3s.unice.fr/stash/scm/lpa/projet-s2.git
 ```
 
+
+
 >Pour installer et tout lancer : 
 
 ######Sous linux et windows : 
@@ -18,6 +20,15 @@ build.sh
 ######Sous Mac OS : 
 ```
 sh build.sh
+```
+
+######Installation de la base de donnée
+
+>######Attention
+Pré-requis : pouvoir utiliser la commande `mysql` dans un terminal
+
+```
+database.sh [login] [password]
 ```
 
 >Pour lancer installer les plugins et lancer le serveur REST :
@@ -47,6 +58,31 @@ Dans goals ou Command line : `install test`
 Tous les documents de chaque groupe se trouve dans le repertoire doc à la racine.
 
 ###Release
+
+>######Version 0.6.1
+
+- Correction build.sh (ajout du --force car problème de droit)
+
+>######Version 0.6
+
+- Admin 
+    - Voir les parties
+    - Voir les joueurs dans une partie
+    - Détruire une partie
+- Refacto Bdd
+- Amélioration script bdd
+- Correction de quelques bugs sur l'IHM
+- Variante 7
+
+>######Version 0.5
+
+- Jeu basique oppérationnel
+- Ajout des rangs dans les utilisateurs (1 Bot, 2 Guest, 3 Register, 4 Admin)
+- Sauvegarder une partie (pas encore implémenter dans IHM / REST) 
+- Ajout de l'IA medium
+- Refactorisation niveau REST
+- Creation de la vue admin
+- Script pour installation de la base de donnée
 
 >######Version 0.4
 

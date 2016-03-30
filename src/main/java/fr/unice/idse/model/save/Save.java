@@ -5,16 +5,16 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import fr.unice.idse.db.DataBaseManagement;
+import fr.unice.idse.db.*;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.player.Player;
 
 public class Save implements Observer {
 	protected BusinessQuery bq;
-	protected DataBaseManagement dbm;
+	protected DataBaseGame dbg;
 	private static Save instance;
-	
+
 	protected Save() {
 		bq = new BusinessQuery();
 	}
@@ -88,13 +88,12 @@ public class Save implements Observer {
 		 * Game id a partir du gameName
 		 */
 		String gameName = game.getGameName();
-		int gameId = dbm.getIdgameWithName(gameName);
-
+		int gameId = dbg.getIdgameWithName(gameName);
+		
 		/*
 		 * MatchId a partir du GameId
 		 */
-		int matchId = dbm.getIdMatchWithGameId(gameId);
-
+		int matchId = dbg.getIdMatchWithGameId(gameId);
 		boolean inversed = game.getBoard().getDirection();
 
 		int turnId = BusinessQuery.newTurn(game.getBoard().getActualPlayer(),
