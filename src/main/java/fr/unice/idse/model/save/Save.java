@@ -12,14 +12,20 @@ import fr.unice.idse.model.player.Player;
 
 public class Save implements Observer {
 	protected BusinessQuery bq;
-	protected DataBaseUser dbu;
-	protected DataBaseCard dbc;
 	protected DataBaseGame dbg;
+	private static Save instance;
 
-	public Save() {
+	protected Save() {
 		bq = new BusinessQuery();
 	}
 
+	public static Save getInstance() {
+		if(instance == null) {
+			instance = new Save();
+		}
+		return instance;
+	}
+	
 	public BusinessQuery getDbm() {
 		return bq;
 	}
