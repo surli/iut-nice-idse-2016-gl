@@ -10,6 +10,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<compiler.source>1.8</compiler.source>
 		<compiler.target>1.8</compiler.target>
+		<log4j.configuration>log4j.properties</log4j.configuration>
 	</properties>
 	<packaging>war</packaging>
 	<dependencies>
@@ -74,6 +75,19 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.38</version>
 		</dependency>
+        <dependency>
+        	<groupId>org.mockito</groupId>
+        	<artifactId>mockito-all</artifactId>
+        	<version>1.9.5</version>
+        	<scope>test</scope>
+        </dependency>
+        
+        <!-- LOGGER -->
+        <dependency>
+        	<groupId>org.slf4j</groupId>
+        	<artifactId>slf4j-log4j12</artifactId>
+        	<version>1.7.20</version>
+        </dependency>
 	</dependencies>
 	<build>
 		<finalName>uno</finalName>
@@ -96,5 +110,13 @@
 		</plugins>
 		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 		<testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>log4j.properties</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 </project>
