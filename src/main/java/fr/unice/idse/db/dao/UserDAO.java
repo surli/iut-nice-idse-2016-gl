@@ -50,6 +50,7 @@ public class UserDAO extends DAO<UserObject> {
 			getConnection().commit();
 			stmt.getGeneratedKeys().next();
 			obj.setId(stmt.getGeneratedKeys().getInt("GENERATED_KEY"));
+			stmt.close();
 			return true;
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e.getSQLState());
@@ -76,6 +77,7 @@ public class UserDAO extends DAO<UserObject> {
 			
 			stmt.execute();
 			getConnection().commit();
+			stmt.close();
 			return true;
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e.getCause());
@@ -109,6 +111,7 @@ public class UserDAO extends DAO<UserObject> {
 			
 			stmt.executeUpdate();
 			getConnection().commit();
+			stmt.close();
 			return true;
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e.getCause());
@@ -117,33 +120,37 @@ public class UserDAO extends DAO<UserObject> {
 	}
 
 	@Override
-	public UserObject find(int id) {
-		UserObject value = new UserObject();
+	public UserObject find(int id) throws SQLException {
 		try {
+			UserObject value = null;
 			String query = "SELECT u_pseudo, u_email, u_password, u_statut, u_banned FROM users WHERE u_id = ?";
 			PreparedStatement stmt = this.getConnection().prepareStatement(query);
 			stmt.setInt(1, id);
 			ResultSet result = stmt.executeQuery();
-			if (result.next())
+			if (result.first()) {
 				value = new UserObject(id, 
 						result.getString("u_pseudo"),
 						result.getString("u_email"),
 						result.getString("u_password"),
 						result.getInt("u_statut"),
 						result.getBoolean("u_banned"));
-
+			}
+			stmt.close();
+			return value;
 		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e.getCause());
+			logger.error(e.getMessage(), e.getCause());
+			throw e;
 		}
-		return value;
 	}
 
-	public UserObject find(String pseudo) {
-		UserObject value = new UserObject();
+	public UserObject find(String pseudo) throws SQLException {
 		try {
-			ResultSet result = getConnection().createStatement().executeQuery(
-					String.format("SELECT u_id, u_email, u_password, u_statut, u_banned  FROM users WHERE u_pseudo = %s", pseudo));
-			if (result.first())
+			UserObject value = null;
+			String query = "SELECT u_id, u_email, u_password, u_statut, u_banned  FROM users WHERE u_pseudo = ?";
+			PreparedStatement stmt = this.getConnection().prepareStatement(query);
+			stmt.setString(1, pseudo);
+			ResultSet result = stmt.executeQuery();
+			if (result.first()) {
 				value = new UserObject(
 						result.getInt("u_id"), 
 						pseudo,
@@ -151,11 +158,13 @@ public class UserDAO extends DAO<UserObject> {
 						result.getString("u_password"),
 						result.getInt("u_statut"),
 						result.getBoolean("u_banned"));
-
+			}
+			stmt.close();
+			return value;
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e.getCause());
+			throw e;
 		}
-		return value;
 	}
 
 }

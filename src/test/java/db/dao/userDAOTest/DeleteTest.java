@@ -40,11 +40,10 @@ public class DeleteTest {
 	@Before
 	public void setup() throws SQLException {
 		doNothing().when(mockConnection).commit();
-		when(mockConnection.prepareStatement(anyString())).thenReturn(
-				mockPreparedStatement);
-
+		when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
 		doNothing().when(mockPreparedStatement).setInt(anyInt(), anyInt());
 		when(mockPreparedStatement.execute()).thenReturn(Boolean.FALSE);
+		doNothing().when(mockPreparedStatement).close();
 	}
 
 	@Test
@@ -60,11 +59,13 @@ public class DeleteTest {
 		verify(mockPreparedStatement, times(1)).setInt(anyInt(), anyInt());
 		verify(mockPreparedStatement, times(1)).execute();
 		verify(mockConnection, times(1)).commit();
+		verify(mockPreparedStatement, times(1)).close();
 	}
 
-	@Test(expected=SQLException.class)
+	@Test(expected = SQLException.class)
 	public void testDeleteWithException() throws SQLException {
-		when(mockConnection.prepareStatement(anyString())).thenThrow(new SQLException("Mock exception"));
+		when(mockConnection.prepareStatement(anyString())).thenThrow(
+				new SQLException("Mock exception"));
 		try {
 			UserDAO mockUserDao = new UserDAO(mockConnection);
 			mockUserDao = spy(mockUserDao);
@@ -77,10 +78,11 @@ public class DeleteTest {
 			verify(mockPreparedStatement, times(0)).setInt(anyInt(), anyInt());
 			verify(mockPreparedStatement, times(0)).execute();
 			verify(mockConnection, times(0)).commit();
+			verify(mockPreparedStatement, times(0)).close();
 			throw e;
 		}
 	}
-	
+
 	@Test
 	public void textCreateWithNonExistingPseudo() throws SQLException {
 		UserDAO mockUserDao = new UserDAO(mockConnection);
@@ -94,6 +96,7 @@ public class DeleteTest {
 		verify(mockPreparedStatement, times(0)).setInt(anyInt(), anyInt());
 		verify(mockPreparedStatement, times(0)).execute();
 		verify(mockConnection, times(0)).commit();
+		verify(mockPreparedStatement, times(0)).close();
 	}
 
 }

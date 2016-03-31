@@ -1,7 +1,9 @@
 package db.dao.userDAOTest;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -12,7 +14,6 @@ import static org.mockito.Mockito.when;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.junit.Before;
@@ -31,10 +32,7 @@ public class UpdateTest {
 	@Mock
 	private PreparedStatement mockPreparedStatement;
 	@Mock
-	private ResultSet mockResultSet;
-	@Mock
 	private UserObject mockUser;
-	private int userId = 100;
 	
 	public UpdateTest() {
 	}
@@ -43,7 +41,7 @@ public class UpdateTest {
 	public void setup() throws SQLException {
 		doNothing().when(mockConnection).commit();
 		when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
-		
+		doNothing().when(mockPreparedStatement).close();
 		doNothing().when(mockPreparedStatement).setString(anyInt(), anyString());
 		doNothing().when(mockPreparedStatement).setInt(anyInt(), anyInt());
 		doNothing().when(mockPreparedStatement).setBoolean(anyInt(), anyBoolean());
@@ -65,6 +63,7 @@ public class UpdateTest {
 		verify(mockPreparedStatement, times(1)).setBoolean(anyInt(), anyBoolean());
 		verify(mockPreparedStatement, times(1)).executeUpdate();
 		verify(mockConnection, times(1)).commit();
+		verify(mockPreparedStatement, times(1)).close();
 	}
 	
 	@Test(expected=SQLException.class)
@@ -83,6 +82,7 @@ public class UpdateTest {
 			verify(mockPreparedStatement, times(0)).setBoolean(anyInt(), anyBoolean());
 			verify(mockPreparedStatement, times(0)).executeUpdate();
 			verify(mockConnection, times(0)).commit();
+			verify(mockPreparedStatement, times(0)).close();
 			throw e;
 		}
 	}
@@ -102,5 +102,6 @@ public class UpdateTest {
 		verify(mockPreparedStatement, times(0)).setBoolean(anyInt(), anyBoolean());
 		verify(mockPreparedStatement, times(0)).executeUpdate();
 		verify(mockConnection, times(0)).commit();
+		verify(mockPreparedStatement, times(0)).close();
 	}
 }

@@ -12,5 +12,5 @@ public abstract class DAO<T> {
 	
 	public abstract boolean update(T obj) throws SQLException;
 
-	public abstract T find(int id);
+	public abstract T find(int id) throws SQLException;
 }

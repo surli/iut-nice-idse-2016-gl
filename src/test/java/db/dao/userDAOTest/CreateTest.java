@@ -49,6 +49,7 @@ public class CreateTest {
 		doNothing().when(mockPreparedStatement).setInt(anyInt(), anyInt());
 		when(mockPreparedStatement.execute()).thenReturn(Boolean.TRUE);
 		when(mockPreparedStatement.getGeneratedKeys()).thenReturn(mockResultSet);
+		doNothing().when(mockPreparedStatement).close();
 		
 		when(mockResultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
 		when(mockResultSet.getInt(anyString())).thenReturn(userId);
