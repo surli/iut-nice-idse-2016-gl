@@ -24,6 +24,10 @@ public class UserDAO extends DAO<UserObject> {
 		this.conn = conn;
 	}
 	
+	public Connection getConnection() {
+		return this.conn;
+	}
+	
 	@Override
 	public boolean create(UserObject obj) throws SQLException {
 		try {
@@ -54,24 +58,26 @@ public class UserDAO extends DAO<UserObject> {
 
 	/**
 	 * Delete an user folowing is pseudos
+	 * @throws Exception 
 	 */
 	@Override
-	public boolean delete(UserObject obj) {
+	public boolean delete(UserObject obj) throws SQLException {
 		try {
 			if (find(obj.getId()) == null) {
-				throw new Exception("Imposible to delete a non existing data");
+				logger.warn("The user id was not found in the database");
+				return false;
 			}
-			String query = String.format(
-					"DELETE FROM users WHERE u_pseudo = %s", obj.getPseudo());
-			Statement stmt = getConnection().createStatement();
-			if (!stmt.execute(query)) {
-				throw new SQLException();
-			}
-			getConnection().close();
+			String query = "DELETE FROM users WHERE u_id = ?";
+			PreparedStatement stmt = getConnection().prepareStatement(query);
+			
+			stmt.setInt(1, obj.getId());
+			
+			stmt.execute();
+			getConnection().commit();
 			return true;
-		} catch (Exception e) {
-			logger.warn(e.getMessage(), e.getCause());
-			return false;
+		} catch (SQLException e) {
+			logger.error(e.getMessage(), e.getCause());
+			throw e;
 		}
 	}
 

@@ -1,32 +1,32 @@
-package db.dao;
+package db.dao.userDAOTest;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.validation.constraints.AssertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import static org.junit.Assert.*;
 
-import fr.unice.idse.db.dao.Connexion;
 import fr.unice.idse.db.dao.UserDAO;
 import fr.unice.idse.db.dao.object.UserObject;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserDAOTest {
-	@Mock
-	private Connexion mockConnexion;
+public class CreateTest {
 	@Mock
 	private Connection mockConnection;
 	@Mock
@@ -37,7 +37,7 @@ public class UserDAOTest {
 	private UserObject mockUser;
 	private int userId = 100;
 	
-	public UserDAOTest() {
+	public CreateTest() {
 	}
 	
 	@Before
@@ -51,7 +51,7 @@ public class UserDAOTest {
 		when(mockPreparedStatement.getGeneratedKeys()).thenReturn(mockResultSet);
 		
 		when(mockResultSet.next()).thenReturn(Boolean.TRUE, Boolean.FALSE);
-		when(mockResultSet.getInt("GENERATED_KEY")).thenReturn(userId);
+		when(mockResultSet.getInt(anyString())).thenReturn(userId);
 	}
 
 	@Test
@@ -69,12 +69,12 @@ public class UserDAOTest {
 		verify(mockPreparedStatement, times(1)).execute();
 		verify(mockConnection, times(1)).commit();
 		verify(mockResultSet, times(1)).next();
-		verify(mockResultSet, times(1)).getInt(eq("GENERATED_KEY"));
+		verify(mockResultSet, times(1)).getInt(anyString());
 	}
 	
 	@Test(expected=SQLException.class)
 	public void textCreateWithPreparedStatementException() throws SQLException {
-		when(mockConnection.prepareStatement(anyString(), anyInt())).thenThrow(new SQLException());
+		when(mockConnection.prepareStatement(anyString(), anyInt())).thenThrow(new SQLException("Mock exception"));
 		try {
 			UserDAO mockUserDao = new UserDAO(mockConnection);
 			mockUserDao = spy(mockUserDao);
@@ -88,19 +88,19 @@ public class UserDAOTest {
 			verify(mockPreparedStatement, times(0)).execute();
 			verify(mockConnection, times(0)).commit();
 			verify(mockResultSet, times(0)).next();
-			verify(mockResultSet, times(0)).getInt(eq("GENERATED_KEY"));
+			verify(mockResultSet, times(0)).getInt(anyString());
 			throw e;
 		}
 	}
 	
 	@Test
-	public void textCreateWithExistingPseudoReturnFalse() throws SQLException {
+	public void textCreateWithExistingPseudo() throws SQLException {
 		UserDAO mockUserDao = new UserDAO(mockConnection);
 		mockUserDao = spy(mockUserDao);
 		
 		doReturn(mockUser).when(mockUserDao).find(anyString());
 		
-		mockUserDao.create(mockUser);
+		assertFalse(mockUserDao.create(mockUser));
 		
 		verify(mockConnection, times(0)).prepareStatement(anyString(), anyInt());
 		verify(mockPreparedStatement, times(0)).setString(anyInt(), anyString());
@@ -108,6 +108,6 @@ public class UserDAOTest {
 		verify(mockPreparedStatement, times(0)).execute();
 		verify(mockConnection, times(0)).commit();
 		verify(mockResultSet, times(0)).next();
-		verify(mockResultSet, times(0)).getInt(eq("GENERATED_KEY"));
+		verify(mockResultSet, times(0)).getInt(anyString());
 	}
 }
