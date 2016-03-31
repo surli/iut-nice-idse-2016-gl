@@ -14,16 +14,8 @@ import fr.unice.idse.db.dao.object.UserObject;
 public class UserDAO extends DAO<UserObject> {
 	private Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
-	public UserDAO() {
-		this.conn = new Connexion().getConnection();
-	}
-
 	public UserDAO(Connection conn) {
 		this.conn = conn;
-	}
-	
-	public Connection getConnection() {
-		return this.conn;
 	}
 	
 	/**
