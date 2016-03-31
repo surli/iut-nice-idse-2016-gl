@@ -4,14 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.unice.idse.db.dao.object.UserObject;
 
-// TODO : Speak about the password thing
 
 public class UserDAO extends DAO<UserObject> {
 	private Logger logger = LoggerFactory.getLogger(UserDAO.class);
@@ -28,6 +26,10 @@ public class UserDAO extends DAO<UserObject> {
 		return this.conn;
 	}
 	
+	/**
+	 * Create an user the pseudo is required
+	 * @throws SQLException 
+	 */
 	@Override
 	public boolean create(UserObject obj) throws SQLException {
 		try {
@@ -57,8 +59,8 @@ public class UserDAO extends DAO<UserObject> {
 	}
 
 	/**
-	 * Delete an user folowing is pseudos
-	 * @throws Exception 
+	 * Delete an user folowing the id
+	 * @throws SQLException 
 	 */
 	@Override
 	public boolean delete(UserObject obj) throws SQLException {
@@ -82,26 +84,35 @@ public class UserDAO extends DAO<UserObject> {
 	}
 
 	/**
-	 * Update the user data
+	 * Update the user data folowing the id
+	 * @throws SQLException 
 	 */
 	@Override
-	public boolean update(UserObject obj) {
+	public boolean update(UserObject obj) throws SQLException {
 		try {
-			if (find(obj.getId()) != null) {
-				throw new Exception(
-						"Impossible to update an non existing object");
+			if (find(obj.getId()) == null) {
+				logger.warn("The user id was not found in the database");
+				return false;
 			}
 
-			String query = String
-					.format("UPDATE users SET u_pseudo=%s, u_email=%s, u_password=%s, u_statut=%b, u_banned=%i WHERE u_id=%i,",
-							obj.getPseudo(), obj.getEmail(), obj.getPassword(),
-							obj.getStatus(), obj.isBanned(), obj.getId());
-			Statement stmt = getConnection().createStatement();
-			stmt.executeUpdate(query);
+			// TODO : Speak about the password thing 
+			String query = "UPDATE users SET u_pseudo=?, u_email=?, u_password=?, u_statut=?, u_banned=? WHERE u_id=?";
+			PreparedStatement stmt = getConnection().prepareStatement(query);
+			
+			int count = 1;
+			stmt.setString(count++, obj.getPseudo());
+			stmt.setString(count++, obj.getEmail());
+			stmt.setString(count++, obj.getPassword());
+			stmt.setInt(count++, obj.getStatus());
+			stmt.setBoolean(count++, obj.isBanned());
+			stmt.setInt(count, obj.getId());
+			
+			stmt.executeUpdate();
+			getConnection().commit();
 			return true;
-		} catch (Exception e) {
-			logger.warn(e.getMessage(), e.getCause());
-			return false;
+		} catch (SQLException e) {
+			logger.error(e.getMessage(), e.getCause());
+			throw e;
 		}
 	}
 
