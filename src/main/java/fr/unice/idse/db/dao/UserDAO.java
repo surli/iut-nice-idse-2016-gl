@@ -19,16 +19,20 @@ public class UserDAO extends DAO<UserObject> {
 	public UserDAO() {
 		this.conn = new Connexion().getConnection();
 	}
-	
+
 	public UserDAO(Connection conn) {
 		this.conn = conn;
 	}
-
+	
 	@Override
 	public boolean create(UserObject obj) throws SQLException {
 		try {
+			if(find(obj.getPseudo()) != null) {
+				logger.warn("This pseudos is already in use");
+				return false;
+			}
 			String query = "INSERT INTO users (u_pseudo, u_email, u_password, u_statut) VALUES (?, ?, ?, ?)";
-			PreparedStatement stmt = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+			PreparedStatement stmt = getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			int count = 1;
 			stmt.setString(count++, obj.getPseudo());
@@ -37,12 +41,12 @@ public class UserDAO extends DAO<UserObject> {
 			stmt.setInt(count, obj.getStatus());
 			
 			stmt.execute();
-			conn.commit();
+			getConnection().commit();
 			stmt.getGeneratedKeys().next();
 			obj.setId(stmt.getGeneratedKeys().getInt("GENERATED_KEY"));
 			return true;
 		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e.getCause());
+			logger.error(e.getMessage(), e.getSQLState());
 			throw e;
 		}
 
@@ -59,11 +63,11 @@ public class UserDAO extends DAO<UserObject> {
 			}
 			String query = String.format(
 					"DELETE FROM users WHERE u_pseudo = %s", obj.getPseudo());
-			Statement stmt = conn.createStatement();
+			Statement stmt = getConnection().createStatement();
 			if (!stmt.execute(query)) {
 				throw new SQLException();
 			}
-			conn.close();
+			getConnection().close();
 			return true;
 		} catch (Exception e) {
 			logger.warn(e.getMessage(), e.getCause());
@@ -86,7 +90,7 @@ public class UserDAO extends DAO<UserObject> {
 					.format("UPDATE users SET u_pseudo=%s, u_email=%s, u_password=%s, u_statut=%b, u_banned=%i WHERE u_id=%i,",
 							obj.getPseudo(), obj.getEmail(), obj.getPassword(),
 							obj.getStatus(), obj.isBanned(), obj.getId());
-			Statement stmt = conn.createStatement();
+			Statement stmt = getConnection().createStatement();
 			stmt.executeUpdate(query);
 			return true;
 		} catch (Exception e) {
@@ -100,7 +104,7 @@ public class UserDAO extends DAO<UserObject> {
 		UserObject value = new UserObject();
 		try {
 			String query = "SELECT u_pseudo, u_email, u_password, u_statut, u_banned FROM users WHERE u_id = ?";
-			PreparedStatement stmt = this.conn.prepareStatement(query);
+			PreparedStatement stmt = this.getConnection().prepareStatement(query);
 			stmt.setInt(1, id);
 			ResultSet result = stmt.executeQuery();
 			if (result.next())
@@ -120,7 +124,7 @@ public class UserDAO extends DAO<UserObject> {
 	public UserObject find(String pseudo) {
 		UserObject value = new UserObject();
 		try {
-			ResultSet result = this.conn.createStatement().executeQuery(
+			ResultSet result = getConnection().createStatement().executeQuery(
 					String.format("SELECT u_id, u_email, u_password, u_statut, u_banned  FROM users WHERE u_pseudo = %s", pseudo));
 			if (result.first())
 				value = new UserObject(

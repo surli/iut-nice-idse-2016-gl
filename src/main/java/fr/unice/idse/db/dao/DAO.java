@@ -6,6 +6,14 @@ import java.sql.SQLException;
 public abstract class DAO<T> {
 	protected Connection conn;
 
+	protected void setConnection(Connection conn) {
+		this.conn = conn;
+	}
+	
+	public Connection getConnection() {
+		return this.conn;
+	}
+	
 	public abstract boolean create(T obj) throws SQLException;
 
 	public abstract boolean delete(T obj);
