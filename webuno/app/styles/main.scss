@@ -132,7 +132,7 @@ $carte-height: 360px*0.3;
   background-color: rgba(0, 0, 0, 0.2);
 
   .panel-heading {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: #204b52;
     color: #FFF;
     border: none;
 
@@ -410,10 +410,23 @@ footer {
   -webkit-transform: translate(0, -50%) !important;
   left: 50%;
   margin-left: -150px;
-  margin-top: -50px;
+  margin-top: -150px;
   width: 300px;
   height: 100px;
   border: none;
+}
+
+.close {
+  float: right;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1;
+  color: #FFF;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 1;
+}
+.close:hover {
+  color: #5A5;
 }
 
 .modal-sm {
