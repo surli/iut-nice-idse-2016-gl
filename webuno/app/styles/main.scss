@@ -317,13 +317,31 @@ footer {
       top: 80px;
       left: 70px;
 
-      &.current-player {
+      &.can-play {
         opacity: 1;
 
         &:hover {
           transform: scale(1.1);
           box-shadow: 0 0 15px 1px $gris;
           cursor: pointer;
+        }
+      }
+
+      &.not-can-play {
+        cursor: pointer;
+        opacity: 1;
+        animation: pioche 2s infinite;
+      }
+
+      @keyframes pioche {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
         }
       }
     }
@@ -342,8 +360,12 @@ footer {
     margin: 50px auto 30px auto;
     text-align: center;
 
-    &.current-player {
+    &.can-play {
       opacity: 1;
+    }
+
+    &.not-can-play {
+      opacity: 0.4;
     }
 
     ul {
@@ -355,7 +377,7 @@ footer {
         margin-left: -($carte-width/3);
         box-shadow: 0 0 15px 1px $gris;
 
-        &.current-player {
+        &.can-play {
           &:hover {
             margin-right: ($carte-width/3);
             margin-left: -($carte-width/4);
@@ -363,6 +385,10 @@ footer {
             cursor: pointer;
             z-index: 9999;
           }
+        }
+
+        .not-can-play {
+
         }
       }
     }
@@ -450,13 +476,12 @@ footer {
   }
 }
 
-
 .modal-lg {
   text-align: center;
   height: 400px;
 
   // Case de choix d'une couleur
-  .colorChoose{
+  .colorChoose {
     border: 1px solid white;
     background-color: black;
     border-radius: 10px;
@@ -464,19 +489,19 @@ footer {
     height: 100%;
   }
 
-  .colorChooseRow{
-    clear:both;
+  .colorChooseRow {
+    clear: both;
   }
 
-  .colorChooseContent{
+  .colorChooseContent {
     cursor: pointer !important;
-    float:left;
-    width:50%;
-    height:150px;
+    float: left;
+    width: 50%;
+    height: 150px;
   }
 
-  .colorChooseRed{
-    border-bottom-right-radius:100px 200px;
+  .colorChooseRed {
+    border-bottom-right-radius: 100px 200px;
     background-color: $rouge;
 
     &:hover {
@@ -484,8 +509,8 @@ footer {
     }
   }
 
-  .colorChooseYellow{
-    border-top-left-radius:100px 200px;
+  .colorChooseYellow {
+    border-top-left-radius: 100px 200px;
     background-color: $orange;
 
     &:hover {
@@ -493,8 +518,8 @@ footer {
     }
   }
 
-  .colorChooseBlue{
-    border-bottom-left-radius:100px 200px;
+  .colorChooseBlue {
+    border-bottom-left-radius: 100px 200px;
     background-color: $bleu;
 
     &:hover {
@@ -502,8 +527,8 @@ footer {
     }
   }
 
-  .colorChooseGreen{
-    border-top-right-radius:100px 200px;
+  .colorChooseGreen {
+    border-top-right-radius: 100px 200px;
     background-color: $vert;
 
     &:hover {
