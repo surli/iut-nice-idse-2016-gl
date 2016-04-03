@@ -562,3 +562,13 @@ footer {
 rect {
   fill: transparent;
 }
+
+.fa {
+  &.fa-times {
+    color: $rouge;
+  }
+  &.fa-eye {
+    color: $bleu;
+  }
+}
+
