@@ -39,10 +39,12 @@
 
     <div class="modal fade modalVisuGame" tabindex="-1" role="dialog" aria-labelledby="modalVisuGame">
         <div class="modal-dialog modal-md">
-            <div class="modal-content text-center" style="overflow: scroll">
+            <div class="modal-content text-center" style=" background-color: #327680;">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Partie {{gameVisu.gameName}}</div>
-                    <div class="panel-body">
+                    <div class="panel-heading">Partie {{gameVisu.gameName}}
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+                    </div>
+                    <div class="panel-body" style="background: #327680; padding: 30px 0px;">
                         <table class="table">
                             <tr data-ng-repeat="player in gameVisu.players">
                                 <td>{{player}}</td>
