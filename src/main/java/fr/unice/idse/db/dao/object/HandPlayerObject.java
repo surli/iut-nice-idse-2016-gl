@@ -1,51 +1,61 @@
 package fr.unice.idse.db.dao.object;
 
+import java.util.List;
+
 public class HandPlayerObject {
-	private MatchObject match;
-	private TurnObject turn;
-	private CardObject card;
-	private UserObject user;
+	private int idMatch;
+	private int idTurn;
+	private int idUser;
+	private List<CardObject> card;
 
 	public HandPlayerObject() {
 	}
 
-	public HandPlayerObject(MatchObject match, TurnObject turn,
-			CardObject card, UserObject user) {
-		this.match = match;
-		this.turn = turn;
+	public HandPlayerObject(int idMatch, int idTurn, int idUser, List<CardObject> card) {
+		super();
+		this.idMatch = idMatch;
+		this.idTurn = idTurn;
 		this.card = card;
-		this.user = user;
+		this.idUser = idUser;
+	}
+	
+	public HandPlayerObject(int idMatch, int idTurn, int idUser) {
+		super();
+		this.idMatch = idMatch;
+		this.idTurn = idTurn;
+		this.idUser = idUser;
 	}
 
-	public MatchObject getMatch() {
-		return match;
+	public int getIdMatch() {
+		return idMatch;
 	}
 
-	public void setMatch(MatchObject match) {
-		this.match = match;
+	public void setIdMatch(int idMatch) {
+		this.idMatch = idMatch;
 	}
 
-	public TurnObject getTurn() {
-		return turn;
+	public int getIdTurn() {
+		return idTurn;
 	}
 
-	public void setTurn(TurnObject turn) {
-		this.turn = turn;
+	public void setIdTurn(int idTurn) {
+		this.idTurn = idTurn;
 	}
 
-	public CardObject getCard() {
+	public List<CardObject> getCard() {
 		return card;
 	}
 
-	public void setCard(CardObject card) {
+	public void setCard(List<CardObject> card) {
 		this.card = card;
 	}
 
-	public UserObject getUser() {
-		return user;
+	public int getIdUser() {
+		return idUser;
 	}
 
-	public void setUser(UserObject user) {
-		this.user = user;
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
 	}
+
 }

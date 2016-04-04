@@ -2,19 +2,18 @@ package fr.unice.idse.db.dao.object;
 
 public class TurnObject {
 	private int id;
-	private MatchObject match;
+	private int idMatch;
 	private boolean inverded;
-	private UserObject user;
+	private int idUser;
 
 	public TurnObject() {
 	}
 
-	public TurnObject(int id, MatchObject match, boolean inverded,
-			UserObject user) {
+	public TurnObject(int id, int idMatch, boolean inverded, int idUser) {
 		this.id = id;
-		this.match = match;
+		this.idMatch = idMatch;
 		this.inverded = inverded;
-		this.user = user;
+		this.idUser = idUser;
 	}
 
 	public int getId() {
@@ -25,12 +24,12 @@ public class TurnObject {
 		this.id = id;
 	}
 
-	public MatchObject getMatch() {
-		return match;
+	public int getIdMatch() {
+		return idMatch;
 	}
 
-	public void setMatch(MatchObject match) {
-		this.match = match;
+	public void setIdMatch(int idMatch) {
+		this.idMatch = idMatch;
 	}
 
 	public boolean isInverded() {
@@ -41,12 +40,11 @@ public class TurnObject {
 		this.inverded = inverded;
 	}
 
-	public UserObject getUser() {
-		return user;
+	public int getIdUser() {
+		return idUser;
 	}
 
-	public void setUser(UserObject user) {
-		this.user = user;
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
 	}
-
 }

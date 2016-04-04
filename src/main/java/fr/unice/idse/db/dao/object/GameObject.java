@@ -1,6 +1,5 @@
 package fr.unice.idse.db.dao.object;
 
-
 public class GameObject {
 	private int id;
 	private String nom;

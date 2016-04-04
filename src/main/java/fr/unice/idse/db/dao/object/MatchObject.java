@@ -1,8 +1,9 @@
 package fr.unice.idse.db.dao.object;
 
+
 public class MatchObject {
 	private int id;
-	private GameObject gameObject;
+	private int idGame;
 
 	public MatchObject() {
 	}
@@ -11,9 +12,9 @@ public class MatchObject {
 		this.id = id;
 	}
 
-	public MatchObject(int id, GameObject gameObject) {
+	public MatchObject(int id, int idGame) {
 		this.id = id;
-		this.gameObject = gameObject;
+		this.idGame = idGame;
 	}
 
 	public int getId() {
@@ -24,11 +25,11 @@ public class MatchObject {
 		this.id = id;
 	}
 
-	public GameObject getGameObject() {
-		return gameObject;
+	public int getIdGame() {
+		return idGame;
 	}
 
-	public void setGameObject(GameObject gameObject) {
-		this.gameObject = gameObject;
+	public void setIdGame(int idGame) {
+		this.idGame = idGame;
 	}
 }

@@ -1,33 +1,49 @@
 package fr.unice.idse.db.dao.object;
 
 public class StackObject {
-	private MatchObject match;
-	private TurnObject turn;
+	private int idMatch;
+	private int idTurn;
+	private int idCard; 
 	private CardObject card;
 
 	public StackObject() {
 	}
 
-	public StackObject(MatchObject match, TurnObject turn, CardObject card) {
-		this.match = match;
-		this.turn = turn;
+	public StackObject(int idMatch, int idTurn, int idCard) {
+		this.idMatch = idMatch;
+		this.idTurn = idTurn;
+		this.idCard = idCard;
+	}
+
+	
+	public StackObject(int idMatch, int idTurn, CardObject card) {
+		this.idMatch = idMatch;
+		this.idTurn = idTurn;
 		this.card = card;
 	}
 
-	public MatchObject getMatch() {
-		return match;
+	public int getIdMatch() {
+		return idMatch;
 	}
 
-	public void setMatch(MatchObject match) {
-		this.match = match;
+	public void setIdMatch(int idMatch) {
+		this.idMatch = idMatch;
 	}
 
-	public TurnObject getTurn() {
-		return turn;
+	public int getIdTurn() {
+		return idTurn;
 	}
 
-	public void setTurn(TurnObject turn) {
-		this.turn = turn;
+	public void setIdTurn(int idTurn) {
+		this.idTurn = idTurn;
+	}
+	
+	public int getIdCard() {
+		return idCard;
+	}
+
+	public void setIdCard(int idCard) {
+		this.idCard = idCard;
 	}
 
 	public CardObject getCard() {

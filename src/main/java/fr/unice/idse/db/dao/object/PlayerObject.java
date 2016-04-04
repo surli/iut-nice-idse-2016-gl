@@ -1,33 +1,25 @@
 package fr.unice.idse.db.dao.object;
 
 public class PlayerObject {
-	private GameObject game;
-	private UserObject user;
+	private int idGame;
 	private int position;
+	private int idUser;
 
 	public PlayerObject() {
 	}
 
-	public PlayerObject(GameObject game, UserObject user, int position) {
-		this.game = game;
-		this.user = user;
+	public PlayerObject(int idGame, int idUser, int position) {
+		this.idGame = idGame;
+		this.idUser = idUser;
 		this.position = position;
 	}
 
-	public GameObject getGame() {
-		return game;
+	public int getIdGame() {
+		return idGame;
 	}
 
-	public void setGame(GameObject game) {
-		this.game = game;
-	}
-
-	public UserObject getUser() {
-		return user;
-	}
-
-	public void setUser(UserObject user) {
-		this.user = user;
+	public void setIdGame(int idGame) {
+		this.idGame = idGame;
 	}
 
 	public int getPosition() {
@@ -37,4 +29,13 @@ public class PlayerObject {
 	public void setPosition(int position) {
 		this.position = position;
 	}
+
+	public int getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
+	}
+
 }
