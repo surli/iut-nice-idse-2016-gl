@@ -5,7 +5,7 @@ angular.module('unoApp')
      * Contrôleur global AppController de la route /app
      * Gère l'ensemble de l'application une fois un utilisateur connecté
      */
-    .controller('AdminController', ['$rootScope', '$scope', '$state', '$timeout', 'Auth', 'Game', function ($rootScope, $scope, $state, $timeout, Auth, Game) {
+    .controller('AdminController', ['$rootScope', '$scope', '$state', '$timeout', 'Auth', 'Game','Users', function ($rootScope, $scope, $state, $timeout, Auth, Game, Users) {
         if (!Auth.isAdmin()) {
             $state.go('login');
         }
@@ -66,4 +66,32 @@ angular.module('unoApp')
                 initAdmin();
             });
         };
+
+      // Utilisation du service Users pour récupérer la liste de tous les users
+      Users.getAllUsers(function (data) {
+        // SUCCESS
+      }, function () {
+        var data = {
+          users: [
+            {
+              id: '1',
+              pseudo: 'toto',
+              email: 'toto@gmail.com',
+              role: '1',
+              banned: '0'
+
+            },
+            {
+              id: '2',
+              pseudo: 'tata',
+              email: 'tata@gmail.com',
+              role: '3',
+              banned: '1'
+            }
+          ]
+        };
+        $scope.allusers = data.users; // fictif en attendant la vrai route
+        console.log($scope.allusers);
+      });
+
     }]);

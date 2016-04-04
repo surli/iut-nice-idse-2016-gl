@@ -2,7 +2,7 @@
     <div class="jumbotron">
         <h1>Administration</h1>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading text-center">{{games.length}} partie{{(games.length > 1) ? 's' : ''}}</div>
             <div class="panel-body text-center" style="padding:0;">
@@ -28,6 +28,37 @@
             </div>
         </div>
     </div>
+  <div class="col-md-6">
+      <div class="panel panel-default">
+          <div class="panel-heading text-center">{{'PLAYERS' | translate}}</div>
+              <div class="panel-body text-center" style="padding:0;">
+                  <table class="table" data-ng-if="allusers.length > 0" style="margin: 0;">
+                      <tr data-ng-repeat="user in allusers">
+                          <td>{{user.pseudo}}</td>
+                          <td>{{user.email}}</td>
+                          <td>
+                            <input ng-checked="user.banned == 1" type="checkbox" value="1"><label style="padding-left: 3px;">{{'BANNED' | translate}}</label>
+                          </td>
+                        <td>
+                          <select class="form-control role">
+                            <option ng-selected="user.role == 1" value="1">{{'ORDI' | translate}}</option>
+                            <option ng-selected="user.role == 2" value="2">{{'GUEST' | translate}}</option>
+                            <option ng-selected="user.role == 3"value="3">{{'USER' | translate}}</option>
+                            <option ng-selected="user.role == 4" value="4">{{'ADMIN' | translate}}</option>
+                          </select>
+                        </td>
+                        <td>
+                          <button class="btn btn-info btn-sm"
+                                  data-ng-click="">
+                            {{'UPDATE' | translate}}
+                          </button>
+                        </td>
+                      </tr>
+                  </table>
+                  <p style="padding: 15px;" data-ng-if="allusers.length == 0">{{'NOPLAYERS' | translate}}</p>
+              </div>
+      </div>
+  </div>
     <div class="col-md-4" data-ng-if="games.length > 0">
         <div class="panel panel-default">
             <div class="panel-heading text-center">Stats</div>

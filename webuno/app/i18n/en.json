@@ -30,5 +30,14 @@
   "GAME_CONF": "Game configuration",
   "GAME_NAME": "Game name",
   "NB_PLAYERS": "Number players",
-  "GO": "Let's go !"
+  "GO": "Let's go !",
+  "PLAYERS": "Lists of players",
+  "BANNED": "Banned",
+  "NOPLAYERS": "There is no player",
+  "ORDI": "Computer",
+  "GUEST": "Guest",
+  "USER": "User",
+  "ADMIN": "Administrator",
+  "UPDATE": "Update"
+
 }
