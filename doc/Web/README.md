@@ -87,7 +87,7 @@ npm run build
 
 * Complete this README
 * Create a functional interface
-* Give the possibility to Users to play UNO
+* Giving Users the ability to play UNO
 
 ### Documentation
 
