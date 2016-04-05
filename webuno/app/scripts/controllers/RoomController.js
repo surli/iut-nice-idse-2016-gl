@@ -35,7 +35,8 @@ angular.module('unoApp')
                         $scope.requestStateGame();
                     }
                 }, function () {
-                    $scope.requestStateGame();
+                    $timeout.cancel(timeoutStateGame);
+                    $state.go('login');
                 });
             }, 2000);
         };

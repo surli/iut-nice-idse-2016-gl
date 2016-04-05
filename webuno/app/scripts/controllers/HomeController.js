@@ -71,39 +71,40 @@ angular.module('unoApp')
         Game.getChartNbPlayed(function () {
 
         }, function () {
-          $scope.gamestats = {
-            NbPartyWin: 9,
-            NbPartyLoose: 6
-          };
-
-          google.charts.load('current', {'packages':['corechart']});
-          google.charts.setOnLoadCallback(function () {
-            var stats = [
-              ['Parties', 'Nombre de parties'],
-              ['Gagnés', $scope.gamestats.NbPartyWin],
-              ['Perdus', $scope.gamestats.NbPartyLoose]
-            ];
-
-            var options = {
-              colors: ['#f0ad4e', '#ff2222'],
-              pieSliceTextStyle: {
-                color: 'white',
-                fontName: 'Lobster, Georgia, Times, serif',
-                fontSize: '12'
-              },
-              legend: {
-                textStyle: {
-                  color: 'white',
-                  fontName: 'Lobster, Georgia, Times, serif',
-                  fontSize: '18'
-                }
-              },
-              is3D: true
+            $scope.gamestats = {
+                NbPartyWin: 9,
+                NbPartyLoose: 6
             };
 
-            var chart = new google.visualization.PieChart(document.getElementById('donutschart'));
-            chart.draw(google.visualization.arrayToDataTable(stats), options, {});
-          });
+            $timeout(function() {
+                google.charts.setOnLoadCallback(function () {
+                    var stats = [
+                        ['Parties', 'Nombre de parties'],
+                        ['Gagnés', $scope.gamestats.NbPartyWin],
+                        ['Perdus', $scope.gamestats.NbPartyLoose]
+                    ];
+
+                    var options = {
+                        colors: ['#f0ad4e', '#ff2222'],
+                        pieSliceTextStyle: {
+                            color: 'white',
+                            fontName: 'Lobster, Georgia, Times, serif',
+                            fontSize: '12'
+                        },
+                        legend: {
+                            textStyle: {
+                                color: 'white',
+                                fontName: 'Lobster, Georgia, Times, serif',
+                                fontSize: '18'
+                            }
+                        },
+                        is3D: true
+                    };
+
+                    var chartGamesPlayed = new google.visualization.PieChart(document.getElementById('donutschartgamesplayed'));
+                    chartGamesPlayed.draw(google.visualization.arrayToDataTable(stats), options, {});
+                });
+            }, 1000);
         });
 
     }]);
