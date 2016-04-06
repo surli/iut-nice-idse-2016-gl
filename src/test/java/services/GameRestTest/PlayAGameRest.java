@@ -1,6 +1,5 @@
 package services.GameRestTest;
 
-import fr.unice.idse.model.Board;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.card.Card;
@@ -88,11 +87,11 @@ public class PlayAGameRest extends JerseyTest {
         assertFalse(jsonResponse.getBoolean("gameEnd"));
 
         // On triche, et on change les cartes du premier joueur
-        Board board = model.findGameByName("lagame").getBoard();
-        board.getPlayers().get(0).setCards(new ArrayList<Card>());
-        board.getPlayers().get(0).getCards().add(new Card(Value.Five, Color.Red));
-        board.getStack().addCard(new Card(Value.Five, Color.Green));
-        board.setActualColor(Color.Green);
+        Game game = model.findGameByName("lagame");
+        game.getPlayers().get(0).setCards(new ArrayList<Card>());
+        game.getPlayers().get(0).getCards().add(new Card(Value.Five, Color.Red));
+        game.getStack().addCard(new Card(Value.Five, Color.Green));
+        game.setActualColor(Color.Green);
 
         jsonObject = new JSONObject();
         jsonObject.put("value", "Five");
