@@ -14,7 +14,7 @@ angular.module('unoApp')
       getAllUsers: function (callback, callbackError) {
         HttpRequest.send({
           method: 'get',
-          url: 'rest/admin/users',
+          url: 'rest/admin/player',
           headers: {
             token: Auth.getUser().token
           }
