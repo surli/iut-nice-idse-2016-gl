@@ -35,7 +35,7 @@ public class DAOFactory {
 	 * @return DAO
 	 */
 	public static DAO<MatchObject> getMatchDAO() {
-		return null;
+		return new MatchDAO(conn);
 	}
 
 	/**
