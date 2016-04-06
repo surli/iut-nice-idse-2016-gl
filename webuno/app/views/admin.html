@@ -37,13 +37,11 @@
                           <td>{{user.pseudo}}</td>
                           <td>{{user.email}}</td>
                           <td>
-                            <input ng-checked="user.banned == 1" type="checkbox" value="1"><label style="padding-left: 3px;">{{'BANNED' | translate}}</label>
+                            <input ng-checked="user.banned == 'true' " type="checkbox" value="true"><label style="padding-left: 3px;">{{'BANNED' | translate}}</label>
                           </td>
                         <td>
                           <select class="form-control role">
-                            <option ng-selected="user.role == 1" value="1">{{'ORDI' | translate}}</option>
-                            <option ng-selected="user.role == 2" value="2">{{'GUEST' | translate}}</option>
-                            <option ng-selected="user.role == 3"value="3">{{'USER' | translate}}</option>
+                            <option ng-selected="user.role == 3" value="3">{{'USER' | translate}}</option>
                             <option ng-selected="user.role == 4" value="4">{{'ADMIN' | translate}}</option>
                           </select>
                         </td>

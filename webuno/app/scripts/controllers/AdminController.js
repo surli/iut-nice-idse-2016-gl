@@ -78,7 +78,7 @@ angular.module('unoApp')
               pseudo: 'toto',
               email: 'toto@gmail.com',
               role: '1',
-              banned: '0'
+              banned: 'false'
 
             },
             {
@@ -86,7 +86,7 @@ angular.module('unoApp')
               pseudo: 'tata',
               email: 'tata@gmail.com',
               role: '3',
-              banned: '1'
+              banned: 'true'
             }
           ]
         };
