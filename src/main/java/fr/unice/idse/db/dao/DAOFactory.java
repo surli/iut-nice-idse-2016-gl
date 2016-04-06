@@ -2,6 +2,7 @@ package fr.unice.idse.db.dao;
 
 import java.sql.Connection;
 
+import fr.unice.idse.db.dao.object.CardObject;
 import fr.unice.idse.db.dao.object.GameObject;
 import fr.unice.idse.db.dao.object.MatchObject;
 import fr.unice.idse.db.dao.object.PlayerObject;
@@ -45,4 +46,15 @@ public class DAOFactory {
 	public static DAO<PlayerObject> getPlayerDAO() {
 		return null;
 	}
+	
+	/**
+	 * Retourne un objet Card interagissant avec la BDD
+	 * 
+	 * @return DAO
+	 */
+	
+	public static DAO<CardObject> getCardDAO(){
+		return new CardDAO(conn);
+	}
+	
 }
