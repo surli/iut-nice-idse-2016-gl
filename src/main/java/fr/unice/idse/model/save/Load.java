@@ -27,7 +27,7 @@ public class Load {
 			throw new Exception("ERROR : No game exist with this name");
 		}
 		
-		game.getBoard().getDeck().initDeck();
+		game.getDeck().initDeck();
 		
 		initPlayer(game);
 		initHands(game);
@@ -46,9 +46,9 @@ public class Load {
 		
 		ArrayList<Card> listStack = dbg.getStackWithMatchId(matchId);
 		
-		game.getBoard().getStack().setStack(listStack);
+		game.getStack().setStack(listStack);
 
-		Deck deck = game.getBoard().getDeck();
+		Deck deck = game.getDeck();
 		
 		for(int i =0; i<= listStack.size();i++){
 			deck.removeCard(listStack.get(i)); 

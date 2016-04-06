@@ -7,13 +7,13 @@ import fr.unice.idse.model.player.Player;
 public class EffectCard
 {
 	private Value value;
-	private Board board;
+	private Game game;
 	private boolean isColorChangingCard;
 	
-	public EffectCard(Board board, Value value)
+	public EffectCard(Game game, Value value)
 	{
 		this.value = value;
-		this.board = board;
+		this.game = game;
 		this.isColorChangingCard=false;
 	}
 
@@ -22,9 +22,9 @@ public class EffectCard
 		return value;
 	}
 
-	public Board getBoard()
+	public Game getGame()
 	{
-		return board;
+		return game;
 	}
 
 	public boolean isColorChangingCard() {
@@ -51,7 +51,7 @@ public class EffectCard
 	 */
 	public boolean getEffect()
 	{
-		return board.getCptDrawCard() > 1;
+		return game.getCptDrawCard() > 1;
 	}
 	
 	/***
