@@ -19,6 +19,8 @@ import java.util.ArrayList;
  * │   │   ├── /{gamename}
  * │   │   │   ├── GET         Retourne l'état de la game avec les joueurs
  * │   │   │   ├── DELETE      Supprime une partie
+ * │   ├── player           Liste des players
+ * │   │   ├── GET
  */
 
 @Path("admin")
@@ -153,5 +155,30 @@ public class AdminRest extends OriginRest{
         }
         jsonReturn.put("error", "Error when delete game");
         return sendResponse(405, jsonReturn.toString(), "DELETE");
+    }
+
+    /**
+     * Route permettant de récupérer tous les joueurs
+     * @param token String
+     * @return Response
+     * @throws JSONException
+     */
+    @Path("player")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteGame(@HeaderParam("token") String token) throws JSONException{
+        Model model = Model.getInstance();
+        DataBaseUser dataBaseUser = new DataBaseUser();
+        JSONObject jsonReturn = new JSONObject();
+
+        // verification de l'admin
+        String verif = verifAdmin(token);
+        if(verif != null){
+            jsonReturn.put("error", verif);
+            return sendResponse(405, jsonReturn.toString(), "GET");
+        }
+
+        return sendResponse(200, dataBaseUser.allUser().toString(), "GET");
+
     }
 }

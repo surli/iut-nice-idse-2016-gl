@@ -97,7 +97,7 @@ public class DataBaseOrigin {
 		return s;
 	}
 
-	/*
+	/**
 	 * This fonction is present in the others fonctions who need to interact
 	 * with de database. She allow to detect the sort of query and primitive
 	 * types.

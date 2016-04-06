@@ -1,12 +1,16 @@
 package fr.unice.idse.db;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DataBaseUser extends DataBaseOrigin {
-	
+	private Logger logger = LoggerFactory.getLogger(DataBaseUser.class);
+
 	public int getIdUserWithPseudo(String pseudo) {
 		String query = "SELECT u_id FROM users WHERE u_pseudo = ?";
 		if (executeSQL(query, pseudo))
@@ -43,9 +47,34 @@ public class DataBaseUser extends DataBaseOrigin {
 				jsonObject.put("banned", rs.getBoolean(3));
 			}
 		} catch (JSONException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e.getCause());
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e.getCause());
+		}
+		return jsonObject;
+	}
+
+	public JSONObject allUser(){
+		JSONObject jsonObject = new JSONObject();
+		ArrayList<JSONObject> players = new ArrayList<>();
+		String query = "SELECT u_id, u_email, u_pseudo, u_statut, u_banned FROM users";
+		try{
+			if(executeSQL(query)){
+				do{
+					JSONObject tmp = new JSONObject();
+					tmp.put("id", rs.getInt(1));
+					tmp.put("email", rs.getString(2));
+					tmp.put("pseudo", rs.getString(3));
+					tmp.put("role", rs.getInt(4));
+					tmp.put("banned", rs.getBoolean(5));
+					players.add(tmp);
+				}while (rs.next());
+				jsonObject.put("users", players);
+			}
+		} catch (JSONException e) {
+			logger.error(e.getMessage(), e.getCause());
+		} catch (SQLException e) {
+			logger.error(e.getMessage(), e.getCause());
 		}
 		return jsonObject;
 	}
