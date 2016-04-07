@@ -33,8 +33,6 @@ public class StackDAO extends DAO<StackObject>{
 			
 			stmt.execute();
 			getConnection().commit();
-			stmt.getGeneratedKeys().next();
-			obj.setIdTurn(stmt.getGeneratedKeys().getInt("GENERATED_KEY"));
 			stmt.close();
 			return true;
 		} catch (SQLException e) {

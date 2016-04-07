@@ -32,8 +32,6 @@ public class PlayerDAO extends DAO<PlayerObject> {
 
 					stmt.execute();
 					getConnection().commit();
-					stmt.getGeneratedKeys().next();
-					obj.setIdUser(stmt.getGeneratedKeys().getInt("GENERATED_KEY"));
 					stmt.close();
 					return true;
 				} catch (SQLException e) {
