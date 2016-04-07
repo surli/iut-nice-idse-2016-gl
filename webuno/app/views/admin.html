@@ -34,10 +34,11 @@
               <div class="panel-body text-center" style="padding:0;">
                   <table class="table" data-ng-if="allusers.length > 0" style="margin: 0;">
                       <tr data-ng-repeat="user in allusers">
+                          <span type="hidden" ng-model="id">{{user.id}}</span>
                           <td>{{user.pseudo}}</td>
                           <td>{{user.email}}</td>
                           <td>
-                            <input ng-checked="user.banned == 'true' " type="checkbox" value="true"><label style="padding-left: 3px;">{{'BANNED' | translate}}</label>
+                            <input ng-model="banned" ng-checked="user.banned == 'true' " type="checkbox" value="true" data-ng-click="updateBannedUser()"><label style="padding-left: 3px;">{{'BANNED' | translate}}</label>
                           </td>
                         <td>
                           <select class="form-control role">
