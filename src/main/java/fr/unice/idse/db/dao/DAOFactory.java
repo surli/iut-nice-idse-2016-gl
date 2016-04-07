@@ -44,7 +44,7 @@ public class DAOFactory {
 	 * @return DAO
 	 */
 	public static DAO<PlayerObject> getPlayerDAO() {
-		return null;
+		return new PlayerDAO(conn);
 	}
 	
 	/**
