@@ -7,6 +7,7 @@ import fr.unice.idse.db.dao.object.GameObject;
 import fr.unice.idse.db.dao.object.MatchObject;
 import fr.unice.idse.db.dao.object.PlayerObject;
 import fr.unice.idse.db.dao.object.StackObject;
+import fr.unice.idse.db.dao.object.TurnObject;
 import fr.unice.idse.db.dao.object.UserObject;
 
 public class DAOFactory {
@@ -67,6 +68,16 @@ public class DAOFactory {
 	
 	public static DAO<StackObject> getStackDAO(){
 		return new StackDAO(conn);
+	}
+	
+
+	/**
+	 * Retourne un objet Turn interagissant avec la BDD
+	 * 
+	 * @return DAO
+	 */
+	public static DAO<TurnObject> getTurnDAO(){
+		return new TurnDAO(conn);
 	}
 	
 }
