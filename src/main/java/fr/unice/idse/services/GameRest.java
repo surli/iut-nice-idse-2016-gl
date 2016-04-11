@@ -1,19 +1,29 @@
 package fr.unice.idse.services;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import javax.ws.rs.*;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import fr.unice.idse.model.*;
+import fr.unice.idse.model.Board;
+import fr.unice.idse.model.Game;
+import fr.unice.idse.model.Model;
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.card.Value;
 import fr.unice.idse.model.player.Player;
-import fr.unice.idse.model.card.*;
-import fr.unice.idse.model.regle.*;
+import fr.unice.idse.model.regle.EffectCard;
 
 /**
  * /game

@@ -11,8 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Game DAO
+ */
 public class DataBaseGame extends DataBaseOrigin {
-	
+
 	public int getIdgameWithName(String gameName) {
 		String query = "SELECT g_id FROM games WHERE g_nom = ?";
 		if (executeSQL(query, gameName))
@@ -45,6 +48,10 @@ public class DataBaseGame extends DataBaseOrigin {
 				return true;
 		}
 		return false;
+	}
+	
+	public boolean addGame(Game game) {
+		return this.addGame(game.getGameName(), game.getNumberPlayers(), 0); // TODO : Where are you my lovely nbrMaxIA !!!!
 	}
 
 	public boolean deleteGameWithName(String nameOfTheGame) {
@@ -132,4 +139,6 @@ public class DataBaseGame extends DataBaseOrigin {
 		}
 		return game;
 	}
+	
+	
 }

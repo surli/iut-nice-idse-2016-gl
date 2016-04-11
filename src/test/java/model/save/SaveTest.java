@@ -13,6 +13,8 @@ public class SaveTest extends Save{
 	@Test
 	public void testInitClass()
 	{	
-		assertNotNull(bq);
+		assertNotNull(userDAO);
+		assertNotNull(cardDAO);
+		assertNotNull(gameDAO);
 	}
 }

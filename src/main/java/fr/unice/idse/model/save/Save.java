@@ -5,25 +5,35 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.unice.idse.db.*;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.player.Player;
 
 public class Save implements Observer {
-	protected BusinessQuery bq;
-	protected DataBaseUser dbu;
-	protected DataBaseCard dbc;
-	protected DataBaseGame dbg;
+	private Logger logger = LoggerFactory.getLogger(Save.class);
+	private static Save instance;
+	
+	protected DataBaseGame gameDAO;
+	protected DataBaseUser userDAO;
+	protected DataBaseCard cardDAO;	
 
-	public Save() {
-		bq = new BusinessQuery();
+	protected Save() {
+		gameDAO = new DataBaseGame();
+		userDAO = new DataBaseUser();
+		cardDAO = new DataBaseCard();
 	}
 
-	public BusinessQuery getDbm() {
-		return bq;
+	public static Save getInstance() {
+		if(instance == null) {
+			instance = new Save();
+		}
+		return instance;
 	}
-
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		try {
@@ -43,7 +53,7 @@ public class Save implements Observer {
 					break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e.getCause());	
 		}
 	}
 
@@ -53,7 +63,9 @@ public class Save implements Observer {
 	 * @param Game game
 	 */
 	private void saveNewGame(Game game) throws Exception {
-		BusinessQuery.newGame(game);
+		if(gameDAO.addGame(game)) {
+			throw new Exception("An error occured - The game could not be added");
+		}
 
 		List<Player> arrayPlayer = game.getPlayers();
 
@@ -82,12 +94,12 @@ public class Save implements Observer {
 		 * Game id a partir du gameName
 		 */
 		String gameName = game.getGameName();
-		int gameId = dbg.getIdgameWithName(gameName);
+		int gameId = gameDAO.getIdgameWithName(gameName);
 		
 		/*
 		 * MatchId a partir du GameId
 		 */
-		int matchId = dbg.getIdMatchWithGameId(gameId);
+		int matchId = gameDAO.getIdMatchWithGameId(gameId);
 		boolean inversed = game.getBoard().getDirection();
 
 		int turnId = BusinessQuery.newTurn(game.getBoard().getActualPlayer(),
