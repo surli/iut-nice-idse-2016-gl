@@ -1,6 +1,6 @@
 package fr.unice.idse.model.player;
 
-import fr.unice.idse.model.Board;
+import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
 
 import java.util.ArrayList;
@@ -34,14 +34,14 @@ public class IAEasy extends IA {
     }
 
 
-    public void reflexion(Board board) {
+    public void reflexion(Game game) {
 
-        ArrayList<Card> mainIA = board.getActualPlayer().getCards();
-        ArrayList<Card> playableCards = board.playableCards();
+        ArrayList<Card> mainIA = game.getActualPlayer().getCards();
+        ArrayList<Card> playableCards = game.playableCards();
         System.out.println("Carte jouable : " + playableCards.toString());
 
         myCard = chooseCardToPlay(mainIA, playableCards);
-        playCard(board, myCard, mainIA, turnPlay);
+        playCard(game, myCard, mainIA, turnPlay);
     }
 
 

@@ -16,7 +16,6 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import fr.unice.idse.model.Board;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.card.Card;
@@ -164,27 +163,27 @@ public class GameRest extends OriginRest{
             return sendResponse(405, jsonObject.toString(), "GET");
         }
 
-        if(model.findGameByName(gamename).getBoard().gameBegin()){
+        if(model.findGameByName(gamename).gameBegin()){
             jsonObject.put("state", true);
-            jsonObject.put("currentplayer", model.findGameByName(gamename).getBoard().getActualPlayer().getName());
-            for(int i = 0; i < model.findGameByName(gamename).getBoard().getPlayers().size(); i++){
+            jsonObject.put("currentplayer", model.findGameByName(gamename).getActualPlayer().getName());
+            for(int i = 0; i < model.findGameByName(gamename).getPlayers().size(); i++){
                 JSONObject objFils = new JSONObject();
-                objFils.put("name", model.findGameByName(gamename).getBoard().getPlayers().get(i).getName());
-                objFils.put("cartes", model.findGameByName(gamename).getBoard().getPlayers().get(i).getCards().size());
+                objFils.put("name", model.findGameByName(gamename).getPlayers().get(i).getName());
+                objFils.put("cartes", model.findGameByName(gamename).getPlayers().get(i).getCards().size());
                 players.add(objFils);
             }
             jsonObject.put("players", players);
             JSONObject jsonStack = new JSONObject();
-            jsonStack.put("number", model.findGameByName(gamename).getBoard().getStack().topCard().getValue());
-            jsonStack.put("family", model.findGameByName(gamename).getBoard().getStack().topCard().getColor());
+            jsonStack.put("number", model.findGameByName(gamename).getStack().topCard().getValue());
+            jsonStack.put("family", model.findGameByName(gamename).getStack().topCard().getColor());
             jsonObject.put("stack", jsonStack);
             jsonObject.put("gameEnd", model.findGameByName(gamename).gameEnd());
             return sendResponse(200, jsonObject.toString(), "GET");
         }
 
-        for(int i = 0; i < model.findGameByName(gamename).getBoard().getPlayers().size(); i++) {
+        for(int i = 0; i < model.findGameByName(gamename).getPlayers().size(); i++) {
             JSONObject objFils = new JSONObject();
-            objFils.put("name", model.findGameByName(gamename).getBoard().getPlayers().get(i).getName());
+            objFils.put("name", model.findGameByName(gamename).getPlayers().get(i).getName());
             players.add(objFils);
         }
 
@@ -292,7 +291,7 @@ public class GameRest extends OriginRest{
             return sendResponse(500, jsonObject.toString(), "PUT");
         }
 
-        if(model.findGameByName(gamename).getNumberPlayers() == model.findGameByName(gamename).getBoard().getPlayers().size())
+        if(model.findGameByName(gamename).getNumberPlayers() == model.findGameByName(gamename).getPlayers().size())
             if(model.startGame(gamename, json.getString("playerName"))) {
                 jsonObject.put("status", true);
                 return sendResponse(200, jsonObject.toString(), "PUT");
@@ -328,7 +327,7 @@ public class GameRest extends OriginRest{
         }
 
         // Recherche le joueur actuel
-        Player currentPlayer = model.findGameByName(gamename).getBoard().getActualPlayer();
+        Player currentPlayer = model.findGameByName(gamename).getActualPlayer();
 
         // Verifie qu'un joueur courant existe
         if(currentPlayer == null) {
@@ -430,25 +429,24 @@ public class GameRest extends OriginRest{
             jsonReturn.put("error", "Game terminated");
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
-        Board board = game.getBoard();
 
         // Verifcation du joueur actuel
-        if(!board.getActualPlayer().getToken().equals(token)){
+        if(!game.getActualPlayer().getToken().equals(token)){
             jsonReturn.put("error", "It's not this player to play");
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
 
-        int card = board.getActualPlayer().getCards().size();
-        int drawCard = board.getCptDrawCard();
+        int card = game.getActualPlayer().getCards().size();
+        int drawCard = game.getCptDrawCard();
 
-        board.drawCard();
+        game.drawCard();
 
-        if(board.getActualPlayer().getCards().size() != card+drawCard){
+        if(game.getActualPlayer().getCards().size() != card+drawCard){
             jsonReturn.put("return", false);
             return sendResponse(405, jsonReturn.toString(), "POST");
         }
         jsonReturn.put("return", true);
-        board.nextPlayer();
+        game.nextPlayer();
         return sendResponse(200, jsonReturn.toString(), "POST");
     }
 
@@ -509,7 +507,7 @@ public class GameRest extends OriginRest{
         }
 
         // Verifie que le joueur peut jouer
-        if(!game.getBoard().getActualPlayer().getToken().equals(token)) {
+        if(!game.getActualPlayer().getToken().equals(token)) {
             jsonObject.put("error", "The player can't play");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
@@ -525,13 +523,13 @@ public class GameRest extends OriginRest{
 
 
             // Verifie que la carte est jouable
-        if(!game.getBoard().askPlayableCard(card)) {
+        if(!game.askPlayableCard(card)) {
             jsonObject.put("error", "The card can't be played");
             return sendResponse(405, jsonObject.toString(), "PUT");
         }
 
         // Finalement la carte est jouer
-        model.findGameByName(gameName).getBoard().poseCard(card);
+        model.findGameByName(gameName).poseCard(card);
         EffectCard rule = model.findGameByName(gameName).getAlternative().getEffectCard(card);
         if(rule != null){
             if(rule.isColorChangingCard()){
@@ -562,7 +560,7 @@ public class GameRest extends OriginRest{
             rule.action();
         }
 
-        game.getBoard().nextPlayer();
+        game.nextPlayer();
         
         /*La méthode à apeller est ici mais 2 des tests fails je vous laisse aranger ça
         if(rule.getEffect())

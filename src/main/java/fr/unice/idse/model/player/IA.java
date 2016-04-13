@@ -1,6 +1,6 @@
 package fr.unice.idse.model.player;
 
-import fr.unice.idse.model.Board;
+import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.NumberCardByColor;
@@ -35,18 +35,18 @@ public abstract class IA extends Player {
         return chooseCard;
     }
 
-    public void playCard (Board board, Card cardToPlay, ArrayList<Card> mainIA, Boolean turnPlay) {
+    public void playCard (Game game, Card cardToPlay, ArrayList<Card> mainIA, Boolean turnPlay) {
         if(turnPlay) {
-            board.poseCard(cardToPlay);
+        	game.poseCard(cardToPlay);
             System.out.println("Carte joué : " + cardToPlay);
 
-            if (board.getAlternative().getEffectCard(cardToPlay).isColorChangingCard()) {
-                board.getAlternative().getEffectCard(cardToPlay).changeColor(chooseColor(mainIA));
-                board.getAlternative().getEffectCard(cardToPlay).action();
+            if (game.getAlternative().getEffectCard(cardToPlay).isColorChangingCard()) {
+            	game.getAlternative().getEffectCard(cardToPlay).changeColor(chooseColor(mainIA));
+            	game.getAlternative().getEffectCard(cardToPlay).action();
             }
         }
         else {
-            board.drawCard();
+        	game.drawCard();
         }
     }
 
