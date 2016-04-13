@@ -27,6 +27,12 @@ public class Save implements Observer {
 		cardDAO = new DataBaseCard();
 	}
 
+	protected Save(String connector) {
+		gameDAO = new DataBaseGame(connector);
+		userDAO = new DataBaseUser(connector);
+		cardDAO = new DataBaseCard(connector);
+	}
+
 	public static Save getInstance() {
 		if(instance == null) {
 			instance = new Save();
