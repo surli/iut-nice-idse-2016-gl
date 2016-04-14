@@ -14,13 +14,15 @@ import java.util.ArrayList;
 
 /**
  * /admin
- * │   ├── game             Liste des parties (Fait)
+ * │   ├── game                 Liste des parties (Fait)
  * │   │   ├── GET
  * │   │   ├── /{gamename}
- * │   │   │   ├── GET         Retourne l'état de la game avec les joueurs
- * │   │   │   ├── DELETE      Supprime une partie
- * │   ├── player           Liste des players
+ * │   │   │   ├── GET          Retourne l'état de la game avec les joueurs
+ * │   │   │   ├── DELETE       Supprime une partie
+ * │   ├── player               Liste des players
  * │   │   ├── GET
+ * │   │   ├── /{playerName}
+ * │   │   │   ├── POST         Modifie le rand d'un utilisateur
  */
 
 @Path("admin")
@@ -180,6 +182,14 @@ public class AdminRest extends OriginRest{
         return sendResponse(200, dataBaseUser.allUser().toString(), "GET");
     }
 
+    /**
+     * Route pour modifier le rang d'un utilisateur
+     * @param token String
+     * @param playerName String
+     * @param json String
+     * @return Response
+     * @throws JSONException
+     */
     @Path("player/{playerName}")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
