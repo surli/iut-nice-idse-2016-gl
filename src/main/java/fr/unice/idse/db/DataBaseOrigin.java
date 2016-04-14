@@ -106,7 +106,6 @@ public class DataBaseOrigin {
 		boolean run = false;
 		try {
 			Statement statement = con.createStatement();
-
 			run = statement.execute(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -194,6 +193,7 @@ public class DataBaseOrigin {
         stringBuffer = new StringBuffer();
 
         try {
+            con.close();
             // Destruction de l'ancienne DB
             File file = new File("uno.db");
             file.delete();

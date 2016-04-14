@@ -100,6 +100,13 @@ public class DataBaseUser {
 		return -1;
 	}
 
+	public boolean updateRang(String pseudo, int rang){
+		String query = "UPDATE users SET u_statut = ? WHERE u_pseudo = ?";
+		if(dataBaseOrigin.executeSQL(query, rang, pseudo))
+			return true;
+		return false;
+	}
+
 	
 	public boolean userLoginIsCorrect(String email, String password) {
 		String query = "SELECT u_email, u_password FROM users WHERE u_email = ? AND u_password = ?";
