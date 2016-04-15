@@ -71,5 +71,11 @@ public class MatchDAO extends DAO<MatchObject> {
 			throw e;
 		}
 	}
+	
+	public MatchObject findbyGameId(int id) throws SQLException {
+		//TODO Implement
+			return null;
+		
+	}
 
 }

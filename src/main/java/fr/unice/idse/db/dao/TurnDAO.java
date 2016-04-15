@@ -78,5 +78,11 @@ public class TurnDAO extends DAO<TurnObject>{
 			throw e;
 		}
 	}
+	
+	public TurnObject findbyGameId(int id) throws SQLException {
+		// TODO Implement
+		return null;
+		}
+	
 
 }

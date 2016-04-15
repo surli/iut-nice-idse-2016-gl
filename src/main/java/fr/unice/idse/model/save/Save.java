@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import fr.unice.idse.db.DataBaseGame;
 import fr.unice.idse.db.dao.CardDAO;
 import fr.unice.idse.db.dao.DAOFactory;
+import fr.unice.idse.db.dao.GameDAO;
+import fr.unice.idse.db.dao.MatchDAO;
 import fr.unice.idse.db.dao.UserDAO;
 import fr.unice.idse.db.dao.object.GameObject;
 import fr.unice.idse.db.dao.object.HandPlayerObject;
@@ -29,6 +31,7 @@ public class Save implements Observer {
 	private static Save instance;
 	
 	protected Save() {
+
 	}
 
 	public static Save getInstance() {
@@ -110,37 +113,70 @@ public class Save implements Observer {
 			hand.setIdUser(players.get(i).getIdUser());
 			hand.setCard(game.getPlayers().get(i).getCards());
 			DAOFactory.getHandPlayerDAO().create(hand);
+			
 		}
 	}
 
 	private void saveTurn(Game game) throws Exception {
-		/*
-		 * Game id a partir du gameName
-		 */
-		String gameName = game.getGameName();
-		DataBaseGame gameDAO = null;
-		int gameId = gameDAO.getIdgameWithName(gameName);
+	
+			GameObject gameObject = ((GameDAO)DAOFactory.getGameDAO()).find(game.getGameName());
+	
+			int gameId= gameObject.getId();
+
+
+			/*
+			 
+		     * MatchId a partir du GameId
+		 
+		     */
+			
+			MatchObject matchObject = ((MatchDAO)DAOFactory.getMatchDAO()).findbyGameId(gameId);
+			
+		    int matchId = matchObject.getId();
+		    
+		    
+		    
+		    boolean inversed = game.getBoard().getDirection();
+		 
+			TurnObject turn = new TurnObject();
+			turn.setIdMatch(matchId);
+			UserObject user = ((UserDAO)DAOFactory.getUserDAO()).find(game.getBoard().getActualPlayer().getName());
+			turn.setIdUser(user.getId());
+			turn.setInverded(game.getBoard().getDirection());
+			DAOFactory.getTurnDAO().create(turn);
+		    
+			
+
+		 
+			Card topCard = game.getBoard().getStack().getStack().get(0);
+		 
+			StackObject stack = new StackObject();
+			stack.setIdCard(((CardDAO)DAOFactory.getCardDAO()).find(topCard.getColor().getNumber(), topCard.getValue().getNumber()).getId());
+			stack.setIdMatch(matchId);
+			stack.setIdTurn(turn.getId());
+			DAOFactory.getStackDAO().create(stack);
+			 
+		    
+
+		 
+		    List<Player> arrayPlayer = game.getPlayers();
+		 
+		    for (int i = 0; i < arrayPlayer.size(); i++) {
+		 
+				UserObject userPlayer = ((UserDAO)DAOFactory.getUserDAO()).find(arrayPlayer.get(i).getName());
+		    	
+				HandPlayerObject hand = new HandPlayerObject();
+				hand.setIdMatch(matchId);
+				hand.setIdTurn(turn.getId());
+				hand.setIdUser(userPlayer.getId());
+				hand.setCard(arrayPlayer.get(i).getCards());
+				DAOFactory.getHandPlayerDAO().create(hand);
+		   
+		      }
+		 
+		    }
+		 
 		
-		/*
-		 * MatchId a partir du GameId
-		 */
-		int matchId = gameDAO.getIdMatchWithGameId(gameId);
-		boolean inversed = game.getBoard().getDirection();
-
-		int turnId = BusinessQuery.newTurn(game.getBoard().getActualPlayer(),
-				matchId, inversed);
-
-		ArrayList<Card> topCard = game.getBoard().getStack().getStack();
-		BusinessQuery.addCardToStack(topCard.get(0), matchId, turnId);
-
-		List<Player> arrayPlayer = game.getPlayers();
-
-		for (int i = 0; i < arrayPlayer.size(); i++) {
-			for (int j = 0; j < arrayPlayer.get(i).getCards().size(); j++) {
-				BusinessQuery.addCardToPlayerHand(arrayPlayer.get(i),
-						arrayPlayer.get(i).getCards().get(j), matchId, turnId);
-			}
-		}
+		
 	}
 
-}
