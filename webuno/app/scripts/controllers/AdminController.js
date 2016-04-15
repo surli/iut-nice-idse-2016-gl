@@ -54,8 +54,8 @@ angular.module('unoApp')
         //waitForInitChart();
 
         $scope.goVisualisation = function (gameName) {
-            Game.getGameAdmin(gameName, function (data) {
-                console.log(data);
+          Game.getGameAdmin(gameName, function (data) {
+
                 $scope.gameVisu = data;
                 jQuery('.modalVisuGame').modal();
             });
@@ -65,6 +65,13 @@ angular.module('unoApp')
             Game.deleteGame(gameName, function () {
                 initAdmin();
             });
+        };
+
+        $scope.goUpdateUser = function (userId,userBan,userRole){
+          console.log("id : "+userId+" ban : "+userBan+" role : "+userRole);
+ //         Users.updateUser(userId,userBan,userRole,function (data){
+
+   ///       })
         };
 
       // Utilisation du service Users pour récupérer la liste de tous les users
