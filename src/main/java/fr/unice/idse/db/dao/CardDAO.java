@@ -72,4 +72,8 @@ public class CardDAO extends DAO<CardObject> {
 		}		
 	}
 	
+	public CardObject find(int color, int value) {
+		return null;
+	}
+	
 }

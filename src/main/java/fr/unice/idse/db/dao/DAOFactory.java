@@ -4,6 +4,7 @@ import java.sql.Connection;
 
 import fr.unice.idse.db.dao.object.CardObject;
 import fr.unice.idse.db.dao.object.GameObject;
+import fr.unice.idse.db.dao.object.HandPlayerObject;
 import fr.unice.idse.db.dao.object.MatchObject;
 import fr.unice.idse.db.dao.object.PlayerObject;
 import fr.unice.idse.db.dao.object.StackObject;
@@ -78,6 +79,16 @@ public class DAOFactory {
 	 */
 	public static DAO<TurnObject> getTurnDAO(){
 		return new TurnDAO(conn);
+	}
+	
+
+	/**
+	 * Retourne un objet Hand interagissant avec la BDD
+	 * 
+	 * @return DAO
+	 */
+	public static DAO<HandPlayerObject> getHandPlayerDAO(){
+		return null;
 	}
 	
 }

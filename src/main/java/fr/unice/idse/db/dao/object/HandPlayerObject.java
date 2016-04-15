@@ -2,20 +2,25 @@ package fr.unice.idse.db.dao.object;
 
 import java.util.List;
 
+import fr.unice.idse.db.dao.CardDAO;
+import fr.unice.idse.db.dao.DAOFactory;
+import fr.unice.idse.model.card.Card;
+
 public class HandPlayerObject {
 	private int idMatch;
 	private int idTurn;
 	private int idUser;
-	private List<CardObject> card;
+	private List<CardObject> cards;
 
 	public HandPlayerObject() {
+		// Default constructor
 	}
 
-	public HandPlayerObject(int idMatch, int idTurn, int idUser, List<CardObject> card) {
+	public HandPlayerObject(int idMatch, int idTurn, int idUser, List<CardObject> cards) {
 		super();
 		this.idMatch = idMatch;
 		this.idTurn = idTurn;
-		this.card = card;
+		this.cards = cards;
 		this.idUser = idUser;
 	}
 	
@@ -42,12 +47,12 @@ public class HandPlayerObject {
 		this.idTurn = idTurn;
 	}
 
-	public List<CardObject> getCard() {
-		return card;
+	public List<CardObject> getCards() {
+		return cards;
 	}
 
-	public void setCard(List<CardObject> card) {
-		this.card = card;
+	public void setCards(List<CardObject> cards) {
+		this.cards = cards;
 	}
 
 	public int getIdUser() {
@@ -56,6 +61,12 @@ public class HandPlayerObject {
 
 	public void setIdUser(int idUser) {
 		this.idUser = idUser;
+	}
+
+	public void setCard(List<Card> cards) {
+		for(Card card : cards) {
+			this.cards.add(((CardDAO)DAOFactory.getCardDAO()).find(card.getColor().getNumber(), card.getColor().getNumber()));
+		}
 	}
 
 }
