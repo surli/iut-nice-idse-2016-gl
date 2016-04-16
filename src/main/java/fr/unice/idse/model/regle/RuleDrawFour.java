@@ -14,12 +14,11 @@ public class RuleDrawFour extends EffectCard
 	}
 
 	@Override
-	public void changeColor(Color color)
+	public void action(Color color)
 	{
 		getGame().changeColor(color);
 	}
-	
-	@Override
+
 	public void action()
 	{
 		getGame().setCptDrawCard(4);
@@ -30,5 +29,11 @@ public class RuleDrawFour extends EffectCard
 	{
 		getGame().drawCard();
 		getGame().setCptDrawCard(1);
+	}
+
+	@Override
+	public void action(String playerName) 
+	{
+		// TODO Auto-generated method stub
 	}
 }

@@ -7,14 +7,32 @@ public class RuleSkip extends EffectCard{
 
 	public RuleSkip(Game board, Value value) 
 	{
-		this.game = game;
+		this.game = board;
 		this.isColorChangingCard = false;
 		this.value = value;
 	}
-	
+
 	@Override
-	public void action() {
+	public void action() 
+	{
 		getGame().nextPlayer();
 	}
 
+	@Override
+	public void action(Color color)
+	{
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void action(String playerName)
+	{
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void effect()
+	{
+		// TODO Auto-generated method stub
+	}
 }

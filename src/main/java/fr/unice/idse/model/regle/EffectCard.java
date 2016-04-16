@@ -43,14 +43,6 @@ public abstract class EffectCard
 		return game.getCptDrawCard() > 1;
 	}
 	
-	/***
-	 * Methode à override pour les changement de couleur
-	 * @param : Couleur demandé par le Joueur.
-	 */
-	public void changeColor(Color color)
-	{
-		
-	}
 	
 	/***
 	 * Methode à override pour l'échange des jeux de cartes du joueur actuel avec un autre
@@ -62,18 +54,24 @@ public abstract class EffectCard
 	}
 	
 	/***
-	 * Methode à override pour les effets immediats
+	 * Enclenche l'effet d'une carte au moment de la pose
 	 */
-	public void action()
-	{
-
-	}
+	public abstract void action();
 	
 	/***
-	 * Methode à override pour les effets contrables
+	 * Enclenche l'effet d'une carte au moment de la pose
+	 * @param color
 	 */
-	public void effect()
-	{
-		
-	}
+	public abstract void action(Color color);
+	
+	/***
+	 * Enclenche l'effet d'une carte au moment de la pose
+	 * @param playerName
+	 */
+	public abstract void action(String playerName);
+	
+	/***
+	 * Enclenche l'effet d'une carte après la pose
+	 */
+	public abstract void effect();
 }

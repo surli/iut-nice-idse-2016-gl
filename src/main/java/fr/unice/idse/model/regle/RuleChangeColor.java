@@ -15,9 +15,27 @@ public class RuleChangeColor extends EffectCard
 	}
 	
 	@Override
-	public void changeColor(Color color)
+	public void action(Color color)
 	{
 		getGame().changeColor(color);
+	}
+
+	@Override
+	public void action() 
+	{
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void action(String playerName) 
+	{
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void effect() 
+	{
+		// TODO Auto-generated method stub
 	}
 
 }

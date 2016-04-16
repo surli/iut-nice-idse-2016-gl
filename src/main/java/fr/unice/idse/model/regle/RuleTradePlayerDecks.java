@@ -8,21 +8,36 @@ public class RuleTradePlayerDecks extends EffectCard{
 
 		public RuleTradePlayerDecks(Game board, Value value) 
 		{
-			this.game = game;
+			this.game = board;
 			this.isColorChangingCard = false;
 			this.value = value;
 		}
-		
+
 		@Override
-		public boolean tradeDecks(String playerName)
+		public void action() 
+		{
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public void action(Color color) 
+		{
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public void action(String playerName) 
 		{
 			Player actualPlayer = getGame().getActualPlayer();
 			Player otherPlayer = getGame().findPlayerByName(playerName);
 			if(otherPlayer != null){
 				getGame().tradePlayersDecks(actualPlayer, otherPlayer);
-				return true;
 			}
-			return false;
 		}
 
+		@Override
+		public void effect() 
+		{
+			// TODO Auto-generated method stub
+		}
 }

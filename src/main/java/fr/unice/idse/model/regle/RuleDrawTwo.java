@@ -35,4 +35,16 @@ public class RuleDrawTwo extends EffectCard
 			getGame().setCptDrawCard(1);
 		}
 	}
+
+	@Override
+	public void action(Color color) 
+	{
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void action(String playerName) 
+	{
+		// TODO Auto-generated method stub
+	}
 }
