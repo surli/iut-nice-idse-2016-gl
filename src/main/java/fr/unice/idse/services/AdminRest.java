@@ -230,4 +230,40 @@ public class AdminRest extends OriginRest{
         return sendResponse(405, "Player not updated", "POST");
     }
 
+    @Path("player/{playerName}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response banPlayer(@HeaderParam("token") String token, @PathParam("playerName") String playerName, String json) throws JSONException{
+        JSONObject jsonReturn = new JSONObject();
+        JSONObject jsonObject = new JSONObject(json);
+        DataBaseUser dataBaseUser = new DataBaseUser();
+
+        // verification de l'admin
+        String verif = verifAdmin(token);
+        if(verif != null){
+            jsonReturn.put("error", verif);
+            return sendResponse(405, jsonReturn.toString(), "PUT");
+        }
+
+        // verification du json
+        if(!jsonObject.has("ban")){
+            jsonReturn.put("error", "Missing parameter ban");
+            return sendResponse(405, jsonReturn.toString(), "PUT");
+        }
+
+        // verification du playername
+        if(!dataBaseUser.ifUserAlreadyExistPseudo(playerName)) {
+            jsonReturn.put("error", "Player not exist in database");
+            return sendResponse(405, jsonReturn.toString(), "PUT");
+        }
+
+        if(dataBaseUser.updateBan(playerName, jsonObject.getBoolean("ban") ? 1 : 0)){
+            jsonReturn.put("success", "Player banned");
+            return sendResponse(200, jsonReturn.toString(), "PUT");
+        }
+
+        return sendResponse(405, "Player not banned", "PUT");
+    }
+
+
 }

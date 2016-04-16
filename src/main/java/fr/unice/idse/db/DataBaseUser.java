@@ -102,9 +102,7 @@ public class DataBaseUser {
 
 	public boolean updateRang(String pseudo, int rang){
 		String query = "UPDATE users SET u_statut = ? WHERE u_pseudo = ?";
-		if(dataBaseOrigin.executeSQL(query, rang, pseudo))
-			return true;
-		return false;
+		return dataBaseOrigin.executeSQL(query, rang, pseudo);
 	}
 
 	
@@ -177,12 +175,22 @@ public class DataBaseUser {
 		return false;
 	}
 
-	public boolean updateUserBanned(String email, String password, int newBanned) {
-		if (userLoginIsCorrect(email, password) && dataBaseOrigin.isSafeBanned(newBanned)) {
-			String query = "UPDATE users SET u_banned = ? WHERE u_email = ?";
-			if (dataBaseOrigin.executeSQL(query, newBanned, email))
-				return true;
+	public boolean updateBan(String pseudo, int ban) {
+		String query = "UPDATE users SET u_banned = ? WHERE u_pseudo = ?";
+		return dataBaseOrigin.executeSQL(query, ban, pseudo);
+	}
+
+	public JSONObject getBan(String pseudo){
+		JSONObject jsonObject = new JSONObject();
+		String query = "SELECT u_banned FROM users WHERE u_pseudo = ?";
+		try{
+			if(dataBaseOrigin.executeSQL(query, pseudo))
+				jsonObject.put("ban", dataBaseOrigin.rs.getBoolean(1));
+		} catch (JSONException e){
+			e.printStackTrace();
+		} catch (SQLException e){
+			e.printStackTrace();
 		}
-		return false;
+		return jsonObject;
 	}
 }
