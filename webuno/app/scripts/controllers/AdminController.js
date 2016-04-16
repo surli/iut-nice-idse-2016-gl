@@ -62,7 +62,7 @@ angular.module('unoApp')
         };
 
         $scope.goUpdateUser = function (userId,userBan,userRole){
-          console.log("id : "+userId+" ban : "+userBan+" role : "+userRole);
+          console.log('id : '+userId+' ban : '+userBan+' role : '+userRole);
  //         Users.updateUser(userId,userBan,userRole,function (data){
 
    ///       })
