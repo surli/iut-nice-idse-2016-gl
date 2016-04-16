@@ -5,8 +5,11 @@ import fr.unice.idse.model.card.*;
 
 public class RuleSkip extends EffectCard{
 
-	public RuleSkip(Game board, Value value) {
-		super(board, value);
+	public RuleSkip(Game board, Value value) 
+	{
+		this.game = game;
+		this.isColorChangingCard = false;
+		this.value = value;
 	}
 	
 	@Override

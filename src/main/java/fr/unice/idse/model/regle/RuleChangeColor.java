@@ -9,8 +9,9 @@ public class RuleChangeColor extends EffectCard
 
 	public RuleChangeColor(Game game, Value value) 
 	{
-		super(game, value);
-		setColorChangingCard(true);
+		this.game = game;
+		this.isColorChangingCard = true;
+		this.value = value;
 	}
 	
 	@Override

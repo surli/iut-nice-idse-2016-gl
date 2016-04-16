@@ -5,8 +5,11 @@ import fr.unice.idse.model.card.Value;
 
 public class RuleRotatePlayerDecks extends EffectCard{
 
-	public RuleRotatePlayerDecks(Game game, Value value) {
-		super(game, value);
+	public RuleRotatePlayerDecks(Game game, Value value) 
+	{
+		this.game = game;
+		this.isColorChangingCard = false;
+		this.value = value;
 	}
 	
 	@Override

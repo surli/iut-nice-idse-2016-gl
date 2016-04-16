@@ -8,8 +8,9 @@ public class RuleDrawFour extends EffectCard
 {
 	public RuleDrawFour(Game game, Value value) 
 	{
-		super(game, value);
-		setColorChangingCard(true);
+		this.game = game;
+		this.isColorChangingCard = true;
+		this.value = value;
 	}
 
 	@Override

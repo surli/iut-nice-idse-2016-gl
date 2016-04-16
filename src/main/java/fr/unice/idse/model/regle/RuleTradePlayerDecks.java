@@ -6,8 +6,11 @@ import fr.unice.idse.model.player.Player;
 
 public class RuleTradePlayerDecks extends EffectCard{
 
-		public RuleTradePlayerDecks(Game board, Value value) {
-			super(board, value);
+		public RuleTradePlayerDecks(Game board, Value value) 
+		{
+			this.game = game;
+			this.isColorChangingCard = false;
+			this.value = value;
 		}
 		
 		@Override

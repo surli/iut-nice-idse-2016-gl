@@ -4,18 +4,11 @@ import fr.unice.idse.model.*;
 import fr.unice.idse.model.card.*;
 import fr.unice.idse.model.player.Player;
 
-public class EffectCard
+public abstract class EffectCard
 {
-	private Value value;
-	private Game game;
-	private boolean isColorChangingCard;
-	
-	public EffectCard(Game game, Value value)
-	{
-		this.value = value;
-		this.game = game;
-		this.isColorChangingCard=false;
-	}
+	protected Value value;
+	protected Game game;
+	protected boolean isColorChangingCard;
 
 	public Value getValue()
 	{
@@ -31,10 +24,6 @@ public class EffectCard
 		return isColorChangingCard;
 	}
 
-	public void setColorChangingCard(boolean isColorChangingCard) {
-		this.isColorChangingCard = isColorChangingCard;
-	}
-
 	/**
 	 * Pour savoir si la carte jouée correspond à la règle.
 	 * @param card
@@ -42,7 +31,7 @@ public class EffectCard
 	 */
 	public boolean isEffect(Card card)
 	{
-		return card.getValue() == getValue();
+		return card.getValue() == value;
 	}
 	
 	/**

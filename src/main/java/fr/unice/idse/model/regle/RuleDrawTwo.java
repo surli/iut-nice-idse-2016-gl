@@ -8,7 +8,9 @@ public class RuleDrawTwo extends EffectCard
 
 	public RuleDrawTwo(Game game, Value value)
 	{
-		super(game, value);
+		this.game = game;
+		this.isColorChangingCard = false;
+		this.value = value;
 	}
 
 	@Override
