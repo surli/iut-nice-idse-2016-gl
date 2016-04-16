@@ -3,6 +3,7 @@ package fr.unice.idse.model;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.player.Player;
+import fr.unice.idse.model.regle.EffectCard;
 import fr.unice.idse.model.save.SaveListEnum;
 
 import java.util.ArrayList;
@@ -35,7 +36,23 @@ public class Game extends Observable implements Observer {
 			this.gameName = gameName;
 			this.numberPlayers = numberOfPlayers;
 			this.players = new ArrayList<Player>();
-			this.alternative = new Alternative(this, true);
+			this.alternative = new Alternative(this);
+			this.deck = new Deck();
+			this.stack = new Stack();
+			this.actualPlayer = 0;
+			this.meaning = true;
+			this.gameBegin = false;
+			this.gameEnd = false;
+			this.cptDrawCard = 1;
+	}
+	
+	public Game(Player host,String gameName, int numberOfPlayers, ArrayList<EffectCard> regles)
+	{
+			this.host = host;
+			this.gameName = gameName;
+			this.numberPlayers = numberOfPlayers;
+			this.players = new ArrayList<Player>();
+			this.alternative = new Alternative(this, regles);
 			this.deck = new Deck();
 			this.stack = new Stack();
 			this.actualPlayer = 0;
