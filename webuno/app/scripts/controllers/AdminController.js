@@ -11,9 +11,11 @@ angular.module('unoApp')
         }
 
         function initAdmin() {
+            // Utilisation du service Game pour recupérer la liste des parties
             Game.getAllGamesAdmin(function (data) {
                 $scope.games = data.games;
 
+                // Timeout la création du chart qui affiche les statistiques des parties
                 $timeout(function() {
                     google.charts.setOnLoadCallback(function () {
                         var games = [
@@ -43,15 +45,7 @@ angular.module('unoApp')
             });
         }
 
-        //function waitForInitChart() {
-        //    if (document.getElementById('piechartgames')) {
-                initAdmin();
-            //} else {
-            //    waitForInitChart();
-            //}
-        //}
-
-        //waitForInitChart();
+        initAdmin();
 
         $scope.goVisualisation = function (gameName) {
           Game.getGameAdmin(gameName, function (data) {
