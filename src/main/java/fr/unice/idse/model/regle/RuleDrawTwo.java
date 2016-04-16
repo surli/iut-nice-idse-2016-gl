@@ -8,7 +8,9 @@ public class RuleDrawTwo extends EffectCard
 
 	public RuleDrawTwo(Game game, Value value)
 	{
-		super(game, value);
+		this.game = game;
+		this.isColorChangingCard = false;
+		this.value = value;
 	}
 
 	@Override
@@ -32,5 +34,17 @@ public class RuleDrawTwo extends EffectCard
 			getGame().drawCard();
 			getGame().setCptDrawCard(1);
 		}
+	}
+
+	@Override
+	public void action(Color color) 
+	{
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void action(String playerName) 
+	{
+		// TODO Auto-generated method stub
 	}
 }

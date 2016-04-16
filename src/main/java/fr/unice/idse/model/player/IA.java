@@ -41,7 +41,7 @@ public abstract class IA extends Player {
             System.out.println("Carte joué : " + cardToPlay);
 
             if (game.getAlternative().getEffectCard(cardToPlay).isColorChangingCard()) {
-            	game.getAlternative().getEffectCard(cardToPlay).changeColor(chooseColor(mainIA));
+            	game.getAlternative().getEffectCard(cardToPlay).action(chooseColor(mainIA));
             	game.getAlternative().getEffectCard(cardToPlay).action();
             }
         }

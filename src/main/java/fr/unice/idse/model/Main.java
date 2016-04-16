@@ -102,22 +102,22 @@ public class Main
                                                 switch(choose)
                                                 {
                                                     case 1 :
-                                                        effectCard.changeColor(Color.Red);
+                                                        effectCard.action(Color.Red);
                                                         chooseColor = true;
                                                         System.out.println("Le joueur a choisie : Red");
                                                         break;
                                                     case 2 :
-                                                        effectCard.changeColor(Color.Blue);
+                                                        effectCard.action(Color.Blue);
                                                         System.out.println("Le joueur a choisie : Blue");
                                                         chooseColor = true;
                                                         break;
                                                     case 3 :
-                                                        effectCard.changeColor(Color.Yellow);
+                                                        effectCard.action(Color.Yellow);
                                                         System.out.println("Le joueur a choisie : Yellow");
                                                         chooseColor = true;
                                                         break;
                                                     case 4 :
-                                                        effectCard.changeColor(Color.Green);
+                                                        effectCard.action(Color.Green);
                                                         System.out.println("Le joueur a choisie : Green");
                                                         chooseColor = true;
                                                         break;

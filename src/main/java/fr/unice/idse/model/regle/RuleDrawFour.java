@@ -8,17 +8,17 @@ public class RuleDrawFour extends EffectCard
 {
 	public RuleDrawFour(Game game, Value value) 
 	{
-		super(game, value);
-		setColorChangingCard(true);
+		this.game = game;
+		this.isColorChangingCard = true;
+		this.value = value;
 	}
 
 	@Override
-	public void changeColor(Color color)
+	public void action(Color color)
 	{
 		getGame().changeColor(color);
 	}
-	
-	@Override
+
 	public void action()
 	{
 		getGame().setCptDrawCard(4);
@@ -29,5 +29,11 @@ public class RuleDrawFour extends EffectCard
 	{
 		getGame().drawCard();
 		getGame().setCptDrawCard(1);
+	}
+
+	@Override
+	public void action(String playerName) 
+	{
+		// TODO Auto-generated method stub
 	}
 }

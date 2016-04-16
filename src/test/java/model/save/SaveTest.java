@@ -9,12 +9,4 @@ public class SaveTest extends Save{
 	public SaveTest(){
 		  super("sqlite");
 	}
-
-	@Test
-	public void testInitClass()
-	{	
-		assertNotNull(userDAO);
-		assertNotNull(cardDAO);
-		assertNotNull(gameDAO);
-	}
 }

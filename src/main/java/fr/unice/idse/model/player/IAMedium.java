@@ -86,7 +86,7 @@ public class IAMedium extends IA {
             	game.poseCard(myCard);
                 System.out.println("Carte joué : " + myCard);
                 if (game.getAlternative().getEffectCard(myCard).isColorChangingCard()) {
-                	game.getAlternative().getEffectCard(myCard).changeColor(chooseColor(bestColor));
+                	game.getAlternative().getEffectCard(myCard).action(chooseColor(bestColor));
                 	game.getAlternative().getEffectCard(myCard).action();
                 }
                 turnPlay = true;

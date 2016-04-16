@@ -63,7 +63,7 @@ public class GameDAO  extends DAO<GameObject>{
 	}
 	
 
-	private Object find(String nom) {
+	public GameObject find(String nom) {
 		// TODO : Implement
 		return null;
 	}
