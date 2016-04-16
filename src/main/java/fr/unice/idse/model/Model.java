@@ -53,7 +53,7 @@ public class Model {
 			boolean saveEnable = false;
 			if(saveEnable){
 				game.addObserver(Save.getInstance());
-				game.getBoard().addObserver(game);
+				game.addObserver(game);
 			}
 			
 			addPlayerToGame(gameName, player);
@@ -307,7 +307,7 @@ public class Model {
 		Game game=findGameByName(gameName);
 		Player player=findPlayerByName(gameName, playerName);
 		if(player != null)
-			return player.play(cardPosition,game.getBoard());
+			return player.play(cardPosition,game);
 		return false;
 	}
 	
@@ -323,11 +323,10 @@ public class Model {
 	{
 		boolean result = false;
 		Game game = findGameByName(gameName);
-		Board board = game.getBoard();
 		Player player = findPlayerByName(gameName, playerName);
 		if(player != null)
 		{
-			result= player.play(cardPosition,game.getBoard());
+			result= player.play(cardPosition,game);
 			Color color=null;
 			switch(colorNumber)
 			{
@@ -345,7 +344,7 @@ public class Model {
 					break;
 			}
 			try{
-				board.changeColor(color);
+				game.changeColor(color);
 			}
 			catch(NullPointerException e)
 			{

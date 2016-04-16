@@ -1,5 +1,6 @@
 package services.GameRestTest;
 
+import fr.unice.idse.db.DataBaseOrigin;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.player.Player;
@@ -12,6 +13,7 @@ import org.junit.*;
 
 import javax.ws.rs.core.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -26,7 +28,9 @@ public class RemovePlayerTest extends JerseyTest {
     public Model model;
 
     @Before
-    public void init() {
+    public void init() throws SQLException {
+        DataBaseOrigin dataBaseOrigin = DataBaseOrigin.getInstance("sqlite");
+        dataBaseOrigin.resetDatabaseSQLite();
         model = Model.getInstance();
         model.setGames(new ArrayList<Game>());
         model.setPlayers(new ArrayList<Player>());

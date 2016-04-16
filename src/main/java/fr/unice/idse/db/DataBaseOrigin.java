@@ -2,6 +2,10 @@ package fr.unice.idse.db;
 
 import fr.unice.idse.constante.*;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,19 +18,57 @@ import org.apache.commons.lang3.StringUtils;
 public class DataBaseOrigin {
 	protected Connection con = null;
 	protected PreparedStatement ps = null;
-	protected ResultSet rs = null;
+	public ResultSet rs = null;
+    private static DataBaseOrigin dataBaseOrigin;
 
-	public DataBaseOrigin() {
+	protected DataBaseOrigin() {
+        if(dataBaseOrigin == null)
+            connect("");
+    }
+    protected DataBaseOrigin(String connecteur){
+        if (dataBaseOrigin == null)
+            connect(connecteur);
+    }
+
+    public static DataBaseOrigin getInstance() {
+        if (dataBaseOrigin == null) {
+            dataBaseOrigin = new DataBaseOrigin();
+        }
+        return dataBaseOrigin;
+    }
+
+    public static DataBaseOrigin getInstance(String connecteur) {
+        if (dataBaseOrigin == null) {
+            dataBaseOrigin = new DataBaseOrigin(connecteur);
+        }
+        return dataBaseOrigin;
+    }
+
+	private void connect(String connector){
 		rs = null;
 		ps = null;
 		con = null;
-
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection(Config.url, Config.user, Config.pass);
+			switch (connector){
+				case "sqlite":
+					Class.forName("org.sqlite.JDBC");
+                    System.out.println("");
+                    System.out.println("SQLITE");
+                    System.out.println("");
+					con = DriverManager.getConnection("jdbc:sqlite:uno.db");
+                    break;
+				default :
+					Class.forName("com.mysql.jdbc.Driver");
+                    System.out.println("");
+                    System.out.println("MYSQL");
+                    System.out.println("");
+					con = DriverManager.getConnection(Config.url, Config.user, Config.pass);
+					break;
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -40,6 +82,7 @@ public class DataBaseOrigin {
 	public int insert(String query) {
 		int key = -1;
 		try {
+            System.out.println(">> "+query);
 			Statement statement = con.createStatement();
 			statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 			ResultSet res = statement.getGeneratedKeys();
@@ -70,15 +113,6 @@ public class DataBaseOrigin {
 		return run;
 	}
 
-	public void finalize() {
-		try {
-			rs.close();
-			ps.close();
-			con.close();
-		} catch (SQLException e) {
-		}
-	}
-
 	// 1 bot 2 guest 3 member 4 admin
 	public boolean isSafeStatut(int statut) {
 		return (statut > 0 && statut < 5);
@@ -97,7 +131,7 @@ public class DataBaseOrigin {
 		return s;
 	}
 
-	/*
+	/**
 	 * This fonction is present in the others fonctions who need to interact
 	 * with de database. She allow to detect the sort of query and primitive
 	 * types.
@@ -110,6 +144,7 @@ public class DataBaseOrigin {
 		if (query.indexOf("SELECT") != -1)
 			select = true;
 		try {
+            System.out.println(">> "+query);
 			ps = con.prepareStatement(query);
 			/*
 			 * For each argument, detect if a number or String and put it in the
@@ -150,5 +185,40 @@ public class DataBaseOrigin {
 			}
 
 		return 0;
+	}
+
+	public void resetDatabaseSQLite() throws SQLException {
+		String s;
+		StringBuffer stringBuffer;
+        stringBuffer = new StringBuffer();
+
+        try {
+            con.close();
+            // Destruction de l'ancienne DB
+            File file = new File("uno.db");
+            file.delete();
+
+            // Recreation du fichier
+            this.con = DriverManager.getConnection("jdbc:sqlite:uno.db");
+
+            // Mise en place de la base de donnée via le fichier
+            FileReader fr = new FileReader(new File("script/buildingDbSqlite.sql"));
+			BufferedReader br = new BufferedReader(fr);
+			while((s = br.readLine()) != null) { stringBuffer.append(s); }
+			br.close();
+			String[] inst = stringBuffer.toString().split(";");
+			Statement st = con.createStatement();
+			for(int i = 0; i < inst.length; i++) {
+				if(!inst[i].trim().equals("")) {
+                    st.executeUpdate(inst[i]);
+				}
+			}
+		} catch (SQLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 }

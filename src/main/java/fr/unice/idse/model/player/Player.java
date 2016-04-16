@@ -2,7 +2,7 @@ package fr.unice.idse.model.player;
 import java.util.ArrayList;
 import java.util.Collections;
 import fr.unice.idse.model.card.*;
-import fr.unice.idse.model.Board;
+import fr.unice.idse.model.Game;
 
 public class Player implements Comparable<Player>{
 	private String name;
@@ -80,7 +80,7 @@ public class Player implements Comparable<Player>{
 		this.token = token;
 	}
 
-	public boolean play(int cardPosition,Board board)
+	public boolean play(int cardPosition,Game game)
 	{
 		return false;
 	}

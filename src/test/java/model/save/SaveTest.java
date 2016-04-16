@@ -7,6 +7,6 @@ import fr.unice.idse.model.save.Save;
 public class SaveTest extends Save{
 	
 	public SaveTest(){
-		  super();
+		  super("sqlite");
 	}
 }

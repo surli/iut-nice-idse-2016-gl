@@ -11,6 +11,7 @@ bin
 target
 *.iml
 npm-debug.log
+uno.db
 
 src/main/webapp/bower_components
 src/main/webapp/images
@@ -20,5 +21,6 @@ src/main/webapp/styles
 src/main/webapp/favicon.ico
 src/main/webapp/index.html
 src/main/webapp/robots.txt
+src/main/webapp/i18n
 
 webuno/test/test-results.xml

@@ -7,13 +7,22 @@ import org.apache.commons.lang3.EnumUtils;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
 
-public class DataBaseCard extends DataBaseOrigin {
+public class DataBaseCard {
+
+	private	DataBaseOrigin dataBaseOrigin;
+
+	public DataBaseCard(){
+		dataBaseOrigin = DataBaseOrigin.getInstance();
+	}
+	public DataBaseCard(String connector){
+		dataBaseOrigin = DataBaseOrigin.getInstance(connector);
+	}
 
 	public int getIdCard(String valueTopCard, String colorTopCard) {
 		String query = "SELECT c_id FROM cards WHERE c_value = ? AND c_color = ?";
-		if (executeSQL(query, valueTopCard, colorTopCard))
+		if (dataBaseOrigin.executeSQL(query, valueTopCard, colorTopCard))
 			try {
-				return rs.getInt(1);
+				return dataBaseOrigin.rs.getInt(1);
 			} catch (SQLException e) {
 			}
 		return 0;
@@ -21,9 +30,9 @@ public class DataBaseCard extends DataBaseOrigin {
 
 	public int countCardsWithThisValueAndThisColor(String value, String color) {
 		String query = "SELECT COUNT(*) FROM cards WHERE c_value = ? AND c_color = ?";
-		if (executeSQL(query, value, color))
+		if (dataBaseOrigin.executeSQL(query, value, color))
 			try {
-				return rs.getInt(1);
+				return dataBaseOrigin.rs.getInt(1);
 			} catch (SQLException e) {
 			}
 		return 0;
@@ -34,7 +43,7 @@ public class DataBaseCard extends DataBaseOrigin {
 			return false;
 		int nbCards = countCardsWithThisValueAndThisColor(value, color);
 		String query = "INSERT INTO cards (c_value, c_color) VALUES (?, ?)";
-		if (executeSQL(query, value, color))
+		if (dataBaseOrigin.executeSQL(query, value, color))
 			if (countCardsWithThisValueAndThisColor(value, color) == nbCards + 1)
 				return true;
 		return false;
@@ -48,7 +57,7 @@ public class DataBaseCard extends DataBaseOrigin {
 		if (id == 0)
 			return false;
 		String query = "DELETE FROM cards WHERE c_id = ?";
-		if (executeSQL(query, Integer.toString(id)))
+		if (dataBaseOrigin.executeSQL(query, Integer.toString(id)))
 			if (countCardsWithThisValueAndThisColor(value, color) == nbCards - 1)
 				return true;
 		return false;

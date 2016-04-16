@@ -31,4 +31,6 @@ angular.module('unoApp')
                 });
             }
         };
+
+        google.charts.load('current', {'packages': ['corechart']});
     }]);
