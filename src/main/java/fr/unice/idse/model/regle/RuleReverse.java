@@ -4,14 +4,14 @@ import fr.unice.idse.model.card.*;
 
 public class RuleReverse extends EffectCard {
 	
-	public RuleReverse(Board board, Value value)
+	public RuleReverse(Game game, Value value)
 	{
-		super(board, value);
+		super(game, value);
 	}
 	
 	@Override
 	public void action()
 	{
-		getBoard().changeMeaning();
+		getGame().changeMeaning();
 	}
 }

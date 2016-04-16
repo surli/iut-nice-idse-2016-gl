@@ -6,31 +6,31 @@ import fr.unice.idse.model.card.*;
 public class RuleDrawTwo extends EffectCard
 {
 
-	public RuleDrawTwo(Board board, Value value)
+	public RuleDrawTwo(Game game, Value value)
 	{
-		super(board, value);
+		super(game, value);
 	}
 
 	@Override
 	public void action()
 	{
-		if(getBoard().getCptDrawCard()>1)
+		if(getGame().getCptDrawCard()>1)
 		{
-			getBoard().setCptDrawCard(getBoard().getCptDrawCard() + 2);
+			getGame().setCptDrawCard(getGame().getCptDrawCard() + 2);
 		}
 		else
 		{
-			getBoard().setCptDrawCard(2);
+			getGame().setCptDrawCard(2);
 		}
 	}
 	
 	@Override
 	public void effect()
 	{
-		if(!getBoard().askPlayerCanPlay(getBoard().getActualPlayer()))
+		if(!getGame().askPlayerCanPlay(getGame().getActualPlayer()))
 		{
-			getBoard().drawCard();
-			getBoard().setCptDrawCard(1);
+			getGame().drawCard();
+			getGame().setCptDrawCard(1);
 		}
 	}
 }

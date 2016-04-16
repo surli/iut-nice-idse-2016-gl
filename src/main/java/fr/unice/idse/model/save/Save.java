@@ -27,6 +27,12 @@ public class Save implements Observer {
 		cardDAO = new DataBaseCard();
 	}
 
+	protected Save(String connector) {
+		gameDAO = new DataBaseGame(connector);
+		userDAO = new DataBaseUser(connector);
+		cardDAO = new DataBaseCard(connector);
+	}
+
 	public static Save getInstance() {
 		if(instance == null) {
 			instance = new Save();
@@ -74,10 +80,9 @@ public class Save implements Observer {
 		}
 
 		Integer matchId = BusinessQuery.newMatch(game);
-		Integer turnId = BusinessQuery.newTurn(game.getBoard()
-				.getActualPlayer(), matchId, false);
+		Integer turnId = BusinessQuery.newTurn(game.getActualPlayer(), matchId, false);
 
-		ArrayList<Card> topCard = game.getBoard().getStack().getStack();
+		ArrayList<Card> topCard = game.getStack().getStack();
 
 		BusinessQuery.addCardToStack(topCard.get(0), matchId, turnId);
 
@@ -100,12 +105,12 @@ public class Save implements Observer {
 		 * MatchId a partir du GameId
 		 */
 		int matchId = gameDAO.getIdMatchWithGameId(gameId);
-		boolean inversed = game.getBoard().getDirection();
+		boolean inversed = game.getDirection();
 
-		int turnId = BusinessQuery.newTurn(game.getBoard().getActualPlayer(),
+		int turnId = BusinessQuery.newTurn(game.getActualPlayer(),
 				matchId, inversed);
 
-		ArrayList<Card> topCard = game.getBoard().getStack().getStack();
+		ArrayList<Card> topCard = game.getStack().getStack();
 		BusinessQuery.addCardToStack(topCard.get(0), matchId, turnId);
 
 		List<Player> arrayPlayer = game.getPlayers();

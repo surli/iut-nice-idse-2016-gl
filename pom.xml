@@ -60,11 +60,16 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.2.12</version>
 		</dependency>
-		<!-- MYSQL -->
+		<!-- JDBC -->
 		<dependency>		
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.38</version>
+		</dependency>
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+			<version>3.7.2</version>
 		</dependency>
 		<!-- JUNIT -->
 		<dependency>

@@ -14,13 +14,15 @@ import java.util.ArrayList;
 
 /**
  * /admin
- * │   ├── game             Liste des parties (Fait)
+ * │   ├── game                 Liste des parties (Fait)
  * │   │   ├── GET
  * │   │   ├── /{gamename}
- * │   │   │   ├── GET         Retourne l'état de la game avec les joueurs
- * │   │   │   ├── DELETE      Supprime une partie
- * │   ├── player           Liste des players
+ * │   │   │   ├── GET          Retourne l'état de la game avec les joueurs
+ * │   │   │   ├── DELETE       Supprime une partie
+ * │   ├── player               Liste des players
  * │   │   ├── GET
+ * │   │   ├── /{playerName}
+ * │   │   │   ├── POST         Modifie le rand d'un utilisateur
  */
 
 @Path("admin")
@@ -166,8 +168,7 @@ public class AdminRest extends OriginRest{
     @Path("player")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteGame(@HeaderParam("token") String token) throws JSONException{
-        Model model = Model.getInstance();
+    public Response allPlayers(@HeaderParam("token") String token) throws JSONException{
         DataBaseUser dataBaseUser = new DataBaseUser();
         JSONObject jsonReturn = new JSONObject();
 
@@ -179,6 +180,54 @@ public class AdminRest extends OriginRest{
         }
 
         return sendResponse(200, dataBaseUser.allUser().toString(), "GET");
-
     }
+
+    /**
+     * Route pour modifier le rang d'un utilisateur
+     * @param token String
+     * @param playerName String
+     * @param json String
+     * @return Response
+     * @throws JSONException
+     */
+    @Path("player/{playerName}")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updatePlayer(@HeaderParam("token") String token, @PathParam("playerName") String playerName, String json) throws JSONException {
+        JSONObject jsonReturn = new JSONObject();
+        JSONObject jsonObject = new JSONObject(json);
+        DataBaseUser dataBaseUser = new DataBaseUser();
+
+        // verification de l'admin
+        String verif = verifAdmin(token);
+        if(verif != null){
+            jsonReturn.put("error", verif);
+            return sendResponse(405, jsonReturn.toString(), "POST");
+        }
+
+        // verification du rang
+        if(!jsonObject.has("rang")){
+            jsonReturn.put("error", "Missing rang");
+            return sendResponse(405, jsonReturn.toString(), "POST");
+        }
+        if(jsonObject.getInt("rang") < 3 || jsonObject.getInt("rang") > 4){
+            jsonReturn.put("error", "Bad value of rang");
+            return sendResponse(405, jsonReturn.toString(), "POST");
+        }
+
+        // verification du playername
+        if(!dataBaseUser.ifUserAlreadyExistPseudo(playerName)){
+            jsonReturn.put("error", "Player not exist in database");
+            return sendResponse(405, jsonReturn.toString(), "POST");
+        }
+
+        // MAJ dans la bdd
+        if(dataBaseUser.updateRang(playerName, jsonObject.getInt("rang"))){
+            jsonReturn.put("success", "Player updated");
+            return sendResponse(200, jsonReturn.toString(), "POST");
+        }
+
+        return sendResponse(405, "Player not updated", "POST");
+    }
+
 }
