@@ -127,7 +127,7 @@ public class IAHard extends IA {
             	game.poseCard(myCard);
                 System.out.println("Carte joué : " + myCard);
                 if (game.getAlternative().getEffectCard(myCard).isColorChangingCard()) {
-                	game.getAlternative().getEffectCard(myCard).changeColor(chooseColor(game.getActualPlayer().getCards()));
+                	game.getAlternative().getEffectCard(myCard).action(chooseColor(game.getActualPlayer().getCards()));
                 	game.getAlternative().getEffectCard(myCard).action();
                 }
                 turnPlay = true;
@@ -152,7 +152,7 @@ public class IAHard extends IA {
                 System.out.println("Carte joué : " + cardContre);
 
                 if (game.getAlternative().getEffectCard(cardContre).isColorChangingCard()) {
-                	game.getAlternative().getEffectCard(cardContre).changeColor(chooseColor(mainIA));
+                	game.getAlternative().getEffectCard(cardContre).action(chooseColor(mainIA));
                 	game.getAlternative().getEffectCard(cardContre).action();
                 }
                 turnPlay = true;
@@ -162,7 +162,7 @@ public class IAHard extends IA {
                 System.out.println("Carte joué : " + cardContre);
 
                 if (game.getAlternative().getEffectCard(cardContre).isColorChangingCard()) {
-                	game.getAlternative().getEffectCard(cardContre).changeColor(chooseColor(mainIA));
+                	game.getAlternative().getEffectCard(cardContre).action(chooseColor(mainIA));
                 	game.getAlternative().getEffectCard(cardContre).action();
                 }
                 turnPlay = true;
@@ -172,7 +172,7 @@ public class IAHard extends IA {
                 System.out.println("Carte joué : " + cardContre);
 
                 if (game.getAlternative().getEffectCard(cardContre).isColorChangingCard()) {
-                	game.getAlternative().getEffectCard(cardContre).changeColor(chooseColor(mainIA));
+                	game.getAlternative().getEffectCard(cardContre).action(chooseColor(mainIA));
                 	game.getAlternative().getEffectCard(cardContre).action();
                 }
                 turnPlay = true;
@@ -182,7 +182,7 @@ public class IAHard extends IA {
                 System.out.println("Carte joué : " + cardContre);
 
                 if (game.getAlternative().getEffectCard(cardContre).isColorChangingCard()) {
-                	game.getAlternative().getEffectCard(cardContre).changeColor(chooseColor(mainIA));
+                	game.getAlternative().getEffectCard(cardContre).action(chooseColor(mainIA));
                 	game.getAlternative().getEffectCard(cardContre).action();
                 }
                 turnPlay = true;

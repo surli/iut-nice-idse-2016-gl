@@ -555,7 +555,7 @@ public class GameRest extends OriginRest{
                         jsonObject.put("error", "Setcolor not accepted");
                         return sendResponse(405, jsonObject.toString(), "PUT");
                 }
-                rule.changeColor(color);
+                rule.action(color);
             }
             rule.action();
         }
