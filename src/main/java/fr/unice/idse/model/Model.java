@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.player.Player;
+import fr.unice.idse.model.regle.EffectCard;
 import fr.unice.idse.model.save.Save;
 
 public class Model {
@@ -48,6 +49,33 @@ public class Model {
 		if(!existsGame(gameName))
 		{
 			Game game = new Game(player,gameName,numberPlayers);
+			this.games.add(game);
+			
+			boolean saveEnable = false;
+			if(saveEnable){
+				game.addObserver(Save.getInstance());
+				game.addObserver(game);
+			}
+			
+			addPlayerToGame(gameName, player);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Ajouter une partie avec des règles définies
+	 * @param player Player
+	 * @param gameName String
+	 * @param numberPlayers Int
+	 * @param regeles ArrayList<EffectCard>
+	 * @return Boolean
+	 */
+	public boolean addGame(Player player, String gameName, int numberPlayers, ArrayList<EffectCard> regles)
+	{
+		if(!existsGame(gameName))
+		{
+			Game game = new Game(player,gameName,numberPlayers, regles);
 			this.games.add(game);
 			
 			boolean saveEnable = false;
