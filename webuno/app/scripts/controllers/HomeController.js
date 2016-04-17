@@ -5,8 +5,9 @@ angular.module('unoApp')
      * Contrôleur HomeController de la route /app/home
      * Gère l'affichage des parties en cours
      */
-    .controller('HomeController', ['$scope', '$timeout', '$http', '$state', 'Game', function ($scope, $timeout, $http, $state, Game) {
+    .controller('HomeController', ['$rootScope', '$scope', '$timeout', '$http', '$state', 'Game', function ($rootScope, $scope, $timeout, $http, $state, Game) {
         var timeoutListGames;
+        $rootScope.callbackHome = false;
 
         // Fonction qui permet de récupérer la liste des parties toutes les 2 secondes
         $scope.requestListGames = function () {

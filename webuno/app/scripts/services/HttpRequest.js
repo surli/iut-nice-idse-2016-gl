@@ -23,6 +23,7 @@ angular.module('unoApp')
     .service('HttpRequest', function (ErrorService, $http, $rootScope) {
         return {
             send: function(req, callback, callbackError) {
+                console.log('ma req !', req.url);
                 // Execute une requête http par rapport à la configuration définie
                 $http(req).then(function(response) {
                     // Utilisation du service ErrorService pour tester la requete

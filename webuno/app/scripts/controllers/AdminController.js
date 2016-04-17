@@ -10,6 +10,8 @@ angular.module('unoApp')
             $state.go('login');
         }
 
+        $rootScope.callbackHome = false;
+
         // Fonction qui met à jour les listing de l'admin
         function initAdmin() {
             // Utilisation du service Game pour recupérer la liste des parties
