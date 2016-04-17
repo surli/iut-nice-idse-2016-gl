@@ -46,6 +46,7 @@ angular.module('unoApp')
         });
 
         // Utilisation du service Game pour récupérer la liste de toutes mes parties
+        /* TODO : Pas encore fonctionnel
         Game.getMyGames(function () {
             // SUCCESS
         }, function () {
@@ -66,8 +67,10 @@ angular.module('unoApp')
             $scope.mygames = data.games; // fictif en attendant la vrai route
             console.log($scope.mygames);
         });
+        */
 
         // Utilisation du service Game pour récupérer la liste des stats d'un joueur
+        /* TODO : Pas encore fonctionnel
         Game.getChartNbPlayed(function () {
 
         }, function () {
@@ -106,5 +109,6 @@ angular.module('unoApp')
                 });
             }, 1000);
         });
+        */
 
     }]);
