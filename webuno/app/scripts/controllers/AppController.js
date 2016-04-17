@@ -5,7 +5,7 @@ angular.module('unoApp')
      * Contrôleur global AppController de la route /app
      * Gère l'ensemble de l'application une fois un utilisateur connecté
      */
-    .controller('AppController', ['$rootScope', '$scope', '$state', '$translate', 'Auth', 'Game', function ($rootScope, $scope, $state, $translate, Auth, Game) {
+    .controller('AppController', ['$rootScope', '$scope', '$state', '$translate', '$timeout', '$q', 'Auth', 'Game', function ($rootScope, $scope, $state, $translate, $timeout, $q, Auth, Game) {
         // Si l'utilisateur n'est pas connecté alors il est redirigé vers la page de connexion
         // sinon $scope.user contient les données utlisateur
         if (!Auth.isConnected()) {
@@ -31,4 +31,25 @@ angular.module('unoApp')
                 });
             }
         };
+
+        $rootScope.goTo = function(url, timeout, callback) {
+            if (timeout) {
+                $timeout(function() {
+                    if (angular.isFunction(callback)) {
+                        callback();
+                    }
+                }, timeout)
+                    .then(function() {
+                        $state.go(url);
+                });
+            } else {
+                if (angular.isFunction(callback)) {
+                    callback();
+                }
+
+                $state.go(url);
+            }
+        };
+
+        google.charts.load('current', {'packages': ['corechart']});
     }]);

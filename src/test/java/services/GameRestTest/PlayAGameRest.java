@@ -1,12 +1,13 @@
 package services.GameRestTest;
 
-import fr.unice.idse.model.Board;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
+import fr.unice.idse.model.player.Player;
 import fr.unice.idse.services.GameRest;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -18,6 +19,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
@@ -40,8 +42,8 @@ public class PlayAGameRest extends JerseyTest {
     @Before
     public void init(){
         model = Model.getInstance();
-        model.setGames(new ArrayList<>());
-        model.setPlayers(new ArrayList<>());
+        model.setGames(new ArrayList<Game>());
+        model.setPlayers(new ArrayList<Player>());
         for(int i = 1; i < 5; i++)
             assertTrue(model.createPlayer("joueur"+i, "token"+i));
         jsonObject = new JSONObject();
@@ -85,11 +87,11 @@ public class PlayAGameRest extends JerseyTest {
         assertFalse(jsonResponse.getBoolean("gameEnd"));
 
         // On triche, et on change les cartes du premier joueur
-        Board board = model.findGameByName("lagame").getBoard();
-        board.getPlayers().get(0).setCards(new ArrayList<>());
-        board.getPlayers().get(0).getCards().add(new Card(Value.Five, Color.Red));
-        board.getStack().addCard(new Card(Value.Five, Color.Green));
-        board.setActualColor(Color.Green);
+        Game game = model.findGameByName("lagame");
+        game.getPlayers().get(0).setCards(new ArrayList<Card>());
+        game.getPlayers().get(0).getCards().add(new Card(Value.Five, Color.Red));
+        game.getStack().addCard(new Card(Value.Five, Color.Green));
+        game.setActualColor(Color.Green);
 
         jsonObject = new JSONObject();
         jsonObject.put("value", "Five");

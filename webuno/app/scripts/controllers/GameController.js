@@ -45,11 +45,13 @@ angular.module('unoApp')
                                 jQuery('.myModalCurrentPlayer').modal('hide');
                             }, 2000);
                         }
+                        testIfCanPlay();
                     });
 
                     // Utilisation du service Game pour récupérer la main du joueur connecté
                     Game.getUserHand($rootScope.gameName, function (data) {
                         $scope.cartes = data.cartes;
+                        testIfCanPlay();
                     });
 
                     if ($scope.game.gameEnd) {
@@ -72,6 +74,7 @@ angular.module('unoApp')
                 // Utilisation du service Game pour récupérer la main du joueur connecté
                 Game.getUserHand($rootScope.gameName, function (data) {
                     $scope.cartes = data.cartes;
+                    testIfCanPlay();
                 });
             });
         };
@@ -95,13 +98,13 @@ angular.module('unoApp')
                         // Utilisation du service Game pour récupérer l'état du jeu
                         Game.getGame($rootScope.gameName, function (data) {
                             $scope.game = data;
+                            testIfCanPlay();
                         });
                     });
                 };
             } else {
                 // Utilisation du service Game pour jouer une carte
-                Game.playCard($rootScope.gameName, carte)
-                    .then(function () {
+                Game.playCard($rootScope.gameName, carte, function () {
                         // Utilisation du service Game pour récupérer la main du joueur connecté
                         Game.getUserHand($rootScope.gameName, function (data) {
                             $scope.cartes = data.cartes;
@@ -110,21 +113,67 @@ angular.module('unoApp')
                         // Utilisation du service Game pour récupérer l'état du jeu
                         Game.getGame($rootScope.gameName, function (data) {
                             $scope.game = data;
+                            testIfCanPlay();
                         });
                     });
             }
         };
 
+        function canPlay() {
+            var found = false;
+            if ($scope.user.name === $scope.currentPlayer) {
+                if ($scope.game.stack.number === 'DrawTwo' || $scope.game.stack.number === 'DrawFour') {
+                    angular.forEach($scope.cartes, function(card) {
+                        if (card.number === $scope.game.stack.number) {
+                            found = true;
+                        }
+                    });
+                } else {
+                    angular.forEach($scope.cartes, function(card) {
+                        if (card.number === $scope.game.stack.number || card.family === $scope.game.stack.family) {
+                            found = true;
+                        }
+                    });
+                }
+            }
+            return found;
+        }
+
+        function testIfCanPlay() {
+            if (canPlay()) {
+                $scope.$emit('can-play');
+            } else {
+                $scope.$emit('not-can-play');
+            }
+        }
+
+        $scope.$on('can-play', function() {
+            $scope.playerCanPlay = true;
+        });
+
+        $scope.$on('not-can-play', function() {
+            $scope.playerCanPlay = false;
+        });
+
+        $rootScope.callbackHome = function() {
+            $timeout.cancel(timeoutStateGame);
+            if ($scope.game.state === false && !$rootScope.logout && !$scope.game.gameEnd) {
+                Game.quitRoom($rootScope.gameName);
+            }
+        };
+
         // Évènement qui permet de stopper le timer et quitter la room quand on quitte le contrôleur RoomController
+        /*
         $scope.$on('$destroy', function () {
             $timeout.cancel(timeoutStateGame);
             if ($scope.game.state === false && !$rootScope.logout && !$scope.game.gameEnd) {
                 Game.quitRoom($rootScope.gameName);
             }
         });
+         */
 
         // Évènement qui permet de quitter la room quand on ferme l'onglet contenant la room
-        /*
+        /* TODO : ne fonctionne pas - quand on actualise tout casse
         window.onbeforeunload = function () {
             if (!$rootScope.logout) {
                 Game.quitRoom($rootScope.gameName);

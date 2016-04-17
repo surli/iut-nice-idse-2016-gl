@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.player.Player;
+import fr.unice.idse.model.regle.EffectCard;
 import fr.unice.idse.model.save.Save;
 
 public class Model {
 	private ArrayList<Game> games;
 	private ArrayList<Player> players;
-	private Save save;
 	private static Model model=null;
 	
 	/**
@@ -19,7 +19,6 @@ public class Model {
 	{
 		this.games= new ArrayList<>();
 		this.players= new ArrayList<>();
-		this.save = new Save();
 	}
 
 	/**
@@ -54,8 +53,35 @@ public class Model {
 			
 			boolean saveEnable = false;
 			if(saveEnable){
-				game.addObserver(save);
-				game.getBoard().addObserver(game);
+				game.addObserver(Save.getInstance());
+				game.addObserver(game);
+			}
+			
+			addPlayerToGame(gameName, player);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Ajouter une partie avec des règles définies
+	 * @param player Player
+	 * @param gameName String
+	 * @param numberPlayers Int
+	 * @param regeles ArrayList<EffectCard>
+	 * @return Boolean
+	 */
+	public boolean addGame(Player player, String gameName, int numberPlayers, ArrayList<EffectCard> regles)
+	{
+		if(!existsGame(gameName))
+		{
+			Game game = new Game(player,gameName,numberPlayers, regles);
+			this.games.add(game);
+			
+			boolean saveEnable = false;
+			if(saveEnable){
+				game.addObserver(Save.getInstance());
+				game.addObserver(game);
 			}
 			
 			addPlayerToGame(gameName, player);
@@ -309,7 +335,7 @@ public class Model {
 		Game game=findGameByName(gameName);
 		Player player=findPlayerByName(gameName, playerName);
 		if(player != null)
-			return player.play(cardPosition,game.getBoard());
+			return player.play(cardPosition,game);
 		return false;
 	}
 	
@@ -325,11 +351,10 @@ public class Model {
 	{
 		boolean result = false;
 		Game game = findGameByName(gameName);
-		Board board = game.getBoard();
 		Player player = findPlayerByName(gameName, playerName);
 		if(player != null)
 		{
-			result= player.play(cardPosition,game.getBoard());
+			result= player.play(cardPosition,game);
 			Color color=null;
 			switch(colorNumber)
 			{
@@ -347,7 +372,7 @@ public class Model {
 					break;
 			}
 			try{
-				board.changeColor(color);
+				game.changeColor(color);
 			}
 			catch(NullPointerException e)
 			{
@@ -390,7 +415,7 @@ public class Model {
 		Game game=findGameByName(gameName);
 		if(game!=null)
 		{
-			game.deleteObserver(save);
+			game.deleteObserver(Save.getInstance());
 			
 			games.remove(game);
 			return true;

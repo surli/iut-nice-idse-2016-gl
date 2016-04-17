@@ -96,7 +96,7 @@ public class PickACardTest extends JerseyTest{
 
     @Test
     public void pickacardGameStartTest() throws JSONException{
-        model.findGameByName("tata").getBoard().setGameBegin(false);
+        model.findGameByName("tata").setGameBegin(false);
 
         Entity<String> jsonEntity = Entity.entity(null, MediaType.APPLICATION_JSON);
         Response response = target("/game/tata/azert1").request().header("token", "token1").post(jsonEntity);

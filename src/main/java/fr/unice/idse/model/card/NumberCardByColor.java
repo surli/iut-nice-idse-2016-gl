@@ -20,7 +20,7 @@ public class NumberCardByColor implements Comparable<NumberCardByColor> {
     public void setValue(int number) { this.number = number; }
 
 
-    //TODO -- compareTo -
+    //TODO -- compareTo --
     @Override
     public int compareTo(NumberCardByColor obj) {
 

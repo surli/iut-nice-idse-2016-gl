@@ -2,7 +2,9 @@ package fr.unice.idse.model.save;
 
 import fr.unice.idse.db.DataBaseCard;
 import fr.unice.idse.db.DataBaseGame;
+import fr.unice.idse.db.DataBaseOrigin;
 import fr.unice.idse.db.DataBaseUser;
+
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.player.Player;
@@ -15,6 +17,7 @@ public class BusinessQuery {
 	private static DataBaseGame dbmG = new DataBaseGame();
 	private static DataBaseUser dbmU = new DataBaseUser();
 	private static DataBaseCard dbmC = new DataBaseCard();
+	private static DataBaseOrigin dtmO = DataBaseOrigin.getInstance();
 
 	/**
 	 * Insert a new game in the base
@@ -28,7 +31,7 @@ public class BusinessQuery {
 			throw new Exception("ERROR : Game name already exist");
 		}
 		String query = String.format("INSERT INTO games (g_nom,g_nbr_max_joueur,g_nbr_max_ia) VALUES ('%s', %s, %s)",game.getGameName(), game.getNumberPlayers(), 0);
-		return dbmG.insert(query);
+		return dtmO.insert(query);
 	}
 	
 	/**
@@ -48,7 +51,7 @@ public class BusinessQuery {
 			throw new Exception("ERROR : Game does not exist in the base");
 		}
 		String query = String.format("INSERT INTO players_in_game (p_g_id,p_id_user,p_position) VALUES (%s, %s, %s)", gameId, playerId, position);
-		dbmG.exec(query);
+		dtmO.exec(query);
 	}
 	
 	/**
@@ -63,7 +66,7 @@ public class BusinessQuery {
 			throw new Exception("ERROR : Game does not exist in the base");
 		}
 		String query = String.format("INSERT INTO matchs (m_g_id) VALUES ('%s')",gameId);
-		return dbmG.insert(query);
+		return dtmO.insert(query);
 	}
 	
 	/**
@@ -80,7 +83,7 @@ public class BusinessQuery {
 			throw new Exception("ERROR : Player does not exist in the base");
 		}
 		String query = String.format("INSERT INTO turns(t_m_id, t_sens, id_user_ready) VALUES (%s, %s, %s)",matchId, inversed, playerId);
-		return dbmG.insert(query);
+		return dtmO.insert(query);
 	}
 
 	/**
@@ -97,7 +100,7 @@ public class BusinessQuery {
 		}
 		
 		String query = String.format("INSERT INTO stack (s_t_id,s_m_id,s_c_id) VALUES (%s, %s, %s)", turnId, matchId, cardId);
-		dbmG.exec(query);
+		dtmO.exec(query);
 	}
 	
 	/**
@@ -119,7 +122,7 @@ public class BusinessQuery {
 		}
 		
 		String query = String.format("INSERT INTO hands_players_in_game (h_id_match,h_id_user,h_id_card,h_tour) VALUES (%s, %s, %s, %s)", matchId, playerId, cardId, turnId);
-		dbmG.exec(query);
+		dtmO.exec(query);
 	}
 
 }

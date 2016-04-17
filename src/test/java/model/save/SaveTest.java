@@ -7,12 +7,6 @@ import fr.unice.idse.model.save.Save;
 public class SaveTest extends Save{
 	
 	public SaveTest(){
-		  super();
-	}
-
-	@Test
-	public void testInitClass()
-	{	
-		assertNotNull(bq);
+		  super("sqlite");
 	}
 }

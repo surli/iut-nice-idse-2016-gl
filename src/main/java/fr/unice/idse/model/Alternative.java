@@ -10,25 +10,20 @@ import fr.unice.idse.model.regle.*;
 public class Alternative 
 {
 	private ArrayList<EffectCard> actions;
-	private Board board;
 	
-	public Alternative(Board board, boolean defaut)
+	public Alternative(Game game)
 	{
-		if(defaut)
-		{
-			this.board = board;
-			actions = new ArrayList<EffectCard>();
-			actions.add(new RuleChangeColor(board, Value.Wild));
-			actions.add(new RuleReverse(board, Value.Reverse));
-			actions.add(new RuleSkip(board, Value.Skip));
-			actions.add(new RuleDrawTwo(board, Value.DrawTwo));
-			actions.add(new RuleDrawFour(board, Value.DrawFour));
-		}
-		else
-		{
-			this.board = board;
-			actions = new ArrayList<EffectCard>();
-		}
+		actions = new ArrayList<EffectCard>();
+		actions.add(new RuleChangeColor(game, Value.Wild));
+		actions.add(new RuleReverse(game, Value.Reverse));
+		actions.add(new RuleSkip(game, Value.Skip));
+		actions.add(new RuleDrawTwo(game, Value.DrawTwo));
+		actions.add(new RuleDrawFour(game, Value.DrawFour));
+	}
+	
+	public Alternative(Game game, ArrayList<EffectCard> regles)
+	{
+		actions = regles;
 	}
 	
 	public void addActionToCard(EffectCard action)

@@ -1,4 +1,4 @@
-package model;
+package model.player;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.unice.idse.model.player.IAEasy;
 import fr.unice.idse.model.player.Player;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;

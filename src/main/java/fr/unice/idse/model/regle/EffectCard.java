@@ -4,35 +4,24 @@ import fr.unice.idse.model.*;
 import fr.unice.idse.model.card.*;
 import fr.unice.idse.model.player.Player;
 
-public class EffectCard
+public abstract class EffectCard
 {
-	private Value value;
-	private Board board;
-	private boolean isColorChangingCard;
-	
-	public EffectCard(Board board, Value value)
-	{
-		this.value = value;
-		this.board = board;
-		this.isColorChangingCard=false;
-	}
+	protected Value value;
+	protected Game game;
+	protected boolean isColorChangingCard;
 
 	public Value getValue()
 	{
 		return value;
 	}
 
-	public Board getBoard()
+	public Game getGame()
 	{
-		return board;
+		return game;
 	}
 
 	public boolean isColorChangingCard() {
 		return isColorChangingCard;
-	}
-
-	public void setColorChangingCard(boolean isColorChangingCard) {
-		this.isColorChangingCard = isColorChangingCard;
 	}
 
 	/**
@@ -42,7 +31,7 @@ public class EffectCard
 	 */
 	public boolean isEffect(Card card)
 	{
-		return card.getValue() == getValue();
+		return card.getValue() == value;
 	}
 	
 	/**
@@ -51,17 +40,9 @@ public class EffectCard
 	 */
 	public boolean getEffect()
 	{
-		return board.getCptDrawCard() > 1;
+		return game.getCptDrawCard() > 1;
 	}
 	
-	/***
-	 * Methode à override pour les changement de couleur
-	 * @param : Couleur demandé par le Joueur.
-	 */
-	public void changeColor(Color color)
-	{
-		
-	}
 	
 	/***
 	 * Methode à override pour l'échange des jeux de cartes du joueur actuel avec un autre
@@ -73,18 +54,24 @@ public class EffectCard
 	}
 	
 	/***
-	 * Methode à override pour les effets immediats
+	 * Enclenche l'effet d'une carte au moment de la pose
 	 */
-	public void action()
-	{
-
-	}
+	public abstract void action();
 	
 	/***
-	 * Methode à override pour les effets contrables
+	 * Enclenche l'effet d'une carte au moment de la pose
+	 * @param color
 	 */
-	public void effect()
-	{
-		
-	}
+	public abstract void action(Color color);
+	
+	/***
+	 * Enclenche l'effet d'une carte au moment de la pose
+	 * @param playerName
+	 */
+	public abstract void action(String playerName);
+	
+	/***
+	 * Enclenche l'effet d'une carte après la pose
+	 */
+	public abstract void effect();
 }

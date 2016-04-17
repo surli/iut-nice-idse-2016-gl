@@ -11,13 +11,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DataBaseGame extends DataBaseOrigin {
-	
+/**
+ * Game DAO
+ */
+public class DataBaseGame {
+
+    private DataBaseOrigin dataBaseOrigin;
+
+
+    public DataBaseGame(){
+        dataBaseOrigin = DataBaseOrigin.getInstance();
+    }
+	public DataBaseGame(String connector){
+        dataBaseOrigin = DataBaseOrigin.getInstance(connector);
+    }
+
 	public int getIdgameWithName(String gameName) {
 		String query = "SELECT g_id FROM games WHERE g_nom = ?";
-		if (executeSQL(query, gameName))
+		if (dataBaseOrigin.executeSQL(query, gameName))
 			try {
-				return rs.getInt(1);
+				return dataBaseOrigin.rs.getInt(1);
 			} catch (SQLException e) {
 			}
 		return 0;
@@ -25,9 +38,9 @@ public class DataBaseGame extends DataBaseOrigin {
 
 	public int getIdMatchWithGameId(int gameId) {
 		String query = "SELECT m_id FROM matchs WHERE m_g_id = ?";
-		if (executeSQL(query, gameId))
+		if (dataBaseOrigin.executeSQL(query, gameId))
 			try {
-				return rs.getInt(1);
+				return dataBaseOrigin.rs.getInt(1);
 			} catch (SQLException e) {
 			}
 		return 0;
@@ -35,22 +48,26 @@ public class DataBaseGame extends DataBaseOrigin {
 	
 	public boolean ifGameAlreadyExistName(String name) {
 		String query = "SELECT g_nom FROM games WHERE g_nom = ?";
-		return (executeSQL(query, name));
+		return (dataBaseOrigin.executeSQL(query, name));
 	}
 
 	public boolean addGame(String name, int nbrMaxJoueur, int nbrMaxIA) {
 		if (!ifGameAlreadyExistName(name)) {
 			String query = "INSERT INTO games (g_nom,g_nbr_max_joueur,g_nbr_max_ia) VALUES (?, ?, ?)";
-			if (executeSQL(query, name, Integer.toString(nbrMaxJoueur), Integer.toString(nbrMaxIA)))
+			if (dataBaseOrigin.executeSQL(query, name, Integer.toString(nbrMaxJoueur), Integer.toString(nbrMaxIA)))
 				return true;
 		}
 		return false;
+	}
+	
+	public boolean addGame(Game game) {
+		return this.addGame(game.getGameName(), game.getNumberPlayers(), 0); // TODO : Where are you my lovely nbrMaxIA !!!!
 	}
 
 	public boolean deleteGameWithName(String nameOfTheGame) {
 		if (ifGameAlreadyExistName(nameOfTheGame)) {
 			String query = "DELETE FROM games WHERE g_nom = ?";
-			if (executeSQL(query, nameOfTheGame))
+			if (dataBaseOrigin.executeSQL(query, nameOfTheGame))
 				return true;
 		}
 		return false;
@@ -60,10 +77,10 @@ public class DataBaseGame extends DataBaseOrigin {
 		String query = "SELECT c_id, c_value, c_color FROM cards,stack WHERE s_m_id = ?";
 		ArrayList<Card> listStackCard = new ArrayList<Card>();
 
-		if (executeSQL(query, matchId))
+		if (dataBaseOrigin.executeSQL(query, matchId))
 			try {
-				while (rs.next()) {
-					listStackCard.add(new Card( Value.valueOf(rs.getString("c_value")), Color.valueOf(rs.getString("c_color"))));
+				while (dataBaseOrigin.rs.next()) {
+					listStackCard.add(new Card( Value.valueOf(dataBaseOrigin.rs.getString("c_value")), Color.valueOf(dataBaseOrigin.rs.getString("c_color"))));
 				}
 				return listStackCard;
 			} catch (SQLException e) {
@@ -79,14 +96,14 @@ public class DataBaseGame extends DataBaseOrigin {
 				+ "AND `h_tour`= (SELECT MAX(t_id) FROM turns WHERE t_m_id = ?)";
 
 		Map<String, ArrayList<Card>> map = new HashMap<String, ArrayList<Card>>();
-		if(executeSQL(query, matchId)) {
+		if(dataBaseOrigin.executeSQL(query, matchId)) {
 			try {
-				while(rs.next()) {
-					String key = rs.getString("u_pseudo");
+				while(dataBaseOrigin.rs.next()) {
+					String key = dataBaseOrigin.rs.getString("u_pseudo");
 					if(!map.containsKey(key)) {
 						map.put(key, new ArrayList<Card>());
 					}
-					map.get(key).add(new Card( Value.valueOf(rs.getString("c_value")),Color.valueOf(rs.getString("c_color"))));
+					map.get(key).add(new Card( Value.valueOf(dataBaseOrigin.rs.getString("c_value")),Color.valueOf(dataBaseOrigin.rs.getString("c_color"))));
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -99,10 +116,10 @@ public class DataBaseGame extends DataBaseOrigin {
 		String query = "SELECT u_id, u_pseudo, u_statut, p_g_id, p_position FROM players_in_game, users  WHERE p_g_id = ? ORDER BY p_position";
 		ArrayList<Player> listPlayersTemp = new ArrayList<Player>();
 
-		if (executeSQL(query, gameId))
+		if (dataBaseOrigin.executeSQL(query, gameId))
 			try {
-				while (rs.next()) {
-					listPlayersTemp.add(new Player(rs.getString("u_pseudo"), "123azer"));
+				while (dataBaseOrigin.rs.next()) {
+					listPlayersTemp.add(new Player(dataBaseOrigin.rs.getString("u_pseudo"), "123azer"));
 				}
 				return listPlayersTemp;
 			} catch (SQLException e) {
@@ -122,9 +139,9 @@ public class DataBaseGame extends DataBaseOrigin {
 					+ "AND g_id = ?"
 					+ "AND p_position = 0;";
 			int gameId = getIdgameWithName(gameName);
-			if(executeSQL(query, gameId)) {
+			if(dataBaseOrigin.executeSQL(query, gameId)) {
 				try {
-					game = new Game(new Player(rs.getString("u_pseudo"), "dafuq"), rs.getString("g_nom"), rs.getInt("g_nbr_max_joueur"));
+					game = new Game(new Player(dataBaseOrigin.rs.getString("u_pseudo"), "dafuq"), dataBaseOrigin.rs.getString("g_nom"), dataBaseOrigin.rs.getInt("g_nbr_max_joueur"));
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -132,4 +149,6 @@ public class DataBaseGame extends DataBaseOrigin {
 		}
 		return game;
 	}
+	
+	
 }

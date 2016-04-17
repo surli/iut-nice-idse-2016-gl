@@ -52,7 +52,7 @@ else
     fi
 fi
 echo " --- Création de la nouvelle database 'uno' ... \c"
-bases=`mysql -uroot -proot < script/buildingDb.sql -B -s 2> /dev/null`
+bases=`mysql -u $1 --password=$2 < script/buildingDb.sql -B -s 2> /dev/null`
 bases=`mysql -u $1 --password=$2 -e "SHOW DATABASES LIKE 'uno';" -B -s 2> /dev/null`
 if [ -z "$bases" ];then
         echo "[$ROUGE ERR $NORMAL]"

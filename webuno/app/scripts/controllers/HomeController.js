@@ -5,8 +5,9 @@ angular.module('unoApp')
      * Contrôleur HomeController de la route /app/home
      * Gère l'affichage des parties en cours
      */
-    .controller('HomeController', ['$scope', '$timeout', '$http', '$state', 'Game', function ($scope, $timeout, $http, $state, Game) {
+    .controller('HomeController', ['$rootScope', '$scope', '$timeout', '$http', '$state', 'Game', function ($rootScope, $scope, $timeout, $http, $state, Game) {
         var timeoutListGames;
+        $rootScope.callbackHome = false;
 
         // Fonction qui permet de récupérer la liste des parties toutes les 2 secondes
         $scope.requestListGames = function () {
@@ -46,6 +47,7 @@ angular.module('unoApp')
         });
 
         // Utilisation du service Game pour récupérer la liste de toutes mes parties
+        /* TODO : Pas encore fonctionnel
         Game.getMyGames(function () {
             // SUCCESS
         }, function () {
@@ -66,44 +68,48 @@ angular.module('unoApp')
             $scope.mygames = data.games; // fictif en attendant la vrai route
             console.log($scope.mygames);
         });
+        */
 
         // Utilisation du service Game pour récupérer la liste des stats d'un joueur
+        /* TODO : Pas encore fonctionnel
         Game.getChartNbPlayed(function () {
 
         }, function () {
-          $scope.gamestats = {
-            NbPartyWin: 9,
-            NbPartyLoose: 6
-          };
-
-          google.charts.load('current', {'packages':['corechart']});
-          google.charts.setOnLoadCallback(function () {
-            var stats = [
-              ['Parties', 'Nombre de parties'],
-              ['Gagnés', $scope.gamestats.NbPartyWin],
-              ['Perdus', $scope.gamestats.NbPartyLoose]
-            ];
-
-            var options = {
-              colors: ['#f0ad4e', '#ff2222'],
-              pieSliceTextStyle: {
-                color: 'white',
-                fontName: 'Lobster, Georgia, Times, serif',
-                fontSize: '12'
-              },
-              legend: {
-                textStyle: {
-                  color: 'white',
-                  fontName: 'Lobster, Georgia, Times, serif',
-                  fontSize: '18'
-                }
-              },
-              is3D: true
+            $scope.gamestats = {
+                NbPartyWin: 9,
+                NbPartyLoose: 6
             };
 
-            var chart = new google.visualization.PieChart(document.getElementById('donutschart'));
-            chart.draw(google.visualization.arrayToDataTable(stats), options, {});
-          });
+            $timeout(function() {
+                google.charts.setOnLoadCallback(function () {
+                    var stats = [
+                        ['Parties', 'Nombre de parties'],
+                        ['Gagnés', $scope.gamestats.NbPartyWin],
+                        ['Perdus', $scope.gamestats.NbPartyLoose]
+                    ];
+
+                    var options = {
+                        colors: ['#f0ad4e', '#ff2222'],
+                        pieSliceTextStyle: {
+                            color: 'white',
+                            fontName: 'Lobster, Georgia, Times, serif',
+                            fontSize: '12'
+                        },
+                        legend: {
+                            textStyle: {
+                                color: 'white',
+                                fontName: 'Lobster, Georgia, Times, serif',
+                                fontSize: '18'
+                            }
+                        },
+                        is3D: true
+                    };
+
+                    var chartGamesPlayed = new google.visualization.PieChart(document.getElementById('donutschartgamesplayed'));
+                    chartGamesPlayed.draw(google.visualization.arrayToDataTable(stats), options, {});
+                });
+            }, 1000);
         });
+        */
 
     }]);

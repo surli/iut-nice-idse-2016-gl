@@ -1,11 +1,11 @@
 package services;
 
-import fr.unice.idse.constante.Config;
-import fr.unice.idse.model.Game;
+
+import fr.unice.idse.db.DataBaseGame;
+import fr.unice.idse.db.DataBaseOrigin;
+import fr.unice.idse.db.DataBaseUser;
 import fr.unice.idse.model.Model;
-import fr.unice.idse.model.player.Player;
 import fr.unice.idse.services.AuthRest;
-import fr.unice.idse.services.GameRest;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -17,6 +17,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
@@ -33,10 +34,12 @@ public class AuthRestTest extends JerseyTest {
     JSONObject jsonObject;
 
     @Before
-    public void init() {
+    public void init() throws SQLException {
+        DataBaseOrigin dataBaseOrigin = DataBaseOrigin.getInstance("sqlite");
+        dataBaseOrigin.resetDatabaseSQLite();
         model = Model.getInstance();
-        model.setGames(new ArrayList<Game>());
-        model.setPlayers(new ArrayList<Player>());
+        model.setGames(new ArrayList<>());
+        model.setPlayers(new ArrayList<>());
         jsonObject = new JSONObject();
     }
 
@@ -77,6 +80,18 @@ public class AuthRestTest extends JerseyTest {
         System.out.println(jsonResult);
         assertEquals(200, response.getStatus());
         assertEquals(0, model.getPlayers().size());
+    }
 
+    @Test
+    public void inscriptionIncorrect() throws JSONException {
+        jsonObject.put("email", "toto@toto.fr");
+        jsonObject.put("playerName", "toto");
+        jsonObject.put("password", "azerty");
+        Entity<String> jsonEntity = Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON);
+        Response response = target("/auth/signup").request().post(jsonEntity);
+        assertEquals(200, response.getStatus());
+
+        DataBaseUser dataBaseUser = new DataBaseUser();
+        assertEquals(2, dataBaseUser.allUser().getJSONArray("users").length());
     }
 }
