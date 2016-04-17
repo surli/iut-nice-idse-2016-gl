@@ -2,7 +2,7 @@
     <div class="jumbotron">
         <h1>Admin</h1>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading text-center">{{'PLAYERS' | translate}}</div>
             <div class="panel-body text-center" style="padding:0;">
@@ -12,9 +12,8 @@
                         <td>{{user.pseudo}}</td>
                         <td>{{user.email}}</td>
                         <td>
-                            <input ng-model="user.banned" ng-checked="user.banned" data-ng-click="goUpdateBan(user.pseudo,user.banned)" type="checkbox"><label
-                                style="padding-left: 3px;">{{'BANNED'
-                            |translate}}</label>
+                            <input ng-model="user.banned" ng-checked="user.banned" data-ng-click="goUpdateBan(user.pseudo,user.banned)" type="checkbox">
+                            <label style="padding-left: 3px;">{{'BANNED'|translate}}</label>
                         </td>
                         <td>
                             <select class="form-control role" ng-change="goUpdateRole(user.pseudo,user.role)" ng-model="user.role">
@@ -28,8 +27,8 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="col-md-6">
+    <div class="col-md-12">
+        <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading text-center">{{games.length}} partie{{(games.length > 1) ? 's' : ''}}</div>
                 <div class="panel-body text-center" style="padding:0;">
@@ -58,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6" data-ng-show="games.length > 0">
+        <div class="col-md-4" data-ng-show="games.length > 0">
             <div class="panel panel-default">
                 <div class="panel-heading text-center">Stats</div>
                 <div class="panel-body text-center" style="padding:0;">
