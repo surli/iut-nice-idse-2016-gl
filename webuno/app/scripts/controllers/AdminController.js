@@ -50,9 +50,10 @@ angular.module('unoApp')
             // Utilisation du service Users pour récupérer la liste de tous les users
             Users.getAllUsers(function (data) {
                 $scope.allusers = data.users;
-            }, function () {
-                var data = {users: []};
-                $scope.allusers = data.users;
+
+                $scope.allusers.forEach(function(user) {
+                    user.role = user.role.toString();
+                });
             });
         }
 
