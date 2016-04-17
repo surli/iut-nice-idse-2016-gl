@@ -1,6 +1,6 @@
 <div id="admin" class="col-md-12">
     <div class="jumbotron">
-        <h1>Administration</h1>
+        <h1>Admin</h1>
     </div>
     <div class="col-md-6">
         <div class="panel panel-default">
@@ -12,21 +12,15 @@
                         <td>{{user.pseudo}}</td>
                         <td>{{user.email}}</td>
                         <td>
-                            <input ng-model="user.banned" ng-checked="user.banned == 'true' " type="checkbox"><label
+                            <input ng-model="user.banned" ng-checked="user.banned" data-ng-click="goUpdateBan(user.pseudo,user.banned)" type="checkbox"><label
                                 style="padding-left: 3px;">{{'BANNED'
                             |translate}}</label>
                         </td>
                         <td>
-                            <select class="form-control role" ng-model="user.role">
+                            <select class="form-control role" ng-change="goUpdateRole(user.pseudo,user.role)" ng-model="user.role">
                                 <option ng-selected="user.role == 3" value="3">{{'USER' | translate}}</option>
                                 <option ng-selected="user.role == 4" value="4">{{'ADMIN' | translate}}</option>
                             </select>
-                        </td>
-                        <td>
-                            <button class="btn btn-info btn-sm"
-                                    data-ng-click="goUpdateUser(user.id,user.banned,user.role)">
-                                {{'UPDATE' | translate}}
-                            </button>
                         </td>
                     </tr>
                 </table>
