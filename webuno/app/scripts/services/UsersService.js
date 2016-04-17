@@ -21,17 +21,28 @@ angular.module('unoApp')
         }, callback, callbackError);
       },
 
-      updateUser: function (id, ban, role, callback, callbackError) {
+      updateRoleUser: function (name, role, callback, callbackError) {
         HttpRequest.send({
-          method: '',
-          url: '',
+          method: 'post',
+          url: 'rest/admin/player/'+name,
           headers: {
             token: Auth.getUser().token
           },
           data: {
-            id: id,
-            ban: ban,
-            role: role
+            rang: role
+          }
+        }, callback, callbackError);
+      },
+
+      updateBanUser: function (name, ban, callback, callbackError) {
+        HttpRequest.send({
+          method: 'put',
+          url: 'rest/admin/player/'+name,
+          headers: {
+            token: Auth.getUser().token
+          },
+          data: {
+            ban: ban
           }
         }, callback, callbackError);
       }
