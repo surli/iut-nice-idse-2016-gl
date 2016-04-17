@@ -61,12 +61,18 @@ angular.module('unoApp')
             });
         };
 
-        $scope.goUpdateUser = function (userId,userBan,userRole){
-          console.log('id : '+userId+' ban : '+userBan+' role : '+userRole);
- //         Users.updateUser(userId,userBan,userRole,function (data){
-
-   ///       })
+        $scope.goUpdateRole = function (userName,userRole){
+          console.log('nom : '+userName+' role : '+userRole);
+          Users.updateRoleUser(userName,userRole,function (data){
+         });
         };
+
+      $scope.goUpdateBan = function (userName,userBan){
+        var ban = (userBan == false)?0:1;
+        console.log('nom : '+userName+' ban : '+ban);
+        Users.updateBanUser(userName,userBan,function (data) {
+        });
+      };
 
       // Utilisation du service Users pour récupérer la liste de tous les users
       Users.getAllUsers(function (data) {
