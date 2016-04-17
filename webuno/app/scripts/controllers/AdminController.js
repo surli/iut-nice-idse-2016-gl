@@ -47,6 +47,7 @@ angular.module('unoApp')
                 }, 1000);
             });
 
+            
             // Utilisation du service Users pour récupérer la liste de tous les users
             Users.getAllUsers(function (data) {
                 $scope.allusers = data.users;
