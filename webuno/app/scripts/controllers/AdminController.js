@@ -18,36 +18,57 @@ angular.module('unoApp')
             Game.getAllGamesAdmin(function (data) {
                 $scope.games = data.games;
 
-                // Timeout la création du chart qui affiche les statistiques des parties
-                $timeout(function () {
-                    google.charts.setOnLoadCallback(function () {
-                        var games = [
-                            ['Statut', 'Nombre de parties'],
-                            ['En attente de joueurs', 0],
-                            ['Complète', 0],
-                            ['Demarrée', 0],
-                            ['Terminée', 0]
-                        ];
+                var games = [0, 0, 0];
 
-                        angular.forEach($scope.games, function (game) {
-                            if (game.state) {
-                                games[3][1]++;
-                            } else {
-                                if (game.numberplayer === game.maxplayer) {
-                                    games[2][1]++;
-                                } else {
-                                    games[1][1]++;
-                                }
-                            }
-                        });
+                angular.forEach($scope.games, function (game) {
+                    if (game.state) {
+                        games[2]++;
+                    } else {
+                        if (game.numberplayer === game.maxplayer) {
+                            games[1]++;
+                        } else {
+                            games[0]++;
+                        }
+                    }
+                });
 
-                        var chartGames = new google.visualization.PieChart(document.getElementById('piechartgames'));
-                        chartGames.draw(google.visualization.arrayToDataTable(games), {});
-                    });
-                }, 1000);
+                $scope.statsChart = {};
+                $scope.statsChart.type = 'PieChart';
+                $scope.statsChart.data = {
+                    'cols': [
+                        {id: 't', label: 'Statut', type: 'string'},
+                        {id: 's', label: 'Nombre de parties', type: 'number'}
+                    ], 'rows': [
+                        {
+                            c: [
+                                {v: 'Complète'},
+                                {v: games[1]}
+                            ]
+                        },
+                        {
+                            c: [
+                                {v: 'Demarrée'},
+                                {v: games[2]}
+                            ]
+                        },
+                        {
+                            c: [
+                                {v: 'Terminée'},
+                                {v: 0}
+                            ]
+                        },
+                        {
+                            c: [
+                                {v: 'En attente de joueurs'},
+                                {v: games[0]}
+                            ]
+                        }
+                    ]
+                };
+
+                $scope.statsChart.options = {};
             });
 
-            
             // Utilisation du service Users pour récupérer la liste de tous les users
             Users.getAllUsers(function (data) {
                 $scope.allusers = data.users;
