@@ -16,7 +16,8 @@ angular
         'ngSanitize',
         'ui.router',
         'LocalStorageModule',
-        'pascalprecht.translate'
+        'pascalprecht.translate',
+        'googlechart'
     ])
 
     /**
