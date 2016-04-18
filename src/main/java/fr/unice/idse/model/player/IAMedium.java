@@ -4,6 +4,7 @@ import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.NumberCardByColor;
+import fr.unice.idse.model.card.Value;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,59 +37,53 @@ public class IAMedium extends IA {
         super(name, token, difficulty);
     }
 
-    public void reflexion(Game game) {
+    static Color bestColor = null;
 
+    public void thinking (Game game) {
         ArrayList<Card> mainIA = game.getActualPlayer().getCards();
         ArrayList<Card> playableCards = game.playableCards();
         System.out.println("Carte jouable : " + playableCards.toString());
 
+        myCard = chooseCardToPlay(mainIA, playableCards, game);
+        playCard(game, myCard, mainIA, turnPlay);
+    }
+
+    public Card chooseCardToPlay (ArrayList<Card> mainIA, ArrayList<Card> playableCards, Game game) {
+
         ArrayList<NumberCardByColor> cards = calculateNumberCardByColor(mainIA);
 
         int nbCard = 0;
+        Card myCard = null;
 
-        while (!turnPlay && nbCard < cards.get(0).getNumber()) {
+        while (!turnPlay && nbCard < cards.get(3).getNumber()) {
+            bestColor = cards.get(3).getColor();
             myCard = mainIA.get(nbCard);
-            turnPlay = testCardPlayableAndPlay(game, playableCards, myCard, cards.get(0).getColor(), turnPlay);
-            nbCard++;
-        }
-        while (!turnPlay && nbCard < cards.get(1).getNumber()) {
-            myCard = mainIA.get(nbCard);
-            turnPlay = testCardPlayableAndPlay(game, playableCards, myCard, cards.get(1).getColor(), turnPlay);
+            turnPlay = testCardPlayable(game, playableCards, myCard, cards.get(0).getColor(), turnPlay);
             nbCard++;
         }
         while (!turnPlay && nbCard < cards.get(2).getNumber()) {
             myCard = mainIA.get(nbCard);
-            turnPlay = testCardPlayableAndPlay(game, playableCards, myCard, cards.get(2).getColor(), turnPlay);
+            turnPlay = testCardPlayable(game, playableCards, myCard, cards.get(1).getColor(), turnPlay);
             nbCard++;
         }
-        while (!turnPlay && nbCard < cards.get(3).getNumber()) {
+        while (!turnPlay && nbCard < cards.get(1).getNumber()) {
             myCard = mainIA.get(nbCard);
-            turnPlay = testCardPlayableAndPlay(game, playableCards, myCard, cards.get(3).getColor(), turnPlay);
+            turnPlay = testCardPlayable(game, playableCards, myCard, cards.get(2).getColor(), turnPlay);
+            nbCard++;
+        }
+        while (!turnPlay && nbCard < cards.get(0).getNumber()) {
+            myCard = mainIA.get(nbCard);
+            turnPlay = testCardPlayable(game, playableCards, myCard, cards.get(3).getColor(), turnPlay);
             nbCard++;
         }
 
-        if (!turnPlay) {
-        	game.drawCard();
-        }
+        return myCard;
     }
 
-    public Color chooseColor(Color bestColor) {
-        Color color = bestColor;
-
-        return color;
-    }
-
-    // TODO CONTINUER A REFACTORER LA SUITE
-    public boolean testCardPlayableAndPlay(Game game, ArrayList<Card> playableCards, Card myCard, Color bestColor, boolean turnPlay) {
+    public boolean testCardPlayable(Game game, ArrayList<Card> playableCards, Card myCard, Color bestColor, boolean turnPlay) {
         System.out.println("Appel de la fonction testCardPlayableAndPlay ");
         for (Card aCard : playableCards) {
             if (myCard == aCard) {
-            	game.poseCard(myCard);
-                System.out.println("Carte joué : " + myCard);
-                if (game.getAlternative().getEffectCard(myCard).isColorChangingCard()) {
-                	game.getAlternative().getEffectCard(myCard).action(chooseColor(bestColor));
-                	game.getAlternative().getEffectCard(myCard).action();
-                }
                 turnPlay = true;
                 break;
             }
@@ -96,20 +91,25 @@ public class IAMedium extends IA {
         return turnPlay;
     }
 
-    @Override
-    public Card chooseCardToPlay (ArrayList<Card> mainIA, ArrayList<Card> playableCards) {
-        System.out.println("Carte jouable : " + playableCards.toString());
-        int i = 0;
+    public Color chooseColor() {
+        return bestColor;
+    }
 
-        while (i < mainIA.size() && !turnPlay) {
-            myCard = mainIA.get(i);
+    public void changeColor(ArrayList<Card> mainIA, Game game) {
+        game.getAlternative().getEffectCard(myCard).action(chooseColor());
+    }
 
-            if (playableCards.contains(myCard)) {
-                turnPlay = true;
+    public void playCard (Game game, Card cardToPlay, ArrayList<Card> mainIA, boolean turnPlay) {
+        if(turnPlay) {
+            game.poseCard(cardToPlay);
+            System.out.println("Carte joué : " + cardToPlay);
+
+            if (game.getAlternative().getEffectCard(cardToPlay).isColorChangingCard()) {
+                changeColor(mainIA, game);
             }
-            i++;
         }
-
-        return myCard;
+        else {
+            game.drawCard();
+        }
     }
 }

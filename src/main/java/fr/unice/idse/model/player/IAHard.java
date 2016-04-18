@@ -15,6 +15,7 @@ public class IAHard extends IA {
     private static Card myCard;
     private static boolean turnPlay = false;
 
+
     //GETTER
     public Card getMyCard() {
         return myCard;
@@ -24,170 +25,94 @@ public class IAHard extends IA {
         return turnPlay;
     }
 
+
     //SETTER
     public void setMyCard(Card myCard) {
         this.myCard = myCard;
     }
 
 
+    //CONSTRUCTEUR
     public IAHard(String name, String token, int difficulty) {
         super(name, token, difficulty);
     }
 
-    public Card cardContre;
+    static Color bestColor = null;
+    static Card cardContre;
 
-    public void reflexion(Game game) {
-
+    public void thinking (Game game) {
         ArrayList<Card> mainIA = game.getActualPlayer().getCards();
         ArrayList<Card> playableCards = game.playableCards();
         System.out.println("Carte jouable : " + playableCards.toString());
 
-        ArrayList<NumberCardByColor> cards = new ArrayList<NumberCardByColor>();
+        myCard = chooseCardToPlay(mainIA, playableCards, game);
+        playCard(game, myCard, mainIA, turnPlay);
+    }
 
-        int countB = 0;
-        int countG = 0;
-        int countR = 0;
-        int countY = 0;
-        int bestCount = countB;
-        Color bestColor = Color.Blue;
+    public Card chooseCardToPlay (ArrayList<Card> mainIA, ArrayList<Card> playableCards, Game game) {
 
-
-        for (Card aCard : mainIA) {
-            if (aCard.getColor() == Color.Blue) {
-                countB += 1;
-            } else if (aCard.getColor() == Color.Green) {
-                countG += 1;
-            } else if (aCard.getColor() == Color.Red) {
-                countR += 1;
-            } else if (aCard.getColor() == Color.Yellow) {
-                countY += 1;
-            }
-        }
-
-        if (bestCount < countR) {
-            bestCount = countR;
-            bestColor = Color.Red;
-        }
-
-        if (bestCount < countG) {
-            bestCount = countG;
-            bestColor = Color.Green;
-        }
-
-        if (bestCount < countY) {
-            bestCount = countY;
-            bestColor = Color.Yellow;
-        }
-
-        cards.add(new NumberCardByColor(Color.Blue, countB));
-        cards.add(new NumberCardByColor(Color.Green, countG));
-        cards.add(new NumberCardByColor(Color.Red, countR));
-        cards.add(new NumberCardByColor(Color.Yellow, countY));
-
-        Collections.sort(cards);
-
-        System.out.println("cards IA = " + cards);
+        ArrayList<NumberCardByColor> cards = calculateNumberCardByColor(mainIA);
 
         int nbCard = 0;
-        Card myCard;
+        Card myCard = null;
         int i = 0;
 
-        turnPlay = checkNextPlayer (game, turnPlay);
+        turnPlay = checkNextPlayer(game);
 
-        while (!turnPlay && nbCard < cards.get(0).getNumber()) {
+        while (!turnPlay && nbCard < cards.get(3).getNumber()) {
             myCard = mainIA.get(i);
-            turnPlay = testCardPlayableAndPlay(game, playableCards, myCard, bestColor, turnPlay);
-            nbCard++;
-        }
-        while (!turnPlay && nbCard < cards.get(1).getNumber()) {
-            myCard = mainIA.get(i);
-            turnPlay = testCardPlayableAndPlay(game, playableCards, myCard, bestColor, turnPlay);
+            turnPlay = testCardPlayable(playableCards, myCard);
             nbCard++;
         }
         while (!turnPlay && nbCard < cards.get(2).getNumber()) {
             myCard = mainIA.get(i);
-            turnPlay = testCardPlayableAndPlay(game, playableCards, myCard, bestColor, turnPlay);
+            turnPlay = testCardPlayable(playableCards, myCard);
             nbCard++;
         }
-        while (!turnPlay && nbCard < cards.get(3).getNumber()) {
+        while (!turnPlay && nbCard < cards.get(1).getNumber()) {
             myCard = mainIA.get(i);
-            turnPlay = testCardPlayableAndPlay(game, playableCards, myCard, bestColor, turnPlay);
+            turnPlay = testCardPlayable(playableCards, myCard);
+            nbCard++;
+        }
+        while (!turnPlay && nbCard < cards.get(0).getNumber()) {
+            myCard = mainIA.get(i);
+            turnPlay = testCardPlayable(playableCards, myCard);
             nbCard++;
         }
 
-        if (!turnPlay) {
-        	game.drawCard();
-        }
+        return myCard;
     }
 
-    public boolean testCardPlayableAndPlay(Game game, ArrayList<Card> playableCards, Card myCard, Color bestColor, boolean turnPlay) {
+    public boolean testCardPlayable(ArrayList<Card> playableCards, Card myCard) {
         System.out.println("Appel de la fonction testCardPlayableAndPlay ");
         for (Card aCard : playableCards) {
             if (myCard == aCard) {
-            	game.poseCard(myCard);
-                System.out.println("Carte joué : " + myCard);
-                if (game.getAlternative().getEffectCard(myCard).isColorChangingCard()) {
-                	game.getAlternative().getEffectCard(myCard).action(chooseColor(game.getActualPlayer().getCards()));
-                	game.getAlternative().getEffectCard(myCard).action();
-                }
                 turnPlay = true;
                 break;
             }
         }
-
         return turnPlay;
     }
 
 
-    public boolean checkNextPlayer (Game game, boolean turnPlay) {
+    public boolean checkNextPlayer (Game game) {
         int nextPlayer = game.getNextPlayer();
         ArrayList<Card> mainIA = game.getActualPlayer().getCards();
 
-        ArrayList<Card> mainNextPlayer = game.getPlayers().get(nextPlayer).getCards();
+        int nbCardMainNextPlayer = game.getPlayers().get(nextPlayer).getCards().size();
 
-        if(mainNextPlayer.size() == 1) {
+        if(nbCardMainNextPlayer == 1) {
 
-            if(searchColorCard(mainIA, Color.Black)) {   // ESSAYER DE JOUER CHANGE COLOR OU +4
-            	game.poseCard(cardContre);
-                System.out.println("Carte joué : " + cardContre);
-
-                if (game.getAlternative().getEffectCard(cardContre).isColorChangingCard()) {
-                	game.getAlternative().getEffectCard(cardContre).action(chooseColor(mainIA));
-                	game.getAlternative().getEffectCard(cardContre).action();
-                }
+            if(searchColorCard(mainIA, Color.Black)) {   // ESSAYER DE JOUER CHANGE COLOUR OU +4
                 turnPlay = true;
-            }
+            }/* Bug - Il faut verifie la valeur + la couleur pour jouer cette carte
             else if (searchValueCard(mainIA, Value.DrawTwo)) {
             	game.poseCard(cardContre);
-                System.out.println("Carte joué : " + cardContre);
-
-                if (game.getAlternative().getEffectCard(cardContre).isColorChangingCard()) {
-                	game.getAlternative().getEffectCard(cardContre).action(chooseColor(mainIA));
-                	game.getAlternative().getEffectCard(cardContre).action();
-                }
                 turnPlay = true;
-            }
+            }*/
             else if (searchValueCard(mainIA, game.getStack().topCard().getValue())) {  //MEME NOMBRE QUE LA DERNIERE CARTE POSE
-            	game.poseCard(cardContre);
-                System.out.println("Carte joué : " + cardContre);
-
-                if (game.getAlternative().getEffectCard(cardContre).isColorChangingCard()) {
-                	game.getAlternative().getEffectCard(cardContre).action(chooseColor(mainIA));
-                	game.getAlternative().getEffectCard(cardContre).action();
-                }
                 turnPlay = true;
             }
-            else {
-            	game.poseCard(cardContre);
-                System.out.println("Carte joué : " + cardContre);
-
-                if (game.getAlternative().getEffectCard(cardContre).isColorChangingCard()) {
-                	game.getAlternative().getEffectCard(cardContre).action(chooseColor(mainIA));
-                	game.getAlternative().getEffectCard(cardContre).action();
-                }
-                turnPlay = true;
-            }
-
         }
 
         return turnPlay;
@@ -225,4 +150,25 @@ public class IAHard extends IA {
         return valueExist;
     }
 
+    public Color chooseColor() {
+        return bestColor;
+    }
+
+    public void changeColor(ArrayList<Card> mainIA, Game game) {
+        game.getAlternative().getEffectCard(myCard).action(chooseColor());
+    }
+
+    public void playCard (Game game, Card cardToPlay, ArrayList<Card> mainIA, boolean turnPlay) {
+        if(turnPlay) {
+            game.poseCard(cardToPlay);
+            System.out.println("Carte joué : " + cardToPlay);
+
+            if (game.getAlternative().getEffectCard(cardToPlay).isColorChangingCard()) {
+                changeColor(mainIA, game);
+            }
+        }
+        else {
+            game.drawCard();
+        }
+    }
 }

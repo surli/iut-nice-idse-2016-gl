@@ -29,33 +29,6 @@ public abstract class IA extends Player {
         this.difficulty = difficulty;
     }
 
-    public Card chooseCardToPlay (ArrayList<Card> mainIA, ArrayList<Card> playableCards) {
-        Card chooseCard = null;
-
-        return chooseCard;
-    }
-
-    public void playCard (Game game, Card cardToPlay, ArrayList<Card> mainIA, Boolean turnPlay) {
-        if(turnPlay) {
-        	game.poseCard(cardToPlay);
-            System.out.println("Carte joué : " + cardToPlay);
-
-            if (game.getAlternative().getEffectCard(cardToPlay).isColorChangingCard()) {
-            	game.getAlternative().getEffectCard(cardToPlay).action(chooseColor(mainIA));
-            	game.getAlternative().getEffectCard(cardToPlay).action();
-            }
-        }
-        else {
-        	game.drawCard();
-        }
-    }
-
-    public Color chooseColor(ArrayList<Card> mainIA) {
-        Color colorChoose = mainIA.get(0).getColor();
-
-        return colorChoose;
-    }
-
     public ArrayList<NumberCardByColor> calculateNumberCardByColor (ArrayList<Card> mainIA) {
 
         ArrayList<NumberCardByColor> cards = new ArrayList<NumberCardByColor>();
@@ -87,5 +60,4 @@ public abstract class IA extends Player {
 
         return cards;
     }
-
 }
