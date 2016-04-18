@@ -59,6 +59,12 @@ Tous les documents de chaque groupe se trouve dans le repertoire doc à la racin
 
 ###Release
 
+>######Version 0.7.1
+
+- Correction bug dans l'IHM
+- Ajout du ppt pour la présentation du 19/04/2016
+- Ajout du diagramme de classe
+
 >######Version 0.7
 
 - Pouvoir recuperer tous les utilisateurs de la BDD (manque le filtre)
