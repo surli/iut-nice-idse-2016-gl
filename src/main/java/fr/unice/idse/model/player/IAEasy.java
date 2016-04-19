@@ -71,8 +71,8 @@ public class IAEasy extends IA {
         return color;
     }
 
-    public void changeColor(ArrayList<Card> mainIA, Game game) {
-        game.getAlternative().getEffectCard(myCard).action(chooseColor(mainIA));
+    public void changeColor(Card cardToPlay, ArrayList<Card> mainIA, Game game) {
+        game.getAlternative().getEffectCard(cardToPlay).action(chooseColor(mainIA));
     }
 
     public void playCard (Game game, Card cardToPlay, ArrayList<Card> mainIA, boolean turnPlay) {
@@ -80,8 +80,8 @@ public class IAEasy extends IA {
             game.poseCard(cardToPlay);
             System.out.println("Carte joué : " + cardToPlay);
 
-            if (game.getAlternative().getEffectCard(cardToPlay).isColorChangingCard()) {
-                changeColor(mainIA, game);
+            if (game.getAlternative().getEffectCard(cardToPlay) != null && game.getAlternative().getEffectCard(cardToPlay).isColorChangingCard()) {
+                changeColor(cardToPlay, mainIA, game);
             }
         }
         else {

@@ -1,5 +1,6 @@
 package model.player;
 
+import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
@@ -15,9 +16,13 @@ public class IAEasyTest {
     //TODO changeColor, chooseCardToPlay
 
     private IA iaEasy;
+    private IAEasy iaEasy2;
+    private Game game;
+    private Player host;
 
     @Before
     public void initialize(){
+
         iaEasy = IAFactory.getIA("testGetIA", "", 1);
 
         ArrayList<Card> cards=new ArrayList<Card>();
@@ -30,6 +35,21 @@ public class IAEasyTest {
         cards.add(new Card(Value.Two, Color.Green));
 
         iaEasy.setCards(cards);
+
+        host=new Player("host","host");
+        game = new Game(host,"game",4);
+
+        iaEasy2 = new IAEasy("testIA2", "", 1);
+        ArrayList<Card> cards2 = new ArrayList<Card>();
+
+        cards2.add(new Card(Value.Wild, Color.Black));
+        cards2.add(new Card(Value.Six, Color.Red));
+
+        iaEasy2.setCards(cards2);
+
+        game.addPlayer(iaEasy2);
+        game.getStack().addCard(new Card(Value.Four, Color.Green));
+
     }
 
     @Test
@@ -39,19 +59,11 @@ public class IAEasyTest {
         assertEquals(expected, iaEasy.chooseColor(iaEasy.getCards()));
     }
 
-
-    /*
     @Test
-    public void changeColor() {
-    }
-    */
+    public void testChangeColor() {
+        Color colorExpected = Color.Red;
+        iaEasy2.playCard(game, iaEasy2.getCards().get(0), iaEasy2.getCards(), true); // Change couleur qui est joué
 
-    /* BESOIN DE CREER UNE GAME POUR TESTER LE FONCTIONNEMET DE L IA
-    @Test
-    public void chooseCardToPlay() {
-        Card expected = new Card(Value.Six, Color.Red);
-
-        assertEquals(expected, iaEasy.chooseCardToPlay(iaEasy.getCards(), game.playableCards(), game));
+        assertEquals(colorExpected, game.getActualColor());
     }
-    */
 }
