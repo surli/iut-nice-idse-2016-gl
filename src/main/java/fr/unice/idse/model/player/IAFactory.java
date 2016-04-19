@@ -6,7 +6,7 @@ public class IAFactory extends IA {
 		super(name, token, difficulty);
 	}
 
-	public IA getIA(String name, String token, int difficulty){
+	public static IA getIA(String name, String token, int difficulty){
 	        IA ia = null;
 	        switch (difficulty) {
 	            case 1 :

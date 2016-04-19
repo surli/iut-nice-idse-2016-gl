@@ -29,6 +29,10 @@ public abstract class IA extends Player {
         this.difficulty = difficulty;
     }
 
+    public IA(String name, String token) {
+        super(name, token);
+    }
+
     public ArrayList<NumberCardByColor> calculateNumberCardByColor (ArrayList<Card> mainIA) {
 
         ArrayList<NumberCardByColor> cards = new ArrayList<NumberCardByColor>();
@@ -59,5 +63,11 @@ public abstract class IA extends Player {
         System.out.println("cards IA = " + cards);
 
         return cards;
+    }
+
+    public Color chooseColor(ArrayList<Card> mainIA) {
+        Color color = mainIA.get(0).getColor();
+
+        return color;
     }
 }

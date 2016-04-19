@@ -64,6 +64,7 @@ public class IAEasy extends IA {
         return myCard;
     }
 
+    @Override
     public Color chooseColor(ArrayList<Card> mainIA) {
         Color color = mainIA.get(0).getColor();
 

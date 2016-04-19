@@ -1,10 +1,9 @@
 package model.player;
 
-import fr.unice.idse.model.Game;
-import fr.unice.idse.model.Stack;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
+import fr.unice.idse.model.player.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,13 +14,11 @@ import static org.junit.Assert.assertEquals;
 public class IAEasyTest {
     //TODO changeColor, chooseCardToPlay
 
-    private fr.unice.idse.model.player.IAEasy iaEasy;
-    //private Stack stackJeu;
-    private Game game;
+    private IA iaEasy;
 
     @Before
     public void initialize(){
-        iaEasy = new fr.unice.idse.model.player.IAEasy("test","",0);
+        iaEasy = IAFactory.getIA("testGetIA", "", 1);
 
         ArrayList<Card> cards=new ArrayList<Card>();
 
@@ -32,15 +29,11 @@ public class IAEasyTest {
         cards.add(new Card(Value.Six, Color.Blue));
         cards.add(new Card(Value.Two, Color.Green));
 
-        //stackJeu = new Stack();
-        //stackJeu.addCard(new Card(Value.Five, Color.Red));
-
         iaEasy.setCards(cards);
     }
 
-
     @Test
-    public void chooseColor() {
+    public void testChooseColor() {
         Color expected = Color.Green;
 
         assertEquals(expected, iaEasy.chooseColor(iaEasy.getCards()));
