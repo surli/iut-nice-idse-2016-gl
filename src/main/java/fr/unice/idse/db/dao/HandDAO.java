@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.unice.idse.db.dao.object.CardObject;
 import fr.unice.idse.db.dao.object.HandPlayerObject;
 
 public class HandDAO extends DAO<HandPlayerObject>{
@@ -19,8 +20,27 @@ public class HandDAO extends DAO<HandPlayerObject>{
 
 	@Override
 	public boolean create(HandPlayerObject obj) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			String query = "INSERT INTO hands_players_in_game (h_id_match, h_id_user, h_id_card, h_tour) VALUES (?, ?, ?, ?)";
+			PreparedStatement stmt = getConnection().prepareStatement(query);
+
+			for(CardObject card : obj.getCards()) {
+				int count = 1;
+				stmt.setInt(count++, obj.getIdMatch());
+				stmt.setInt(count++, obj.getIdUser());
+				stmt.setInt(count++, card.getId());
+				stmt.setInt(count, obj.getIdTurn());
+				stmt.addBatch();
+			}
+
+			stmt.executeBatch();
+			getConnection().commit();
+			stmt.close();
+			return true;
+		} catch (SQLException e) {
+			logger.error(e.getMessage(), e.getSQLState());
+			throw e;
+		}
 	}
 
 	@Override
@@ -52,7 +72,7 @@ public class HandDAO extends DAO<HandPlayerObject>{
 			stmt.setInt(1, turnId);
 			stmt.setInt(2, userId);
 			ResultSet result = stmt.executeQuery();
-			if (result.next()) {
+			while(result.next()) {
 				if(value == null) {
 					value = new HandPlayerObject(result.getInt("h_id_match"), turnId, userId);
 				}
