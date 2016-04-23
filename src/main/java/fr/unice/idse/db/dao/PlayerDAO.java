@@ -17,27 +17,27 @@ public class PlayerDAO extends DAO<PlayerObject> {
 	public PlayerDAO(Connection conn) {
 		this.conn = conn;
 	}
-	
-	
+
 	@Override
 	public boolean create(PlayerObject obj) throws SQLException {
-		try {	
-					String query = "INSERT INTO players_in_game (p_g_id,p_id_user,p_position) VALUES (?,?,?)";
-					PreparedStatement stmt = getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
-					
-					int count = 1;
-					stmt.setInt(count++, obj.getIdGame());
-					stmt.setInt(count++, obj.getIdUser());
-					stmt.setInt(count, obj.getPosition());
+		try {
+			String query = "INSERT INTO players_in_game (p_g_id,p_id_user,p_position) VALUES (?,?,?)";
+			PreparedStatement stmt = getConnection().prepareStatement(query,
+					PreparedStatement.RETURN_GENERATED_KEYS);
 
-					stmt.execute();
-					getConnection().commit();
-					stmt.close();
-					return true;
-				} catch (SQLException e) {
-					logger.error(e.getMessage(), e.getSQLState());
-					throw e;
-				}
+			int count = 1;
+			stmt.setInt(count++, obj.getIdGame());
+			stmt.setInt(count++, obj.getIdUser());
+			stmt.setInt(count, obj.getPosition());
+
+			stmt.execute();
+			getConnection().commit();
+			stmt.close();
+			return true;
+		} catch (SQLException e) {
+			logger.error(e.getMessage(), e.getSQLState());
+			throw e;
+		}
 	}
 
 	@Override
@@ -57,15 +57,13 @@ public class PlayerDAO extends DAO<PlayerObject> {
 		try {
 			PlayerObject value = null;
 			String query = "SELECT p_g_id, p_id_user, p_position FROM players_in_game WHERE p_id_user = ?";
-			PreparedStatement stmt = this.getConnection().prepareStatement(query);
+			PreparedStatement stmt = this.getConnection().prepareStatement(
+					query);
 			stmt.setInt(1, id);
 			ResultSet result = stmt.executeQuery();
 			if (result.first()) {
-				value = new PlayerObject(
-						result.getInt("p_g_id"),
-						id,
-						result.getInt("p_position") 
-					);
+				value = new PlayerObject(result.getInt("p_g_id"), id,
+						result.getInt("p_position"));
 			}
 			stmt.close();
 			return value;

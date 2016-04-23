@@ -12,9 +12,10 @@ public class Connexion {
 	public static Connection getConnection(){
 		if(connect == null){
 			try {
+				Class.forName("com.mysql.jdbc.Driver");
 				connect = DriverManager.getConnection(Config.url, Config.user, Config.pass);
 				connect.setAutoCommit(false);
-			} catch (SQLException e) {
+			} catch (SQLException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}		

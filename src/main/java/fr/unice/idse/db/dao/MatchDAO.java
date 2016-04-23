@@ -16,18 +16,18 @@ public class MatchDAO extends DAO<MatchObject> {
 	public MatchDAO(Connection conn) {
 		this.conn = conn;
 	}
-	
-	
+
 	@Override
 	public boolean create(MatchObject obj) throws SQLException {
 		try {
-			
+
 			String query = "INSERT INTO matchs (m_g_id) VALUES (?)";
-			PreparedStatement stmt = getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
-			
+			PreparedStatement stmt = getConnection().prepareStatement(query,
+					PreparedStatement.RETURN_GENERATED_KEYS);
+
 			int count = 1;
 			stmt.setInt(count, obj.getIdGame());
-			
+
 			stmt.execute();
 			getConnection().commit();
 			stmt.getGeneratedKeys().next();
@@ -56,13 +56,13 @@ public class MatchDAO extends DAO<MatchObject> {
 	public MatchObject find(int id) throws SQLException {
 		try {
 			MatchObject value = null;
-			String query = "SELECT m_g_id FROM matchs WHERE m_g_id = ?";
-			PreparedStatement stmt = this.getConnection().prepareStatement(query);
+			String query = "SELECT m_g_id FROM matchs WHERE m_id = ?";
+			PreparedStatement stmt = this.getConnection().prepareStatement(
+					query);
 			stmt.setInt(1, id);
 			ResultSet result = stmt.executeQuery();
 			if (result.first()) {
-				value = new MatchObject(
-						id);
+				value = new MatchObject(id, result.getInt("m_g_id"));
 			}
 			stmt.close();
 			return value;
@@ -71,11 +71,24 @@ public class MatchDAO extends DAO<MatchObject> {
 			throw e;
 		}
 	}
-	
+
 	public MatchObject findbyGameId(int id) throws SQLException {
-		//TODO Implement
-			return null;
-		
+		try {
+			MatchObject value = null;
+			String query = "SELECT m_id FROM matchs WHERE m_g_id = ?";
+			PreparedStatement stmt = this.getConnection().prepareStatement(
+					query);
+			stmt.setInt(1, id);
+			ResultSet result = stmt.executeQuery();
+			if (result.first()) {
+				value = new MatchObject(result.getInt("m_id"), id);
+			}
+			stmt.close();
+			return value;
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e.getCause());
+			throw e;
+		}
 	}
 
 }
