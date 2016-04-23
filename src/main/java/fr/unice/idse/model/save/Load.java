@@ -136,14 +136,23 @@ public class Load {
 	}
 	
 	private void initPlayer(Game game){
-//		String gameName = game.getName();
-//		
-//		int gameId = dbg.getIdgameWithName(gameName);
-//		
+		String gameName = game.getName();
+		
+		GameObject gameObject = ((GameDAO)DAOFactory.getGameDAO()).find(gameName);
+
+		int gameId = gameObject.getId();
+		
+	   	ArrayList<PlayerObject> playerObject = ((PlayerDAO)DAOFactory.getPlayerDAO()).findsByGameId(gameId);
+
+	   	
+		for(int i =0; i<= playerObject.size();i++){
+			
+		}
+		
 //		ArrayList<Player> listPlayers = dbg.getIdUserAndPositionWithGameId(gameId);
 //		
 //		game.setPlayers(listPlayers);
-//		
+		
 		
 	}
 	
