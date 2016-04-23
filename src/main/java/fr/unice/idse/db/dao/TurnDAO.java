@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.unice.idse.db.dao.object.StackObject;
 import fr.unice.idse.db.dao.object.TurnObject;
 
 public class TurnDAO extends DAO<TurnObject>{
@@ -78,9 +80,27 @@ public class TurnDAO extends DAO<TurnObject>{
 		}
 	}
 	
-	public TurnObject findbyGameId(int id) throws SQLException {
-		// TODO Implement
-		return null;
+	public ArrayList<TurnObject> findsbyMatchId(int id) throws SQLException {
+		try {
+			ArrayList<TurnObject> value = new ArrayList<TurnObject>();
+			String query = "SELECT MAX(t_id) t_id, t_m_id, t_sens, id_user_ready FROM stack WHERE t_m_id = ?";
+			PreparedStatement stmt = this.getConnection().prepareStatement(query);
+			stmt.setInt(1, id);
+			ResultSet result = stmt.executeQuery();
+			
+			while(result.next()){
+				value.add(new TurnObject(id,
+						result.getInt("t_m_id"),
+						result.getBoolean("t_sens"),
+						result.getInt("id_user_ready")));
+			}
+
+			stmt.close();
+			return value;
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e.getCause());
+			throw e;
+		}
 		}
 	
 

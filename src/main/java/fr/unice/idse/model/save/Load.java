@@ -9,14 +9,18 @@ import fr.unice.idse.db.DataBaseGame;
 import fr.unice.idse.db.dao.CardDAO;
 import fr.unice.idse.db.dao.DAOFactory;
 import fr.unice.idse.db.dao.GameDAO;
+import fr.unice.idse.db.dao.HandDAO;
 import fr.unice.idse.db.dao.MatchDAO;
 import fr.unice.idse.db.dao.PlayerDAO;
 import fr.unice.idse.db.dao.StackDAO;
+import fr.unice.idse.db.dao.TurnDAO;
 import fr.unice.idse.db.dao.UserDAO;
 import fr.unice.idse.db.dao.object.GameObject;
+import fr.unice.idse.db.dao.object.HandPlayerObject;
 import fr.unice.idse.db.dao.object.MatchObject;
 import fr.unice.idse.db.dao.object.PlayerObject;
 import fr.unice.idse.db.dao.object.StackObject;
+import fr.unice.idse.db.dao.object.TurnObject;
 import fr.unice.idse.db.dao.object.UserObject;
 import fr.unice.idse.model.Deck;
 import fr.unice.idse.model.Game;
@@ -100,7 +104,7 @@ public class Load {
 		
 	}
 	
-	private void initHands(Game game){
+	private void initHands(Game game) throws SQLException{
 		
 		String gameName = game.getName();
 
@@ -113,24 +117,33 @@ public class Load {
 		
 	    int matchId = matchObject.getId();	
 	    
-	    
-		Map<String, ArrayList<Card>> map = dbg.getLastHandPlayers(matchId);
+	   ArrayList<TurnObject> turnObject = ((TurnDAO)DAOFactory.getTurnDAO()).findsbyMatchId(matchId);
+	   int turnId = turnObject.get(0).getId();
+	   
+	   	ArrayList<PlayerObject> playerObject = ((PlayerDAO)DAOFactory.getPlayerDAO()).findsByGameId(gameId);
 		
-		for (Player player : game.getPlayers()) {
-			player.setCards(map.get(player.getName()));
+	   	ArrayList<HandPlayerObject> handObject = new ArrayList<HandPlayerObject>();
+		
+		for(int i =0; i<= playerObject.size();i++){
+			handObject.add(((HandDAO)DAOFactory.getHandPlayerDAO()).find(turnId, playerObject.get(i).getIdUser()));
 		}
+	    
+			
+//		for(int i =0; i<= playerObject.size();i++){
+//			game.getPlayers().get(i).setCards(new Card(handObject.get(i).getCards()));
+//		}
 		
 	}
 	
 	private void initPlayer(Game game){
-		String gameName = game.getName();
-		
-		int gameId = dbg.getIdgameWithName(gameName);
-		
-		ArrayList<Player> listPlayers = dbg.getIdUserAndPositionWithGameId(gameId);
-		
-		game.setPlayers(listPlayers);
-		
+//		String gameName = game.getName();
+//		
+//		int gameId = dbg.getIdgameWithName(gameName);
+//		
+//		ArrayList<Player> listPlayers = dbg.getIdUserAndPositionWithGameId(gameId);
+//		
+//		game.setPlayers(listPlayers);
+//		
 		
 	}
 	
