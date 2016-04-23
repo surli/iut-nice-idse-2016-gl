@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.unice.idse.db.dao.object.PlayerObject;
 import fr.unice.idse.db.dao.object.StackObject;
 
 public class StackDAO extends DAO<StackObject>{
@@ -52,6 +54,11 @@ public class StackDAO extends DAO<StackObject>{
 		return false;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see fr.unice.idse.db.dao.DAO#find(int)
+	 * int id est l'id du Stack
+	 */
 	@Override
 	public StackObject find(int id) throws SQLException {
 		try {
@@ -66,6 +73,31 @@ public class StackDAO extends DAO<StackObject>{
 						id,
 						result.getInt("s_c_id"));
 			}
+			stmt.close();
+			return value;
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e.getCause());
+			throw e;
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see fr.unice.idse.db.dao.DAO#find(int)
+	 * int id est l'id du match
+	 */
+	public ArrayList<StackObject> findsByMatchId(int id) throws SQLException {
+		try {
+			ArrayList<StackObject> value = new ArrayList<StackObject>();
+			String query = "SELECT s_t_id, s_m_id, s_c_id FROM stack WHERE s_m_id = ?";
+			PreparedStatement stmt = this.getConnection().prepareStatement(query);
+			stmt.setInt(1, id);
+			ResultSet result = stmt.executeQuery();
+			
+			while(result.next()){
+				value.add(new StackObject(result.getInt("s_m_id"),id,result.getInt("s_c_id")));
+			}
+
 			stmt.close();
 			return value;
 		} catch (SQLException e) {

@@ -1,5 +1,6 @@
 package fr.unice.idse.model.save;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import fr.unice.idse.db.dao.DAOFactory;
 import fr.unice.idse.db.dao.GameDAO;
 import fr.unice.idse.db.dao.MatchDAO;
 import fr.unice.idse.db.dao.PlayerDAO;
+import fr.unice.idse.db.dao.StackDAO;
 import fr.unice.idse.db.dao.UserDAO;
 import fr.unice.idse.db.dao.object.GameObject;
 import fr.unice.idse.db.dao.object.MatchObject;
@@ -19,6 +21,8 @@ import fr.unice.idse.db.dao.object.UserObject;
 import fr.unice.idse.model.Deck;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.card.Value;
 import fr.unice.idse.model.player.Player;
 
 public class Load {
@@ -64,7 +68,7 @@ public class Load {
 	}
 	
 	
-	private void initLoadStack(Game game){
+	private void initLoadStack(Game game) throws SQLException{
 		String gameName = game.getName();
 		
 		GameObject gameObject = ((GameDAO)DAOFactory.getGameDAO()).find(gameName);
@@ -75,23 +79,22 @@ public class Load {
 		MatchObject matchObject = ((MatchDAO)DAOFactory.getMatchDAO()).findbyGameId(gameId);
 		
 	    int matchId = matchObject.getId();
-				
 	    
-	    StackObject stack = new StackObject();
-		stack.setIdCard(((CardDAO)DAOFactory.getCardDAO()).find(topCard.getColor().getNumber(), topCard.getValue().getNumber()).getId());
-		stack.setIdMatch(matchId);
-		stack.setIdTurn(turn.getId());
-		DAOFactory.getStackDAO().create(stack);
-		 
+	    ArrayList<StackObject> stackObject = ((StackDAO)DAOFactory.getStackDAO()).findsByMatchId(matchId);
 	    
-		ArrayList<Card> listStack = dbg.getStackWithMatchId(matchId);
+	    ArrayList<Card> listStack = new ArrayList<Card>();
+	    
+		for(int i =0; i<= stackObject.size();i++){
+			listStack.add(new Card(Value.valueOf(String.valueOf(stackObject.get(i).getCard().getValue())), Color.valueOf(String.valueOf(stackObject.get(i).getCard().getColor()))));
+		}		
 		
-		
+   
 		game.getStack().setStack(listStack);
 
 		Deck deck = game.getDeck();
 		
-		for(int i =0; i<= listStack.size();i++){
+		for(int i =0; i<= stackObject.size();i++){
+			
 			deck.removeCard(listStack.get(i)); 
 		}
 		
