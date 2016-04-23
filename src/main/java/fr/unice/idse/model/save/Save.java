@@ -124,9 +124,7 @@ public class Save implements Observer {
 
 
 			/*
-			 
 		     * MatchId a partir du GameId
-		 
 		     */
 			
 			MatchObject matchObject = ((MatchDAO)DAOFactory.getMatchDAO()).findbyGameId(gameId);
@@ -142,7 +140,6 @@ public class Save implements Observer {
 			DAOFactory.getTurnDAO().create(turn);
 		    
 			
-
 		 
 			Card topCard = game.getStack().getStack().get(0);
 		 

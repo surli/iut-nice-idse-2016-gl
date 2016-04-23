@@ -5,33 +5,46 @@ import java.util.Map;
 
 import fr.unice.idse.db.DataBaseCard;
 import fr.unice.idse.db.DataBaseGame;
+import fr.unice.idse.db.dao.DAOFactory;
+import fr.unice.idse.db.dao.GameDAO;
+import fr.unice.idse.db.dao.PlayerDAO;
+import fr.unice.idse.db.dao.object.GameObject;
 import fr.unice.idse.model.Deck;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.player.Player;
 
 public class Load {
-	protected DataBaseGame dbg;
-	protected DataBaseCard dbc;
+
 
 	public Load() {
-		dbg = new DataBaseGame();
-		dbc = new DataBaseCard();
+
 	}
 	
 	
 	public Game load(String gameName) throws Exception{
-		Game game = dbg.getGameWithName(gameName);
 		
-		if(game == null) {
+		GameObject gameObject = ((GameDAO)DAOFactory.getGameDAO()).find(gameName);
+
+		if(gameObject == null) {
 			throw new Exception("ERROR : No game exist with this name");
 		}
 		
+		int nbjoueurs = gameObject.getNbMaxJoueurs();
+		
+		PlayerObject playerObject ((PlayerDAO)DAOFactory.getGameDAO()).find(gameName);
+		
+		Game game = new Game( ,gameName,nbjoueurs);
+
+		
 		game.getDeck().initDeck();
+
 		
 		initPlayer(game);
 		initHands(game);
 		initLoadStack(game);
+		
+
 		
 		return game;
 	}

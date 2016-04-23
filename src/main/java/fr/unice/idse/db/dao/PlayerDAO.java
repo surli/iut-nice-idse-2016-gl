@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +53,12 @@ public class PlayerDAO extends DAO<PlayerObject> {
 		return false;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see fr.unice.idse.db.dao.DAO#find(int)
+	 * int id est l'id du Player 
+	 */
+	
 	@Override
 	public PlayerObject find(int id) throws SQLException {
 		try {
@@ -66,6 +74,34 @@ public class PlayerDAO extends DAO<PlayerObject> {
 			}
 			stmt.close();
 			return value;
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e.getCause());
+			throw e;
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see fr.unice.idse.db.dao.DAO#find(int)
+	 * int id est l'id d'un game
+	 */
+	
+	@Override
+	public ArrayList<PlayerObject> findsByGameId(int id) throws SQLException {
+		try {
+			ArrayList<PlayerObject> value = new ArrayList<PlayerObject>();
+			String query = "SELECT p_g_id, p_id_user, p_position FROM players_in_game WHERE p_g_id = ?";
+			PreparedStatement stmt = this.getConnection().prepareStatement(query);
+			stmt.setInt(1, id);
+			ResultSet result = stmt.executeQuery();
+			
+			while(result.next()){
+				value.add(new PlayerObject(result.getInt("p_g_id"),id,result.getInt("p_position")));
+			}
+			
+			stmt.close();
+			return value;
+			
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e.getCause());
 			throw e;
