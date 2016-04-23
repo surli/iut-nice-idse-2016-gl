@@ -31,6 +31,5 @@ public abstract class DAO<T> {
 
 	public abstract T find(int id) throws SQLException;
 
-	public abstract List<PlayerObject> findsByGameId(int id) throws SQLException;
 
 }

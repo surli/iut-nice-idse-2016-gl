@@ -86,7 +86,6 @@ public class PlayerDAO extends DAO<PlayerObject> {
 	 * int id est l'id d'un game
 	 */
 	
-	@Override
 	public ArrayList<PlayerObject> findsByGameId(int id) throws SQLException {
 		try {
 			ArrayList<PlayerObject> value = new ArrayList<PlayerObject>();

@@ -5,10 +5,17 @@ import java.util.Map;
 
 import fr.unice.idse.db.DataBaseCard;
 import fr.unice.idse.db.DataBaseGame;
+import fr.unice.idse.db.dao.CardDAO;
 import fr.unice.idse.db.dao.DAOFactory;
 import fr.unice.idse.db.dao.GameDAO;
+import fr.unice.idse.db.dao.MatchDAO;
 import fr.unice.idse.db.dao.PlayerDAO;
+import fr.unice.idse.db.dao.UserDAO;
 import fr.unice.idse.db.dao.object.GameObject;
+import fr.unice.idse.db.dao.object.MatchObject;
+import fr.unice.idse.db.dao.object.PlayerObject;
+import fr.unice.idse.db.dao.object.StackObject;
+import fr.unice.idse.db.dao.object.UserObject;
 import fr.unice.idse.model.Deck;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
@@ -32,19 +39,26 @@ public class Load {
 		
 		int nbjoueurs = gameObject.getNbMaxJoueurs();
 		
-		PlayerObject playerObject ((PlayerDAO)DAOFactory.getGameDAO()).find(gameName);
+		int gameId= gameObject.getId();
 		
-		Game game = new Game( ,gameName,nbjoueurs);
+		ArrayList<PlayerObject> playerObject = ((PlayerDAO)DAOFactory.getPlayerDAO()).findsByGameId(gameId);
+		
+		int idUser = playerObject.get(0).getIdUser();
+		
+		UserObject userObject = ((UserDAO)DAOFactory.getUserDAO()).find(idUser);
+
+		String name = userObject.getPseudo();
+
+		Player joueur = new Player(name,"host");
+		
+		Game game = new Game(joueur,gameName,nbjoueurs);
 
 		
 		game.getDeck().initDeck();
 
-		
 		initPlayer(game);
 		initHands(game);
 		initLoadStack(game);
-		
-
 		
 		return game;
 	}
@@ -53,11 +67,25 @@ public class Load {
 	private void initLoadStack(Game game){
 		String gameName = game.getName();
 		
-		int gameId = dbg.getIdgameWithName(gameName);
+		GameObject gameObject = ((GameDAO)DAOFactory.getGameDAO()).find(gameName);
+
 		
-		int matchId = dbg.getIdMatchWithGameId(gameId);
+		int gameId = gameObject.getId();
 		
+		MatchObject matchObject = ((MatchDAO)DAOFactory.getMatchDAO()).findbyGameId(gameId);
+		
+	    int matchId = matchObject.getId();
+				
+	    
+	    StackObject stack = new StackObject();
+		stack.setIdCard(((CardDAO)DAOFactory.getCardDAO()).find(topCard.getColor().getNumber(), topCard.getValue().getNumber()).getId());
+		stack.setIdMatch(matchId);
+		stack.setIdTurn(turn.getId());
+		DAOFactory.getStackDAO().create(stack);
+		 
+	    
 		ArrayList<Card> listStack = dbg.getStackWithMatchId(matchId);
+		
 		
 		game.getStack().setStack(listStack);
 

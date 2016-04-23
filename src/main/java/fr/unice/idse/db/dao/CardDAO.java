@@ -4,11 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.unice.idse.db.dao.object.CardObject;
+import fr.unice.idse.db.dao.object.PlayerObject;
 
 public class CardDAO extends DAO<CardObject> {
 	private Logger logger = LoggerFactory.getLogger(CardDAO.class);
@@ -75,5 +77,6 @@ public class CardDAO extends DAO<CardObject> {
 	public CardObject find(int color, int value) {
 		return null;
 	}
+
 	
 }
