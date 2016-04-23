@@ -1,5 +1,6 @@
 package fr.unice.idse.db.dao.object;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.unice.idse.db.dao.CardDAO;
@@ -17,7 +18,6 @@ public class HandPlayerObject {
 	}
 
 	public HandPlayerObject(int idMatch, int idTurn, int idUser, List<CardObject> cards) {
-		super();
 		this.idMatch = idMatch;
 		this.idTurn = idTurn;
 		this.cards = cards;
@@ -25,10 +25,10 @@ public class HandPlayerObject {
 	}
 	
 	public HandPlayerObject(int idMatch, int idTurn, int idUser) {
-		super();
 		this.idMatch = idMatch;
 		this.idTurn = idTurn;
 		this.idUser = idUser;
+		this.cards = new ArrayList<>();
 	}
 
 	public int getIdMatch() {
@@ -53,6 +53,10 @@ public class HandPlayerObject {
 
 	public void setCards(List<CardObject> cards) {
 		this.cards = cards;
+	}
+	
+	public void addCard(CardObject card) {
+		this.cards.add(card);
 	}
 
 	public int getIdUser() {
