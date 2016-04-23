@@ -13,7 +13,7 @@ import fr.unice.idse.db.dao.object.GameObject;
 import fr.unice.idse.db.dao.object.PlayerObject;
 
 public class GameDAO extends DAO<GameObject> {
-	private Logger logger = LoggerFactory.getLogger(UserDAO.class);
+	private Logger logger = LoggerFactory.getLogger(GameDAO.class);
 
 	public GameDAO(Connection conn) {
 		this.conn = conn;
