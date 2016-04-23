@@ -1,8 +1,9 @@
 package fr.unice.idse.model.regle;
 
-import fr.unice.idse.model.*;
-import fr.unice.idse.model.card.*;
-import fr.unice.idse.model.player.Player;
+import fr.unice.idse.model.Game;
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.card.Value;
 
 public abstract class EffectCard
 {

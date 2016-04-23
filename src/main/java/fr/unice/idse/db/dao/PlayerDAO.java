@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.unice.idse.db.dao.object.PlayerObject;
-import fr.unice.idse.db.dao.object.UserObject;
 
 public class PlayerDAO extends DAO<PlayerObject> {
 	private Logger logger = LoggerFactory.getLogger(PlayerDAO.class);

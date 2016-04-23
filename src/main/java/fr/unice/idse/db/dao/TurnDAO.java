@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.unice.idse.db.dao.object.StackObject;
 import fr.unice.idse.db.dao.object.TurnObject;
 
 public class TurnDAO extends DAO<TurnObject>{

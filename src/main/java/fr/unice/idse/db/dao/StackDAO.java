@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.unice.idse.db.dao.object.StackObject;
-import fr.unice.idse.db.dao.object.UserObject;
 
 public class StackDAO extends DAO<StackObject>{
 	private Logger logger = LoggerFactory.getLogger(UserDAO.class);
