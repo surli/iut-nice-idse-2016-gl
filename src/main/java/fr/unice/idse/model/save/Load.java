@@ -101,9 +101,19 @@ public class Load {
 	}
 	
 	private void initHands(Game game){
-		int gameId = dbg.getIdgameWithName(game.getGameName());
-		int matchId = dbg.getIdMatchWithGameId(gameId);
 		
+		String gameName = game.getName();
+
+		GameObject gameObject = ((GameDAO)DAOFactory.getGameDAO()).find(gameName);
+
+		
+		int gameId = gameObject.getId();
+		
+		MatchObject matchObject = ((MatchDAO)DAOFactory.getMatchDAO()).findbyGameId(gameId);
+		
+	    int matchId = matchObject.getId();	
+	    
+	    
 		Map<String, ArrayList<Card>> map = dbg.getLastHandPlayers(matchId);
 		
 		for (Player player : game.getPlayers()) {
