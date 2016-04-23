@@ -167,6 +167,7 @@ public class Save implements Observer {
 				hand.setIdUser(userPlayer.getId());
 				hand.setCard(arrayPlayer.get(i).getCards());
 				DAOFactory.getHandPlayerDAO().create(hand);
+				
 		   
 		      }
 		 
