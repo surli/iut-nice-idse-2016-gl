@@ -68,7 +68,7 @@ public class Model {
 	 * @param player Player
 	 * @param gameName String
 	 * @param numberPlayers Int
-	 * @param regeles ArrayList<EffectCard>
+	 * @param regles ArrayList<EffectCard>
 	 * @return Boolean
 	 */
 	public boolean addGame(Player player, String gameName, int numberPlayers, ArrayList<EffectCard> regles)
