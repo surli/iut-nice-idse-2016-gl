@@ -12,6 +12,13 @@ public class RuleTradePlayerDecks extends EffectCard{
 			this.isColorChangingCard = false;
 			this.value = value;
 		}
+		
+		public RuleTradePlayerDecks( Value value) 
+		{
+
+			this.isColorChangingCard = false;
+			this.value = value;
+		}
 
 		@Override
 		public void action() 

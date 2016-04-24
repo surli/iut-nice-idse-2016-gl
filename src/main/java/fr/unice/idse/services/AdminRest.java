@@ -166,9 +166,9 @@ public class AdminRest extends OriginRest{
      * @throws JSONException
      */
     @Path("player")
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response allPlayers(@HeaderParam("token") String token) throws JSONException{
+    public Response allPlayers(@HeaderParam("token") String token, String json) throws JSONException{
         DataBaseUser dataBaseUser = new DataBaseUser();
         JSONObject jsonReturn = new JSONObject();
 
@@ -176,10 +176,22 @@ public class AdminRest extends OriginRest{
         String verif = verifAdmin(token);
         if(verif != null){
             jsonReturn.put("error", verif);
-            return sendResponse(405, jsonReturn.toString(), "GET");
+            return sendResponse(405, jsonReturn.toString(), "POST");
         }
+        String user = Model.getInstance().getPlayerFromList(token).getName();
 
-        return sendResponse(200, dataBaseUser.allUser().toString(), "GET");
+        // verification du json
+        JSONObject jsonObject = new JSONObject(json);
+        if(jsonObject.has("search")){
+            JSONObject jsonResult = dataBaseUser.getUsers(user, jsonObject.getString("search"));
+            if (jsonResult.length() == 0){
+                jsonReturn.put("error", "No result");
+                return sendResponse(405, jsonReturn.toString(), "POST");
+            }
+            return sendResponse(200, jsonResult.toString(), "POST");
+
+        }
+        return sendResponse(200, dataBaseUser.allUser(user).toString(), "POST");
     }
 
     /**

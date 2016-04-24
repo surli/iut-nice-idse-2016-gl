@@ -4,8 +4,11 @@ package services;
 import fr.unice.idse.db.DataBaseGame;
 import fr.unice.idse.db.DataBaseOrigin;
 import fr.unice.idse.db.DataBaseUser;
+import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
+import fr.unice.idse.model.player.Player;
 import fr.unice.idse.services.AuthRest;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -17,6 +20,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -38,8 +42,8 @@ public class AuthRestTest extends JerseyTest {
         DataBaseOrigin dataBaseOrigin = DataBaseOrigin.getInstance("sqlite");
         dataBaseOrigin.resetDatabaseSQLite();
         model = Model.getInstance();
-        model.setGames(new ArrayList<>());
-        model.setPlayers(new ArrayList<>());
+        model.setGames(new ArrayList<Game>());
+        model.setPlayers(new ArrayList<Player>());
         jsonObject = new JSONObject();
     }
 
@@ -92,6 +96,6 @@ public class AuthRestTest extends JerseyTest {
         assertEquals(200, response.getStatus());
 
         DataBaseUser dataBaseUser = new DataBaseUser();
-        assertEquals(2, dataBaseUser.allUser().getJSONArray("users").length());
+        assertEquals(2, dataBaseUser.allUser("").getJSONArray("users").length());
     }
 }

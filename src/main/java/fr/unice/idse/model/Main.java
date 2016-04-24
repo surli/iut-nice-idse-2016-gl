@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.regle.EffectCard;
+import fr.unice.idse.model.regle.RuleChangeColor;
 import fr.unice.idse.model.player.*;
 
 
@@ -59,7 +60,7 @@ public class Main
                             e.printStackTrace();
                         }
                         int numberCard = Integer.parseInt(input);
-                        if(!input.equals("") && numberCard < actualPlayer.getCards().size())
+                        if(input != "" && numberCard < actualPlayer.getCards().size())
                         {
 
                             Card card = actualPlayer.getCards().get(numberCard);

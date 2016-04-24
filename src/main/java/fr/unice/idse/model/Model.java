@@ -68,7 +68,7 @@ public class Model {
 	 * @param player Player
 	 * @param gameName String
 	 * @param numberPlayers Int
-	 * @param regeles ArrayList<EffectCard>
+	 * @param regles ArrayList<EffectCard>
 	 * @return Boolean
 	 */
 	public boolean addGame(Player player, String gameName, int numberPlayers, ArrayList<EffectCard> regles)
@@ -76,6 +76,7 @@ public class Model {
 		if(!existsGame(gameName))
 		{
 			Game game = new Game(player,gameName,numberPlayers, regles);
+			game.getAlternative().setGameToEffectCards(game);
 			this.games.add(game);
 			
 			boolean saveEnable = false;

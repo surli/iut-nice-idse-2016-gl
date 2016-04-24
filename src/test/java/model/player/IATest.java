@@ -1,29 +1,67 @@
 package model.player;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import fr.unice.idse.model.player.IA;
-import fr.unice.idse.model.player.IAEasy;
-import fr.unice.idse.model.player.IAMedium;
-import fr.unice.idse.model.player.IAHard;
-
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
+import fr.unice.idse.model.player.IA;
+import fr.unice.idse.model.player.IAFactory;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
 
 public class IATest {
-    /*          TESTER EQALS
 
-                TESTER COMPARETO
+    private IA iaHard;
 
-                TEST AVEC DECLARATION
-                    ArrayList<Card> mainIA = board.getActualPlayer().getCards();
-                    ArrayList<Card> playableCards = board.playableCards();
-                    POR OBTENIR RETOR CARD = CARDPLAY
-     */
+    @Before
+    public void initialize(){
+
+        iaHard = IAFactory.getIA("testIAHard", "", 3);
+
+        ArrayList<Card> cards=new ArrayList<Card>();
+
+        cards.add(new Card(Value.Three, Color.Blue));
+        cards.add(new Card(Value.Six, Color.Green));
+
+        iaHard.setCards(cards);
+
+    }
+
+    /* ------------ testSearchColorCard ----------------------------- */
+    @Test
+    public void testSearchColorCardTrue() {
+
+        boolean expected = true;
+        boolean colorExist = iaHard.searchColorCard(iaHard.getCards(), Color.Green);
+        assertEquals(expected, colorExist);
+    }
+
+    @Test
+    public void testSearchColorCardFalse() {
+
+        boolean expected = false;
+        boolean colorExist = iaHard.searchColorCard(iaHard.getCards(), Color.Red);
+        assertEquals(expected, colorExist);
+    }
+
+/* ------------ testSearchValueCard ----------------------------- */
+
+    @Test
+    public void testSearchValueCardTrue() {
+
+        boolean expected = true;
+        boolean valueExist = iaHard.searchValueCard(iaHard.getCards(), Value.Six);
+        assertEquals(expected, valueExist);
+    }
+
+    @Test
+    public void testSearchValueCardFalse() {
+
+        boolean expected = false;
+        boolean valueExist = iaHard.searchValueCard(iaHard.getCards(), Value.Nine);
+        assertEquals(expected, valueExist);
+    }
 }

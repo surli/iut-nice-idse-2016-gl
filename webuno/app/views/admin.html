@@ -4,7 +4,10 @@
     </div>
     <div class="col-md-12">
         <div class="panel panel-default">
-            <div class="panel-heading text-center">{{'PLAYERS' | translate}}</div>
+            <div class="panel-heading text-center">
+                <span>{{'PLAYERS' | translate}}</span>
+                <input class="input" type="text" data-ng-model="search" placeholder="Rechercher" style="float: right;" data-ng-change="updateUsers()">
+            </div>
             <div class="panel-body text-center" style="padding:0;">
                 <table class="table" data-ng-if="allusers.length > 0" style="margin: 0;">
                     <tr data-ng-repeat="user in allusers">
@@ -28,42 +31,38 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12">
-        <div class="col-md-8">
-            <div class="panel panel-default">
-                <div class="panel-heading text-center">{{games.length}} partie{{(games.length > 1) ? 's' : ''}}</div>
-                <div class="panel-body text-center" style="padding:0;">
-                    <table class="table" data-ng-if="games.length > 0" style="margin: 0;">
-                        <tr data-ng-repeat="game in games">
-                            <td>{{game.gamename}}</td>
-                            <td>{{game.numberplayer}}/{{game.maxplayer}}</td>
-                            <td>{{(game.state == "true") ? ('STARTED'|translate) : ((game.numberplayer ==
-                                game.maxplayer) ?
-                                ('FULLPLAYERS'|translate) : ('WAITINGPLAYERS'|translate))}}
-                            </td>
-                            <td>
-                                <a href data-ng-click="goVisualisation(game.gamename)">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                            </td>
-                            <td>
-                                <a href data-confirmed-click="goDelete(game.gamename)"
-                                   ng-confirm-click="Êtes-vous certain de vouloir supprimer cette partie ?">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </table>
-                    <p style="padding: 15px;" data-ng-if="games.length == 0">{{'NOGAMESSTARTED' | translate}}</p>
-                </div>
+    <div data-ng-class="{'col-md-12': games.length == 0, 'col-md-8': games.length > 0}">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">{{games.length}} partie{{(games.length > 1) ? 's' : ''}}</div>
+            <div class="panel-body text-center" style="padding:0;">
+                <table class="table" data-ng-if="games.length > 0" style="margin: 0;">
+                    <tr data-ng-repeat="game in games">
+                        <td>{{game.gamename}}</td>
+                        <td>{{game.numberplayer}}/{{game.maxplayer}}</td>
+                        <td>{{(game.state == "true") ? ('STARTED'|translate) : ((game.numberplayer == game.maxplayer) ? ('FULLPLAYERS'|translate) : ('WAITINGPLAYERS'|translate))}}
+                        </td>
+                        <td>
+                            <a href data-ng-click="goVisualisation(game.gamename)">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href data-confirmed-click="goDelete(game.gamename)"
+                               ng-confirm-click="Êtes-vous certain de vouloir supprimer cette partie ?">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                <p style="padding: 15px;" data-ng-if="games.length == 0">{{'NOGAMESSTARTED' | translate}}</p>
             </div>
         </div>
-        <div class="col-md-4" data-ng-show="games.length > 0">
-            <div class="panel panel-default">
-                <div class="panel-heading text-center">Stats</div>
-                <div class="panel-body text-center" style="padding:0;">
-                    <div google-chart chart="statsChart" style="height:200px; width:100%; background: transparent;"></div>
-                </div>
+    </div>
+    <div class="col-md-4" data-ng-show="games.length > 0">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">Stats</div>
+            <div class="panel-body text-center" style="padding:0;">
+                <div google-chart chart="statsChart" style="height:200px; width:100%; background: transparent;"></div>
             </div>
         </div>
     </div>

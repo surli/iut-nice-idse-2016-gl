@@ -4,6 +4,7 @@ import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.NumberCardByColor;
+import fr.unice.idse.model.card.Value;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,31 +30,8 @@ public abstract class IA extends Player {
         this.difficulty = difficulty;
     }
 
-    public Card chooseCardToPlay (ArrayList<Card> mainIA, ArrayList<Card> playableCards) {
-        Card chooseCard = null;
-
-        return chooseCard;
-    }
-
-    public void playCard (Game game, Card cardToPlay, ArrayList<Card> mainIA, Boolean turnPlay) {
-        if(turnPlay) {
-        	game.poseCard(cardToPlay);
-            System.out.println("Carte joué : " + cardToPlay);
-
-            if (game.getAlternative().getEffectCard(cardToPlay).isColorChangingCard()) {
-            	game.getAlternative().getEffectCard(cardToPlay).action(chooseColor(mainIA));
-            	game.getAlternative().getEffectCard(cardToPlay).action();
-            }
-        }
-        else {
-        	game.drawCard();
-        }
-    }
-
-    public Color chooseColor(ArrayList<Card> mainIA) {
-        Color colorChoose = mainIA.get(0).getColor();
-
-        return colorChoose;
+    public IA(String name, String token) {
+        super(name, token);
     }
 
     public ArrayList<NumberCardByColor> calculateNumberCardByColor (ArrayList<Card> mainIA) {
@@ -88,4 +66,57 @@ public abstract class IA extends Player {
         return cards;
     }
 
+    public Color chooseColor(ArrayList<Card> mainIA) {
+        Color color = mainIA.get(0).getColor();
+
+        return color;
+    }
+
+    public void changeColor(Card cardToPlay, ArrayList<Card> mainIA, Game game) {
+        game.getAlternative().getEffectCard(cardToPlay).action(chooseColor(mainIA));
+    }
+
+    public void playCard (Game game, Card cardToPlay, ArrayList<Card> mainIA, boolean turnPlay) {
+        if(turnPlay){
+            game.poseCard(cardToPlay);
+            System.out.println("Carte joué : " + cardToPlay);
+
+            if (game.getAlternative().getEffectCard(cardToPlay) != null && game.getAlternative().getEffectCard(cardToPlay).isColorChangingCard()) {
+                changeColor(cardToPlay, mainIA, game);
+            }
+        }
+        else {
+            game.drawCard();
+        }
+    }
+
+
+    /**
+     * Retourne true si le joueur a des cartes de couleur precise dans sa main en paramettre sinon retourne false
+     */
+    public boolean searchColorCard (ArrayList<Card> main, Color colorCard) {
+        boolean colorExist = false;
+
+        for (Card aCard : main) {
+            if(aCard.getColor() == colorCard) {
+                colorExist = true;
+            }
+        }
+
+        return colorExist;
+    }
+
+    /**
+     * Retourne true si le joueur a des cartes de valeur precise dans sa main en paramettre sinon retourne false
+     */
+    public boolean searchValueCard (ArrayList<Card> main, Value valueCard) {
+        boolean valueExist = false;
+        for (Card aCard : main) {
+            if(aCard.getValue() == valueCard) {
+                valueExist = true;
+            }
+        }
+
+        return valueExist;
+    }
 }

@@ -13,11 +13,12 @@ angular.module('unoApp')
                 if (response.status === 200) {
                     $rootScope.error = null;
                     if (callback && angular.isFunction(callback)) {
+                        console.log(response);
                         callback(response.data);
                     }
                 } else {
                     if (callbackError && angular.isFunction(callbackError)) {
-                        callbackError();
+                        callbackError(response.data.error);
                     }
 
                     if (response.status === 404) {

@@ -1,13 +1,12 @@
 package fr.unice.idse.model.player;
 
 public class IAFactory extends IA {
-
-
-	public IAFactory(String name, String token, int difficulty) {
+	
+	 public IAFactory(String name, String token, int difficulty) {
 		super(name, token, difficulty);
 	}
 
-	public IA setDifficultyIA(String name, String token, int difficulty){
+	public static IA getIA(String name, String token, int difficulty){
 	        IA ia = null;
 	        switch (difficulty) {
 	            case 1 :

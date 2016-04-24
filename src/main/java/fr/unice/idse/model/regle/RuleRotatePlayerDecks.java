@@ -13,6 +13,13 @@ public class RuleRotatePlayerDecks extends EffectCard
 		this.isColorChangingCard = false;
 		this.value = value;
 	}
+	
+	public RuleRotatePlayerDecks( Value value) 
+	{
+
+		this.isColorChangingCard = false;
+		this.value = value;
+	}
 
 	@Override
 	public void action() {

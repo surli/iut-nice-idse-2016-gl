@@ -26,9 +26,12 @@ public class Alternative
 		actions = regles;
 	}
 	
-	public void addActionToCard(EffectCard action)
+	public void setGameToEffectCards(Game game)
 	{
-		actions.add(action);
+		for (EffectCard rule : actions)
+		{
+			rule.setGame(game);
+		}
 	}
 	
 	public EffectCard getEffectCard(Card card)

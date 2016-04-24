@@ -88,7 +88,7 @@ public class DAOFactory {
 	 * @return DAO
 	 */
 	public static DAO<HandPlayerObject> getHandPlayerDAO(){
-		return null;
+		return new HandDAO(conn);
 	}
 	
 }
