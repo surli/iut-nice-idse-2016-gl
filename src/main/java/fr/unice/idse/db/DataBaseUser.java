@@ -65,9 +65,9 @@ public class DataBaseUser {
 	public JSONObject getUsers(String pseudo, String search){
 		JSONObject jsonObject = new JSONObject();
 		ArrayList<JSONObject> players = new ArrayList<>();
-		String query = "SELECT u_id, u_email, u_pseudo, u_statut, u_banned FROM users WHERE u_pseudo <> ? AND u_pseudo LIKE '%?%'";
+		String query = "SELECT u_id, u_email, u_pseudo, u_statut, u_banned FROM users WHERE u_pseudo <> ? AND u_pseudo LIKE '%"+search+"%'";
 		try{
-			if(dataBaseOrigin.executeSQL(query, pseudo, search)){
+			if(dataBaseOrigin.executeSQL(query, pseudo)){
 				do{
 					JSONObject tmp = new JSONObject();
 					tmp.put("id", dataBaseOrigin.rs.getInt(1));
