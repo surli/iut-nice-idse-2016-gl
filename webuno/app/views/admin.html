@@ -1,41 +1,35 @@
 <div id="admin" class="col-md-12">
     <div class="jumbotron">
-        <h1>Administration</h1>
+        <h1>Admin</h1>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading text-center">{{'PLAYERS' | translate}}</div>
             <div class="panel-body text-center" style="padding:0;">
                 <table class="table" data-ng-if="allusers.length > 0" style="margin: 0;">
                     <tr data-ng-repeat="user in allusers">
-                        <span type="hidden" ng-model="id">{{user.id}}</span>
                         <td>{{user.pseudo}}</td>
                         <td>{{user.email}}</td>
                         <td>
-                            <input ng-model="user.banned" ng-checked="user.banned == 'true' " type="checkbox"><label
-                                style="padding-left: 3px;">{{'BANNED'
-                            |translate}}</label>
+                            <input id="banUser" ng-model="user.banned" ng-checked="user.banned" data-ng-click="goUpdateBan(user.pseudo, user.banned)" type="checkbox">
+                            <label for="banUser" style="padding-left: 3px;">{{'BANNED'|translate}}</label>
                         </td>
                         <td>
-                            <select class="form-control role" ng-model="user.role">
-                                <option ng-selected="user.role == 3" value="3">{{'USER' | translate}}</option>
-                                <option ng-selected="user.role == 4" value="4">{{'ADMIN' | translate}}</option>
-                            </select>
-                        </td>
-                        <td>
-                            <button class="btn btn-info btn-sm"
-                                    data-ng-click="goUpdateUser(user.id,user.banned,user.role)">
-                                {{'UPDATE' | translate}}
-                            </button>
+                            <label>
+                                <select class="form-control role" data-ng-change="goUpdateRole(user.pseudo, user.role)" data-ng-model="user.role">
+                                    <option value="3">{{'USER' | translate}}</option>
+                                    <option value="4">{{'ADMIN' | translate}}</option>
+                                </select>
+                            </label>
                         </td>
                     </tr>
                 </table>
-                <p style="padding: 15px;" data-ng-if="allusers.length == 0">{{'NOPLAYERS' | translate}}</p>
+                <p style="padding: 15px;" data-ng-if="allusers.length === 0">{{'NOPLAYERS' | translate}}</p>
             </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="col-md-6">
+    <div class="col-md-12">
+        <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading text-center">{{games.length}} partie{{(games.length > 1) ? 's' : ''}}</div>
                 <div class="panel-body text-center" style="padding:0;">
@@ -64,11 +58,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6" data-ng-show="games.length > 0">
+        <div class="col-md-4" data-ng-show="games.length > 0">
             <div class="panel panel-default">
                 <div class="panel-heading text-center">Stats</div>
                 <div class="panel-body text-center" style="padding:0;">
-                    <div id="piechartgames" style="width: 100%; height: 100%; background: transparent;"></div>
+                    <div google-chart chart="statsChart" style="height:200px; width:100%; background: transparent;"></div>
                 </div>
             </div>
         </div>

@@ -8,6 +8,7 @@ angular.module('unoApp')
     .controller('StartController', ['$rootScope', '$scope', '$state', '$http', 'Game', function ($rootScope, $scope, $state, $http, Game) {
         // Initialisation du nombre de joueurs à 2
         $scope.nbPlayers = '2';
+        $rootScope.callbackHome = false;
 
         // Fonction qui permet de créer une nouvelle partie
         // Cette fonction est appelée à l'envoi du formulaire html
