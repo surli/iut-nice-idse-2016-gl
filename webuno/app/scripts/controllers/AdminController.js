@@ -10,7 +10,22 @@ angular.module('unoApp')
             $state.go('login');
         }
 
+        $scope.search = '';
         $rootScope.callbackHome = false;
+
+        $scope.updateUsers = function () {
+            // Utilisation du service Users pour récupérer la liste de tous les users
+            Users.getAllUsers($scope.search, function (data) {
+                $scope.allusers = data.users;
+
+                $scope.allusers.forEach(function(user) {
+                    user.role = user.role.toString();
+                });
+            }, function (error) {
+                $scope.allusers = [];
+                console.log('my error !!', error);
+            });
+        };
 
         // Fonction qui met à jour les listing de l'admin
         function initAdmin() {
@@ -70,7 +85,7 @@ angular.module('unoApp')
             });
 
             // Utilisation du service Users pour récupérer la liste de tous les users
-            Users.getAllUsers(function (data) {
+            Users.getAllUsers($scope.search, function (data) {
                 $scope.allusers = data.users;
 
                 $scope.allusers.forEach(function(user) {
