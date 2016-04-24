@@ -155,16 +155,25 @@ angular.module('unoApp')
             $scope.playerCanPlay = false;
         });
 
+        $rootScope.callbackHome = function() {
+            $timeout.cancel(timeoutStateGame);
+            if ($scope.game.state === false && !$rootScope.logout && !$scope.game.gameEnd) {
+                Game.quitRoom($rootScope.gameName);
+            }
+        };
+
         // Évènement qui permet de stopper le timer et quitter la room quand on quitte le contrôleur RoomController
+        /*
         $scope.$on('$destroy', function () {
             $timeout.cancel(timeoutStateGame);
             if ($scope.game.state === false && !$rootScope.logout && !$scope.game.gameEnd) {
                 Game.quitRoom($rootScope.gameName);
             }
         });
+         */
 
         // Évènement qui permet de quitter la room quand on ferme l'onglet contenant la room
-        /*
+        /* TODO : ne fonctionne pas - quand on actualise tout casse
         window.onbeforeunload = function () {
             if (!$rootScope.logout) {
                 Game.quitRoom($rootScope.gameName);
