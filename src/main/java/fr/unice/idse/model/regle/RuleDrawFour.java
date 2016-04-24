@@ -12,6 +12,12 @@ public class RuleDrawFour extends EffectCard
 		this.isColorChangingCard = true;
 		this.value = value;
 	}
+	
+	public RuleDrawFour( Value value) 
+	{
+		this.isColorChangingCard = true;
+		this.value = value;
+	}
 
 	@Override
 	public void action(Color color)

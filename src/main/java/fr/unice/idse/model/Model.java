@@ -76,6 +76,7 @@ public class Model {
 		if(!existsGame(gameName))
 		{
 			Game game = new Game(player,gameName,numberPlayers, regles);
+			game.getAlternative().setGameToEffectCards(game);
 			this.games.add(game);
 			
 			boolean saveEnable = false;

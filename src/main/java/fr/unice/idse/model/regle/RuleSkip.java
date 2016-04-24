@@ -11,6 +11,12 @@ public class RuleSkip extends EffectCard{
 		this.isColorChangingCard = false;
 		this.value = value;
 	}
+	
+	public RuleSkip( Value value) 
+	{
+		this.isColorChangingCard = false;
+		this.value = value;
+	}
 
 	@Override
 	public void action() 

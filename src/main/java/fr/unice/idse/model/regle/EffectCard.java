@@ -20,6 +20,11 @@ public abstract class EffectCard
 	{
 		return game;
 	}
+	
+	public void setGame(Game game)
+	{
+		this.game = game;
+	}
 
 	public boolean isColorChangingCard() {
 		return isColorChangingCard;
