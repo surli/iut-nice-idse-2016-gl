@@ -8,24 +8,44 @@ import java.util.ArrayList;
 
 public class IAEasy extends IA {
 
-    //CONSTANTE
-    private static Card myCard;
-    private static boolean turnPlay = false;
+    // ------------------------------------------------------------------- myCard
+    /** La carte qui sera joué. */
+    protected Card myCard;
 
-
-    //GETTER
+    /**
+     * Getter de la carte qui sera joué.
+     * @return Card La carte qui sera joué.
+     */
     public Card getMyCard() {
-        return myCard;
+        return this.myCard;
     }
 
-    public boolean getTurnPlay () {
-        return turnPlay;
-    }
-
-
-    //SETTER
+    /**
+     * Setter de la carte qui sera joué.
+     * @param myCard La nouvelle carte qui sera joué.
+     */
     public void setMyCard(Card myCard) {
         this.myCard = myCard;
+    }
+
+// ------------------------------------------------------------------- turnPlay
+    /** Détermine si l'IA est prête a joué son tour. */
+    protected boolean turnPlay;
+
+    /**
+     * Getter l'IA est prête a joué.
+     * @return boolean l'IA est prête a joué.
+     */
+    public boolean getTurnPlay() {
+        return this.turnPlay;
+    }
+
+    /**
+     * Setter l'IA est prête a joué.
+     * @param turnPlay Nouveau statut l'IA est prête a joué
+     */
+    public void setTurnPlay(boolean turnPlay) {
+        this.turnPlay = turnPlay;
     }
 
 
@@ -38,54 +58,23 @@ public class IAEasy extends IA {
     public void thinking (Game game) {
         ArrayList<Card> mainIA = game.getActualPlayer().getCards();
         ArrayList<Card> playableCards = game.playableCards();
-        System.out.println("Carte jouable : " + playableCards.toString());
 
-        myCard = chooseCardToPlay(mainIA, playableCards, game);
-        playCard(game, myCard, mainIA, turnPlay);
+        setMyCard(chooseCardToPlay(playableCards));
+        playCard(game, getMyCard(), mainIA, getTurnPlay());
     }
 
-    public Card chooseCardToPlay (ArrayList<Card> mainIA, ArrayList<Card> playableCards, Game game) {
-         boolean turnPlay = false;
-
-        int i = 0;
-        Card myCard = null;
-
-        while (i < mainIA.size() && !turnPlay) {
-            myCard = mainIA.get(i);
-
-            for (Card aCard : playableCards) {
-                if (myCard == aCard) {
-                    turnPlay = true;
-                    break;
-                }
-            }
-            i++;
-        }
-        return myCard;
+    public Card chooseCardToPlay (ArrayList<Card> playableCards) {
+        return playableCards.get(0);
     }
+
 
     @Override
     public Color chooseColor(ArrayList<Card> mainIA) {
-        Color color = mainIA.get(0).getColor();
-
-        return color;
+        return mainIA.get(0).getColor();
     }
 
+    @Override
     public void changeColor(Card cardToPlay, ArrayList<Card> mainIA, Game game) {
         game.getAlternative().getEffectCard(cardToPlay).action(chooseColor(mainIA));
-    }
-
-    public void playCard (Game game, Card cardToPlay, ArrayList<Card> mainIA, boolean turnPlay) {
-        if(turnPlay){
-            game.poseCard(cardToPlay);
-            System.out.println("Carte joué : " + cardToPlay);
-
-            if (game.getAlternative().getEffectCard(cardToPlay) != null && game.getAlternative().getEffectCard(cardToPlay).isColorChangingCard()) {
-                changeColor(cardToPlay, mainIA, game);
-            }
-        }
-        else {
-            game.drawCard();
-        }
     }
 }
