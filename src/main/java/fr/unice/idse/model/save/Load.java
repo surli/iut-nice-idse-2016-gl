@@ -137,14 +137,24 @@ public class Load {
 	
 	private void initPlayer(Game game){
 		String gameName = game.getName();
-		
-		GameObject gameObject = ((GameDAO)DAOFactory.getGameDAO()).find(gameName);
+
+		GameObject gameObject = null;
+		try {
+			gameObject = ((GameDAO) DAOFactory.getGameDAO()).find(gameName);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		int gameId = gameObject.getId();
-		
-	   	ArrayList<PlayerObject> playerObject = ((PlayerDAO)DAOFactory.getPlayerDAO()).findsByGameId(gameId);
 
-	   	
+		ArrayList<PlayerObject> playerObject = null;
+		try {
+			playerObject = ((PlayerDAO) DAOFactory.getPlayerDAO()).findsByGameId(gameId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+
 		for(int i =0; i<= playerObject.size();i++){
 			
 		}
