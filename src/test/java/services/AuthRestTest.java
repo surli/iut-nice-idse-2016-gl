@@ -96,6 +96,6 @@ public class AuthRestTest extends JerseyTest {
         assertEquals(200, response.getStatus());
 
         DataBaseUser dataBaseUser = new DataBaseUser();
-        assertEquals(2, dataBaseUser.allUser().getJSONArray("users").length());
+        assertEquals(2, dataBaseUser.allUser("").getJSONArray("users").length());
     }
 }
