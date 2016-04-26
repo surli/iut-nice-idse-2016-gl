@@ -95,13 +95,11 @@ public abstract class IA extends Player {
      */
     public boolean searchColorCard (ArrayList<Card> main, Color colorCard) {
         boolean colorExist = false;
-
         for (Card aCard : main) {
             if(aCard.getColor() == colorCard) {
                 colorExist = true;
             }
         }
-
         return colorExist;
     }
 
@@ -115,7 +113,6 @@ public abstract class IA extends Player {
                 valueExist = true;
             }
         }
-
         return valueExist;
     }
 }
