@@ -30,7 +30,7 @@ angular.module('unoApp')
                     ErrorService.test(response, callback, callbackError);
                 }, function(response) {
                     if (callbackError && angular.isFunction(callbackError)) {
-                        callbackError();
+                        callbackError(response.data.error);
                     }
 
                     if (response.status === 404) {
