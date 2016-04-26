@@ -15,6 +15,7 @@ import fr.unice.idse.db.dao.PlayerDAO;
 import fr.unice.idse.db.dao.StackDAO;
 import fr.unice.idse.db.dao.TurnDAO;
 import fr.unice.idse.db.dao.UserDAO;
+import fr.unice.idse.db.dao.object.CardObject;
 import fr.unice.idse.db.dao.object.GameObject;
 import fr.unice.idse.db.dao.object.HandPlayerObject;
 import fr.unice.idse.db.dao.object.MatchObject;
@@ -31,139 +32,118 @@ import fr.unice.idse.model.player.Player;
 
 public class Load {
 
-
 	public Load() {
-
 	}
-	
-	
-	public Game load(String gameName) throws Exception{
-		
-		GameObject gameObject = ((GameDAO)DAOFactory.getGameDAO()).find(gameName);
 
-		if(gameObject == null) {
+	public Game load(String gameName) throws Exception {
+
+		GameObject gameObject = ((GameDAO) DAOFactory.getGameDAO()).find(gameName);
+
+		if (gameObject == null) {
 			throw new Exception("ERROR : No game exist with this name");
 		}
-		
+
 		int nbjoueurs = gameObject.getNbMaxJoueurs();
-		
-		int gameId= gameObject.getId();
-		
-		ArrayList<PlayerObject> playerObject = ((PlayerDAO)DAOFactory.getPlayerDAO()).findsByGameId(gameId);
-		
+
+		int gameId = gameObject.getId();
+
+		ArrayList<PlayerObject> playerObject = ((PlayerDAO) DAOFactory.getPlayerDAO()).findsByGameId(gameId);
+
 		int idUser = playerObject.get(0).getIdUser();
-		
-		UserObject userObject = ((UserDAO)DAOFactory.getUserDAO()).find(idUser);
+
+		UserObject userObject = ((UserDAO) DAOFactory.getUserDAO()).find(idUser);
 
 		String name = userObject.getPseudo();
 
-		Player joueur = new Player(name,"host");
-		
-		Game game = new Game(joueur,gameName,nbjoueurs);
+		Player joueur = new Player(name, "host");
 
-		
+		Game game = new Game(joueur, gameName, nbjoueurs);
+
 		game.getDeck().initDeck();
 
 		initPlayer(game);
 		initHands(game);
 		initLoadStack(game);
-		
+
 		return game;
 	}
-	
-	
-	private void initLoadStack(Game game) throws SQLException{
-		String gameName = game.getName();
-		
-		GameObject gameObject = ((GameDAO)DAOFactory.getGameDAO()).find(gameName);
 
-		
+	private void initLoadStack(Game game) throws SQLException {
+		String gameName = game.getName();
+
+		GameObject gameObject = ((GameDAO) DAOFactory.getGameDAO()).find(gameName);
+
 		int gameId = gameObject.getId();
-		
-		MatchObject matchObject = ((MatchDAO)DAOFactory.getMatchDAO()).findbyGameId(gameId);
-		
-	    int matchId = matchObject.getId();
-	    
-	    ArrayList<StackObject> stackObject = ((StackDAO)DAOFactory.getStackDAO()).findsByMatchId(matchId);
-	    
-	    ArrayList<Card> listStack = new ArrayList<Card>();
-	    
-		for(int i =0; i<= stackObject.size();i++){
-			listStack.add(new Card(Value.valueOf(String.valueOf(stackObject.get(i).getCard().getValue())), Color.valueOf(String.valueOf(stackObject.get(i).getCard().getColor()))));
-		}		
-		
-   
+
+		MatchObject matchObject = ((MatchDAO) DAOFactory.getMatchDAO()).findbyGameId(gameId);
+
+		int matchId = matchObject.getId();
+
+		ArrayList<StackObject> stackObject = ((StackDAO) DAOFactory.getStackDAO()).findsByMatchId(matchId);
+
+		ArrayList<Card> listStack = new ArrayList<>();
+
+		for (int i = 0; i <= stackObject.size(); i++) {
+			listStack.add(new Card(Value.valueOf(String.valueOf(stackObject
+					.get(i).getCard().getValue())), Color.valueOf(String
+					.valueOf(stackObject.get(i).getCard().getColor()))));
+		}
+
 		game.getStack().setStack(listStack);
 
 		Deck deck = game.getDeck();
-		
-		for(int i =0; i<= stackObject.size();i++){
-			
-			deck.removeCard(listStack.get(i)); 
+
+		for (int i = 0; i <= stackObject.size(); i++) {
+
+			deck.removeCard(listStack.get(i));
 		}
-		
+
 	}
-	
-	private void initHands(Game game) throws SQLException{
-		
+
+	private void initHands(Game game) throws SQLException {
+
 		String gameName = game.getName();
 
-		GameObject gameObject = ((GameDAO)DAOFactory.getGameDAO()).find(gameName);
-
-		
-		int gameId = gameObject.getId();
-		
-		MatchObject matchObject = ((MatchDAO)DAOFactory.getMatchDAO()).findbyGameId(gameId);
-		
-	    int matchId = matchObject.getId();	
-	    
-	   ArrayList<TurnObject> turnObject = ((TurnDAO)DAOFactory.getTurnDAO()).findsbyMatchId(matchId);
-	   int turnId = turnObject.get(0).getId();
-	   
-	   	ArrayList<PlayerObject> playerObject = ((PlayerDAO)DAOFactory.getPlayerDAO()).findsByGameId(gameId);
-		
-	   	ArrayList<HandPlayerObject> handObject = new ArrayList<HandPlayerObject>();
-		
-		for(int i =0; i<= playerObject.size();i++){
-			handObject.add(((HandDAO)DAOFactory.getHandPlayerDAO()).find(turnId, playerObject.get(i).getIdUser()));
-		}
-	    
-			
-//		for(int i =0; i<= playerObject.size();i++){
-//			game.getPlayers().get(i).setCards(new Card(handObject.get(i).getCards()));
-//		}
-		
-	}
-	
-	private void initPlayer(Game game){
-		String gameName = game.getName();
-
-		GameObject gameObject = null;
-		try {
-			gameObject = ((GameDAO) DAOFactory.getGameDAO()).find(gameName);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		GameObject gameObject = ((GameDAO) DAOFactory.getGameDAO()).find(gameName);
 
 		int gameId = gameObject.getId();
 
-		ArrayList<PlayerObject> playerObject = null;
+		MatchObject matchObject = ((MatchDAO) DAOFactory.getMatchDAO()).findbyGameId(gameId);
+
+		int matchId = matchObject.getId();
+
+		ArrayList<TurnObject> turnObject = ((TurnDAO) DAOFactory.getTurnDAO()).findsbyMatchId(matchId);
+		int turnId = turnObject.get(0).getId();
+
+		ArrayList<PlayerObject> playerObject = ((PlayerDAO) DAOFactory.getPlayerDAO()).findsByGameId(gameId);
+
+		for (int i = 0; i <= playerObject.size(); i++) {
+			HandPlayerObject hand = ((HandDAO) DAOFactory.getHandPlayerDAO()).find(turnId, playerObject.get(i).getIdUser());
+			
+			ArrayList<Card> cards = new ArrayList<>();
+			for(CardObject card : hand.getCards()) {
+				cards.add(new Card(Value.valueOf(Integer.toString(card.getValue())), Color.valueOf(Integer.toString(card.getColor()))));
+			}
+			game.getPlayers().get(i).setCards(cards);
+		}
+	}
+
+	private void initPlayer(Game game) {
 		try {
-			playerObject = ((PlayerDAO) DAOFactory.getPlayerDAO()).findsByGameId(gameId);
+			String gameName = game.getName();
+	
+			GameObject gameObject = ((GameDAO) DAOFactory.getGameDAO()).find(gameName);
+	
+			int gameId = gameObject.getId();
+	
+			ArrayList<PlayerObject> playerObject = ((PlayerDAO) DAOFactory.getPlayerDAO()).findsByGameId(gameId);
+			for (int i = 1; i <= playerObject.size(); i++) {
+				UserObject userObject = DAOFactory.getUserDAO().find(playerObject.get(i).getIdUser());
+				game.addPlayer(new Player(userObject.getPseudo(), "none"));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-
-		for(int i =0; i<= playerObject.size();i++){
-			
-		}
-		
-//		ArrayList<Player> listPlayers = dbg.getIdUserAndPositionWithGameId(gameId);
-//		
-//		game.setPlayers(listPlayers);
-		
-		
 	}
-	
+
 }
