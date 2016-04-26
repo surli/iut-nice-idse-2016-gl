@@ -3,6 +3,7 @@ package model.player;
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.card.NumberCardByColor;
 import fr.unice.idse.model.card.Value;
 import fr.unice.idse.model.player.IA;
 import fr.unice.idse.model.player.IAFactory;
@@ -35,6 +36,10 @@ public class IATest {
 
         cards.add(new Card(Value.Three, Color.Blue));
         cards.add(new Card(Value.Six, Color.Green));
+        cards.add(new Card(Value.Seven, Color.Blue));
+        cards.add(new Card(Value.One, Color.Yellow));
+        cards.add(new Card(Value.Zero, Color.Yellow));
+
 
         iaEasy.setCards(cards);
         iaHard.setCards(cards);
@@ -72,7 +77,7 @@ public class IATest {
     public void testSearchColorCardTrue() {
 
         boolean expected = true;
-        boolean colorExist = iaHard.searchColorCard(iaHard.getCards(), Color.Green);
+        boolean colorExist = iaEasy.searchColorCard(iaEasy.getCards(), Color.Blue);
         assertEquals(expected, colorExist);
     }
 
@@ -80,7 +85,7 @@ public class IATest {
     public void testSearchColorCardFalse() {
 
         boolean expected = false;
-        boolean colorExist = iaHard.searchColorCard(iaHard.getCards(), Color.Red);
+        boolean colorExist = iaEasy.searchColorCard(iaEasy.getCards(), Color.Red);
         assertEquals(expected, colorExist);
     }
 
@@ -90,7 +95,7 @@ public class IATest {
     public void testSearchValueCardTrue() {
 
         boolean expected = true;
-        boolean valueExist = iaHard.searchValueCard(iaHard.getCards(), Value.Six);
+        boolean valueExist = iaEasy.searchValueCard(iaEasy.getCards(), Value.Six);
         assertEquals(expected, valueExist);
     }
 
@@ -98,7 +103,7 @@ public class IATest {
     public void testSearchValueCardFalse() {
 
         boolean expected = false;
-        boolean valueExist = iaHard.searchValueCard(iaHard.getCards(), Value.Nine);
+        boolean valueExist = iaEasy.searchValueCard(iaEasy.getCards(), Value.Nine);
         assertEquals(expected, valueExist);
     }
 
@@ -116,5 +121,28 @@ public class IATest {
         iaEasy.playCard(game2, iaEasy.getCards().get(0), iaEasy.getCards(), false);
 
         assertEquals(sizeExpected, iaEasy.getCards().size());
+    }
+
+    /* ------------ calculateNumberCardByColor ----------------------------- */
+    @Test
+    public  void calculateNumberCardByColor() {
+        ArrayList<NumberCardByColor> expected = new ArrayList<NumberCardByColor>();
+
+        expected.add(new NumberCardByColor(Color.Red, 0));
+        expected.add(new NumberCardByColor(Color.Green, 1));
+        expected.add(new NumberCardByColor(Color.Blue, 2));
+        expected.add(new NumberCardByColor(Color.Yellow, 2));
+
+        ArrayList<NumberCardByColor> numberCardByColors;
+        numberCardByColors = iaEasy.calculateNumberCardByColor(iaEasy.getCards());
+
+        assertEquals(expected.get(1).getColor(), numberCardByColors.get(1).getColor());
+        assertEquals(expected.get(1).getNumber(), numberCardByColors.get(1).getNumber());
+
+        assertEquals(expected.get(2).getColor(), numberCardByColors.get(2).getColor());
+        assertEquals(expected.get(2).getNumber(), numberCardByColors.get(2).getNumber());
+
+        assertEquals(expected.get(3).getColor(), numberCardByColors.get(3).getColor());
+        assertEquals(expected.get(3).getNumber(), numberCardByColors.get(3).getNumber());
     }
 }
