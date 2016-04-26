@@ -1,9 +1,10 @@
 package fr.unice.idse.model.player;
 
 public class IAFactory extends IA {
-	
+
 	 public IAFactory(String name, String token, int difficulty) {
-		super(name, token, difficulty);
+		super(name, token);
+		 this.difficulty = difficulty;
 	}
 
 	public static IA getIA(String name, String token, int difficulty){
@@ -21,5 +22,4 @@ public class IAFactory extends IA {
 	        }
 			return ia;	       
 	 }
-
 }
