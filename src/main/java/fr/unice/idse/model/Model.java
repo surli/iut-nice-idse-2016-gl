@@ -1,7 +1,7 @@
 package fr.unice.idse.model;
 
 import java.util.ArrayList;
-
+import fr.unice.idse.constante.Config;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.player.Player;
 import fr.unice.idse.model.regle.EffectCard;
@@ -89,6 +89,15 @@ public class Model {
 			return true;
 		}
 		return false;
+	}
+	
+	public ArrayList<EffectCard> getVariante(String nomVariante)
+	{
+		if(Config.variantes.containsKey(nomVariante))
+		{
+			return Config.variantes.get(nomVariante);
+		}
+		return null;
 	}
 
 	/**
