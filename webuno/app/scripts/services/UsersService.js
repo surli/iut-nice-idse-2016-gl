@@ -10,12 +10,15 @@ angular.module('unoApp')
              * @param callback
              * @param callbackError
              */
-            getAllUsers: function (callback, callbackError) {
+            getAllUsers: function (search, callback, callbackError) {
                 HttpRequest.send({
-                    method: 'get',
+                    method: 'post',
                     url: 'rest/admin/player',
                     headers: {
                         token: Auth.getUser().token
+                    },
+                    data: {
+                        search: search
                     }
                 }, callback, callbackError);
             },

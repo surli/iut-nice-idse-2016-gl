@@ -59,6 +59,17 @@ Tous les documents de chaque groupe se trouve dans le repertoire doc à la racin
 
 ###Release
 
+>######Version 0.8.1
+
+- Correction du bump
+
+>######Version 0.8
+
+- Moteur de recherche pour l'admin (utilisateur)
+- Test de l'IA
+- Test sauvegarde / relance
+- Correction de bug
+
 >######Version 0.7.1
 
 - Correction bug dans l'IHM
