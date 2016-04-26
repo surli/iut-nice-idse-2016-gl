@@ -7,35 +7,6 @@ import static org.junit.Assert.assertEquals;
 
 public class IAFactoryTest {
 
-    /* ------------ testConstructorIAFactory ----------------------------- */
-    @Test
-    public void testConstructorIAFactory() {
-        boolean expected = true;
-
-        boolean testEasy = false;
-        IAFactory monIAEasy = new IAFactory("testGetIAEasy", "", 1);
-        if(monIAEasy.getName().equals("testGetIAEasy") && monIAEasy.getToken().equals("") && monIAEasy.getDifficulty() == 1) {
-            testEasy = true;
-        }
-
-        boolean testMedium = false;
-        IAFactory monIAMedium = new IAFactory("testGetIAMedium", "", 2);
-        if(monIAMedium.getName().equals("testGetIAMedium") && monIAMedium.getToken().equals("") && monIAMedium.getDifficulty() == 2) {
-            testMedium = true;
-        }
-
-        boolean testHard = false;
-        IAFactory monIAHard = new IAFactory("testGetIAHard", "", 3);
-        if(monIAHard.getName().equals("testGetIAHard") && monIAHard.getToken().equals("") && monIAHard.getDifficulty() == 3) {
-            testHard = true;
-        }
-
-        assertEquals(expected, testEasy);
-        assertEquals(expected, testMedium);
-        assertEquals(expected, testHard);
-
-    }
-
     /* ------------ testGetIA ----------------------------- */
     @Test
     public void testGetIA(){
