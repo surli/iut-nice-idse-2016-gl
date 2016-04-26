@@ -30,13 +30,5 @@
   "GAME_CONF": "Configuration de la partie",
   "GAME_NAME": "Nom de partie",
   "NB_PLAYERS": "Nombre de joueurs",
-  "GO": "C'est parti !",
-  "PLAYERS": "Listes des joueurs",
-  "BANNED": "Banni",
-  "NOPLAYERS": "Il n'a aucun joueur pour le moment",
-  "ORDI": "Ordinateur",
-  "GUEST": "Invité",
-  "USER": "Abonné",
-  "ADMIN": "Administrateur",
-  "UPDATE": "Modifier"
+  "GO": "C'est parti !"
 }

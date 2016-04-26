@@ -1,6 +1,6 @@
 {
   "name": "uno",
-  "version": "0.8",
+  "version": "0.8.1",
   "dependencies": {
     "angular": "^1.4.0",
     "bootstrap-sass-official": "^3.2.0",
