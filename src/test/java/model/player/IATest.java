@@ -15,11 +15,13 @@ import static org.junit.Assert.assertEquals;
 public class IATest {
 
     private IA iaHard;
+    private IA iaDifficulty;
 
     @Before
     public void initialize(){
 
         iaHard = IAFactory.getIA("testIAHard", "", 3);
+        iaDifficulty = IAFactory.getIA("testIADifficulty", "", 3);
 
         ArrayList<Card> cards=new ArrayList<Card>();
 
@@ -27,7 +29,18 @@ public class IATest {
         cards.add(new Card(Value.Six, Color.Green));
 
         iaHard.setCards(cards);
+    }
 
+    /* ------------ testDifficulty ----------------------------- */
+    @Test
+    public void testGetDifficulty() {
+        assertEquals(3, iaHard.getDifficulty());
+    }
+
+    @Test
+    public void testSetDifficulty() {
+        iaDifficulty.setDifficulty(2);
+        assertEquals(2, iaDifficulty.getDifficulty());
     }
 
     /* ------------ testSearchColorCard ----------------------------- */
@@ -47,7 +60,7 @@ public class IATest {
         assertEquals(expected, colorExist);
     }
 
-/* ------------ testSearchValueCard ----------------------------- */
+    /* ------------ testSearchValueCard ----------------------------- */
 
     @Test
     public void testSearchValueCardTrue() {
