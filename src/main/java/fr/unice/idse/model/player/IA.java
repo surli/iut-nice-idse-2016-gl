@@ -71,17 +71,9 @@ public abstract class IA extends Player {
         return cards;
     }
 
-    public Color chooseColor(ArrayList<Card> mainIA) {
-        Color color = mainIA.get(0).getColor();
+    public abstract Color chooseColor(ArrayList<Card> mainIA);
 
-        return color;
-    }
-
-    public void changeColor(Card cardToPlay, ArrayList<Card> mainIA, Game game) {
-        Color color = chooseColor(mainIA);
-        game.getAlternative().getEffectCard(cardToPlay).action(color);
-        game.setActualColor(color);
-    }
+    public abstract void changeColor(Card cardToPlay, ArrayList<Card> mainIA, Game game);
 
     public void playCard (Game game, Card cardToPlay, ArrayList<Card> mainIA, boolean turnPlay) {
         if(turnPlay){
