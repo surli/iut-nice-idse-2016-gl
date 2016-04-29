@@ -7,6 +7,10 @@ import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
 
+/**
+ * Classe qui définit la pioche dans le jeu du UNO, elle possède des comportements tels que
+ * le mélange des cartes, le remplissage de celle-ci avec l'ensemble des cartes du UNO ...
+ */
 public class Deck {
 	private ArrayList<Card> deck;
 	

@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 
+/**
+ * Classe qui définit le talon du jeu du UNO, elle possède des comportements tels que
+ * l'ajout de cartes, la récupération de la carte supérieur ...
+ * 
+ */
 public class Stack {
 	private ArrayList<Card> stack;
 	

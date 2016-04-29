@@ -12,12 +12,17 @@ import java.util.LinkedHashMap;
 import java.util.Observable;
 import java.util.Observer;
 
+
+/**
+ * Classe qui définit tous les comportements d'une partie de UNO(exemple : piocher, passer au joueurs suivants...).
+ * Elle permet également de s'occuper de la gestion des joueurs (exemple : ajouter, supprimer rechercher des joueurs dans la partie...). 
+ * C'est la classe centrale du projet, elle connaît tous les éléments d'une partie.
+ */
 public class Game extends Observable implements Observer {
 	
 	private Player host;
 	private String gameName;
 	private int numberPlayers;
-	
 	private ArrayList<Player> players;
 	private Alternative alternative;
 	private int actualPlayer;
@@ -80,8 +85,6 @@ public class Game extends Observable implements Observer {
 	public int getNumberPlayers() { return numberPlayers; }
 	public void setNumberPlayers(int numberPlayers) { this.numberPlayers = numberPlayers; }
 	
-	
-
 	public void setActualColor(Color actualColor){ this.actualColor = actualColor; }
 	public Color getActualColor(){return this.actualColor; }
 
@@ -556,7 +559,11 @@ public class Game extends Observable implements Observer {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Renvoie un hashcode
+	 * return result 
+ 	*/
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -578,7 +585,10 @@ public class Game extends Observable implements Observer {
 		return result;
 	}
 
-	@Override
+	/**
+	 * Contrôle l'égalité de 2 Game
+	 * @return true/false
+	 */
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

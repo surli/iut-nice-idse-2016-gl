@@ -5,6 +5,9 @@ import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.Value;
 
+/**
+ * Classe qui définit l'effet d'une valeur de carte de UNO, cette classe possède donc l'action d'une carte. 
+ */
 public abstract class EffectCard
 {
 	protected Value value;
