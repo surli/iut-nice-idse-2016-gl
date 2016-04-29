@@ -89,7 +89,7 @@ public class PlayerDAO extends DAO<PlayerObject> {
 	public ArrayList<PlayerObject> findsByGameId(int id) throws SQLException {
 		try {
 			ArrayList<PlayerObject> value = new ArrayList<PlayerObject>();
-			String query = "SELECT p_g_id, p_id_user, p_position FROM players_in_game WHERE p_g_id = ?";
+			String query = "SELECT p_g_id, p_id_user, p_position FROM players_in_game WHERE p_g_id = ? ORDER BY p_position";
 			PreparedStatement stmt = this.getConnection().prepareStatement(query);
 			stmt.setInt(1, id);
 			ResultSet result = stmt.executeQuery();
