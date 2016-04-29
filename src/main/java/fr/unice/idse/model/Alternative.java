@@ -10,7 +10,7 @@ import fr.unice.idse.model.regle.*;
 public class Alternative 
 {
 	private ArrayList<EffectCard> actions;
-	
+
 	public Alternative(Game game)
 	{
 		actions = new ArrayList<EffectCard>();
@@ -24,6 +24,10 @@ public class Alternative
 	public Alternative(Game game, ArrayList<EffectCard> regles)
 	{
 		actions = regles;
+	}
+	
+	public ArrayList<EffectCard> getActions() {
+		return actions;
 	}
 	
 	public void setGameToEffectCards(Game game)

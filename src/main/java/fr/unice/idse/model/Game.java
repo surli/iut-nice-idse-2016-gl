@@ -557,4 +557,85 @@ public class Game extends Observable implements Observer {
 		return null;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((actualColor == null) ? 0 : actualColor.hashCode());
+		result = prime * result + actualPlayer;
+		result = prime * result + ((alternative == null) ? 0 : alternative.hashCode());
+		result = prime * result + cptDrawCard;
+		result = prime * result + ((deck == null) ? 0 : deck.hashCode());
+		result = prime * result + (gameBegin ? 1231 : 1237);
+		result = prime * result + (gameEnd ? 1231 : 1237);
+		result = prime * result + ((gameName == null) ? 0 : gameName.hashCode());
+		result = prime * result + ((host == null) ? 0 : host.hashCode());
+		result = prime * result + (meaning ? 1231 : 1237);
+		result = prime * result + nextPlayer;
+		result = prime * result + numberPlayers;
+		result = prime * result + ((players == null) ? 0 : players.hashCode());
+		result = prime * result + ((stack == null) ? 0 : stack.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Game other = (Game) obj;
+		if (actualColor != other.actualColor)
+			return false;
+		if (actualPlayer != other.actualPlayer)
+			return false;
+		if (alternative == null) {
+			if (other.alternative != null)
+				return false;
+		} else if (!alternative.equals(other.alternative))
+			return false;
+		if (cptDrawCard != other.cptDrawCard)
+			return false;
+		if (deck == null) {
+			if (other.deck != null)
+				return false;
+		} else if (!deck.equals(other.deck))
+			return false;
+		if (gameBegin != other.gameBegin)
+			return false;
+		if (gameEnd != other.gameEnd)
+			return false;
+		if (gameName == null) {
+			if (other.gameName != null)
+				return false;
+		} else if (!gameName.equals(other.gameName))
+			return false;
+		if (host == null) {
+			if (other.host != null)
+				return false;
+		} else if (!host.equals(other.host))
+			return false;
+		if (meaning != other.meaning)
+			return false;
+		if (nextPlayer != other.nextPlayer)
+			return false;
+		if (numberPlayers != other.numberPlayers)
+			return false;
+		if (players == null) {
+			if (other.players != null)
+				return false;
+		} else if (!players.equals(other.players))
+			return false;
+		if (stack == null) {
+			if (other.stack != null)
+				return false;
+		} else if (!stack.equals(other.stack))
+			return false;
+		return true;
+	}
+	
+	
+
 }
