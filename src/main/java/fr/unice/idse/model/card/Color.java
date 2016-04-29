@@ -1,5 +1,8 @@
 package fr.unice.idse.model.card;
 
+/**
+ * Enumération qui définit la couleur d'une carte de UNO
+ */
 public enum Color {
 	Blue(0),
 	Green(1),
