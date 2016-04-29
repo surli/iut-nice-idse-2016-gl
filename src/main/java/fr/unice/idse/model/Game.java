@@ -24,7 +24,7 @@ public class Game extends Observable implements Observer {
 	private Stack stack;
 	private Deck deck;
 	private Color actualColor;
-	private boolean meaning;
+	private boolean orientation;
 	private boolean gameBegin;
 	private boolean gameEnd;
 	private int cptDrawCard;
@@ -40,7 +40,7 @@ public class Game extends Observable implements Observer {
 			this.deck = new Deck();
 			this.stack = new Stack();
 			this.actualPlayer = 0;
-			this.meaning = true;
+			this.orientation = true;
 			this.gameBegin = false;
 			this.gameEnd = false;
 			this.cptDrawCard = 1;
@@ -56,7 +56,7 @@ public class Game extends Observable implements Observer {
 			this.deck = new Deck();
 			this.stack = new Stack();
 			this.actualPlayer = 0;
-			this.meaning = true;
+			this.orientation = true;
 			this.gameBegin = false;
 			this.gameEnd = false;
 			this.cptDrawCard = 1;
@@ -243,7 +243,7 @@ public class Game extends Observable implements Observer {
 	 * Retourne le joueur suivant
 	 */
 	public int getNextPlayer () {
-		if(meaning)
+		if(orientation)
 		{
 			nextPlayer = (actualPlayer+1)%players.size();
 		}
@@ -261,18 +261,18 @@ public class Game extends Observable implements Observer {
 	/**
 	 * Change le sens de la partie.
 	 */
-	public void changeMeaning()
+	public void changeOrientation()
 	{
-		meaning = !meaning;
+		orientation = !orientation;
 	}
 	
 	
-	public boolean getDirection() {
-		return meaning;
+	public boolean getOrientation() {
+		return orientation;
 	}
 
-	public void setMeaning(boolean meaning) {
-		this.meaning = meaning;
+	public void setMeaning(boolean orientation) {
+		this.orientation = orientation;
 	}
 
 	/**
@@ -324,7 +324,7 @@ public class Game extends Observable implements Observer {
 	 */
 	public void nextPlayer()
 	{
-		if(meaning)
+		if(orientation)
 		{
 			actualPlayer = (actualPlayer+1)%players.size();
 		}
@@ -490,7 +490,7 @@ public class Game extends Observable implements Observer {
 		int numberOfPlayers = players.size();
 		if(numberOfPlayers>1)
 		{
-			if(meaning)
+			if(orientation)
 			{
 				ArrayList<Card> temp=players.get(numberOfPlayers-1).getCards();
 				for(int i=numberOfPlayers-1;i>0;i--)
@@ -570,7 +570,7 @@ public class Game extends Observable implements Observer {
 		result = prime * result + (gameEnd ? 1231 : 1237);
 		result = prime * result + ((gameName == null) ? 0 : gameName.hashCode());
 		result = prime * result + ((host == null) ? 0 : host.hashCode());
-		result = prime * result + (meaning ? 1231 : 1237);
+		result = prime * result + (orientation ? 1231 : 1237);
 		result = prime * result + nextPlayer;
 		result = prime * result + numberPlayers;
 		result = prime * result + ((players == null) ? 0 : players.hashCode());
@@ -617,7 +617,7 @@ public class Game extends Observable implements Observer {
 				return false;
 		} else if (!host.equals(other.host))
 			return false;
-		if (meaning != other.meaning)
+		if (orientation != other.orientation)
 			return false;
 		if (nextPlayer != other.nextPlayer)
 			return false;

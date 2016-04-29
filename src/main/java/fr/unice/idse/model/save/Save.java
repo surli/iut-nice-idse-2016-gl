@@ -93,7 +93,7 @@ public class Save implements Observer {
 		TurnObject turn = new TurnObject();
 		turn.setIdMatch(match.getId());
 		turn.setIdUser(players.get(0).getIdUser());
-		turn.setInverded(game.getDirection());
+		turn.setInverded(game.getOrientation());
 		DAOFactory.getTurnDAO().create(turn);
 
 		// Add stack
@@ -136,7 +136,7 @@ public class Save implements Observer {
 			turn.setIdMatch(matchId);
 			UserObject user = ((UserDAO)DAOFactory.getUserDAO()).find(game.getActualPlayer().getName());
 			turn.setIdUser(user.getId());
-			turn.setInverded(game.getDirection());
+			turn.setInverded(game.getOrientation());
 			DAOFactory.getTurnDAO().create(turn);
 		    
 			
