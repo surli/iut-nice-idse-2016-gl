@@ -31,8 +31,8 @@ public class GetAlternativesTest extends JerseyTest{
     @Before
     public void init() {
         model = Model.getInstance();
-        model.setGames(new ArrayList<Game>());
-        model.setPlayers(new ArrayList<Player>());
+        model.setGames(new ArrayList<>());
+        model.setPlayers(new ArrayList<>());
         model.createPlayer("toto", "token");
         jsonObject = new JSONObject();
     }
