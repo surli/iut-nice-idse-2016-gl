@@ -104,39 +104,67 @@ public class GameRest extends OriginRest{
         // Cration de tous les objets
         Model model = Model.getInstance();
         JSONObject json = new JSONObject(objJSON);
+        JSONObject jsonResult = new JSONObject();
 
         // verification du champ game
-        if(!json.has("game"))
-            return sendResponse(405, "{\"error\" : \"Invalid parameter game\"}", "POST");
+        if(!json.has("game")) {
+            jsonResult.put("error", "Invalid parameter game");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
         // verification du token
-        if(token == null)
-            return sendResponse(405, "{\"error\" : \"Missing parameters token\"}", "POST");
+        if(token == null) {
+            jsonResult.put("error", "Missing parameters token");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
         String game = json.getString("game");
-        if(game.length() < 3)
-            return sendResponse(405, "{\"error\" : \"Invalid parameter game length\"}", "POST");
-        if(!json.has("player"))
-        	
-            return sendResponse(405, "{\"error\" : \"Invalid parameter player\"}", "POST");
+        if(game.length() < 3){
+            jsonResult.put("error", "Invalid parameter game length");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
+        if(!json.has("player")){
+            jsonResult.put("error", "Invalid parameter player");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
 
-        if(model.getPlayerFromList(token)==null)
-            return sendResponse(405, "{\"error\" : \"Joueur inexistant\"}", "POST");
-       
-        if(!model.getPlayerFromList(token).getName().equals(json.getString("player")))
-            return sendResponse(405, "{\"error\" : \"Token invalid\"}", "POST");
+        if(model.getPlayerFromList(token)==null){
+            jsonResult.put("error", "Joueur inexistant");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
 
+        if(!model.getPlayerFromList(token).getName().equals(json.getString("player"))){
+            jsonResult.put("error", "Token invalid");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
 
-        if(!json.has("numberplayers"))
-            return sendResponse(405, "{\"error\" : \"Invalid parameter numberplayers\"}", "POST");
+        if(!json.has("numberplayers")){
+            jsonResult.put("error", "Invalid parameter numberplayers");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
         int numberplayers = json.getInt("numberplayers");
         if(numberplayers<2||numberplayers>6){
-            return sendResponse(405, "{\"error\" : \"Numberplayers must be 2 to 6 numberplayers\"}", "POST");
+            jsonResult.put("error", "Numberplayers must be 2 to 6 numberplayers");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
+
+        if(!json.has("alternative")){
+            jsonResult.put("error", "No alternative parameter");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
+
+        ArrayList alternative = Config.alternatives.get(json.getString("alternative"));
+        if(alternative == null){
+            jsonResult.put("error", "No alternative found");
+            return sendResponse(405, jsonResult.toString(), "POST");
         }
 
         // creation de la game
-        if(!model.addGame(model.getPlayerFromList(token), game,numberplayers))
-            return sendResponse(500, "{\"message\": false}", "POST");
+        if(!model.addGame(model.getPlayerFromList(token), game,numberplayers, alternative)){
+            jsonResult.put("message", false);
+            return sendResponse(500, jsonResult.toString(), "POST");
+        }
 
-        return sendResponse(200, "{\"message\": true}", "POST");
+        jsonResult.put("message", true);
+        return sendResponse(200, jsonResult.toString(), "POST");
     }
 
     /**
