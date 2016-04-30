@@ -54,7 +54,7 @@ public class AdminRest extends OriginRest{
      * Renvoie toutes les parties (commencée / en attente)
      * @param token String
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @Path("game")
     @GET
@@ -90,7 +90,7 @@ public class AdminRest extends OriginRest{
      * @param token String
      * @param gameName String
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @Path("game/{gameName}")
     @GET
@@ -129,7 +129,7 @@ public class AdminRest extends OriginRest{
      * @param token String
      * @param gameName String
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @Path("game/{gameName}")
     @DELETE
@@ -163,7 +163,7 @@ public class AdminRest extends OriginRest{
      * Route permettant de récupérer tous les joueurs
      * @param token String
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @Path("player")
     @POST
@@ -200,7 +200,7 @@ public class AdminRest extends OriginRest{
      * @param playerName String
      * @param json String
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @Path("player/{playerName}")
     @POST
@@ -242,6 +242,15 @@ public class AdminRest extends OriginRest{
         return sendResponse(405, "Player not updated", "POST");
     }
 
+
+    /**
+     * Banni un utilisateur
+     * @param token Token de l'admin
+     * @param playerName Nom du joueur
+     * @param json parametre
+     * @return Response
+     * @throws JSONException exception
+     */
     @Path("player/{playerName}")
     @PUT
     @Produces(MediaType.APPLICATION_JSON)

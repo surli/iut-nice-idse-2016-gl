@@ -50,14 +50,11 @@ import fr.unice.idse.model.regle.EffectCard;
 @Path("/game")
 public class GameRest extends OriginRest{
 
-
     /**
      * Méthode permettant de lister toutes les parties existantes
-     * Retour : {games : [
-     *                      [name : String,
-     *                       numberPlayers : String]
-     *                   ]}
+     * @param token token du jouer
      * @return Response
+     * @throws JSONException
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -91,12 +88,15 @@ public class GameRest extends OriginRest{
     }
 
     /**
-     * Méthode en POST permettant la création de partie.
+     Méthode en POST permettant la création de partie.
      * Signature : {game: String, player: String(playerName du joueur), numberplayers:Int}
      * Le nom de la game doit être suppérieur à 3 caractères;
      * Numberplayers doit être entre 2 et 6;
      * Vérifie si la partie existe ou non. Renvoie {message: boolean}
+     * @param objJSON parametre
+     * @param token token du joueur
      * @return Response
+     * @throws JSONException
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -141,9 +141,10 @@ public class GameRest extends OriginRest{
 
     /**
      * Retourne l'état de la partie
-     * @param gamename Nom de partie
-     * @param token Token
+     * @param gamename Nom de la partie
+     * @param token Token du joueur
      * @return Response
+     * @throws JSONException
      */
     @GET
     @Path("{gamename}")
@@ -205,7 +206,11 @@ public class GameRest extends OriginRest{
      * Signature : {playerName: String}
      * La partie doit être existante.
      * Renvoie {status: boolean}
+     * @param token Token du joueur
+     * @param gamename Nom de la partie
+     * @param objJSON Parametre
      * @return Response
+     * @throws JSONException
      */
     @PUT
     @Path("{gamename}")
@@ -249,13 +254,17 @@ public class GameRest extends OriginRest{
         return sendResponse(200, jsonObject.toString(), "PUT");
     }
 
+
     /**
      * Méthode en PUT permettant le début d'une partie
      * Signature : {gamename: String}/command
      * La partie doit être existante.
+     * @param token Token du joueur
+     * @param gamename Nom de la partie
+     * @param objJSON parametre
      * @return Response
+     * @throws JSONException
      */
-
     @PUT
     @Path("{gamename}/command")
     @Produces(MediaType.APPLICATION_JSON)
@@ -310,7 +319,10 @@ public class GameRest extends OriginRest{
      * Méthode en GET permettant de recuperer le joueur devant jouer
      * La partie doit être existante.
      * Renvoie {"playerName": String}
+     * @param token Token du joueur
+     * @param gamename Nom de la partie
      * @return Response
+     * @throws JSONException
      */
     @GET
     @Path("{gamename}/command")
@@ -344,10 +356,12 @@ public class GameRest extends OriginRest{
         return sendResponse(200, jsonObject.toString(), "GET");
     }
 
-    /*
-     * @param playerName
-     * @param gameName
-     * @return Status 200 : {"cards": [{"number":int,"familly":String}]}
+    /**
+     * Retourne la main du joueur
+     * @param token Token du joueur
+     * @param playerName Nom du joueur
+     * @param gameName Nom de la partie
+     * @return Response
      * @throws JSONException
      */
     @GET
@@ -384,13 +398,16 @@ public class GameRest extends OriginRest{
 
         return sendResponse(200, jsonObject.toString(), "GET");
     }
-    
+
     /**
      * Méthode en POST permettant de faire piocher une carte au joueur actuel
      * Signature : {gamename: String}/{playerName:string}
+     * @param token Token du joueur
+     * @param gameName Nom de la partie
+     * @param playerName Nom du joueur
      * @return Response
+     * @throws JSONException
      */
-
     @POST
     @Path("{gameName}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -458,10 +475,11 @@ public class GameRest extends OriginRest{
     /**
      * Méthode en PUT permettant de jouer une carte
      * La partie doit être existante et commencée.
-     * @param playerName
-     * @param gameName
+     * @param token Token du joueur
+     * @param playerName Nom du joueur
+     * @param gameName Nom de la partie
      * @param strJSON {"value": int, "color": str, "actionCard": null}
-     * @return Response 200 | 405
+     * @return Response
      * @throws JSONException
      */
     @PUT
@@ -579,9 +597,9 @@ public class GameRest extends OriginRest{
 
     /**
      * Methode qui permet de retirer un joueur d'une partie qui n'est pas commencée
-     * @param token String
-     * @param gameName String
-     * @param playerName String
+     * @param token Token du joueur
+     * @param gameName Nom de la partie
+     * @param playerName Nom du joueur
      * @return Response
      * @throws JSONException
      */
@@ -667,6 +685,13 @@ public class GameRest extends OriginRest{
         return sendResponse(405, jsonReturn.toString(), "DELETE");
     }
 
+
+    /**
+     * Retournes les alternatives existantes
+     * @param token Token du joueur
+     * @return Response
+     * @throws JSONException
+     */
     @Path("/alternative")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
