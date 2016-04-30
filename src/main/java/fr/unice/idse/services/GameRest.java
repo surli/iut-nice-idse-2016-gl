@@ -54,7 +54,7 @@ public class GameRest extends OriginRest{
      * Méthode permettant de lister toutes les parties existantes
      * @param token token du jouer
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -96,7 +96,7 @@ public class GameRest extends OriginRest{
      * @param objJSON parametre
      * @param token token du joueur
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -144,7 +144,7 @@ public class GameRest extends OriginRest{
      * @param gamename Nom de la partie
      * @param token Token du joueur
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @GET
     @Path("{gamename}")
@@ -210,7 +210,7 @@ public class GameRest extends OriginRest{
      * @param gamename Nom de la partie
      * @param objJSON Parametre
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @PUT
     @Path("{gamename}")
@@ -263,7 +263,7 @@ public class GameRest extends OriginRest{
      * @param gamename Nom de la partie
      * @param objJSON parametre
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @PUT
     @Path("{gamename}/command")
@@ -322,7 +322,7 @@ public class GameRest extends OriginRest{
      * @param token Token du joueur
      * @param gamename Nom de la partie
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @GET
     @Path("{gamename}/command")
@@ -362,7 +362,7 @@ public class GameRest extends OriginRest{
      * @param playerName Nom du joueur
      * @param gameName Nom de la partie
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @GET
     @Path("/{gameName}/{playerName}")
@@ -406,7 +406,7 @@ public class GameRest extends OriginRest{
      * @param gameName Nom de la partie
      * @param playerName Nom du joueur
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @POST
     @Path("{gameName}/{playerName}")
@@ -480,7 +480,7 @@ public class GameRest extends OriginRest{
      * @param gameName Nom de la partie
      * @param strJSON {"value": int, "color": str, "actionCard": null}
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @PUT
     @Path("/{gameName}/{playerName}")
@@ -601,7 +601,7 @@ public class GameRest extends OriginRest{
      * @param gameName Nom de la partie
      * @param playerName Nom du joueur
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @DELETE
     @Path("/{gameName}/{playerName}")
@@ -690,7 +690,7 @@ public class GameRest extends OriginRest{
      * Retournes les alternatives existantes
      * @param token Token du joueur
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @Path("/alternative")
     @GET
