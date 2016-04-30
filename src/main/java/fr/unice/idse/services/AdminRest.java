@@ -162,6 +162,7 @@ public class AdminRest extends OriginRest{
     /**
      * Route permettant de récupérer tous les joueurs
      * @param token String
+     * @param json parameter
      * @return Response
      * @throws JSONException exception
      */
