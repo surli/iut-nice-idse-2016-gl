@@ -1,6 +1,7 @@
 package fr.unice.idse.services;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -13,6 +14,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import fr.unice.idse.constante.Config;
+import fr.unice.idse.model.Alternative;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -28,6 +31,8 @@ import fr.unice.idse.model.regle.EffectCard;
  * /game
  * │   ├── GET             Liste des parties (Fait)
  * │   ├── POST            Créer une partie (Fait)
+ * │   ├── /alternative
+ * │   │   ├── GET         Retourne les alternatives existante
  * │   ├── /{gamename}
  * │   │   ├── GET         Retourne l'état de la game (Fait)
  * │   │   ├── PUT         Ajoute un joueur dans la partie (Fait)
@@ -626,6 +631,7 @@ public class GameRest extends OriginRest{
         if(game.gameBegin()){
             int taille = game.getPlayers().size();
             for(int i = 0; i < taille; i++) {
+                System.out.println(model.findGameByName(gameName).getPlayers().get(0).getName());
                 model.removePlayerFromGameByName(gameName, model.findGameByName(gameName).getPlayers().get(0).getName());
             }
             model.removeGame(gameName);
@@ -659,5 +665,31 @@ public class GameRest extends OriginRest{
         }
         jsonReturn.put("status", false);
         return sendResponse(405, jsonReturn.toString(), "DELETE");
+    }
+
+    @Path("/alternative")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAlternatives(@HeaderParam("token") String token) throws JSONException {
+        // Initialisation des variables
+        Model model = Model.getInstance();
+        JSONObject jsonReturn = new JSONObject();
+
+        // Verificaton du token
+        if(token == null){
+            jsonReturn.put("error", "Token not found");
+            return sendResponse(405, jsonReturn.toString(), "GET");
+        }
+        if(!model.playerExistsInListByToken(token)){
+            jsonReturn.put("error", "Player not found");
+            return sendResponse(405, jsonReturn.toString(), "GET");
+        }
+
+        ArrayList<String> alternatives = new ArrayList<>();
+        Config.alternatives.forEach((k, v) -> alternatives.add(k));
+
+        jsonReturn.put("alternatives", alternatives);
+        return sendResponse(200, jsonReturn.toString(), "GET");
+
     }
 }
