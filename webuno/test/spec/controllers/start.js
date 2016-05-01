@@ -16,8 +16,4 @@ describe('Controller: StartController', function () {
       // place here mocked dependencies
     });
   }));
-
-  it('test de la fonction goGame', function () {
-    expect(scope.goGame).toBeDefined();
-  });
 });
