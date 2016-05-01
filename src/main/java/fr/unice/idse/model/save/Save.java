@@ -32,7 +32,7 @@ public class Save implements Observer {
 	public enum ListEnum {
 		NewGameSave, SaveTurn
 	}
-	
+
 	protected Save() {
 
 	}
@@ -99,7 +99,7 @@ public class Save implements Observer {
 		TurnObject turn = new TurnObject();
 		turn.setIdMatch(match.getId());
 		turn.setIdUser(players.get(0).getIdUser());
-		turn.setInverded(game.getDirection());
+		turn.setInverded(game.getOrientation());
 		DAOFactory.getTurnDAO().create(turn);
 
 		// Add stack
@@ -133,14 +133,16 @@ public class Save implements Observer {
 		 * MatchId a partir du GameId
 		 */
 
-		MatchObject matchObject = ((MatchDAO) DAOFactory.getMatchDAO()).findbyGameId(gameId);
+		MatchObject matchObject = ((MatchDAO) DAOFactory.getMatchDAO())
+				.findbyGameId(gameId);
 		int matchId = matchObject.getId();
 
 		TurnObject turn = new TurnObject();
 		turn.setIdMatch(matchId);
-		UserObject user = ((UserDAO) DAOFactory.getUserDAO()).find(game.getActualPlayer().getName());
+		UserObject user = ((UserDAO) DAOFactory.getUserDAO()).find(game
+				.getActualPlayer().getName());
 		turn.setIdUser(user.getId());
-		turn.setInverded(game.getDirection());
+		turn.setInverded(game.getOrientation());
 		DAOFactory.getTurnDAO().create(turn);
 
 		Card topCard = game.getStack().getStack().get(0);
@@ -155,7 +157,8 @@ public class Save implements Observer {
 
 		List<Player> arrayPlayer = game.getPlayers();
 		for (int i = 0; i < arrayPlayer.size(); i++) {
-			UserObject userPlayer = ((UserDAO) DAOFactory.getUserDAO()).find(arrayPlayer.get(i).getName());
+			UserObject userPlayer = ((UserDAO) DAOFactory.getUserDAO())
+					.find(arrayPlayer.get(i).getName());
 
 			HandPlayerObject hand = new HandPlayerObject();
 			hand.setIdMatch(matchId);

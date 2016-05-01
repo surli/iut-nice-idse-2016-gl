@@ -21,7 +21,7 @@ public class RuleReverse extends EffectCard {
 	@Override
 	public void action()
 	{
-		getGame().changeMeaning();
+		getGame().changeOrientation();
 	}
 
 	@Override

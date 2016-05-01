@@ -71,17 +71,9 @@ public abstract class IA extends Player {
         return cards;
     }
 
-    public Color chooseColor(ArrayList<Card> mainIA) {
-        Color color = mainIA.get(0).getColor();
+    public abstract Color chooseColor(ArrayList<Card> mainIA);
 
-        return color;
-    }
-
-    public void changeColor(Card cardToPlay, ArrayList<Card> mainIA, Game game) {
-        Color color = chooseColor(mainIA);
-        game.getAlternative().getEffectCard(cardToPlay).action(color);
-        game.setActualColor(color);
-    }
+    public abstract void changeColor(Card cardToPlay, ArrayList<Card> mainIA, Game game);
 
     public void playCard (Game game, Card cardToPlay, ArrayList<Card> mainIA, boolean turnPlay) {
         if(turnPlay){
@@ -103,13 +95,11 @@ public abstract class IA extends Player {
      */
     public boolean searchColorCard (ArrayList<Card> main, Color colorCard) {
         boolean colorExist = false;
-
         for (Card aCard : main) {
             if(aCard.getColor() == colorCard) {
                 colorExist = true;
             }
         }
-
         return colorExist;
     }
 
@@ -123,7 +113,6 @@ public abstract class IA extends Player {
                 valueExist = true;
             }
         }
-
         return valueExist;
     }
 }
