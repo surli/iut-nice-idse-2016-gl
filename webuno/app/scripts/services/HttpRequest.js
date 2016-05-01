@@ -20,7 +20,7 @@ angular.module('unoApp')
      * }
      *
      */
-    .service('HttpRequest', function (ErrorService, $http, $rootScope) {
+    .service('HttpRequest', function (ErrorService, $http) {
         return {
             send: function(req, callback, callbackError) {
                 // Execute une requête http par rapport à la configuration définie
@@ -37,7 +37,7 @@ angular.module('unoApp')
                         // DEV ?
                         //$rootScope.error = '404 NOT FOUND';
                     } else {
-                        $rootScope.error = response.data.error;
+                        //$rootScope.error = response.data.error;
                     }
                 });
             }
