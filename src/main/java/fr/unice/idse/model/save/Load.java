@@ -2,11 +2,11 @@ package fr.unice.idse.model.save;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
-import fr.unice.idse.db.DataBaseCard;
-import fr.unice.idse.db.DataBaseGame;
-import fr.unice.idse.db.dao.CardDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.unice.idse.db.dao.DAOFactory;
 import fr.unice.idse.db.dao.GameDAO;
 import fr.unice.idse.db.dao.HandDAO;
@@ -31,10 +31,19 @@ import fr.unice.idse.model.card.Value;
 import fr.unice.idse.model.player.Player;
 
 public class Load {
-
-	public Load() {
+	private Logger logger = LoggerFactory.getLogger(Save.class);
+	private static Load instance;
+	
+	private Load() {
 	}
 
+	public static Load getInstance() {
+		if (instance == null) {
+			instance = new Load();
+		}
+		return instance;
+	}
+	
 	public Game load(String gameName) throws Exception {
 
 		GameObject gameObject = ((GameDAO) DAOFactory.getGameDAO()).find(gameName);
@@ -79,7 +88,7 @@ public class Load {
 
 		int matchId = matchObject.getId();
 
-		ArrayList<StackObject> stackObject = ((StackDAO) DAOFactory.getStackDAO()).findsByMatchId(matchId);
+		List<StackObject> stackObject = ((StackDAO) DAOFactory.getStackDAO()).findsByMatchId(matchId);
 
 		ArrayList<Card> listStack = new ArrayList<>();
 
@@ -142,7 +151,7 @@ public class Load {
 				game.addPlayer(new Player(userObject.getPseudo(), "none"));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e.getCause());
 		}
 	}
 

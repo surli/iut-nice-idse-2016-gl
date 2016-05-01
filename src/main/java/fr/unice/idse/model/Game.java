@@ -1,17 +1,16 @@
 package fr.unice.idse.model;
 
-import fr.unice.idse.model.card.Card;
-import fr.unice.idse.model.card.Color;
-import fr.unice.idse.model.player.Player;
-import fr.unice.idse.model.regle.EffectCard;
-import fr.unice.idse.model.save.Save;
-import fr.unice.idse.model.save.SaveListEnum;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Observable;
 import java.util.Observer;
+
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.player.Player;
+import fr.unice.idse.model.regle.EffectCard;
+import fr.unice.idse.model.save.Save;
 
 public class Game extends Observable implements Observer {
 	
@@ -231,7 +230,7 @@ public class Game extends Observable implements Observer {
 			init();
 			
 			setChanged();
-			notifyObservers(SaveListEnum.NewGameSave);
+			notifyObservers(Save.ListEnum.NewGameSave);
 			
 			return true;
 		}
@@ -241,7 +240,7 @@ public class Game extends Observable implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		setChanged();
-		notifyObservers(SaveListEnum.SaveTurn);
+		notifyObservers(Save.ListEnum.SaveTurn);
 	}
 	
 
