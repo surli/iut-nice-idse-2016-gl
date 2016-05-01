@@ -4,6 +4,7 @@ import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.player.Player;
 import fr.unice.idse.model.regle.EffectCard;
+import fr.unice.idse.model.save.Save;
 import fr.unice.idse.model.save.SaveListEnum;
 
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public class Game extends Observable implements Observer {
 	private boolean gameEnd;
 	private int cptDrawCard;
 	private int nextPlayer;
+	
+	private boolean saveEnabled;
 	
 	public Game(Player host,String gameName, int numberOfPlayers)
 	{
@@ -86,6 +89,9 @@ public class Game extends Observable implements Observer {
 	public Color getActualColor(){return this.actualColor; }
 
 	public void setGameBegin(Boolean value){ this.gameBegin = value; }
+	
+	public void setSaveEnabled(boolean value) { this.saveEnabled = value; }
+	public boolean isSaveEnbled() { return saveEnabled; }
 	
 	/**
 	 * Ajoute joueur à la partie
@@ -375,6 +381,10 @@ public class Game extends Observable implements Observer {
 		stack.initStack(deck);
 		actualColor = stack.topCard().getColor();
 		gameBegin = true;
+		
+		if(saveEnabled) {
+			addObserver(Save.getInstance());
+		}
 	}
 	
 	/**

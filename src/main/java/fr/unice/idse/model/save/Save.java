@@ -67,7 +67,7 @@ public class Save implements Observer {
 	 * Sauvegarde d'une nouvelle partie
 	 * @param Game game
 	 */
-	private void saveNewGame(Game game) throws SQLException {
+	protected void saveNewGame(Game game) throws SQLException {
 		// Add Game
 		GameObject gameObject = new GameObject();
 		gameObject.setNom(game.getGameName());
@@ -116,7 +116,7 @@ public class Save implements Observer {
 		}
 	}
 
-	private void saveTurn(Game game) throws Exception {
+	private void saveTurn(Game game) throws SQLException {
 	
 			GameObject gameObject = ((GameDAO)DAOFactory.getGameDAO()).find(game.getGameName());
 	
