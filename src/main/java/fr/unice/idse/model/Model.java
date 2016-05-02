@@ -79,14 +79,14 @@ public class Model {
 		return false;
 	}
 	
-	public ArrayList<EffectCard> getVariante(String nomVariante)
+	/*public ArrayList<EffectCard> getVariante(String nomVariante)
 	{
 		if(Config.variantes.containsKey(nomVariante))
 		{
 			return Config.variantes.get(nomVariante);
 		}
 		return null;
-	}
+	}*/
 
 	/**
 	 * Créer un joueur s'il n'existe pas et l'ajoute dans la liste des joueurs
