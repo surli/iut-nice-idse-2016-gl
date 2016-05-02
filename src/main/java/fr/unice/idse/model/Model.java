@@ -1,7 +1,7 @@
 package fr.unice.idse.model;
 
 import java.util.ArrayList;
-
+import fr.unice.idse.constante.Config;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.player.Player;
 import fr.unice.idse.model.regle.EffectCard;
@@ -50,13 +50,7 @@ public class Model {
 		{
 			Game game = new Game(player,gameName,numberPlayers);
 			this.games.add(game);
-			
-			boolean saveEnable = false;
-			if(saveEnable){
-				game.addObserver(Save.getInstance());
-				game.addObserver(game);
-			}
-			
+
 			addPlayerToGame(gameName, player);
 			return true;
 		}
@@ -79,16 +73,19 @@ public class Model {
 			game.getAlternative().setGameToEffectCards(game);
 			this.games.add(game);
 			
-			boolean saveEnable = false;
-			if(saveEnable){
-				game.addObserver(Save.getInstance());
-				game.addObserver(game);
-			}
-			
 			addPlayerToGame(gameName, player);
 			return true;
 		}
 		return false;
+	}
+	
+	public ArrayList<EffectCard> getVariante(String nomVariante)
+	{
+		if(Config.variantes.containsKey(nomVariante))
+		{
+			return Config.variantes.get(nomVariante);
+		}
+		return null;
 	}
 
 	/**

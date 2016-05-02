@@ -1,5 +1,9 @@
 package fr.unice.idse.model.card;
 
+/**
+ * Classe qui définit une carte de jeu du UNO, elle possède des comportements tels que
+ * la comparaison des valeurs, des couleurs ...
+ */
 public class Card implements Comparable<Card>{
 	private Value value;
 	private Color color;

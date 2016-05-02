@@ -199,7 +199,7 @@ public class GameTest {
 		assertTrue(game.getActualPlayer().equals(toto));
 		game.nextPlayer();
 		assertTrue(game.getActualPlayer().equals(test));
-		game.changeMeaning();
+		game.changeOrientation();
 		game.nextPlayer();
 		assertTrue(game.getActualPlayer().equals(toto));
 		game.nextPlayer();
@@ -326,7 +326,7 @@ public class GameTest {
 		
 		Game game= new Game(p1,"game",4);
 		
-		game.changeMeaning();
+		game.changeOrientation();
 		
 		
 		ArrayList<Player> players=new ArrayList<Player>();

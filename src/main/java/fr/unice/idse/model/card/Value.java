@@ -1,5 +1,8 @@
 package fr.unice.idse.model.card;
 
+/**
+ * Enumération qui définit la valeur d'une carte de UNO
+ */
 public enum Value {
 	Zero(0,0),
 	One(1,1),

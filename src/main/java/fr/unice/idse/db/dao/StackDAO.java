@@ -5,11 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.unice.idse.db.dao.object.PlayerObject;
 import fr.unice.idse.db.dao.object.StackObject;
 
 public class StackDAO extends DAO<StackObject>{
@@ -24,14 +24,13 @@ public class StackDAO extends DAO<StackObject>{
 		try {
 	
 			String query = "INSERT INTO stack (s_t_id, s_m_id, s_c_id) VALUES (?, ?, ?)";
-			PreparedStatement stmt = getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+			PreparedStatement stmt = getConnection().prepareStatement(query);
 			
 			int count = 1;
 			stmt.setInt(count++, obj.getIdTurn());
 			stmt.setInt(count++, obj.getIdMatch());
 			stmt.setInt(count, obj.getIdCard());
 
-			
 			stmt.execute();
 			getConnection().commit();
 			stmt.close();
@@ -86,9 +85,9 @@ public class StackDAO extends DAO<StackObject>{
 	 * @see fr.unice.idse.db.dao.DAO#find(int)
 	 * int id est l'id du match
 	 */
-	public ArrayList<StackObject> findsByMatchId(int id) throws SQLException {
+	public List<StackObject> findsByMatchId(int id) throws SQLException {
 		try {
-			ArrayList<StackObject> value = new ArrayList<StackObject>();
+			ArrayList<StackObject> value = new ArrayList<>();
 			String query = "SELECT s_t_id, s_m_id, s_c_id FROM stack WHERE s_m_id = ?";
 			PreparedStatement stmt = this.getConnection().prepareStatement(query);
 			stmt.setInt(1, id);

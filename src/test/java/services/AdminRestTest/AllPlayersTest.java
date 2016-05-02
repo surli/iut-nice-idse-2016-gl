@@ -2,8 +2,11 @@ package services.AdminRestTest;
 
 import fr.unice.idse.db.DataBaseOrigin;
 import fr.unice.idse.db.DataBaseUser;
+import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
+import fr.unice.idse.model.player.Player;
 import fr.unice.idse.services.AdminRest;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -15,6 +18,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -37,8 +41,8 @@ public class AllPlayersTest extends JerseyTest {
         dataBaseOrigin.resetDatabaseSQLite();
 
         model = Model.getInstance();
-        model.setGames(new ArrayList<>());
-        model.setPlayers(new ArrayList<>());
+        model.setGames(new ArrayList<Game>());
+        model.setPlayers(new ArrayList<Player>());
 
         DataBaseUser dataBaseUser = new DataBaseUser();
         assertTrue(dataBaseUser.addUser("tutu", "tutu@tutu.fr", "tutu", 3));

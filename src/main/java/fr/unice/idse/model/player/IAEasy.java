@@ -51,30 +51,42 @@ public class IAEasy extends IA {
 
     //CONSTRUCTEUR
     public IAEasy(String name, String token, int difficulty) {
-        super(name, token, difficulty);
+        super(name, token);
+        this.difficulty = difficulty;
     }
 
 
     public void thinking (Game game) {
         ArrayList<Card> mainIA = game.getActualPlayer().getCards();
         ArrayList<Card> playableCards = game.playableCards();
-
+        
         setMyCard(chooseCardToPlay(playableCards));
         playCard(game, getMyCard(), mainIA, getTurnPlay());
     }
 
     public Card chooseCardToPlay (ArrayList<Card> playableCards) {
-        return playableCards.get(0);
+        Card cardToPlay = null;
+        if(playableCards.size() > 0) {
+            setTurnPlay(true);
+            cardToPlay = playableCards.get(0);
+        }
+        return cardToPlay;
     }
 
 
     @Override
     public Color chooseColor(ArrayList<Card> mainIA) {
-        return mainIA.get(0).getColor();
+        int i = 0;
+        while (mainIA.get(i).getColor() == Color.Black) {
+            i++;
+        }
+        return mainIA.get(i).getColor();
     }
 
     @Override
     public void changeColor(Card cardToPlay, ArrayList<Card> mainIA, Game game) {
-        game.getAlternative().getEffectCard(cardToPlay).action(chooseColor(mainIA));
+        Color color = chooseColor(mainIA);
+        game.getAlternative().getEffectCard(cardToPlay).action(color);
+        game.setActualColor(color);
     }
 }
