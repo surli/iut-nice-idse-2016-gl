@@ -9,26 +9,33 @@ import fr.unice.idse.model.card.Value;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class IA extends Player {
 
-    //CONSTANTE
-    private int difficulty;
+    private Logger logger = LoggerFactory.getLogger(IA.class);
 
-    //GETTER
+    // ------------------------------------------------------------------- difficulty
+    /** La difficulté de l'IA. */
+    protected int difficulty;
+
+    /**
+     * Getter de la difficulté de l'IA.
+     * @return Card La difficulté de l'IA.
+     */
     public int getDifficulty() {
         return difficulty;
     }
 
-    //SETTER
+    /**
+     * Setter de la difficulté de l'IA.
+     * @param difficulty La nouvelle difficulté de l'IA.
+     */
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
 
-
-    public IA(String name, String token, int difficulty) {
-        super(name, token);
-        this.difficulty = difficulty;
-    }
 
     public IA(String name, String token) {
         super(name, token);
@@ -61,25 +68,17 @@ public abstract class IA extends Player {
         cards.add(new NumberCardByColor(Color.Yellow, countY));
 
         Collections.sort(cards);
-        System.out.println("cards IA = " + cards);
-
         return cards;
     }
 
-    public Color chooseColor(ArrayList<Card> mainIA) {
-        Color color = mainIA.get(0).getColor();
+    public abstract Color chooseColor(ArrayList<Card> mainIA);
 
-        return color;
-    }
-
-    public void changeColor(Card cardToPlay, ArrayList<Card> mainIA, Game game) {
-        game.getAlternative().getEffectCard(cardToPlay).action(chooseColor(mainIA));
-    }
+    public abstract void changeColor(Card cardToPlay, ArrayList<Card> mainIA, Game game);
 
     public void playCard (Game game, Card cardToPlay, ArrayList<Card> mainIA, boolean turnPlay) {
         if(turnPlay){
             game.poseCard(cardToPlay);
-            System.out.println("Carte joué : " + cardToPlay);
+            logger.info("Carte joué : " + cardToPlay);
 
             if (game.getAlternative().getEffectCard(cardToPlay) != null && game.getAlternative().getEffectCard(cardToPlay).isColorChangingCard()) {
                 changeColor(cardToPlay, mainIA, game);
@@ -96,13 +95,11 @@ public abstract class IA extends Player {
      */
     public boolean searchColorCard (ArrayList<Card> main, Color colorCard) {
         boolean colorExist = false;
-
         for (Card aCard : main) {
             if(aCard.getColor() == colorCard) {
                 colorExist = true;
             }
         }
-
         return colorExist;
     }
 
@@ -116,7 +113,6 @@ public abstract class IA extends Player {
                 valueExist = true;
             }
         }
-
         return valueExist;
     }
 }

@@ -38,5 +38,6 @@
   "GUEST": "Invité",
   "USER": "Abonné",
   "ADMIN": "Administrateur",
-  "UPDATE": "Modifier"
+  "UPDATE": "Modifier",
+  "VARIANT": "Règles"
 }

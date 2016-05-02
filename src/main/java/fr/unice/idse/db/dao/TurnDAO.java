@@ -36,7 +36,11 @@ public class TurnDAO extends DAO<TurnObject>{
 			stmt.execute();
 			getConnection().commit();
 			stmt.getGeneratedKeys().next();
-			obj.setId(stmt.getGeneratedKeys().getInt("GENERATED_KEY"));
+			ResultSet rs = stmt.getGeneratedKeys();
+			if(rs != null && rs.next()) {
+				obj.setId((int) rs.getInt("GENERATED_KEY"));
+				rs.close();
+			}
 			stmt.close();
 			return true;
 		} catch (SQLException e) {

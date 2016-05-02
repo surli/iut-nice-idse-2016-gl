@@ -6,9 +6,14 @@ import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.NumberCardByColor;
 import fr.unice.idse.model.card.Value;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 
 public class IAHard extends IA {
+
+    private Logger logger = LoggerFactory.getLogger(IAHard.class);
 
 // ------------------------------------------------------------------- myCard
     /** La carte qui sera joué. */
@@ -94,7 +99,8 @@ public class IAHard extends IA {
 
     //CONSTRUCTEUR
     public IAHard(String name, String token, int difficulty) {
-        super(name, token, difficulty);
+        super(name, token);
+        this.difficulty = difficulty;
     }
 
 
@@ -141,7 +147,7 @@ public class IAHard extends IA {
     }
 
     public boolean testCardPlayable(ArrayList<Card> playableCards, Card myCard) {
-        System.out.println("Appel de la fonction testCardPlayableAndPlay ");
+        logger.info("Appel de la fonction testCardPlayableAndPlay ");
         for (Card aCard : playableCards) {
             if (myCard == aCard) {
                 setTurnPlay(true);

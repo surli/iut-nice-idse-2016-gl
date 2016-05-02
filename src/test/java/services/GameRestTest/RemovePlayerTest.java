@@ -51,6 +51,7 @@ public class RemovePlayerTest extends JerseyTest {
 
     @Test
     public void retireUnJoueurDUnePartieQuiACommencer() throws JSONException{
+
         for(int i = 0; i < 3; i++){
             assertTrue(model.createPlayer("azert"+i, "token"+i));
             assertTrue(model.addPlayerToGame("tata", model.getPlayerFromList("token"+i)));
@@ -61,9 +62,12 @@ public class RemovePlayerTest extends JerseyTest {
         Response response = target("/game/tata/azert1").request().header("token", "token1").delete();
         assertEquals(200, response.getStatus());
 
-        for(int i = 0; i < 3; i++)
-            assertTrue(model.playerExistsInList("azert"+i));
+        for(int i = 0; i < 3; i++) {
+            assertTrue(model.playerExistsInList("azert" + i));
+            assertTrue(model.playerExistsInListByToken("token" + i));
+        }
         assertTrue(model.playerExistsInList("toto"));
+        assertTrue(model.playerExistsInListByToken("token"));
         assertFalse(model.existsGame("tata"));
     }
 

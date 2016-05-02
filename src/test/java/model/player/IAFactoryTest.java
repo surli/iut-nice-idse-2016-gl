@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 public class IAFactoryTest {
 
+    /* ------------ testGetIA ----------------------------- */
     @Test
     public void testGetIA(){
         IAEasy expectedEasy = new IAEasy("testGetIAEasy", "", 1);
