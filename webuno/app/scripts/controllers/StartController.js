@@ -30,6 +30,8 @@ angular.module('unoApp')
                 // Utilisation du service Game pour créer une nouvelle partie
                 Game.createGame($scope.game, $scope.nbPlayers, $scope.alternative, function() {
                     $state.go('app.room', { name: $scope.game });
+                }, function () {
+                  $scope.error = 'Erreur de création de partie';
                 });
             } else {
                 $rootScope.error = '4 characters minimum required to name the game';
