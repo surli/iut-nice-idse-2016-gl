@@ -97,16 +97,19 @@ public class IAMedium extends IA {
             nbCard++;
         }
         while (!getTurnPlay() && nbCard < cards.get(2).getNumber()) {
-            myCard = mainIA.get(nbCard);
+        	setBestColor(cards.get(2).getColor());
+        	myCard = mainIA.get(nbCard);
             setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(1).getColor(), getTurnPlay()));
             nbCard++;
         }
         while (!getTurnPlay() && nbCard < cards.get(1).getNumber()) {
-            myCard = mainIA.get(nbCard);
+        	setBestColor(cards.get(1).getColor());
+        	myCard = mainIA.get(nbCard);
             setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(2).getColor(), getTurnPlay()));
             nbCard++;
         }
         while (!getTurnPlay() && nbCard < cards.get(0).getNumber()) {
+        	setBestColor(cards.get(0).getColor());
             myCard = mainIA.get(nbCard);
             setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(3).getColor(), getTurnPlay()));
             nbCard++;
@@ -133,6 +136,8 @@ public class IAMedium extends IA {
 
     @Override
     public void changeColor(Card cardToPlay, ArrayList<Card> mainIA, Game game) {
-        game.getAlternative().getEffectCard(getMyCard()).action(chooseColor(mainIA));
+        Color color = chooseColor(mainIA);
+        game.getAlternative().getEffectCard(cardToPlay).action(color);
+        game.setActualColor(color);
     }
 }
