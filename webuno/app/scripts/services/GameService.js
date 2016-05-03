@@ -9,10 +9,11 @@ angular.module('unoApp')
              *
              * @param game
              * @param nbPlayers
+             * @param alternative
              * @param callback
              * @param callbackError
              */
-            createGame: function (game, nbPlayers, callback, callbackError) {
+            createGame: function (game, nbPlayers, alternative, callback, callbackError) {
                 HttpRequest.send({
                     method: 'post',
                     url: 'rest/game',
@@ -22,7 +23,8 @@ angular.module('unoApp')
                     data: {
                         game: game,
                         player: Auth.getUser().name,
-                        numberplayers: nbPlayers
+                        numberplayers: nbPlayers,
+                        alternative: alternative
                     }
                 }, callback, callbackError);
             },
@@ -273,6 +275,22 @@ angular.module('unoApp')
                 HttpRequest.send({
                     method: 'delete',
                     url: 'rest/game/' + gameName + '/' + Auth.getUser().name,
+                    headers: {
+                        token: Auth.getUser().token
+                    }
+                }, callback, callbackError);
+            },
+
+            /**
+             * Permet de retourner la liste des règles
+             *
+             * @param callback
+             * @param callbackError
+             */
+            getAlternatives: function(callback, callbackError) {
+                HttpRequest.send({
+                    method: 'get',
+                    url: 'rest/game/alternative',
                     headers: {
                         token: Auth.getUser().token
                     }

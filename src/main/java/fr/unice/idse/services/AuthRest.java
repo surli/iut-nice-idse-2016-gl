@@ -22,9 +22,9 @@ public class AuthRest extends OriginRest{
 
     /**
      * Authentifie un utilisateur Guest
-     * @param stringJson String
+     * @param stringJson Parametre
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -53,9 +53,9 @@ public class AuthRest extends OriginRest{
 
     /**
      * Authentifie un utilisateur avec ses identifiants
-     * @param json String
+     * @param json Parametre
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
@@ -105,12 +105,11 @@ public class AuthRest extends OriginRest{
         return sendResponse(405, jsonResult.toString(), "PUT");
     }
 
-
     /**
      * Créer un joueur dans la base de donnée
-     * @param json String
+     * @param json Parametre
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @POST
     @Path("/signup")
@@ -164,6 +163,12 @@ public class AuthRest extends OriginRest{
         return sendResponse(405, jsonResult.toString(), "POST");
     }
 
+    /**
+     * Deconnecte un joueur
+     * @param token Token du joueur
+     * @return Response
+     * @throws JSONException exception
+     */
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Response signOut(@HeaderParam("token") String token) throws JSONException {

@@ -213,6 +213,10 @@ $carte-height: 360px*0.3;
   color: $bleu !important;
 }
 
+.color-gris {
+  color: #4B4B4B !important;
+}
+
 html, body {
   min-height: 100%;
   padding: 0;
@@ -466,8 +470,8 @@ footer {
     color: $blanc;
     text-align: center;
     line-height: 100px;
-    background: $vert;
-    box-shadow: 0 0 5px 0 $vert;
+    background: #4B4B4B;
+    box-shadow: none;
     font-size: 18pt;
     border: none;
   }

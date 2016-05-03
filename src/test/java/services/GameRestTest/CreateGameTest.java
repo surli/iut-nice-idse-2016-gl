@@ -50,6 +50,7 @@ public class CreateGameTest extends JerseyTest {
         jsonObject.put("game", "superfly");
         jsonObject.put("player", "marcel");
         jsonObject.put("numberplayers", 4);
+        jsonObject.put("alternative", "default");
 
         Entity<String> jsonEntity = Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON);
 
@@ -237,6 +238,38 @@ public class CreateGameTest extends JerseyTest {
         JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
         assertEquals(405, response.getStatus());
         assertEquals("Joueur inexistant", jsonObject.getString("error"));
+    }
+
+    @Test
+    public void createGameButMissingParameterAlternative() throws JSONException{
+        assertTrue(model.createPlayer("marcel", "token1233"));
+        jsonObject.put("game", "superfly");
+        jsonObject.put("player", "marcel");
+        jsonObject.put("numberplayers", 4);
+
+        Entity<String> jsonEntity = Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON);
+
+        Response response = target("/game").request().header("token", "token1233").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+        assertEquals(405, response.getStatus());
+        assertEquals("No alternative parameter", jsonObject.getString("error"));
+
+    }
+
+    @Test
+    public void createGameButAlternativeNotFound() throws JSONException{
+        assertTrue(model.createPlayer("marcel", "token1233"));
+        jsonObject.put("game", "superfly");
+        jsonObject.put("player", "marcel");
+        jsonObject.put("numberplayers", 4);
+        jsonObject.put("alternative", "totototot");
+
+        Entity<String> jsonEntity = Entity.entity(jsonObject.toString(), MediaType.APPLICATION_JSON);
+
+        Response response = target("/game").request().header("token", "token1233").post(jsonEntity);
+        JSONObject jsonObject = new JSONObject(response.readEntity(String.class));
+        assertEquals(405, response.getStatus());
+        assertEquals("No alternative found", jsonObject.getString("error"));
 
     }
 }

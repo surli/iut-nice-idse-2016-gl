@@ -38,6 +38,6 @@
   "GUEST": "Guest",
   "USER": "Register",
   "ADMIN": "Administrator",
-  "UPDATE": "Update"
-
+  "UPDATE": "Update",
+  "VARIANT": "Rules"
 }
