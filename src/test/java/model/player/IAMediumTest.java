@@ -48,4 +48,12 @@ public class IAMediumTest {
         iaMedium.setMyCard(expected);
         assertEquals(expected, iaMedium.getMyCard());
     }
+    
+    /* ------------ testTurnPlay ----------------------------- */
+    @Test
+    public void testTurnPlay() {
+        boolean expected = true;
+        iaMedium.setTurnPlay(true);
+        assertEquals(expected, iaMedium.getTurnPlay());
+    }
 }
