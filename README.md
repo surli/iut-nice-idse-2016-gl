@@ -59,6 +59,15 @@ Tous les documents de chaque groupe se trouve dans le repertoire doc à la racin
 
 ###Release
 
+>######Version 0.9.0
+
+- Choix de la variante dans l'IHM lors de la creation d'une partie
+- Creation de la route permettant de récupéré toutes les variantes
+- Ajout des variantes dans la route de creation d'une partie
+- Ajout des variantes dans un fichier config
+- Correction de bug
+- Ajout des tests de l'IA 
+
 >######Version 0.8.1
 
 - Correction du bump

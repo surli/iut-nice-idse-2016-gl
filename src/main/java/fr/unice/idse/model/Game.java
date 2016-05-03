@@ -1,34 +1,40 @@
 package fr.unice.idse.model;
 
-import fr.unice.idse.model.card.Card;
-import fr.unice.idse.model.card.Color;
-import fr.unice.idse.model.player.Player;
-import fr.unice.idse.model.regle.EffectCard;
-import fr.unice.idse.model.save.SaveListEnum;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Observable;
-import java.util.Observer;
 
-public class Game extends Observable implements Observer {
+import fr.unice.idse.model.card.Card;
+import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.player.Player;
+import fr.unice.idse.model.regle.EffectCard;
+import fr.unice.idse.model.save.Save;
+
+
+/**
+ * Classe qui définit tous les comportements d'une partie de UNO(exemple : piocher, passer au joueurs suivants...).
+ * Elle permet également de s'occuper de la gestion des joueurs (exemple : ajouter, supprimer rechercher des joueurs dans la partie...). 
+ * C'est la classe centrale du projet, elle connaît tous les éléments d'une partie.
+ */
+public class Game extends Observable {
 	
 	private Player host;
 	private String gameName;
 	private int numberPlayers;
-	
 	private ArrayList<Player> players;
 	private Alternative alternative;
 	private int actualPlayer;
 	private Stack stack;
 	private Deck deck;
 	private Color actualColor;
-	private boolean meaning;
+	private boolean orientation;
 	private boolean gameBegin;
 	private boolean gameEnd;
 	private int cptDrawCard;
 	private int nextPlayer;
+	
+	private boolean saveEnabled;
 	
 	public Game(Player host,String gameName, int numberOfPlayers)
 	{
@@ -40,7 +46,7 @@ public class Game extends Observable implements Observer {
 			this.deck = new Deck();
 			this.stack = new Stack();
 			this.actualPlayer = 0;
-			this.meaning = true;
+			this.orientation = true;
 			this.gameBegin = false;
 			this.gameEnd = false;
 			this.cptDrawCard = 1;
@@ -56,7 +62,7 @@ public class Game extends Observable implements Observer {
 			this.deck = new Deck();
 			this.stack = new Stack();
 			this.actualPlayer = 0;
-			this.meaning = true;
+			this.orientation = true;
 			this.gameBegin = false;
 			this.gameEnd = false;
 			this.cptDrawCard = 1;
@@ -80,12 +86,13 @@ public class Game extends Observable implements Observer {
 	public int getNumberPlayers() { return numberPlayers; }
 	public void setNumberPlayers(int numberPlayers) { this.numberPlayers = numberPlayers; }
 	
-	
-
 	public void setActualColor(Color actualColor){ this.actualColor = actualColor; }
 	public Color getActualColor(){return this.actualColor; }
 
 	public void setGameBegin(Boolean value){ this.gameBegin = value; }
+	
+	public void setSaveEnabled(boolean value) { this.saveEnabled = value; }
+	public boolean isSaveEnbled() { return saveEnabled; }
 	
 	/**
 	 * Ajoute joueur à la partie
@@ -225,25 +232,18 @@ public class Game extends Observable implements Observer {
 			init();
 			
 			setChanged();
-			notifyObservers(SaveListEnum.NewGameSave);
+			notifyObservers(Save.ListEnum.NewGameSave);
 			
 			return true;
 		}
 		return false;
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		setChanged();
-		notifyObservers(SaveListEnum.SaveTurn);
-	}
-	
-
 	/**
 	 * Retourne le joueur suivant
 	 */
 	public int getNextPlayer () {
-		if(meaning)
+		if(orientation)
 		{
 			nextPlayer = (actualPlayer+1)%players.size();
 		}
@@ -261,18 +261,18 @@ public class Game extends Observable implements Observer {
 	/**
 	 * Change le sens de la partie.
 	 */
-	public void changeMeaning()
+	public void changeOrientation()
 	{
-		meaning = !meaning;
+		orientation = !orientation;
 	}
 	
 	
-	public boolean getDirection() {
-		return meaning;
+	public boolean getOrientation() {
+		return orientation;
 	}
 
-	public void setMeaning(boolean meaning) {
-		this.meaning = meaning;
+	public void setMeaning(boolean orientation) {
+		this.orientation = orientation;
 	}
 
 	/**
@@ -324,7 +324,7 @@ public class Game extends Observable implements Observer {
 	 */
 	public void nextPlayer()
 	{
-		if(meaning)
+		if(orientation)
 		{
 			actualPlayer = (actualPlayer+1)%players.size();
 		}
@@ -337,7 +337,7 @@ public class Game extends Observable implements Observer {
 			}
 		}
 		setChanged();
-		notifyObservers();
+		notifyObservers(Save.ListEnum.SaveTurn);
 	}
 	
 	/**
@@ -375,6 +375,10 @@ public class Game extends Observable implements Observer {
 		stack.initStack(deck);
 		actualColor = stack.topCard().getColor();
 		gameBegin = true;
+		
+		if(saveEnabled) {
+			addObserver(Save.getInstance());
+		}
 	}
 	
 	/**
@@ -490,7 +494,7 @@ public class Game extends Observable implements Observer {
 		int numberOfPlayers = players.size();
 		if(numberOfPlayers>1)
 		{
-			if(meaning)
+			if(orientation)
 			{
 				ArrayList<Card> temp=players.get(numberOfPlayers-1).getCards();
 				for(int i=numberOfPlayers-1;i>0;i--)
@@ -556,5 +560,93 @@ public class Game extends Observable implements Observer {
 		}
 		return null;
 	}
+	
+	/**
+	 * Renvoie un hashcode
+	 * return result 
+ 	*/
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((actualColor == null) ? 0 : actualColor.hashCode());
+		result = prime * result + actualPlayer;
+		result = prime * result + ((alternative == null) ? 0 : alternative.hashCode());
+		result = prime * result + cptDrawCard;
+		result = prime * result + ((deck == null) ? 0 : deck.hashCode());
+		result = prime * result + (gameBegin ? 1231 : 1237);
+		result = prime * result + (gameEnd ? 1231 : 1237);
+		result = prime * result + ((gameName == null) ? 0 : gameName.hashCode());
+		result = prime * result + ((host == null) ? 0 : host.hashCode());
+		result = prime * result + (orientation ? 1231 : 1237);
+		result = prime * result + nextPlayer;
+		result = prime * result + numberPlayers;
+		result = prime * result + ((players == null) ? 0 : players.hashCode());
+		result = prime * result + ((stack == null) ? 0 : stack.hashCode());
+		return result;
+	}
+
+	/**
+	 * Contrôle l'égalité de 2 Game
+	 * @return true/false
+	 */
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Game other = (Game) obj;
+		if (actualColor != other.actualColor)
+			return false;
+		if (actualPlayer != other.actualPlayer)
+			return false;
+		if (alternative == null) {
+			if (other.alternative != null)
+				return false;
+		} else if (!alternative.equals(other.alternative))
+			return false;
+		if (cptDrawCard != other.cptDrawCard)
+			return false;
+		if (deck == null) {
+			if (other.deck != null)
+				return false;
+		} else if (!deck.equals(other.deck))
+			return false;
+		if (gameBegin != other.gameBegin)
+			return false;
+		if (gameEnd != other.gameEnd)
+			return false;
+		if (gameName == null) {
+			if (other.gameName != null)
+				return false;
+		} else if (!gameName.equals(other.gameName))
+			return false;
+		if (host == null) {
+			if (other.host != null)
+				return false;
+		} else if (!host.equals(other.host))
+			return false;
+		if (orientation != other.orientation)
+			return false;
+		if (nextPlayer != other.nextPlayer)
+			return false;
+		if (numberPlayers != other.numberPlayers)
+			return false;
+		if (players == null) {
+			if (other.players != null)
+				return false;
+		} else if (!players.equals(other.players))
+			return false;
+		if (stack == null) {
+			if (other.stack != null)
+				return false;
+		} else if (!stack.equals(other.stack))
+			return false;
+		return true;
+	}
+	
+	
 
 }

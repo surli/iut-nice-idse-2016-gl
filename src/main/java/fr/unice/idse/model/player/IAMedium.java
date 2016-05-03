@@ -71,7 +71,8 @@ public class IAMedium extends IA {
 
 // ------------------------------------------------------------------- CONSTRUCTEUR
     public IAMedium(String name, String token, int difficulty) {
-        super(name, token, difficulty);
+        super(name, token);
+        this.difficulty = difficulty;
     }
 
     public void thinking (Game game) {

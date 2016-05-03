@@ -1,5 +1,8 @@
 package fr.unice.idse.model.card;
 
+/**
+ * Classe permettant de stocker le nombre de cartes de la même couleur présente dans une partie de UNO
+ */
 public class NumberCardByColor implements Comparable<NumberCardByColor> {
     private Color color;
     private int number;
