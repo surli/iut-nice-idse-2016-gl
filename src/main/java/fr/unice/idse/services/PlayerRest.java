@@ -35,7 +35,7 @@ public class PlayerRest extends OriginRest {
      *                       email : String]
      *                   ]}
      * @return Response
-     * @throws JSONException 
+     * @throws JSONException response 
      */
     @GET
     @Path("/")
@@ -57,8 +57,9 @@ public class PlayerRest extends OriginRest {
     /**
      * Méthode permettant de recuperer un joueur selon son id
      * Retour 200 Ok : {pseudo : String, email : String}
+     * @param pseudo nom du joueur
      * @return Response
-     * @throws JSONException 
+     * @throws JSONException response
      */
     @GET
     @Path("/{pseudo}")

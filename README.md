@@ -59,13 +59,57 @@ Tous les documents de chaque groupe se trouve dans le repertoire doc à la racin
 
 ###Release
 
+>######Version 0.8.1
+
+- Correction du bump
+
+>######Version 0.8
+
+- Moteur de recherche pour l'admin (utilisateur)
+- Test de l'IA
+- Test sauvegarde / relance
+- Correction de bug
+
+>######Version 0.7.1
+
+- Correction bug dans l'IHM
+- Ajout du ppt pour la présentation du 19/04/2016
+- Ajout du diagramme de classe
+
+>######Version 0.7
+
+- Pouvoir recuperer tous les utilisateurs de la BDD (manque le filtre)
+- Modifier le rang d'un utilisateur (admin)
+- Pouvoir bannir un utilisateur (admin)
+- Sauvegarde / relance d'une partie (pas encore tester)
+- Système de variante oppérationnel (pas encore implémenter dans REST/IHM)
+- Ajout d'un connecteur pour la base de donnée (SQLite)
+- Ajout des logs (pas encore implémenté de partout)
+- Refactorisation des class Game / Board en une seule class (Game)
+- Correction de bug
+
+>######Version 0.6.1
+
+- Correction build.sh (ajout du --force car problème de droit)
+
+>######Version 0.6
+
+- Admin 
+    - Voir les parties
+    - Voir les joueurs dans une partie
+    - Détruire une partie
+- Refacto Bdd
+- Amélioration script bdd
+- Correction de quelques bugs sur l'IHM
+- Variante 7
+
 >######Version 0.5
 
 - Jeu basique oppérationnel
 - Ajout des rangs dans les utilisateurs (1 Bot, 2 Guest, 3 Register, 4 Admin)
 - Sauvegarder une partie (pas encore implémenter dans IHM / REST) 
 - Ajout de l'IA medium
-- Refractorisation niveau REST
+- Refactorisation niveau REST
 - Creation de la vue admin
 - Script pour installation de la base de donnée
 

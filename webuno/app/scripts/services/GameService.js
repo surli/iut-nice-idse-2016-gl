@@ -9,10 +9,11 @@ angular.module('unoApp')
              *
              * @param game
              * @param nbPlayers
+             * @param alternative
              * @param callback
              * @param callbackError
              */
-            createGame: function (game, nbPlayers, callback, callbackError) {
+            createGame: function (game, nbPlayers, alternative, callback, callbackError) {
                 HttpRequest.send({
                     method: 'post',
                     url: 'rest/game',
@@ -22,7 +23,8 @@ angular.module('unoApp')
                     data: {
                         game: game,
                         player: Auth.getUser().name,
-                        numberplayers: nbPlayers
+                        numberplayers: nbPlayers,
+                        alternative: alternative
                     }
                 }, callback, callbackError);
             },
@@ -43,22 +45,40 @@ angular.module('unoApp')
                     }
                 }, callback, callbackError);
             },
-      /**
-       * Permet à un Admin de supprimer la game passée en paramètre
-       *
-       * @param gameName
-       * @param callback
-       * @param callbackError
-       */
-      deleteGame: function (gameName, callback, callbackError) {
-        HttpRequest.send({
-          method: 'delete',
-          url: 'rest/admin/game/' + gameName,
-          headers: {
-            token: Auth.getUser().token
-          }
-        }, callback, callbackError);
-      },
+
+            /**
+             * Retourne l'état de la partie passée en paramètre
+             *
+             * @param gameName
+             * @param callback
+             * @param callbackError
+             */
+            getGameAdmin: function (gameName, callback, callbackError) {
+                HttpRequest.send({
+                    method: 'get',
+                    url: 'rest/admin/game/' + gameName,
+                    headers: {
+                        token: Auth.getUser().token
+                    }
+                }, callback, callbackError);
+            },
+
+            /**
+             * Permet à un Admin de supprimer la game passée en paramètre
+             *
+             * @param gameName
+             * @param callback
+             * @param callbackError
+             */
+             deleteGame: function (gameName, callback, callbackError) {
+                HttpRequest.send({
+                    method: 'delete',
+                    url: 'rest/admin/game/' + gameName,
+                    headers: {
+                        token: Auth.getUser().token
+                    }
+                }, callback, callbackError);
+            },
 
             /**
              * Retourne la liste de toutes les parties
@@ -77,36 +97,52 @@ angular.module('unoApp')
             },
 
             /**
+             * Retourne la liste de toutes les parties
+             *
+             * @param callback
+             * @param callbackError
+             */
+            getAllGamesAdmin: function (callback, callbackError) {
+                HttpRequest.send({
+                    method: 'get',
+                    url: 'rest/admin/game',
+                    headers: {
+                        token: Auth.getUser().token
+                    }
+                }, callback, callbackError);
+            },
+
+            /**
              * Retourne la liste de toutes mes parties
              *
              * @param callback
              * @param callbackError
              */
             getMyGames: function (callback, callbackError) {
-               HttpRequest.send({
-                method: 'get',
-                url: 'rest/'+ Auth.getUser().name +'/games',
-                headers: {
-                  token: Auth.getUser().token
-                }
-              }, callback, callbackError);
+                HttpRequest.send({
+                    method: 'get',
+                    url: 'rest/' + Auth.getUser().name + '/games',
+                    headers: {
+                        token: Auth.getUser().token
+                    }
+                }, callback, callbackError);
             },
 
-          /**
-           * Retourne le nombre de parties jouées dont les perdus et les gagnants
-           * mode statique
-           * @param callback
-           * @param callbackError
-           */
-          getChartNbPlayed: function (callback, callbackError) {
-            HttpRequest.send({
-              method: 'get',
-              url: 'rest/'+ Auth.getUser().name +'/games/stats',// va changer plus tard cette route n'existe pas
-              headers: {
-                token: Auth.getUser().token
-              }
-            }, callback, callbackError);
-          },
+            /**
+             * Retourne le nombre de parties jouées dont les perdus et les gagnants
+             * mode statique
+             * @param callback
+             * @param callbackError
+             */
+            getChartNbPlayed: function (callback, callbackError) {
+                HttpRequest.send({
+                    method: 'get',
+                    url: 'rest/' + Auth.getUser().name + '/games/stats',// va changer plus tard cette route n'existe pas
+                    headers: {
+                        token: Auth.getUser().token
+                    }
+                }, callback, callbackError);
+            },
 
             /**
              * Retourne la main du joueur connecté
@@ -239,6 +275,22 @@ angular.module('unoApp')
                 HttpRequest.send({
                     method: 'delete',
                     url: 'rest/game/' + gameName + '/' + Auth.getUser().name,
+                    headers: {
+                        token: Auth.getUser().token
+                    }
+                }, callback, callbackError);
+            },
+
+            /**
+             * Permet de retourner la liste des règles
+             *
+             * @param callback
+             * @param callbackError
+             */
+            getAlternatives: function(callback, callbackError) {
+                HttpRequest.send({
+                    method: 'get',
+                    url: 'rest/game/alternative',
                     headers: {
                         token: Auth.getUser().token
                     }

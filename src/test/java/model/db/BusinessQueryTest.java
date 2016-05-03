@@ -2,12 +2,10 @@ package model.db;
 
 import org.junit.Test;
 
-import fr.unice.idse.model.save.BusinessQuery;
-
 public class BusinessQueryTest {
 
 	@Test
-	public void testAddGame() {
+	public void test() {
 	//	BusinessQuery.newGame(new Game(new Player("Roger", "Espadon"), "Test", 3));
 	//  Need to add manually a player
 	//	BusinessQuery.addPlayerToGame(1, 1, 0);

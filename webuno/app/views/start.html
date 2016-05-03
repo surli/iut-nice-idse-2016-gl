@@ -24,6 +24,17 @@
                             </select>
                         </div>
                     </div>
+                    <hr style="border-color: rgba(0, 0, 0, 0.2);">
+                    <div class="form-group">
+                        <label for="typeVariante" class="col-md-4 control-label" translate="VARIANT"></label>
+                        <div class="col-md-8">
+                            <select class="form-control input-lg" name="typeVariante" data-ng-model="alternative" id="typeVariante">
+                                <option data-ng-repeat="alter in alternatives" value="{{alter}}">
+                                    {{(valueAlternatives[alter]) ? valueAlternatives[alter] : alter}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
                     <br />
                     <br />
                     <button type="submit" class="btn btn-lg btn-success" style="font-size: 24pt;" translate="GO"></button>

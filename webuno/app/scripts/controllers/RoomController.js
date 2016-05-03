@@ -35,9 +35,10 @@ angular.module('unoApp')
                         $scope.requestStateGame();
                     }
                 }, function () {
-                    $scope.requestStateGame();
+                    $timeout.cancel(timeoutStateGame);
+                    $state.go('login');
                 });
-            }, 2000);
+            }, 1000);
         };
 
         // Fonction qui permet de lancer la partie
@@ -53,20 +54,12 @@ angular.module('unoApp')
             });
         };
 
-        // Évènement qui permet de stopper le timer et quitter la room quand on quitte le contrôleur RoomController
-        $scope.$on('$destroy', function () {
+        $rootScope.callbackHome = function(url) {
             $timeout.cancel(timeoutStateGame);
-            if ($scope.game.state === false && !$rootScope.logout) {
-                Game.quitRoom($rootScope.gameName);
-            }
-        });
-
-        // Évènement qui permet de quitter la room quand on ferme l'onglet contenant la room
-        /*
-        window.onbeforeunload = function () {
-            if (!$rootScope.logout) {
-                Game.quitRoom($rootScope.gameName);
+            if (!$scope.game.state) {
+                Game.quitRoom($rootScope.gameName, function () {
+                    $state.go(url);
+                });
             }
         };
-        */
     }]);

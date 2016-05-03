@@ -1,8 +1,37 @@
 <div id="admin" class="col-md-12">
     <div class="jumbotron">
-        <h1>Administration</h1>
+        <h1>Admin</h1>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">
+                <span>{{'PLAYERS' | translate}}</span>
+                <input class="input" type="text" data-ng-model="search" placeholder="Rechercher" style="float: right;" data-ng-change="updateUsers()">
+            </div>
+            <div class="panel-body text-center" style="padding:0;">
+                <table class="table" data-ng-if="allusers.length > 0" style="margin: 0;">
+                    <tr data-ng-repeat="user in allusers">
+                        <td>{{user.pseudo}}</td>
+                        <td>{{user.email}}</td>
+                        <td>
+                            <input id="banUser" ng-model="user.banned" ng-checked="user.banned" data-ng-click="goUpdateBan(user.pseudo, user.banned)" type="checkbox">
+                            <label for="banUser" style="padding-left: 3px;">{{'BANNED'|translate}}</label>
+                        </td>
+                        <td>
+                            <label>
+                                <select class="form-control role" data-ng-change="goUpdateRole(user.pseudo, user.role)" data-ng-model="user.role">
+                                    <option value="3">{{'USER' | translate}}</option>
+                                    <option value="4">{{'ADMIN' | translate}}</option>
+                                </select>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <p style="padding: 15px;" data-ng-if="allusers.length === 0">{{'NOPLAYERS' | translate}}</p>
+            </div>
+        </div>
+    </div>
+    <div data-ng-class="{'col-md-12': games.length == 0, 'col-md-8': games.length > 0}">
         <div class="panel panel-default">
             <div class="panel-heading text-center">{{games.length}} partie{{(games.length > 1) ? 's' : ''}}</div>
             <div class="panel-body text-center" style="padding:0;">
@@ -10,14 +39,16 @@
                     <tr data-ng-repeat="game in games">
                         <td>{{game.gamename}}</td>
                         <td>{{game.numberplayer}}/{{game.maxplayer}}</td>
-                        <td>{{(game.state == "true") ? ('STARTED'|translate) : ((game.numberplayer == game.maxplayer) ? ('FULLPLAYERS'|translate) : ('WAITINGPLAYERS'|translate))}}</td>
+                        <td>{{(game.state == "true") ? ('STARTED'|translate) : ((game.numberplayer == game.maxplayer) ? ('FULLPLAYERS'|translate) : ('WAITINGPLAYERS'|translate))}}
+                        </td>
                         <td>
-                            <a href="javascript:alert('Visualisation indisponible')">
+                            <a href data-ng-click="goVisualisation(game.gamename)">
                                 <i class="fa fa-eye"></i>
                             </a>
                         </td>
                         <td>
-                            <a href="javascript:alert('Suppression indisponible')">
+                            <a href data-confirmed-click="goDelete(game.gamename)"
+                               ng-confirm-click="Êtes-vous certain de vouloir supprimer cette partie ?">
                                 <i class="fa fa-times"></i>
                             </a>
                         </td>
@@ -27,11 +58,31 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4" data-ng-show="games.length > 0">
         <div class="panel panel-default">
             <div class="panel-heading text-center">Stats</div>
             <div class="panel-body text-center" style="padding:0;">
-                <div id="piechart" style="width: 100%; height: 100%; background: transparent;"></div>
+                <div google-chart chart="statsChart" style="height:200px; width:100%; background: transparent;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade modalVisuGame" tabindex="-1" role="dialog" aria-labelledby="modalVisuGame">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content text-center" style=" background-color: #327680;">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Partie {{gameVisu.gameName}}
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i
+                                class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="panel-body" style="background: #327680; padding: 30px 0px;">
+                        <table class="table">
+                            <tr data-ng-repeat="player in gameVisu.players">
+                                <td>{{player}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

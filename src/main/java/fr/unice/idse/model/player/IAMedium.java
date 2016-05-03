@@ -1,165 +1,137 @@
 package fr.unice.idse.model.player;
 
-import fr.unice.idse.model.Board;
+import fr.unice.idse.model.Game;
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
 import fr.unice.idse.model.card.NumberCardByColor;
-import fr.unice.idse.model.card.Value;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class IAMedium extends IA {
 
+// ------------------------------------------------------------------- myCard
+    /** La carte qui sera joué. */
+    protected Card myCard;
+
+    /**
+     * Getter de la carte qui sera joué.
+     * @return Card La carte qui sera joué.
+     */
+    public Card getMyCard() {
+        return this.myCard;
+    }
+
+    /**
+     * Setter de la carte qui sera joué.
+     * @param myCard La nouvelle carte qui sera joué.
+     */
+    public void setMyCard(Card myCard) {
+        this.myCard = myCard;
+    }
+
+// ------------------------------------------------------------------- turnPlay
+    /** Détermine si l'IA est prête a joué son tour. */
+    protected boolean turnPlay;
+
+    /**
+     * Getter l'IA est prête a joué.
+     * @return boolean l'IA est prête a joué.
+     */
+    public boolean getTurnPlay() {
+        return this.turnPlay;
+    }
+
+    /**
+     * Setter l'IA est prête a joué.
+     * @param turnPlay Nouveau statut l'IA est prête a joué
+     */
+    public void setTurnPlay(boolean turnPlay) {
+        this.turnPlay = turnPlay;
+    }
+
+// ------------------------------------------------------------------- bestColor
+    /** Détermine la meilleur couleur en main. */
+    protected Color bestColor;
+
+    /**
+     * Getter de la meilleur couleur en main.
+     * @return Color la meilleur couleur en main.
+     */
+    public Color getBestColor() {
+        return this.bestColor;
+    }
+
+    /**
+     * Setter la meilleur couleur en main.
+     * @param bestColor Détermine la nouvelle la meilleur couleur en main.
+     */
+    public void setBestColor(Color bestColor) {
+        this.bestColor = bestColor;
+    }
+
+// ------------------------------------------------------------------- CONSTRUCTEUR
     public IAMedium(String name, String token, int difficulty) {
         super(name, token, difficulty);
     }
 
-    public void reflexion(Board board) {
+    public void thinking (Game game) {
+        ArrayList<Card> mainIA = game.getActualPlayer().getCards();
+        ArrayList<Card> playableCards = game.playableCards();
 
-        ArrayList<Card> mainIA = board.getActualPlayer().getCards();
-        ArrayList<Card> playableCards = board.playableCards();
-        System.out.println("Carte jouable : " + playableCards.toString());
-
-
-        ArrayList<NumberCardByColor> cards = new ArrayList<NumberCardByColor>();
-
-        // REALISER LES COMPTEURS
-
-        int countB = 0;
-        int countG = 0;
-        int countR = 0;
-        int countY = 0;
-        int bestCount = countB;
-        Color bestColor = Color.Blue;
-        int i = 0;
-
-        for (Card aCard : mainIA) {
-            if (aCard.getColor() == Color.Blue) {
-                countB += 1;
-            }
-            else if (aCard.getColor() == Color.Green) {
-                countG += 1;
-            }
-            else if (aCard.getColor() == Color.Red) {
-                countR += 1;
-            }
-            else if (aCard.getColor() == Color.Yellow) {
-                countY += 1;
-            }
-        }
-
-        if (bestCount < countR) {
-            bestCount = countR;
-            bestColor = Color.Red;
-        }
-
-        if (bestCount < countG) {
-            bestCount = countG;
-            bestColor = Color.Green;
-        }
-
-        if (bestCount < countY) {
-            bestCount = countY;
-            bestColor = Color.Yellow;
-        }
-
-        // FIN COMPTAGE
-
-        cards.add(new NumberCardByColor(Color.Blue, countB));
-        cards.add(new NumberCardByColor(Color.Green, countG));
-        cards.add(new NumberCardByColor(Color.Red, countR));
-        cards.add(new NumberCardByColor(Color.Yellow, countY));
-
-        Collections.sort(cards);
-
-        System.out.println("cards IA = "+cards);
-
-        int nbCard = 0;
-        Card myCard;
-        boolean turnPlay = false;
-
-        while(!turnPlay && nbCard < cards.get(0).getNumber()) {
-            myCard = mainIA.get(i);
-
-            for (Card aCard : playableCards) {
-                if (myCard == aCard) {
-                    board.poseCard(myCard);
-                    System.out.println("Carte joué : " + myCard);
-
-                    if (board.getAlternative().getEffectCard(myCard).isColorChangingCard()) {
-                        board.getAlternative().getEffectCard(myCard).changeColor(chooseColor(bestColor));
-                        board.getAlternative().getEffectCard(myCard).action();
-                    }
-                    turnPlay = true;
-                    break;
-                }
-            }
-            nbCard++;
-        }
-        while(!turnPlay && nbCard < cards.get(1).getNumber()) {
-            myCard = mainIA.get(i);
-
-            for (Card aCard : playableCards) {
-                if (myCard == aCard) {
-                    board.poseCard(myCard);
-                    System.out.println("Carte joué : " + myCard);
-
-                    if (board.getAlternative().getEffectCard(myCard).isColorChangingCard()) {
-                        board.getAlternative().getEffectCard(myCard).changeColor(chooseColor(bestColor));
-                        board.getAlternative().getEffectCard(myCard).action();
-                    }
-                    turnPlay = true;
-                    break;
-                }
-            }
-            nbCard++;
-        }
-        while(!turnPlay && nbCard < cards.get(2).getNumber()) {
-            myCard = mainIA.get(i);
-
-            for (Card aCard : playableCards) {
-                if (myCard == aCard) {
-                    board.poseCard(myCard);
-                    System.out.println("Carte joué : " + myCard);
-
-                    if (board.getAlternative().getEffectCard(myCard).isColorChangingCard()) {
-                        board.getAlternative().getEffectCard(myCard).changeColor(chooseColor(bestColor));
-                        board.getAlternative().getEffectCard(myCard).action();
-                    }
-                    turnPlay = true;
-                    break;
-                }
-            }
-            nbCard++;
-        }
-        while(!turnPlay && nbCard < cards.get(3).getNumber()) {
-            myCard = mainIA.get(i);
-
-            for (Card aCard : playableCards) {
-                if (myCard == aCard) {
-                    board.poseCard(myCard);
-                    System.out.println("Carte joué : " + myCard);
-
-                    if (board.getAlternative().getEffectCard(myCard).isColorChangingCard()) {
-                        board.getAlternative().getEffectCard(myCard).changeColor(chooseColor(bestColor));
-                        board.getAlternative().getEffectCard(myCard).action();
-                    }
-                    turnPlay = true;
-                    break;
-                }
-            }
-            nbCard++;
-        }
-
-        if (!turnPlay) {
-            board.drawCard();
-        }
+        setMyCard(chooseCardToPlay(mainIA, playableCards, game));
+        playCard(game, getMyCard(), mainIA, getTurnPlay());
     }
 
-    public Color chooseColor(Color bestColor) {
-        Color color = bestColor;
+    public Card chooseCardToPlay (ArrayList<Card> mainIA, ArrayList<Card> playableCards, Game game) {
 
-        return color;
+        ArrayList<NumberCardByColor> cards = calculateNumberCardByColor(mainIA);
+
+        int nbCard = 0;
+        Card myCard = null;
+
+        while (!getTurnPlay() && nbCard < cards.get(3).getNumber()) {
+            setBestColor(cards.get(3).getColor());
+            myCard = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(0).getColor(), getTurnPlay()));
+            nbCard++;
+        }
+        while (!getTurnPlay() && nbCard < cards.get(2).getNumber()) {
+            myCard = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(1).getColor(), getTurnPlay()));
+            nbCard++;
+        }
+        while (!getTurnPlay() && nbCard < cards.get(1).getNumber()) {
+            myCard = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(2).getColor(), getTurnPlay()));
+            nbCard++;
+        }
+        while (!getTurnPlay() && nbCard < cards.get(0).getNumber()) {
+            myCard = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(3).getColor(), getTurnPlay()));
+            nbCard++;
+        }
+
+        return myCard;
+    }
+
+    public boolean testCardPlayable(Game game, ArrayList<Card> playableCards, Card myCard, Color bestColor, boolean turnPlay) {
+        System.out.println("Appel de la fonction testCardPlayableAndPlay ");
+        for (Card aCard : playableCards) {
+            if (myCard == aCard) {
+                setTurnPlay(true);
+                break;
+            }
+        }
+        return turnPlay;
+    }
+
+    @Override
+    public Color chooseColor(ArrayList<Card> mainIA) {
+        return getBestColor();
+    }
+
+    @Override
+    public void changeColor(Card cardToPlay, ArrayList<Card> mainIA, Game game) {
+        game.getAlternative().getEffectCard(getMyCard()).action(chooseColor(mainIA));
     }
 }

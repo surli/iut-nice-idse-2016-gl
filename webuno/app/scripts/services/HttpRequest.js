@@ -20,7 +20,7 @@ angular.module('unoApp')
      * }
      *
      */
-    .service('HttpRequest', function (ErrorService, $http, $rootScope) {
+    .service('HttpRequest', function (ErrorService, $http) {
         return {
             send: function(req, callback, callbackError) {
                 // Execute une requête http par rapport à la configuration définie
@@ -30,7 +30,7 @@ angular.module('unoApp')
                     ErrorService.test(response, callback, callbackError);
                 }, function(response) {
                     if (callbackError && angular.isFunction(callbackError)) {
-                        callbackError();
+                        callbackError(response.data.error);
                     }
 
                     if (response.status === 404) {

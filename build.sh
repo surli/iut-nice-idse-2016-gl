@@ -26,7 +26,7 @@ echo ""
 echo ""
 echo "--- Build / Tests en cours..."
 if [ -f "Gruntfile.js" ]; then
-    grunt
+    grunt --verbose
 else
     echo "\nLe fichier Gruntfile.js n'existe pas !"
     exit 1;

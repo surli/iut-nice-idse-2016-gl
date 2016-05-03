@@ -19,6 +19,8 @@ public class NumberCardByColor implements Comparable<NumberCardByColor> {
     public void setColor(Color color) { this.color = color; }
     public void setValue(int number) { this.number = number; }
 
+
+    //TODO -- compareTo --
     @Override
     public int compareTo(NumberCardByColor obj) {
 

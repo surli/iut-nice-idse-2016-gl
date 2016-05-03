@@ -1,26 +1,30 @@
 package fr.unice.idse.services;
 
-import fr.unice.idse.db.*;
-import fr.unice.idse.model.Model;
+import java.util.regex.Pattern;
+
+import javax.ws.rs.DELETE;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import javax.smartcardio.ResponseAPDU;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.regex.Pattern;
+import fr.unice.idse.db.DataBaseUser;
+import fr.unice.idse.model.Model;
 
 @Path("auth")
 public class AuthRest extends OriginRest{
 
     /**
      * Authentifie un utilisateur Guest
-     * @param stringJson String
+     * @param stringJson Parametre
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -49,9 +53,9 @@ public class AuthRest extends OriginRest{
 
     /**
      * Authentifie un utilisateur avec ses identifiants
-     * @param json String
+     * @param json Parametre
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
@@ -101,12 +105,11 @@ public class AuthRest extends OriginRest{
         return sendResponse(405, jsonResult.toString(), "PUT");
     }
 
-
     /**
      * Créer un joueur dans la base de donnée
-     * @param json String
+     * @param json Parametre
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @POST
     @Path("/signup")
@@ -160,6 +163,12 @@ public class AuthRest extends OriginRest{
         return sendResponse(405, jsonResult.toString(), "POST");
     }
 
+    /**
+     * Deconnecte un joueur
+     * @param token Token du joueur
+     * @return Response
+     * @throws JSONException exception
+     */
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Response signOut(@HeaderParam("token") String token) throws JSONException {
