@@ -56,4 +56,12 @@ public class IAMediumTest {
         iaMedium.setTurnPlay(true);
         assertEquals(expected, iaMedium.getTurnPlay());
     }
+    
+    /* ------------ testChooseColor ----------------------------- */
+    @Test
+    public void testChooseColor() {
+        Color expected = Color.Red;
+        iaMedium.setBestColor(Color.Red);
+        assertEquals(expected, iaMedium.chooseColor(iaMedium.getCards()));
+    }
 }
