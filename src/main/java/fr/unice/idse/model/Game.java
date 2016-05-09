@@ -97,7 +97,7 @@ public class Game extends Observable {
 	/**
 	 * Ajoute joueur à la partie
 	 * @param player
-	 * @return true/false
+	 * @return boolean
 	 */
 	public boolean addPlayer(Player player)
 	{
@@ -116,7 +116,7 @@ public class Game extends Observable {
 	/**
 	 * Verifie si le joueur indiqué est présent dans la partie
 	 * @param playerName
-	 * @return true/false
+	 * @return boolean
 	 */
 	public boolean containsPlayerByName(String playerName)
 	{
@@ -146,7 +146,7 @@ public class Game extends Observable {
 	/**
 	 * Supprime joueur de la partie selon son nom
 	 * @param playerName
-	 * @return true/false
+	 * @return boolean
 	 */
 	public boolean removePlayerByName(String playerName)
 	{
@@ -161,7 +161,7 @@ public class Game extends Observable {
 	/**
 	 * Verifie si le joueur indiqué est présent dans la partie
 	 * @param playerToken
-	 * @return true/false
+	 * @return boolean
 	 */
 	public boolean containsPlayerByToken(String playerToken)
 	{
@@ -191,7 +191,7 @@ public class Game extends Observable {
 	/**
 	 * Supprime joueur de la partie selon son token
 	 * @param playerToken
-	 * @return true/false
+	 * @return boolean
 	 */
 	public boolean removePlayerByToken(String playerToken)
 	{
@@ -223,7 +223,7 @@ public class Game extends Observable {
 	
 	/**
 	 * Méthode qui initialise une partie afin de qu'elle devienne jouable
-	 * @return
+	 * @return boolean
 	 */
 	public boolean start()
 	{
@@ -241,6 +241,7 @@ public class Game extends Observable {
 
 	/**
 	 * Retourne le joueur suivant
+	 * @return int
 	 */
 	public int getNextPlayer () {
 		if(orientation)
