@@ -27,7 +27,14 @@ public class RuleDrawFour extends EffectCard
 
 	public void action()
 	{
-		getGame().setCptDrawCard(4);
+		if(getGame().getCptDrawCard()>3)
+		{
+			getGame().setCptDrawCard(getGame().getCptDrawCard() + 4);
+		}
+		else
+		{
+			getGame().setCptDrawCard(4);
+		}
 	}
 	
 	@Override
