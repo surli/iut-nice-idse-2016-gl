@@ -17,8 +17,8 @@ public class IAMediumTest {
     private Player host;
     @Before
     public void initialize(){
-        iaMedium  = new IAMedium("testIAMedium", "", 2);
-        iaMedium2 = new IAMedium("testIAMediumGame", "", 2);
+        iaMedium  = new IAMedium("testIAMedium", 2);
+        iaMedium2 = new IAMedium("testIAMediumGame", 2);
         ArrayList<Card> cards  = new ArrayList<Card>();
         ArrayList<Card> cards2 = new ArrayList<Card>();
         cards.add(new Card(Value.Wild, Color.Black));

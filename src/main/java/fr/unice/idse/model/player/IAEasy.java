@@ -50,8 +50,8 @@ public class IAEasy extends IA {
 
 
     //CONSTRUCTEUR
-    public IAEasy(String name, String token, int difficulty) {
-        super(name, token);
+    public IAEasy(String name, int difficulty) {
+        super(name);
         this.difficulty = difficulty;
     }
 

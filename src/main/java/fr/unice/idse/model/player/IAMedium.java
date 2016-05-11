@@ -70,8 +70,8 @@ public class IAMedium extends IA {
     }
 
 // ------------------------------------------------------------------- CONSTRUCTEUR
-    public IAMedium(String name, String token, int difficulty) {
-        super(name, token);
+    public IAMedium(String name, int difficulty) {
+        super(name);
         this.difficulty = difficulty;
     }
 
