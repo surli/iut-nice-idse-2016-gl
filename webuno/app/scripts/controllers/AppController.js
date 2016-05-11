@@ -32,8 +32,8 @@ angular.module('unoApp')
             }
         };
 
-        // Fonction pour quitter proprement une partie ou une room et revenir à l'accueil
-        $rootScope.goTo = function (url, timeout, callback) {
+        $rootScope.goTo = function(url, timeout, callback) {
+        	if(confirm("Êtes-vous sur de vouloir retourner au menu précédent ?")){
             if (timeout) {
                 $timeout(function () {
                     if (angular.isFunction(callback)) {
@@ -49,5 +49,6 @@ angular.module('unoApp')
                     $state.go(url);
                 }
             }
+        }
         };
     }]);
