@@ -5,8 +5,9 @@ angular.module('unoApp')
         return {
 
             /**
-             * Retourne la liste de tous les utilisateurs
+             * Retourne la liste de tous les utilisateurs en filtrant
              *
+             * @param search
              * @param callback
              * @param callbackError
              */

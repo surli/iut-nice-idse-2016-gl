@@ -98,8 +98,8 @@ public class IAHard extends IA {
     }
 
     //CONSTRUCTEUR
-    public IAHard(String name, String token, int difficulty) {
-        super(name, token);
+    public IAHard(String name, int difficulty) {
+        super(name);
         this.difficulty = difficulty;
     }
 

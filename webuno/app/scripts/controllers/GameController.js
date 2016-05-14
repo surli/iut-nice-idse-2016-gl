@@ -33,6 +33,7 @@ angular.module('unoApp')
                 // Utilisation du service Game pour récupérer l'état du jeu
                 Game.getGame($rootScope.gameName, function (data) {
                     $scope.game = data;
+                    console.log($scope.game);
 
                     // Utilisation du service Game pour récupérer le joueur devant jouer
                     Game.getCurrentPlayer($rootScope.gameName, function (data) {
@@ -155,29 +156,13 @@ angular.module('unoApp')
             $scope.playerCanPlay = false;
         });
 
-        $rootScope.callbackHome = function() {
+        $rootScope.callbackHome = function(url) {
             $timeout.cancel(timeoutStateGame);
-            if ($scope.game.state === false && !$rootScope.logout && !$scope.game.gameEnd) {
-                Game.quitRoom($rootScope.gameName);
-            }
+            jQuery('.myModalColorChoose').modal('hide');
+            Game.quitRoom($rootScope.gameName, function() {
+                $state.go(url);
+            }, function () {
+                $state.go(url);
+            });
         };
-
-        // Évènement qui permet de stopper le timer et quitter la room quand on quitte le contrôleur RoomController
-        /*
-        $scope.$on('$destroy', function () {
-            $timeout.cancel(timeoutStateGame);
-            if ($scope.game.state === false && !$rootScope.logout && !$scope.game.gameEnd) {
-                Game.quitRoom($rootScope.gameName);
-            }
-        });
-         */
-
-        // Évènement qui permet de quitter la room quand on ferme l'onglet contenant la room
-        /* TODO : ne fonctionne pas - quand on actualise tout casse
-        window.onbeforeunload = function () {
-            if (!$rootScope.logout) {
-                Game.quitRoom($rootScope.gameName);
-            }
-        };
-        */
     }]);

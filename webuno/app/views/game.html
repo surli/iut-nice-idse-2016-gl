@@ -18,7 +18,7 @@
     <div id="main" data-ng-class="{ 'can-play' : playerCanPlay, 'not-can-play': !playerCanPlay }">
         <ul>
             <li data-ng-repeat="carte in cartes track by $index"
-                data-ng-click="(currentPlayer === user.name) ? jouerCarte(carte) : ''"
+                data-ng-click="jouerCarte(carte)"
                 class="carte {{carte.family}}-{{carte.number | WordToNumber}}" data-ng-class="{ 'can-play' : playerCanPlay, 'not-can-play': !playerCanPlay }"></li>
         </ul>
     </div>
@@ -55,6 +55,6 @@
         <span data-ng-show="player.name === user.name">Tu as gagné !</span>
         <span data-ng-hide="player.name === user.name">Le joueur {{player.name}} a gagné !</span>
     </h1>
-
-    <a href data-ui-sref="app.home" class="btn btn-primary">Retour à l'accueil</a>
+    <br>
+    <a href data-ng-click="goTo('app.home', 0, callbackHome)" class="btn btn-primary">Retour à l'accueil</a>
 </div>

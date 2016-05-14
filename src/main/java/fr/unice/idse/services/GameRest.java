@@ -1,6 +1,7 @@
 package fr.unice.idse.services;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -13,6 +14,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import fr.unice.idse.constante.Config;
+import fr.unice.idse.model.Alternative;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -28,6 +31,8 @@ import fr.unice.idse.model.regle.EffectCard;
  * /game
  * │   ├── GET             Liste des parties (Fait)
  * │   ├── POST            Créer une partie (Fait)
+ * │   ├── /alternative
+ * │   │   ├── GET         Retourne les alternatives existante
  * │   ├── /{gamename}
  * │   │   ├── GET         Retourne l'état de la game (Fait)
  * │   │   ├── PUT         Ajoute un joueur dans la partie (Fait)
@@ -45,14 +50,11 @@ import fr.unice.idse.model.regle.EffectCard;
 @Path("/game")
 public class GameRest extends OriginRest{
 
-
     /**
      * Méthode permettant de lister toutes les parties existantes
-     * Retour : {games : [
-     *                      [name : String,
-     *                       numberPlayers : String]
-     *                   ]}
+     * @param token token du jouer
      * @return Response
+     * @throws JSONException exception
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -86,12 +88,15 @@ public class GameRest extends OriginRest{
     }
 
     /**
-     * Méthode en POST permettant la création de partie.
+     Méthode en POST permettant la création de partie.
      * Signature : {game: String, player: String(playerName du joueur), numberplayers:Int}
      * Le nom de la game doit être suppérieur à 3 caractères;
      * Numberplayers doit être entre 2 et 6;
      * Vérifie si la partie existe ou non. Renvoie {message: boolean}
+     * @param objJSON parametre
+     * @param token token du joueur
      * @return Response
+     * @throws JSONException exception
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -99,46 +104,75 @@ public class GameRest extends OriginRest{
         // Cration de tous les objets
         Model model = Model.getInstance();
         JSONObject json = new JSONObject(objJSON);
+        JSONObject jsonResult = new JSONObject();
 
         // verification du champ game
-        if(!json.has("game"))
-            return sendResponse(405, "{\"error\" : \"Invalid parameter game\"}", "POST");
+        if(!json.has("game")) {
+            jsonResult.put("error", "Invalid parameter game");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
         // verification du token
-        if(token == null)
-            return sendResponse(405, "{\"error\" : \"Missing parameters token\"}", "POST");
+        if(token == null) {
+            jsonResult.put("error", "Missing parameters token");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
         String game = json.getString("game");
-        if(game.length() < 3)
-            return sendResponse(405, "{\"error\" : \"Invalid parameter game length\"}", "POST");
-        if(!json.has("player"))
-        	
-            return sendResponse(405, "{\"error\" : \"Invalid parameter player\"}", "POST");
+        if(game.length() < 3){
+            jsonResult.put("error", "Invalid parameter game length");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
+        if(!json.has("player")){
+            jsonResult.put("error", "Invalid parameter player");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
 
-        if(model.getPlayerFromList(token)==null)
-            return sendResponse(405, "{\"error\" : \"Joueur inexistant\"}", "POST");
-       
-        if(!model.getPlayerFromList(token).getName().equals(json.getString("player")))
-            return sendResponse(405, "{\"error\" : \"Token invalid\"}", "POST");
+        if(model.getPlayerFromList(token)==null){
+            jsonResult.put("error", "Joueur inexistant");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
 
+        if(!model.getPlayerFromList(token).getName().equals(json.getString("player"))){
+            jsonResult.put("error", "Token invalid");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
 
-        if(!json.has("numberplayers"))
-            return sendResponse(405, "{\"error\" : \"Invalid parameter numberplayers\"}", "POST");
+        if(!json.has("numberplayers")){
+            jsonResult.put("error", "Invalid parameter numberplayers");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
         int numberplayers = json.getInt("numberplayers");
         if(numberplayers<2||numberplayers>6){
-            return sendResponse(405, "{\"error\" : \"Numberplayers must be 2 to 6 numberplayers\"}", "POST");
+            jsonResult.put("error", "Numberplayers must be 2 to 6 numberplayers");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
+
+        if(!json.has("alternative")){
+            jsonResult.put("error", "No alternative parameter");
+            return sendResponse(405, jsonResult.toString(), "POST");
+        }
+
+        ArrayList alternative = Config.alternatives.get(json.getString("alternative"));
+        if(alternative == null){
+            jsonResult.put("error", "No alternative found");
+            return sendResponse(405, jsonResult.toString(), "POST");
         }
 
         // creation de la game
-        if(!model.addGame(model.getPlayerFromList(token), game,numberplayers))
-            return sendResponse(500, "{\"message\": false}", "POST");
+        if(!model.addGame(model.getPlayerFromList(token), game,numberplayers, alternative)){
+            jsonResult.put("message", false);
+            return sendResponse(500, jsonResult.toString(), "POST");
+        }
 
-        return sendResponse(200, "{\"message\": true}", "POST");
+        jsonResult.put("message", true);
+        return sendResponse(200, jsonResult.toString(), "POST");
     }
 
     /**
      * Retourne l'état de la partie
-     * @param gamename Nom de partie
-     * @param token Token
+     * @param gamename Nom de la partie
+     * @param token Token du joueur
      * @return Response
+     * @throws JSONException exception
      */
     @GET
     @Path("{gamename}")
@@ -200,7 +234,11 @@ public class GameRest extends OriginRest{
      * Signature : {playerName: String}
      * La partie doit être existante.
      * Renvoie {status: boolean}
+     * @param token Token du joueur
+     * @param gamename Nom de la partie
+     * @param objJSON Parametre
      * @return Response
+     * @throws JSONException exception
      */
     @PUT
     @Path("{gamename}")
@@ -244,13 +282,17 @@ public class GameRest extends OriginRest{
         return sendResponse(200, jsonObject.toString(), "PUT");
     }
 
+
     /**
      * Méthode en PUT permettant le début d'une partie
      * Signature : {gamename: String}/command
      * La partie doit être existante.
+     * @param token Token du joueur
+     * @param gamename Nom de la partie
+     * @param objJSON parametre
      * @return Response
+     * @throws JSONException exception
      */
-
     @PUT
     @Path("{gamename}/command")
     @Produces(MediaType.APPLICATION_JSON)
@@ -305,7 +347,10 @@ public class GameRest extends OriginRest{
      * Méthode en GET permettant de recuperer le joueur devant jouer
      * La partie doit être existante.
      * Renvoie {"playerName": String}
+     * @param token Token du joueur
+     * @param gamename Nom de la partie
      * @return Response
+     * @throws JSONException exception
      */
     @GET
     @Path("{gamename}/command")
@@ -339,11 +384,13 @@ public class GameRest extends OriginRest{
         return sendResponse(200, jsonObject.toString(), "GET");
     }
 
-    /*
-     * @param playerName
-     * @param gameName
-     * @return Status 200 : {"cards": [{"number":int,"familly":String}]}
-     * @throws JSONException
+    /**
+     * Retourne la main du joueur
+     * @param token Token du joueur
+     * @param playerName Nom du joueur
+     * @param gameName Nom de la partie
+     * @return Response
+     * @throws JSONException exception
      */
     @GET
     @Path("/{gameName}/{playerName}")
@@ -379,13 +426,16 @@ public class GameRest extends OriginRest{
 
         return sendResponse(200, jsonObject.toString(), "GET");
     }
-    
+
     /**
      * Méthode en POST permettant de faire piocher une carte au joueur actuel
      * Signature : {gamename: String}/{playerName:string}
+     * @param token Token du joueur
+     * @param gameName Nom de la partie
+     * @param playerName Nom du joueur
      * @return Response
+     * @throws JSONException exception
      */
-
     @POST
     @Path("{gameName}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -453,11 +503,12 @@ public class GameRest extends OriginRest{
     /**
      * Méthode en PUT permettant de jouer une carte
      * La partie doit être existante et commencée.
-     * @param playerName
-     * @param gameName
+     * @param token Token du joueur
+     * @param playerName Nom du joueur
+     * @param gameName Nom de la partie
      * @param strJSON {"value": int, "color": str, "actionCard": null}
-     * @return Response 200 | 405
-     * @throws JSONException
+     * @return Response
+     * @throws JSONException exception
      */
     @PUT
     @Path("/{gameName}/{playerName}")
@@ -574,11 +625,11 @@ public class GameRest extends OriginRest{
 
     /**
      * Methode qui permet de retirer un joueur d'une partie qui n'est pas commencée
-     * @param token String
-     * @param gameName String
-     * @param playerName String
+     * @param token Token du joueur
+     * @param gameName Nom de la partie
+     * @param playerName Nom du joueur
      * @return Response
-     * @throws JSONException
+     * @throws JSONException exception
      */
     @DELETE
     @Path("/{gameName}/{playerName}")
@@ -626,6 +677,7 @@ public class GameRest extends OriginRest{
         if(game.gameBegin()){
             int taille = game.getPlayers().size();
             for(int i = 0; i < taille; i++) {
+                System.out.println(model.findGameByName(gameName).getPlayers().get(0).getName());
                 model.removePlayerFromGameByName(gameName, model.findGameByName(gameName).getPlayers().get(0).getName());
             }
             model.removeGame(gameName);
@@ -659,5 +711,38 @@ public class GameRest extends OriginRest{
         }
         jsonReturn.put("status", false);
         return sendResponse(405, jsonReturn.toString(), "DELETE");
+    }
+
+
+    /**
+     * Retournes les alternatives existantes
+     * @param token Token du joueur
+     * @return Response
+     * @throws JSONException exception
+     */
+    @Path("/alternative")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAlternatives(@HeaderParam("token") String token) throws JSONException {
+        // Initialisation des variables
+        Model model = Model.getInstance();
+        JSONObject jsonReturn = new JSONObject();
+
+        // Verificaton du token
+        if(token == null){
+            jsonReturn.put("error", "Token not found");
+            return sendResponse(405, jsonReturn.toString(), "GET");
+        }
+        if(!model.playerExistsInListByToken(token)){
+            jsonReturn.put("error", "Player not found");
+            return sendResponse(405, jsonReturn.toString(), "GET");
+        }
+
+        ArrayList<String> alternatives = new ArrayList<>();
+        Config.alternatives.forEach((k, v) -> alternatives.add(k));
+
+        jsonReturn.put("alternatives", alternatives);
+        return sendResponse(200, jsonReturn.toString(), "GET");
+
     }
 }

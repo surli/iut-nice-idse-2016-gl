@@ -37,8 +37,8 @@ public abstract class IA extends Player {
     }
 
 
-    public IA(String name, String token) {
-        super(name, token);
+    public IA(String name) {
+        super(name);
     }
 
     public ArrayList<NumberCardByColor> calculateNumberCardByColor (ArrayList<Card> mainIA) {
