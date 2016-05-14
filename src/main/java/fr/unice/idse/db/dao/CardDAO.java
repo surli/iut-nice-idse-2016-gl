@@ -4,13 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.unice.idse.db.dao.object.CardObject;
-import fr.unice.idse.db.dao.object.PlayerObject;
 
 public class CardDAO extends DAO<CardObject> {
 	private Logger logger = LoggerFactory.getLogger(CardDAO.class);
@@ -79,8 +77,8 @@ public class CardDAO extends DAO<CardObject> {
 			CardObject card = null;
 			String query = "SELECT c_id FROM cards WHERE c_value = ? AND c_color = ?;";
 			PreparedStatement stmt = this.getConnection().prepareStatement(query);
-			stmt.setInt(1, color);
-			stmt.setInt(2, value);
+			stmt.setInt(1, value);
+			stmt.setInt(2, color);
 			ResultSet result = stmt.executeQuery();
 			if (result.first()) {
 				card = new CardObject(

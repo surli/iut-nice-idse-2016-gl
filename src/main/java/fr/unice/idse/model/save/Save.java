@@ -120,7 +120,6 @@ public class Save implements Observer {
 			hand.setIdUser(players.get(i).getIdUser());
 			hand.setCard(game.getPlayers().get(i).getCards());
 			DAOFactory.getHandPlayerDAO().create(hand);
-
 		}
 	}
 
