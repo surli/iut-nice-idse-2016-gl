@@ -123,7 +123,7 @@ public class Save implements Observer {
 		}
 	}
 
-	private void saveTurn(Game game) throws SQLException {
+	protected void saveTurn(Game game) throws SQLException {
 		GameObject gameObject = ((GameDAO) DAOFactory.getGameDAO()).find(game
 				.getGameName());
 		int gameId = gameObject.getId();

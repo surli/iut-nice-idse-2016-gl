@@ -22,7 +22,22 @@ public class SaveTest extends Save{
 		saveNewGame(game);
 	}
 	*/
-	
+	/*
+	@Test
+	public void testSaveTurn() throws SQLException {
+		Game game = new Game(new Player("test", "token1"), "test", 3);
+		game.addPlayer(new Player("test1", "token2"));
+		game.addPlayer(new Player("test2", "token3"));
+		game.init();
+		
+		saveNewGame(game);
+		
+		game.drawCard();
+		game.nextPlayer();
+		
+		saveTurn(game);
+	}
+	*/
 	/*
 	 INSERT INTO `cards` (`c_id`, `c_color`, `c_value`) VALUES
 		(1, 0, 1),
