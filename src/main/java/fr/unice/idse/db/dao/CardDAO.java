@@ -74,8 +74,26 @@ public class CardDAO extends DAO<CardObject> {
 		}		
 	}
 	
-	public CardObject find(int color, int value) {
-		return null;
+	public CardObject find(int color, int value) throws SQLException {
+		try {
+			CardObject card = null;
+			String query = "SELECT c_id FROM cards WHERE c_value = ? AND c_color = ?;";
+			PreparedStatement stmt = this.getConnection().prepareStatement(query);
+			stmt.setInt(1, color);
+			stmt.setInt(2, value);
+			ResultSet result = stmt.executeQuery();
+			if (result.first()) {
+				card = new CardObject(
+						result.getInt("c_id"),
+						color,
+						value);
+			}
+			stmt.close();
+			return card;
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e.getCause());
+			throw e;
+		}		
 	}
 
 	

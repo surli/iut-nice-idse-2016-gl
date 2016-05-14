@@ -11,7 +11,7 @@ import fr.unice.idse.model.player.Player;
 import fr.unice.idse.model.save.Save;
 
 public class SaveTest extends Save{
-	/*
+	
 	@Test
 	public void testSaveNewGame() throws SQLException {
 		Game game = new Game(new Player("test", "token1"), "test", 3);
@@ -21,5 +21,5 @@ public class SaveTest extends Save{
 		
 		saveNewGame(game);
 	}
-	*/
+	
 }

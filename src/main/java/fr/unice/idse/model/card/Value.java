@@ -30,7 +30,7 @@ public enum Value {
 	
 	public int getNumber()
 	{
-		return points;
+		return number;
 	}
 	
 	public int getPoints()
