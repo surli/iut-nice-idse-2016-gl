@@ -72,6 +72,11 @@ public class Stack {
 		Card deckTopCard = deck.topCard();
 		addCard(deckTopCard);
 		deck.removeCard(deckTopCard);
+		while(topCard().getColor().equals(Color.Black))
+		{
+			addCard(deckTopCard);
+			deck.removeCard(deckTopCard);
+		}
 	}
 	
 	/**
