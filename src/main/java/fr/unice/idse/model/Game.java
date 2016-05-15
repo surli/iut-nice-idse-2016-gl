@@ -345,9 +345,6 @@ public class Game extends Observable {
 	 * Change la couleur actuel de la partie.
 	 * @param color
 	 */
-	//Je suis pas trop daccord sur le fait de changer la couleur de la carte 
-	//car celà impliquerait qu'il y ai une carte d'une couleur final en plus 
-	//et une carte de couleur depart en moins si vous voyez ce que je veu dire
 	public void changeColor(Color color)
 	{
 		actualColor = color;
