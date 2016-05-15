@@ -55,7 +55,7 @@ public abstract class EffectCard
 	
 	/***
 	 * Methode à override pour l'échange des jeux de cartes du joueur actuel avec un autre
-	 * @param : playerName
+	 * @param playerName
 	 */
 	public boolean tradeDecks(String playerName)
 	{
