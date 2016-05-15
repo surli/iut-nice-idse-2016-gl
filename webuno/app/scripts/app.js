@@ -134,7 +134,8 @@ angular
             })
             .determinePreferredLanguage('fr');
     })
-    .run(function ($rootScope, $translate) {
+
+    .run(function ($rootScope, $translate, $state) {
         $rootScope.lang = 'fr';
         // Fonction qui permet de changer la langue
         $rootScope.changeLanguage = function (langKey) {
@@ -142,43 +143,33 @@ angular
             $rootScope.lang = langKey;
             $translate.use(langKey);
         };
-    })
-    
 
-.run(["$rootScope", "$state", function ($rootScope, $state) {
         $rootScope.$safeApply = function (fn) {
             var phase = this.$root.$$phase;
-            if (phase == '$apply' || phase == '$digest') {
+            if (phase === '$apply' || phase === '$digest') {
                 if (fn && (typeof(fn) === 'function')) {
                     fn();
                 }
             } else {
                 this.$apply(fn);
             }
-
         };
         $rootScope.$on('$stateChangeStart', function () {
-            console.info("$stateChangeStart", arguments[1].name);
+            console.info('$stateChangeStart', arguments[1].name);
 
         });
-        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-            console.info("$stateChangeSuccess", arguments[1].name);
+        $rootScope.$on('$stateChangeSuccess', function () {
+            console.info('$stateChangeSuccess', arguments[1].name);
             window.scrollTo(0, 0);
-        	$rootScope.atHome = false;
-
-            if($state.current.url=="/home"){
-            	$rootScope.atHome = true;
-            }
+            $rootScope.atHome = $state.current.url === '/home';
         });
         $rootScope.$on('$stateNotFound', function () {
-            console.error("$stateNotFound", arguments[1].to);
+            console.error('$stateNotFound', arguments[1].to);
         });
-        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
-            console.error("$stateChangeError", arguments);
+        $rootScope.$on('$stateChangeError', function () {
+            console.error('$stateChangeError', arguments);
         });
-
-    }])
-
+    })
 
     .directive('ngConfirmClick', [
         function () {

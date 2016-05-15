@@ -32,23 +32,23 @@ angular.module('unoApp')
             }
         };
 
-        $rootScope.goTo = function(url, timeout, callback) {
-        	if(confirm("Êtes-vous sur de vouloir retourner au menu précédent ?")){
-            if (timeout) {
-                $timeout(function () {
-                    if (angular.isFunction(callback)) {
-                        callback();
-                    }
-                }, timeout).then(function () {
-                    $state.go(url);
-                });
-            } else {
-                if (angular.isFunction(callback)) {
-                    callback(url);
+        $rootScope.goTo = function (url, timeout, callback) {
+            if (confirm('Êtes-vous sur de vouloir retourner au menu précédent ?')) {
+                if (timeout) {
+                    $timeout(function () {
+                        if (angular.isFunction(callback)) {
+                            callback();
+                        }
+                    }, timeout).then(function () {
+                        $state.go(url);
+                    });
                 } else {
-                    $state.go(url);
+                    if (angular.isFunction(callback)) {
+                        callback(url);
+                    } else {
+                        $state.go(url);
+                    }
                 }
             }
-        }
         };
     }]);

@@ -30,6 +30,7 @@
   "GAME_CONF": "Configuration de la partie",
   "GAME_NAME": "Nom de partie",
   "NB_PLAYERS": "Nombre de joueurs",
+  "NB_IA": "Nombre d'IA",
   "GO": "C'est parti !",
   "PLAYERS": "Listes des joueurs",
   "BANNED": "Banni",
@@ -39,5 +40,8 @@
   "USER": "Abonné",
   "ADMIN": "Administrateur",
   "UPDATE": "Modifier",
-  "VARIANT": "Règles"
+  "VARIANT": "Règles",
+  "IA1": "Facile",
+  "IA2": "Intermédiaire",
+  "IA3": "Difficile"
 }

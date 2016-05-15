@@ -10,6 +10,8 @@ angular.module('unoApp')
         $scope.nbPlayers = '2';
         $scope.alternative = 'default';
         $rootScope.callbackHome = false;
+        $scope.ia = 0;
+        $scope.difficulty = '1';
 
         $scope.valueAlternatives = {
             'default' : 'Règle par défaut',
@@ -28,7 +30,7 @@ angular.module('unoApp')
             // sinon on affiche l'erreur correspondante
             if ($scope.game && $scope.game.length > 3 && $scope.user.name) {
                 // Utilisation du service Game pour créer une nouvelle partie
-                Game.createGame($scope.game, $scope.nbPlayers, $scope.alternative, function() {
+                Game.createGame($scope.game, $scope.nbPlayers, $scope.alternative, $scope.difficulty, $scope.ia, function() {
                     $state.go('app.room', { name: $scope.game });
                 }, function () {
                   $scope.error = 'Erreur de création de partie';
