@@ -78,7 +78,7 @@ public class IAMediumTest {
     @Test
     public void testCardPlayable() {
         boolean turnPlayExpected = true;
-        boolean turnPlayer = iaMedium2.testCardPlayable(game, game.playableCards(), iaMedium2.getCards().get(1), Color.Green);
+        boolean turnPlayer = iaMedium2.testCardPlayable(game.playableCards(), iaMedium2.getCards().get(1));
         
         assertEquals(turnPlayExpected, turnPlayer);
     }
