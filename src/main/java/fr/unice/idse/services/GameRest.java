@@ -472,6 +472,7 @@ public class GameRest extends OriginRest{
                 JSONObject jsonFils = new JSONObject();
                 jsonFils.put("number", tmp.get(i).getValue());
                 jsonFils.put("family", tmp.get(i).getColor());
+                playable.add(jsonFils);
             }
         }
 
