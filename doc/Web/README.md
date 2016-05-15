@@ -39,7 +39,7 @@ Pour réaliser la partie IHM de ce projet nous avons décidé d'utiliser les out
 ```
 /webuno
 ├── /app 
-│
+│   ├── /i18n           -> contient les traductions du site
 │   ├── /images         -> contient les images
 │   ├── /scripts        -> contient les appels des routes de l'apiREST, les controllers des vues et les fonctions permettant de pouvoir jouer au UNO et faire fonctionner l'application       
 │   ├── /styles         -> contient les styles
