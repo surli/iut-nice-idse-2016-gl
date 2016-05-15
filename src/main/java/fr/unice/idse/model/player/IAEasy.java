@@ -6,7 +6,12 @@ import fr.unice.idse.model.card.Color;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class IAEasy extends IA {
+	
+    private Logger logger = LoggerFactory.getLogger(IAEasy.class);
 
     // ------------------------------------------------------------------- myCard
     /** La carte qui sera joué. */

@@ -7,8 +7,13 @@ import fr.unice.idse.model.card.NumberCardByColor;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class IAMedium extends IA {
 
+    private Logger logger = LoggerFactory.getLogger(IAMedium.class);
+    
 // ------------------------------------------------------------------- myCard
     /** La carte qui sera joué. */
     protected Card myCard;
