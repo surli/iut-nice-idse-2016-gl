@@ -241,6 +241,7 @@ public class GameRest extends OriginRest{
 
         if(model.findGameByName(gamename).gameBegin()){
             jsonObject.put("state", true);
+            jsonObject.put("color", model.findGameByName(gamename).getActualColor());
             jsonObject.put("currentplayer", model.findGameByName(gamename).getActualPlayer().getName());
             for(int i = 0; i < model.findGameByName(gamename).getPlayers().size(); i++){
                 JSONObject objFils = new JSONObject();
