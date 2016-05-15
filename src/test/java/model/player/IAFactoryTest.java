@@ -10,11 +10,11 @@ public class IAFactoryTest {
     /* ------------ testSetIA ----------------------------- */
     @Test
 	public void testSetIA(){
-        IA monTestIAEasy = IAFactory.getIA("testSetIAEasy", 1);
+        IA monTestIAEasy = IAFactory.setIA("testSetIAEasy", 1);
 
-        IA monTestIAMedium = IAFactory.getIA("testSetIAMedium", 2);
+        IA monTestIAMedium = IAFactory.setIA("testSetIAMedium", 2);
 
-        IA monTestIAHard = IAFactory.getIA("testSetIAHard", 3);
+        IA monTestIAHard = IAFactory.setIA("testSetIAHard", 3);
 
         assertTrue(monTestIAEasy instanceof IAEasy);
         assertTrue(monTestIAMedium instanceof IAMedium);
