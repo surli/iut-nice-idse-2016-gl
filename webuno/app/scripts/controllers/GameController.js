@@ -19,6 +19,7 @@ angular.module('unoApp')
         // Utilisation du service Game pour récupérer le statut du jeu
         Game.getGame($rootScope.gameName, function (data) {
             $scope.game = data;
+            $scope.nbPlayers = Math.ceil(12 / ($scope.game.players.length-1));
             $scope.requestStateGame();
         }, function () {
             $timeout.cancel(timeoutStateGame);
