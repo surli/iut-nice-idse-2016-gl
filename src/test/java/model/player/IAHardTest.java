@@ -18,9 +18,11 @@ import static org.junit.Assert.assertEquals;
 
 public class IAHardTest {
     private IA iaHard;
-    private Game game;
-    private Player host;
     private IAHard iaHard1;
+    private Game game;
+    private Game game1;
+    private Player host;
+    private Player host1;
 
     @Before
     public void initialize(){
@@ -37,6 +39,20 @@ public class IAHardTest {
 
         iaHard.setCards(cards);
 
+        
+        ArrayList<Card> cards1 =new ArrayList<Card>();
+
+        cards1.add(new Card(Value.Five, Color.Yellow));
+        cards1.add(new Card(Value.Nine, Color.Red));
+        cards1.add(new Card(Value.DrawTwo, Color.Red));
+        
+        iaHard1.setCards(cards1);
+        
+        host1 = new Player("host1","host1");
+        game1 = new Game(host1,"game1",4);
+
+        game1.addPlayer(iaHard);
+        
         host = new Player("host","host");
         game = new Game(host,"game",4);
 
@@ -79,6 +95,23 @@ public class IAHardTest {
         assertEquals(expected, valueExist);
     }
     
+    /* ------------ searchCardDrawTwo ----------------------------- */
+    @Test
+    public void searchCardDrawTwoTrue() {
+
+        boolean expected = true;
+        boolean drawTwoExist = iaHard1.searchCardDrawTwo(iaHard1.getCards(), Value.DrawTwo, Color.Red);
+        assertEquals(expected, drawTwoExist);
+    }
+
+    @Test
+    public void searchCardDrawTwoFalse() {
+
+        boolean expected = false;
+        boolean drawTwoExist = iaHard1.searchCardDrawTwo(iaHard1.getCards(), Value.DrawTwo, Color.Yellow);
+        assertEquals(expected, drawTwoExist);
+    }
+   
     /*--------------testMyCard---------------------------------------*/
     
     @Test
@@ -111,12 +144,5 @@ public class IAHardTest {
         Card expected = new Card(Value.Nine, Color.Yellow);
         iaHard1.setCardContre(new Card(Value.Nine, Color.Yellow));
         assertEquals(expected, iaHard1.getCardContre());
-    }
-    
-    @Test
-    public void searchCardDrawTwoFalse() {
-        boolean expected = false;
-        boolean drawTwoExist = iaHard1.searchCardDrawTwo(iaHard1.getCards(), Value.DrawTwo, Color.Yellow);
-        assertEquals(expected, drawTwoExist);
     }
 }
