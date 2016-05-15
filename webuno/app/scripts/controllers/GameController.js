@@ -33,7 +33,7 @@ angular.module('unoApp')
                 // Utilisation du service Game pour récupérer l'état du jeu
                 Game.getGame($rootScope.gameName, function (data) {
                     $scope.game = data;
-                    console.log($scope.game);
+                    //console.log($scope.game);
 
                     // Utilisation du service Game pour récupérer le joueur devant jouer
                     Game.getCurrentPlayer($rootScope.gameName, function (data) {
