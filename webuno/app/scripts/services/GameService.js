@@ -10,10 +10,12 @@ angular.module('unoApp')
              * @param game
              * @param nbPlayers
              * @param alternative
+             * @param difficulty
+             * @param ia
              * @param callback
              * @param callbackError
              */
-            createGame: function (game, nbPlayers, alternative, callback, callbackError) {
+            createGame: function (game, nbPlayers, alternative, difficulty, ia, callback, callbackError) {
                 HttpRequest.send({
                     method: 'post',
                     url: 'rest/game',
@@ -24,7 +26,9 @@ angular.module('unoApp')
                         game: game,
                         player: Auth.getUser().name,
                         numberplayers: nbPlayers,
-                        alternative: alternative
+                        alternative: alternative,
+                        difficulty: difficulty,
+                        ia: ia
                     }
                 }, callback, callbackError);
             },

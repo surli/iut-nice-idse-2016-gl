@@ -25,6 +25,8 @@ angular.module('unoApp')
                 // Utilisation du service Auth pour setter les informations utilisateur dans la session
                 Auth.connectUser(data);
                 $state.go('app.home');
+            }, function () {
+              $scope.error = 'Erreur d\'inscription';
             });
         };
     }]);
