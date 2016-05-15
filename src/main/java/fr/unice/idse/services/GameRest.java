@@ -1,6 +1,7 @@
 package fr.unice.idse.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.ws.rs.DELETE;
@@ -239,22 +240,35 @@ public class GameRest extends OriginRest{
             return sendResponse(405, jsonObject.toString(), "GET");
         }
 
-        if(model.findGameByName(gamename).gameBegin()){
+        Game game = model.findGameByName(gamename);
+        if(game.gameBegin()){
             jsonObject.put("state", true);
-            jsonObject.put("color", model.findGameByName(gamename).getActualColor());
-            jsonObject.put("currentplayer", model.findGameByName(gamename).getActualPlayer().getName());
-            for(int i = 0; i < model.findGameByName(gamename).getPlayers().size(); i++){
+            jsonObject.put("color", game.getActualColor());
+            jsonObject.put("currentplayer", game.getActualPlayer().getName());
+            for(int i = 0; i < game.getPlayers().size(); i++){
                 JSONObject objFils = new JSONObject();
-                objFils.put("name", model.findGameByName(gamename).getPlayers().get(i).getName());
-                objFils.put("cartes", model.findGameByName(gamename).getPlayers().get(i).getCards().size());
+                objFils.put("name", game.getPlayers().get(i).getName());
+                objFils.put("cartes", game.getPlayers().get(i).getCards().size());
                 players.add(objFils);
             }
             jsonObject.put("players", players);
             JSONObject jsonStack = new JSONObject();
-            jsonStack.put("number", model.findGameByName(gamename).getStack().topCard().getValue());
-            jsonStack.put("family", model.findGameByName(gamename).getStack().topCard().getColor());
+            jsonStack.put("number", game.getStack().topCard().getValue());
+            jsonStack.put("family", game.getStack().topCard().getColor());
             jsonObject.put("stack", jsonStack);
-            jsonObject.put("gameEnd", model.findGameByName(gamename).gameEnd());
+            jsonObject.put("gameEnd", game.gameEnd());
+            if(game.gameEnd()){
+                ArrayList<JSONObject> score = new ArrayList<>();
+                game.calculatePoints();
+                HashMap<String, Integer> scores = game.ranking();
+                for(String key : scores.keySet()){
+                    JSONObject js = new JSONObject();
+                    js.put("playerName", key);
+                    js.put("value", scores.get(key));
+                    score.add(js);
+                }
+                jsonObject.put("score", score);
+            }
             return sendResponse(200, jsonObject.toString(), "GET");
         }
 
