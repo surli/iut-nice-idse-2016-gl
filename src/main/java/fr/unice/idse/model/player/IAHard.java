@@ -115,35 +115,53 @@ public class IAHard extends IA {
     public Card chooseCardToPlay (ArrayList<Card> mainIA, ArrayList<Card> playableCards, Game game) {
 
         ArrayList<NumberCardByColor> cards = calculateNumberCardByColor(mainIA);
-
         int nbCard = 0;
-        Card myCard = null;
-        int i = 0;
+        Card cardPlay = null;
 
         setTurnPlay(checkNextPlayer(game));
 
-        while (!getTurnPlay() && nbCard < cards.get(3).getNumber()) {
-            myCard = mainIA.get(i);
-            setTurnPlay(testCardPlayable(playableCards, myCard));
-            nbCard++;
+        if(cards.get(4) != null) {
+        	while (!getTurnPlay() && nbCard < cards.get(4).getNumber()) {
+                setBestColor(cards.get(4).getColor());
+                cardPlay = mainIA.get(nbCard);
+                setTurnPlay(testCardPlayable(playableCards, cardPlay));
+                nbCard++;
+            }
         }
-        while (!getTurnPlay() && nbCard < cards.get(2).getNumber()) {
-            myCard = mainIA.get(i);
-            setTurnPlay(testCardPlayable(playableCards, myCard));
-            nbCard++;
+        if(cards.get(3) != null) {
+        	while (!getTurnPlay() && nbCard < cards.get(3).getNumber()) {
+                setBestColor(cards.get(3).getColor());
+                cardPlay = mainIA.get(nbCard);
+                setTurnPlay(testCardPlayable(playableCards, cardPlay));
+                nbCard++;
+            }
         }
-        while (!getTurnPlay() && nbCard < cards.get(1).getNumber()) {
-            myCard = mainIA.get(i);
-            setTurnPlay(testCardPlayable(playableCards, myCard));
-            nbCard++;
+        if(cards.get(2) != null) {
+            while (!getTurnPlay() && nbCard < cards.get(2).getNumber()) {
+                setBestColor(cards.get(2).getColor());
+                cardPlay = mainIA.get(nbCard);
+                setTurnPlay(testCardPlayable(playableCards, cardPlay));
+                nbCard++;
+            }
         }
-        while (!getTurnPlay() && nbCard < cards.get(0).getNumber()) {
-            myCard = mainIA.get(i);
-            setTurnPlay(testCardPlayable(playableCards, myCard));
-            nbCard++;
+        if(cards.get(1) != null) {
+            while (!getTurnPlay() && nbCard < cards.get(1).getNumber()) {
+                setBestColor(cards.get(1).getColor());
+                cardPlay = mainIA.get(nbCard);
+                setTurnPlay(testCardPlayable(playableCards, cardPlay));
+                nbCard++;
+            }
+        }
+        if(cards.get(0) != null) {
+            while (!getTurnPlay() && nbCard < cards.get(0).getNumber()) {
+                setBestColor(cards.get(0).getColor());
+                cardPlay = mainIA.get(nbCard);
+                setTurnPlay(testCardPlayable(playableCards, cardPlay));
+                nbCard++;
+            }
         }
 
-        return myCard;
+        return cardPlay;
     }
 
     public boolean testCardPlayable(ArrayList<Card> playableCards, Card myCard) {
@@ -160,20 +178,17 @@ public class IAHard extends IA {
 
     public boolean checkNextPlayer (Game game) {
         int nextPlayer = game.getNextPlayer();
-
+        int nbCardMainNextPlayer = game.getPlayers().get(nextPlayer).getCards().size();
+        
         ArrayList<Card> mainIA = game.getActualPlayer().getCards();
 
-        int nbCardMainNextPlayer = game.getPlayers().get(nextPlayer).getCards().size();
-
         if(nbCardMainNextPlayer == 1) {
-
             if(searchColorCard(mainIA, Color.Black)) {   // ESSAYER DE JOUER CHANGE COLOUR OU +4
                 setTurnPlay(true);
-            }/* Bug - Il faut verifie la valeur + la couleur pour jouer cette carte
-            else if (searchValueCard(mainIA, Value.DrawTwo)) {
-            	game.poseCard(cardContre);
-                turnPlay = true;
-            }*/
+            }											// ESSAYE DE POSER UN +2
+            else if (searchCardDrawTwo(mainIA, Value.DrawTwo, game.getActualColor())) {
+                setTurnPlay(true);
+            }
             else if (searchValueCard(mainIA, game.getStack().topCard().getValue())) {  //MEME NOMBRE QUE LA DERNIERE CARTE POSE
                 setTurnPlay(true);
             }
@@ -214,6 +229,17 @@ public class IAHard extends IA {
         }
 
         return valueExist;
+    }
+    
+    public boolean searchCardDrawTwo (ArrayList<Card> main, Value valueCardDrawTwo, Color colorCardDrawTwo) {
+    	boolean valueExist = false;
+    	for (Card aCard : main) {
+            if(aCard.getValue() == valueCardDrawTwo && aCard.getColor() == colorCardDrawTwo) {
+                valueExist = true;
+                setCardContre(aCard);
+            }
+        }
+    	return valueExist;	
     }
 
     @Override

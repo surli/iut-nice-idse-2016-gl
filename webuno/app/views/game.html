@@ -2,7 +2,7 @@
     <div class="container">
         <div class="players col-md-12">
             <div data-ng-repeat="player in game.players" data-ng-if="player.name != user.name"
-                 class="player col-md-{{12 / (game.players.length-1)}} {{(player.name == currentPlayer) ? 'current-player' : ''}}">
+                 class="player col-md-{{nbPlayers}} {{(player.name == currentPlayer) ? 'current-player' : ''}}">
                 <span class="player-name">{{player.name}}</span>
                 <br/>
                 <span class="player-cartes">{{player.cartes}} {{'CARD' | translate}}{{(player.cartes > 1) ? "s" : ""}}</span>
@@ -12,14 +12,17 @@
 
     <div id="table-game">
         <div id="pioche" data-ng-click="(currentPlayer === user.name) ? piocherCarte() : ''" data-ng-class="{'not-can-play': !playerCanPlay }"></div>
-        <div id="fausse" class="carte {{game.stack.family}}-{{game.stack.number | WordToNumber}}"></div>
+        <div id="fausse" class="carte {{game.stack.family}}-{{game.stack.number | WordToNumber}}" data-ng-class="{ 'Color-Black': game.stack.family === 'Black' }">
+            <div class="pastille-color" data-ng-if="game.stack.family === 'Black'" style="background: {{game.color | FamilyToColor}} !important;"></div>
+        </div>
     </div>
 
     <div id="main">
         <ul>
             <li data-ng-repeat="carte in cartes track by $index"
                 data-ng-click="(carte.playable) ? jouerCarte(carte) : ''"
-                class="carte {{carte.family}}-{{carte.number | WordToNumber}}" data-ng-class="{ 'can-play' : carte.playable }"></li>
+                class="carte {{carte.family}}-{{carte.number | WordToNumber}}" data-ng-class="{ 'can-play' : carte.playable }">
+            </li>
         </ul>
     </div>
 
@@ -55,6 +58,24 @@
         <span data-ng-show="player.name === user.name">Tu as gagné !</span>
         <span data-ng-hide="player.name === user.name">Le joueur {{player.name}} a gagné !</span>
     </h1>
+  <div class="col-md-offset-3 col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading text-center">
+        <span>{{'ENDGAMESTATS' | translate}}</span>
+      </div>
+      <div class="panel-body text-center" style="padding:0;">
+        <table class="table"  style="margin: 0;">
+          <tr data-ng-repeat="score in game.score">
+            <td>{{score.playerName}}</td>
+            <td>{{score.value}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
     <br>
+    <br>
+  <div class="col-md-offset-3 col-md-6">
     <a href data-ng-click="goTo('app.home', 0, callbackHome)" class="btn btn-primary">Retour à l'accueil</a>
+    </div>
 </div>

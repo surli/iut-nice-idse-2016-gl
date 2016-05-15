@@ -7,8 +7,10 @@ import fr.unice.idse.model.card.Value;
 import fr.unice.idse.model.player.IA;
 import fr.unice.idse.model.player.IAFactory;
 import fr.unice.idse.model.player.Player;
+import fr.unice.idse.model.player.IAHard;
 import org.junit.Before;
 import org.junit.Test;
+
 
 import java.util.ArrayList;
 
@@ -18,10 +20,16 @@ public class IAHardTest {
     private IA iaHard;
     private Game game;
     private Player host;
+    private IAHard iaHard1;
 
     @Before
     public void initialize(){
+
         iaHard = IAFactory.setIA("testIAHard", 3);
+
+
+        iaHard1 = new IAHard("testIAHard1", 3);
+
         ArrayList<Card> cards=new ArrayList<Card>();
 
         cards.add(new Card(Value.Three, Color.Blue));
@@ -69,5 +77,39 @@ public class IAHardTest {
         boolean expected = false;
         boolean valueExist = iaHard.searchValueCard(iaHard.getCards(), Value.Nine);
         assertEquals(expected, valueExist);
+    }
+    
+    /*--------------testMyCard---------------------------------------*/
+    
+    @Test
+    public void testMyCard(){
+    	Card expected = new Card(Value.Six, Color.Green);
+    	iaHard1.setMyCard(expected);
+    	assertEquals (expected, iaHard1.getMyCard());
+    }
+    
+    /*--------------testTurnPlay---------------------------------------*/
+    @Test
+    public void testTurnPlay() {
+    	boolean expected = true;
+    	iaHard1.setTurnPlay(true);
+    	assertEquals(expected,iaHard1.getTurnPlay());
+    }
+    
+
+    /* ------------ testBestColor ----------------------------- */
+    @Test
+    public void testBestColor() {
+        Color expected = Color.Green;
+        iaHard1.setBestColor(Color.Green);
+        assertEquals(expected, iaHard1.getBestColor());
+    }
+    
+    /* ------------ testCardContre ----------------------------- */
+    @Test
+    public void testCardContre() {
+        Card expected = new Card(Value.Nine, Color.Yellow);
+        iaHard1.setCardContre(new Card(Value.Nine, Color.Yellow));
+        assertEquals(expected, iaHard1.getCardContre());
     }
 }
