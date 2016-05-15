@@ -400,6 +400,7 @@ public class GameRest extends OriginRest{
         Player player = model.findPlayerByName(gameName, playerName);
         JSONObject jsonObject = new JSONObject();
         ArrayList<JSONObject> cartes = new ArrayList<>();
+        ArrayList<JSONObject> playable = new ArrayList<>();
 
         if(token == null){
             jsonObject.put("error", "Token not found");
@@ -422,6 +423,17 @@ public class GameRest extends OriginRest{
             jsonFils.put("position", i);
             cartes.add(jsonFils);
         }
+
+        if(model.findGameByName(gameName).getActualPlayer().getToken().equals(token)){
+            ArrayList<Card> tmp = model.findGameByName(gameName).playableCards();
+            for(int i = 0; i < tmp.size(); i++){
+                JSONObject jsonFils = new JSONObject();
+                jsonFils.put("number", tmp.get(i).getValue());
+                jsonFils.put("family", tmp.get(i).getColor());
+            }
+        }
+
+        jsonObject.put("playable", playable);
         jsonObject.put("cartes", cartes);
 
         return sendResponse(200, jsonObject.toString(), "GET");
