@@ -62,7 +62,7 @@ public class Model {
 	 * @param player Player
 	 * @param gameName String
 	 * @param numberPlayers Int
-	 * @param regles ArrayList<EffectCard>
+	 * @param regles
 	 * @return Boolean
 	 */
 	public boolean addGame(Player player, String gameName, int numberPlayers, ArrayList<EffectCard> regles)
@@ -331,7 +331,7 @@ public class Model {
 	/**
 	 * Le joueur désigné joue une carte en fonction de la position de la carte
 	 * (cardPosition)dans la main du joueur, dans la partie indiquée et change de
-	 * couleur selon la couleur indiquée (0 -> Bleu, 1 -> Jaune, 2 -> Rouge, 3 -> Vert)
+	 * couleur selon la couleur indiquée (0 : Bleu, 1 : Jaune, 2 : Rouge, 3 : Vert)
 	 * @param playerName String
 	 * @param colorNumber String
 	 * @return Boolean

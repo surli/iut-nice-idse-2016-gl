@@ -23,8 +23,8 @@ public class Deck {
 	}
 	
 	/**
-	 * 	Getter de la pioche
-	 * @return ArrayList<Card>
+	 * Getter de la pioche
+	 * @return deck
 	 */
 	public ArrayList<Card> getDeck(){
 		return deck;
@@ -32,7 +32,7 @@ public class Deck {
 	
 	/**
 	 * Setter de la pioche
-	 * @param ArrayList<Card>
+	 * @param deck
 	 */
 	public void setDeck(ArrayList<Card> deck){
 		this.deck = deck;
