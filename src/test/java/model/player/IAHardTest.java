@@ -104,4 +104,12 @@ public class IAHardTest {
         iaHard1.setBestColor(Color.Green);
         assertEquals(expected, iaHard1.getBestColor());
     }
+    
+    /* ------------ testCardContre ----------------------------- */
+    @Test
+    public void testCardContre() {
+        Card expected = new Card(Value.Nine, Color.Yellow);
+        iaHard1.setCardContre(new Card(Value.Nine, Color.Yellow));
+        assertEquals(expected, iaHard1.getCardContre());
+    }
 }
