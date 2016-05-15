@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import fr.unice.idse.constante.Config;
 import fr.unice.idse.model.Alternative;
 import fr.unice.idse.model.player.IA;
+import fr.unice.idse.model.player.IAFactory;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -158,10 +159,50 @@ public class GameRest extends OriginRest{
             return sendResponse(405, jsonResult.toString(), "POST");
         }
 
+        int nb = 0;
+        int difficulty = 0;
+        if(json.has("ia")){
+            if(json.has("difficulty")){
+                try {
+                    nb = json.getInt("ia");
+                    difficulty = json.getInt("difficulty");
+                }catch (JSONException e){
+                    jsonResult.put("error", "ia or difficulty parameter invalid");
+                    return sendResponse(405, jsonResult.toString(), "POST");
+                }
+                if(difficulty < 1 || difficulty > 3){
+                    jsonResult.put("error", "difficulty parameter invalid");
+                    return sendResponse(405, jsonResult.toString(), "POST");
+                }
+                if(nb > numberplayers-1){
+                    jsonResult.put("error", "IA number invalid");
+                    return sendResponse(405, jsonResult.toString(), "POST");
+                }
+            }else{
+                jsonResult.put("error", "Difficulty parameter invalid");
+                return sendResponse(405, jsonResult.toString(), "POST");
+            }
+        }
+
         // creation de la game
         if(!model.addGame(model.getPlayerFromList(token), game,numberplayers, alternative)){
             jsonResult.put("message", false);
             return sendResponse(500, jsonResult.toString(), "POST");
+        }
+        for(int i = 1; i <= nb; i++){
+            String name = "";
+            switch (difficulty){
+                case 1 :
+                    name = "easy";
+                    break;
+                case 2 :
+                    name = "medium";
+                    break;
+                case 3 :
+                    name = "Hard";
+                    break;
+            }
+            model.findGameByName(game).addPlayer(IAFactory.getIA(name+"#"+i, difficulty));
         }
 
         jsonResult.put("message", true);
@@ -629,12 +670,10 @@ public class GameRest extends OriginRest{
         }
 
         game.nextPlayer();
-        
-        /*La méthode à apeller est ici mais 2 des tests fails je vous laisse aranger ça
-        if(rule.getEffect())
-        {
-        	rule.effect();
-        }*/
+        while (game.getActualPlayer() instanceof IA){
+            ((IA) game.getActualPlayer()).thinking(game);
+            game.nextPlayer();
+        }
         
         jsonObject.put("success", true);
         return sendResponse(200, jsonObject.toString(), "PUT");

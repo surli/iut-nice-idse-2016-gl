@@ -59,7 +59,7 @@ public class IAEasy extends IA {
     public void thinking (Game game) {
         ArrayList<Card> mainIA = game.getActualPlayer().getCards();
         ArrayList<Card> playableCards = game.playableCards();
-        
+        setTurnPlay(false);
         setMyCard(chooseCardToPlay(playableCards));
         playCard(game, getMyCard(), mainIA, getTurnPlay());
     }

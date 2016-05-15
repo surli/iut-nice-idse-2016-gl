@@ -78,6 +78,7 @@ public class IAMedium extends IA {
     public void thinking (Game game) {
         ArrayList<Card> mainIA = game.getActualPlayer().getCards();
         ArrayList<Card> playableCards = game.playableCards();
+        setTurnPlay(false);
 
         setMyCard(chooseCardToPlay(mainIA, playableCards, game));
         playCard(game, getMyCard(), mainIA, getTurnPlay());
