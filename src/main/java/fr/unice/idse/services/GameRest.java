@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 import fr.unice.idse.constante.Config;
 import fr.unice.idse.model.Alternative;
+import fr.unice.idse.model.player.IA;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -151,7 +152,7 @@ public class GameRest extends OriginRest{
             return sendResponse(405, jsonResult.toString(), "POST");
         }
 
-        ArrayList alternative = Config.alternatives.get(json.getString("alternative"));
+        ArrayList<EffectCard> alternative = Config.alternatives.get(json.getString("alternative"));
         if(alternative == null){
             jsonResult.put("error", "No alternative found");
             return sendResponse(405, jsonResult.toString(), "POST");
@@ -509,6 +510,10 @@ public class GameRest extends OriginRest{
         }
         jsonReturn.put("return", true);
         game.nextPlayer();
+        while (game.getActualPlayer() instanceof IA){
+            ((IA) game.getActualPlayer()).thinking(game);
+            game.nextPlayer();
+        }
         return sendResponse(200, jsonReturn.toString(), "POST");
     }
 

@@ -2,6 +2,7 @@ package services.GameRestTest;
 
 import fr.unice.idse.model.Game;
 import fr.unice.idse.model.Model;
+import fr.unice.idse.model.player.IAEasy;
 import fr.unice.idse.model.player.Player;
 import fr.unice.idse.services.GameRest;
 import org.codehaus.jettison.json.JSONException;
@@ -21,9 +22,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by Jeremie on 17/03/2016.
- */
+
 public class PickACardTest extends JerseyTest{
 
     @Override
@@ -36,8 +35,8 @@ public class PickACardTest extends JerseyTest{
     @Before
     public void init() {
         model = Model.getInstance();
-        model.setGames(new ArrayList<Game>());
-        model.setPlayers(new ArrayList<Player>());
+        model.setGames(new ArrayList<>());
+        model.setPlayers(new ArrayList<>());
         model.createPlayer("toto", "token");
         model.addGame(model.getPlayerFromList("token"), "tata", 4);
         for(int i = 0; i < 3; i++) {
@@ -115,6 +114,36 @@ public class PickACardTest extends JerseyTest{
 
         JSONObject json = new JSONObject(response.readEntity(String.class));
         assertEquals("It's not this player to play", json.getString("error"));
+    }
 
+    @Test
+    public void pickACardIAWithOnePlay() throws JSONException{
+        assertTrue(model.createPlayer("test", "test"));
+        assertTrue(model.addGame(model.getPlayerFromList("test"), "Gaaaame", 3));
+        assertTrue(model.findGameByName("Gaaaame").addPlayer(new IAEasy("iaeasy", 1)));
+        assertTrue(model.createPlayer("test1", "test1"));
+        assertTrue(model.addPlayerToGame("Gaaaame", model.getPlayerFromList("test1")));
+        assertTrue(model.findGameByName("Gaaaame").start());
+        Entity<String> jsonEntity = Entity.entity(null, MediaType.APPLICATION_JSON);
+        Response response = target("/game/Gaaaame/test").request().header("token", "test").post(jsonEntity);
+        assertEquals(200, response.getStatus());
+
+        assertEquals(model.findGameByName("Gaaaame").getActualPlayer().getName(), "test1");
+    }
+
+    @Test
+    public void pickACardWithTwoIAPlay() throws JSONException{
+        assertTrue(model.createPlayer("test", "test"));
+        assertTrue(model.addGame(model.getPlayerFromList("test"), "Gaaaame", 4));
+        assertTrue(model.findGameByName("Gaaaame").addPlayer(new IAEasy("iaeasy", 1)));
+        assertTrue(model.findGameByName("Gaaaame").addPlayer(new IAEasy("iaeasy", 1)));
+        assertTrue(model.createPlayer("test1", "test1"));
+        assertTrue(model.addPlayerToGame("Gaaaame", model.getPlayerFromList("test1")));
+        assertTrue(model.findGameByName("Gaaaame").start());
+        Entity<String> jsonEntity = Entity.entity(null, MediaType.APPLICATION_JSON);
+        Response response = target("/game/Gaaaame/test").request().header("token", "test").post(jsonEntity);
+        assertEquals(200, response.getStatus());
+
+        assertEquals(model.findGameByName("Gaaaame").getActualPlayer().getName(), "test1");
     }
 }

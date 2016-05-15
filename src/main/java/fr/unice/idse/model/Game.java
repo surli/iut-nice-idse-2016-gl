@@ -7,6 +7,7 @@ import java.util.Observable;
 
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.player.IA;
 import fr.unice.idse.model.player.Player;
 import fr.unice.idse.model.regle.EffectCard;
 import fr.unice.idse.model.save.Save;
