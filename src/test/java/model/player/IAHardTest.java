@@ -112,4 +112,11 @@ public class IAHardTest {
         iaHard1.setCardContre(new Card(Value.Nine, Color.Yellow));
         assertEquals(expected, iaHard1.getCardContre());
     }
+    
+    @Test
+    public void searchCardDrawTwoFalse() {
+        boolean expected = false;
+        boolean drawTwoExist = iaHard1.searchCardDrawTwo(iaHard1.getCards(), Value.DrawTwo, Color.Yellow);
+        assertEquals(expected, drawTwoExist);
+    }
 }

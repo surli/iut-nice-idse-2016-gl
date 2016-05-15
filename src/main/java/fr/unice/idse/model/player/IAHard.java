@@ -232,14 +232,14 @@ public class IAHard extends IA {
     }
     
     public boolean searchCardDrawTwo (ArrayList<Card> main, Value valueCardDrawTwo, Color colorCardDrawTwo) {
-    	boolean valueExist = false;
+    	boolean CardExist = false;
     	for (Card aCard : main) {
-            if(aCard.getValue() == valueCardDrawTwo && aCard.getColor() == colorCardDrawTwo) {
-                valueExist = true;
+    		if(aCard.getValue() == valueCardDrawTwo && aCard.getColor() == colorCardDrawTwo) {
+    			CardExist = true;
                 setCardContre(aCard);
             }
         }
-    	return valueExist;	
+    	return CardExist;	
     }
 
     @Override

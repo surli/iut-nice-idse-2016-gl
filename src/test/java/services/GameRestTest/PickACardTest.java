@@ -117,7 +117,7 @@ public class PickACardTest extends JerseyTest{
     }
 
     @Test
-    public void pickACardIAWithOnePlay() throws JSONException{
+    public void pickACardIAPlay() throws JSONException{
         assertTrue(model.createPlayer("test", "test"));
         assertTrue(model.addGame(model.getPlayerFromList("test"), "Gaaaame", 3));
         assertTrue(model.findGameByName("Gaaaame").addPlayer(new IAEasy("iaeasy", 1)));
@@ -132,7 +132,7 @@ public class PickACardTest extends JerseyTest{
     }
 
     @Test
-    public void pickACardWithTwoIAPlay() throws JSONException{
+    public void pickACardWithIAPlay() throws JSONException{
         assertTrue(model.createPlayer("test", "test"));
         assertTrue(model.addGame(model.getPlayerFromList("test"), "Gaaaame", 4));
         assertTrue(model.findGameByName("Gaaaame").addPlayer(new IAEasy("iaeasy", 1)));
