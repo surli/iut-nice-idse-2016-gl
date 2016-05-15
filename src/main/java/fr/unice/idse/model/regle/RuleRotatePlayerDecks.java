@@ -23,7 +23,10 @@ public class RuleRotatePlayerDecks extends EffectCard
 
 	@Override
 	public void action() {
-		getGame().rotatePlayersDecks();
+		if(!getGame().getActualPlayer().getCards().isEmpty())
+		{
+			getGame().rotatePlayersDecks();
+		}
 	}
 
 	@Override

@@ -22,8 +22,8 @@ public class IAEasyTest {
     @Before
     public void initialize(){
 
-        iaEasy = new IAEasy("testIAEasy", "", 1);
-        iaEasy2 = new IAEasy("testIAEasyGame", "", 1);
+        iaEasy = new IAEasy("testIAEasy", 1);
+        iaEasy2 = new IAEasy("testIAEasyGame", 1);
 
         ArrayList<Card> cards =new ArrayList<Card>();
         ArrayList<Card> cards2 =new ArrayList<Card>();

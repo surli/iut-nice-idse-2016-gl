@@ -24,7 +24,7 @@ public class Deck {
 	
 	/**
 	 * 	Getter de la pioche
-	 * @return
+	 * @return ArrayList<Card>
 	 */
 	public ArrayList<Card> getDeck(){
 		return deck;
@@ -32,7 +32,7 @@ public class Deck {
 	
 	/**
 	 * Setter de la pioche
-	 * @param deck
+	 * @param ArrayList<Card>
 	 */
 	public void setDeck(ArrayList<Card> deck){
 		this.deck = deck;
@@ -48,7 +48,11 @@ public class Deck {
 	 *  - 4 cartes "+4"
 	 */
 	public void fillDeck() {
-		
+		/*for (Value v : Value.values()) {
+			for (Color c : Color.values()) {
+				deck.add(new Card(v, c));
+			}
+		}*/
 		deck.add(new Card(Value.Zero,Color.Blue));
 		deck.add(new Card(Value.Zero,Color.Red));
 		deck.add(new Card(Value.Zero,Color.Green));

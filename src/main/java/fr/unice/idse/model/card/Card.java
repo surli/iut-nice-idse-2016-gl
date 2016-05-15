@@ -72,8 +72,8 @@ public class Card implements Comparable<Card>{
 		}
 
 		/**
-		 * Sert à trier par ordre de couleur (Bleu->Jaune->Rouge->Vert->Noir)
-		 * Puis par valeur croissante
+		 * Sert à trier par ordre de couleur (Bleu puis Jaune puis Rouge puis Vert puis Noir)
+		 * Et ensuite par valeur croissante
 		 */
 		public int compareTo(Card obj) {
 			int i;
