@@ -26,8 +26,20 @@ angular.module('unoApp')
             Wild     : 13,
             DrawFour : 14
         };
-        
-        return function(word) {
+
+        return function (word) {
             return cards[word];
         };
+    })
+    .filter('FamilyToColor', function () {
+        var colors = {
+            Yellow: '#ffaa00',
+            Blue: '#5555ff',
+            Green: '#55aa55',
+            Red: '#ff5555'
+        };
+
+        return function (color) {
+            return colors[color];
+        }
     });

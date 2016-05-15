@@ -12,14 +12,17 @@
 
     <div id="table-game">
         <div id="pioche" data-ng-click="(currentPlayer === user.name) ? piocherCarte() : ''" data-ng-class="{'not-can-play': !playerCanPlay }"></div>
-        <div id="fausse" class="carte {{game.stack.family}}-{{game.stack.number | WordToNumber}}"></div>
+        <div id="fausse" class="carte {{game.stack.family}}-{{game.stack.number | WordToNumber}}" data-ng-class="{ 'Color-Black': game.stack.family === 'Black' }">
+            <div class="pastille-color" data-ng-if="game.stack.family === 'Black'" style="background: {{game.color | FamilyToColor}} !important;"></div>
+        </div>
     </div>
 
     <div id="main">
         <ul>
             <li data-ng-repeat="carte in cartes track by $index"
                 data-ng-click="(carte.playable) ? jouerCarte(carte) : ''"
-                class="carte {{carte.family}}-{{carte.number | WordToNumber}}" data-ng-class="{ 'can-play' : carte.playable }"></li>
+                class="carte {{carte.family}}-{{carte.number | WordToNumber}}" data-ng-class="{ 'can-play' : carte.playable }">
+            </li>
         </ul>
     </div>
 
