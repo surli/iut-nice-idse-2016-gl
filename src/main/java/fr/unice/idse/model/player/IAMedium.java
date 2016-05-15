@@ -84,49 +84,44 @@ public class IAMedium extends IA {
     }
 
     public Card chooseCardToPlay (ArrayList<Card> mainIA, ArrayList<Card> playableCards, Game game) {
-
         ArrayList<NumberCardByColor> cards = calculateNumberCardByColor(mainIA);
-
         int nbCard = 0;
         Card myCard = null;
-
         while (!getTurnPlay() && nbCard < cards.get(3).getNumber()) {
             setBestColor(cards.get(3).getColor());
             myCard = mainIA.get(nbCard);
-            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(0).getColor(), getTurnPlay()));
+            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(0).getColor()));
             nbCard++;
         }
         while (!getTurnPlay() && nbCard < cards.get(2).getNumber()) {
-        	setBestColor(cards.get(2).getColor());
-        	myCard = mainIA.get(nbCard);
-            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(1).getColor(), getTurnPlay()));
+            setBestColor(cards.get(2).getColor());
+            myCard = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(1).getColor()));
             nbCard++;
         }
         while (!getTurnPlay() && nbCard < cards.get(1).getNumber()) {
-        	setBestColor(cards.get(1).getColor());
-        	myCard = mainIA.get(nbCard);
-            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(2).getColor(), getTurnPlay()));
+            setBestColor(cards.get(1).getColor());
+            myCard = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(2).getColor()));
             nbCard++;
         }
         while (!getTurnPlay() && nbCard < cards.get(0).getNumber()) {
-        	setBestColor(cards.get(0).getColor());
+            setBestColor(cards.get(0).getColor());
             myCard = mainIA.get(nbCard);
-            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(3).getColor(), getTurnPlay()));
+            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(3).getColor()));
             nbCard++;
         }
-
         return myCard;
     }
-
-    public boolean testCardPlayable(Game game, ArrayList<Card> playableCards, Card myCard, Color bestColor, boolean turnPlay) {
-        System.out.println("Appel de la fonction testCardPlayableAndPlay ");
+    public boolean testCardPlayable(Game game, ArrayList<Card> playableCards, Card myCard, Color bestColor) {
+       
         for (Card aCard : playableCards) {
             if (myCard == aCard) {
                 setTurnPlay(true);
                 break;
             }
         }
-        return turnPlay;
+        return getTurnPlay();
     }
 
     @Override

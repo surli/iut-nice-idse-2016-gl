@@ -9,7 +9,7 @@
 - [Package player] (#package-player)
 - [Package regle] (#package-regle)
 - [Class Alternative] (#class-alternative)
-- [Class Board && Game] (#class-board&&game)
+- [Class Game] (#class-game)
 - [Class Deck && Stack] (#class-deck&&stack)
 - [class Model] (#class-model)
 
@@ -65,7 +65,7 @@ Dans ce Cas il est nécessaire d'utiliser la méthode void effect() arpès avoir
 
 C'est la classe qui permet de répertorier toutes les règles initialisées dans le board et qui propose des accesseurs aux EffectCards.
 
-### Class Board && Game
+### Class Game
 
 C'est ici que se déroule tout les actions du jeux.
 
