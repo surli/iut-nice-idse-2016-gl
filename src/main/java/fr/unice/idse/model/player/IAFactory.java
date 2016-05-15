@@ -10,10 +10,10 @@ public class IAFactory {
 	                break;
 	            case 2 :
 	            	ia = new IAMedium(name, difficulty);
-	                break;
+					break;
 	            case 3 :
 	            	ia = new IAHard(name, difficulty);
-	                break;
+					break;
 	        }
 			return ia;	       
 	 }
