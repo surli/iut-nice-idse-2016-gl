@@ -92,47 +92,35 @@ public class IAMedium extends IA {
         ArrayList<NumberCardByColor> cards = calculateNumberCardByColor(mainIA);
         int nbCard = 0;
         Card cardPlay = null;
-        if(cards.get(4) != null) {
-        	while (!getTurnPlay() && nbCard < cards.get(4).getNumber()) {
-                setBestColor(cards.get(4).getColor());
-                cardPlay = mainIA.get(nbCard);
-                setTurnPlay(testCardPlayable(playableCards, cardPlay));
-                nbCard++;
-            }
-        }
-        if(cards.get(3) != null) {
-        	while (!getTurnPlay() && nbCard < cards.get(3).getNumber()) {
-                setBestColor(cards.get(3).getColor());
-                cardPlay = mainIA.get(nbCard);
-                setTurnPlay(testCardPlayable(playableCards, cardPlay));
-                nbCard++;
-            }
-        }
-        if(cards.get(2) != null) {
-            while (!getTurnPlay() && nbCard < cards.get(2).getNumber()) {
-                setBestColor(cards.get(2).getColor());
-                cardPlay = mainIA.get(nbCard);
-                setTurnPlay(testCardPlayable(playableCards, cardPlay));
-                nbCard++;
-            }
-        }
-        if(cards.get(1) != null) {
-            while (!getTurnPlay() && nbCard < cards.get(1).getNumber()) {
-                setBestColor(cards.get(1).getColor());
-                cardPlay = mainIA.get(nbCard);
-                setTurnPlay(testCardPlayable(playableCards, cardPlay));
-                nbCard++;
-            }
-        }
-        if(cards.get(0) != null) {
-            while (!getTurnPlay() && nbCard < cards.get(0).getNumber()) {
-                setBestColor(cards.get(0).getColor());
-                cardPlay = mainIA.get(nbCard);
-                setTurnPlay(testCardPlayable(playableCards, cardPlay));
-                nbCard++;
-            }
-        }
 
+    	while (!getTurnPlay() && nbCard < cards.get(3).getNumber()) {
+            setBestColor(cards.get(3).getColor());
+            cardPlay = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(playableCards, cardPlay));
+            nbCard++;
+        }
+    
+        while (!getTurnPlay() && nbCard < cards.get(2).getNumber()) {
+            setBestColor(cards.get(2).getColor());
+            cardPlay = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(playableCards, cardPlay));
+            nbCard++;
+        }
+    
+        while (!getTurnPlay() && nbCard < cards.get(1).getNumber()) {
+            setBestColor(cards.get(1).getColor());
+            cardPlay = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(playableCards, cardPlay));
+            nbCard++;
+        }
+    
+        while (!getTurnPlay() && nbCard < cards.get(0).getNumber()) {
+            setBestColor(cards.get(0).getColor());
+            cardPlay = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(playableCards, cardPlay));
+            nbCard++;
+        }
+    
         return cardPlay;
     }
     public boolean testCardPlayable(ArrayList<Card> playableCards, Card myCard) {
