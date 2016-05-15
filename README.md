@@ -59,6 +59,11 @@ Tous les documents de chaque groupe se trouve dans le repertoire doc à la racin
 
 ###Release
 
+>######Version 1.0.0
+
+- Intégration de l'IA
+- Correction de bug
+
 >######Version 0.9.0
 
 - Choix de la variante dans l'IHM lors de la creation d'une partie
