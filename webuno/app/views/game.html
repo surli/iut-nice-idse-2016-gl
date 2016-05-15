@@ -58,6 +58,24 @@
         <span data-ng-show="player.name === user.name">Tu as gagné !</span>
         <span data-ng-hide="player.name === user.name">Le joueur {{player.name}} a gagné !</span>
     </h1>
+  <div class="col-md-offset-3 col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading text-center">
+        <span>{{'ENDGAMESTATS' | translate}}</span>
+      </div>
+      <div class="panel-body text-center" style="padding:0;">
+        <table class="table"  style="margin: 0;">
+          <tr data-ng-repeat="score in game.score">
+            <td>{{score.playerName}}</td>
+            <td>{{score.value}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
     <br>
+    <br>
+  <div class="col-md-offset-3 col-md-6">
     <a href data-ng-click="goTo('app.home', 0, callbackHome)" class="btn btn-primary">Retour à l'accueil</a>
+    </div>
 </div>
