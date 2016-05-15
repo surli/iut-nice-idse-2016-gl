@@ -202,7 +202,7 @@ public class GameRest extends OriginRest{
                     name = "Hard";
                     break;
             }
-            model.findGameByName(game).addPlayer(IAFactory.getIA(name+"#"+i, difficulty));
+            model.findGameByName(game).addPlayer(IAFactory.setIA(name+"#"+i, difficulty));
         }
 
         jsonResult.put("message", true);

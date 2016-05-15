@@ -2,7 +2,7 @@ package fr.unice.idse.model.player;
 
 public class IAFactory {
 
-	public static IA getIA(String name, int difficulty){
+	public static IA setIA(String name, int difficulty){
 	        IA ia = null;
 	        switch (difficulty) {
 	            case 1 :

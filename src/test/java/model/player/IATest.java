@@ -28,9 +28,9 @@ public class IATest {
     @Before
     public void initialize(){
 
-        iaEasy = IAFactory.getIA("testIAEasy", 1);
-        iaHard = IAFactory.getIA("testIAHard", 3);
-        iaDifficulty = IAFactory.getIA("testIADifficulty", 3);
+        iaEasy = IAFactory.setIA("testIAEasy", 1);
+        iaHard = IAFactory.setIA("testIAHard", 3);
+        iaDifficulty = IAFactory.setIA("testIADifficulty", 3);
 
         ArrayList<Card> cards=new ArrayList<Card>();
 
