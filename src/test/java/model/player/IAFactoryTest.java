@@ -7,20 +7,20 @@ import static org.junit.Assert.assertEquals;
 
 public class IAFactoryTest {
 
-    /* ------------ testGetIA ----------------------------- */
+    /* ------------ testSetIA ----------------------------- */
     @Test
-    public void testGetIA(){
-        /*IAEasy expectedEasy = new IAEasy("testGetIAEasy", 1);
-        IA monTestIAEasy = IAFactory.getIA("testGetIAEasy", "", 1);
+	public void testSetIA(){
+        IAEasy expectedEasy = new IAEasy("testSetIAEasy", 1);
+        IA monTestIAEasy = IAFactory.setIA("testSetIAEasy", 1);
 
-        IAMedium expectedMedium = new IAMedium("testGetIAMedium", 2);
-        IA monTestIAMedium = IAFactory.getIA("testGetIAMedium", "", 2);
+        IAMedium expectedMedium = new IAMedium("testSetIAMedium", 2);
+        IA monTestIAMedium = IAFactory.setIA("testSetIAMedium", 2);
 
-        IAHard expectedHard = new IAHard("testGetIAHard", 3);
-        IA monTestIAHard = IAFactory.getIA("testGetIAHard", "", 3);
+        IAHard expectedHard = new IAHard("testSetIAHard", 3);
+        IA monTestIAHard = IAFactory.setIA("testSetIAHard", 3);
 
         assertEquals(expectedEasy, monTestIAEasy);
         assertEquals(expectedMedium, monTestIAMedium);
-        assertEquals(expectedHard, monTestIAHard);*/
+        assertEquals(expectedHard, monTestIAHard);
     }
 }
