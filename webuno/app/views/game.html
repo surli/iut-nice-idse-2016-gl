@@ -11,15 +11,15 @@
     </div>
 
     <div id="table-game">
-        <div id="pioche" data-ng-click="(currentPlayer === user.name) ? piocherCarte() : ''" data-ng-class="{ 'can-play' : playerCanPlay, 'not-can-play': (user.name === currentPlayer) ? !playerCanPlay : false }"></div>
+        <div id="pioche" data-ng-click="(currentPlayer === user.name) ? piocherCarte() : ''" data-ng-class="{'not-can-play': !playerCanPlay }"></div>
         <div id="fausse" class="carte {{game.stack.family}}-{{game.stack.number | WordToNumber}}"></div>
     </div>
 
-    <div id="main" data-ng-class="{ 'can-play' : playerCanPlay, 'not-can-play': !playerCanPlay }">
+    <div id="main">
         <ul>
             <li data-ng-repeat="carte in cartes track by $index"
-                data-ng-click="jouerCarte(carte)"
-                class="carte {{carte.family}}-{{carte.number | WordToNumber}}" data-ng-class="{ 'can-play' : playerCanPlay, 'not-can-play': !playerCanPlay }"></li>
+                data-ng-click="(carte.playable) ? jouerCarte(carte) : ''"
+                class="carte {{carte.family}}-{{carte.number | WordToNumber}}" data-ng-class="{ 'can-play' : carte.playable }"></li>
         </ul>
     </div>
 

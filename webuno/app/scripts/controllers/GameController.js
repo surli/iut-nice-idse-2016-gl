@@ -33,7 +33,7 @@ angular.module('unoApp')
                 // Utilisation du service Game pour récupérer l'état du jeu
                 Game.getGame($rootScope.gameName, function (data) {
                     $scope.game = data;
-                    console.log($scope.game);
+                    //console.log($scope.game);
 
                     // Utilisation du service Game pour récupérer le joueur devant jouer
                     Game.getCurrentPlayer($rootScope.gameName, function (data) {
@@ -52,6 +52,8 @@ angular.module('unoApp')
                     // Utilisation du service Game pour récupérer la main du joueur connecté
                     Game.getUserHand($rootScope.gameName, function (data) {
                         $scope.cartes = data.cartes;
+                        $scope.playable = data.playable;
+                        console.log("playable", data);
                         testIfCanPlay();
                     });
 
@@ -75,6 +77,7 @@ angular.module('unoApp')
                 // Utilisation du service Game pour récupérer la main du joueur connecté
                 Game.getUserHand($rootScope.gameName, function (data) {
                     $scope.cartes = data.cartes;
+                    $scope.playable = data.playable;
                     testIfCanPlay();
                 });
             });
@@ -94,6 +97,7 @@ angular.module('unoApp')
                         // Utilisation du service Game pour récupérer la main du joueur connecté
                         Game.getUserHand($rootScope.gameName, function (data) {
                             $scope.cartes = data.cartes;
+                            $scope.playable = data.playable;
                         });
 
                         // Utilisation du service Game pour récupérer l'état du jeu
@@ -109,52 +113,37 @@ angular.module('unoApp')
                         // Utilisation du service Game pour récupérer la main du joueur connecté
                         Game.getUserHand($rootScope.gameName, function (data) {
                             $scope.cartes = data.cartes;
+                            $scope.playable = data.playable;
+                            testIfCanPlay();
                         });
 
                         // Utilisation du service Game pour récupérer l'état du jeu
                         Game.getGame($rootScope.gameName, function (data) {
                             $scope.game = data;
-                            testIfCanPlay();
                         });
                     });
             }
         };
 
-        function canPlay() {
-            var found = false;
+        function testIfCanPlay() {
+            //console.log($scope.playable);
             if ($scope.user.name === $scope.currentPlayer) {
-                if ($scope.game.stack.number === 'DrawTwo' || $scope.game.stack.number === 'DrawFour') {
-                    angular.forEach($scope.cartes, function(card) {
-                        if (card.number === $scope.game.stack.number) {
-                            found = true;
-                        }
+                if ($scope.playable.length > 0) {
+                    $scope.playerCanPlay = true;
+                    $scope.playable.forEach(function (val) {
+                        $scope.cartes.forEach(function (carte) {
+                            if (val.family === carte.family && val.number === carte.number) {
+                                carte.playable = true;
+                            }
+                        });
                     });
                 } else {
-                    angular.forEach($scope.cartes, function(card) {
-                        if (card.number === $scope.game.stack.number || card.family === $scope.game.stack.family) {
-                            found = true;
-                        }
-                    });
+                    $scope.playerCanPlay = false;
                 }
-            }
-            return found;
-        }
-
-        function testIfCanPlay() {
-            if (canPlay()) {
-                $scope.$emit('can-play');
             } else {
-                $scope.$emit('not-can-play');
+                $scope.playerCanPlay = false;
             }
         }
-
-        $scope.$on('can-play', function() {
-            $scope.playerCanPlay = true;
-        });
-
-        $scope.$on('not-can-play', function() {
-            $scope.playerCanPlay = false;
-        });
 
         $rootScope.callbackHome = function(url) {
             $timeout.cancel(timeoutStateGame);

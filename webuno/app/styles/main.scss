@@ -308,7 +308,6 @@ footer {
     position: relative;
 
     #pioche {
-      opacity: 0.2;
       width: $carte-width;
       height: $carte-height;
       border-radius: 12px;
@@ -320,20 +319,11 @@ footer {
       position: absolute;
       top: 80px;
       left: 70px;
-
-      &.can-play {
-        opacity: 1;
-
-        &:hover {
-          transform: scale(1.1);
-          box-shadow: 0 0 15px 1px $gris;
-          cursor: pointer;
-        }
-      }
+      filter: grayscale(80%);
 
       &.not-can-play {
         cursor: pointer;
-        opacity: 1;
+        filter: grayscale(0);
         animation: pioche 2s infinite;
       }
 
@@ -358,19 +348,10 @@ footer {
   }
 
   #main {
-    opacity: 0.4;
     width: 100%;
     height: $carte-height;
     margin: 50px auto 30px auto;
     text-align: center;
-
-    &.can-play {
-      opacity: 1;
-    }
-
-    &.not-can-play {
-      opacity: 0.4;
-    }
 
     ul {
       display: inline-block;
@@ -380,19 +361,18 @@ footer {
         list-style: none;
         margin-left: -($carte-width/3);
         box-shadow: 0 0 15px 1px $gris;
+        filter: blur(2px);
 
         &.can-play {
+          filter: blur(0);
+          z-index: 99999;
+
           &:hover {
             margin-right: ($carte-width/3);
             margin-left: -($carte-width/4);
             transform: scale(1.1);
             cursor: pointer;
-            z-index: 9999;
           }
-        }
-
-        .not-can-play {
-
         }
       }
     }
