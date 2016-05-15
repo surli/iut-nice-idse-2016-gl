@@ -6,7 +6,12 @@ import fr.unice.idse.model.card.Color;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class IAEasy extends IA {
+	
+    private Logger logger = LoggerFactory.getLogger(IAEasy.class);
 
     // ------------------------------------------------------------------- myCard
     /** La carte qui sera joué. */
@@ -50,8 +55,8 @@ public class IAEasy extends IA {
 
 
     //CONSTRUCTEUR
-    public IAEasy(String name, String token, int difficulty) {
-        super(name, token);
+    public IAEasy(String name, int difficulty) {
+        super(name);
         this.difficulty = difficulty;
     }
 
@@ -59,7 +64,7 @@ public class IAEasy extends IA {
     public void thinking (Game game) {
         ArrayList<Card> mainIA = game.getActualPlayer().getCards();
         ArrayList<Card> playableCards = game.playableCards();
-        
+        setTurnPlay(false);
         setMyCard(chooseCardToPlay(playableCards));
         playCard(game, getMyCard(), mainIA, getTurnPlay());
     }

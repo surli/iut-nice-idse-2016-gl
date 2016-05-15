@@ -4,7 +4,7 @@
   "PASSWORD": "Mot de passe",
   "OR": "OU",
   "LOGIN": "Connexion",
-  "CONNECTGUEST": "Connexion en tant qu'invité",
+  "CONNECTGUEST": "Connexion invité",
   "REGISTER": "S'inscrire",
   "NOTACCOUNT": "Tu n'as pas de compte ?",
   "ALREADYACCOUNT": "Tu as déjà un compte ?",
@@ -17,6 +17,7 @@
   "RESUME": "Reprendre",
   "DELETE": "Supprimer",
   "STATSPARTY" : "Statistiques Parties",
+  "ENDGAMESTATS" : "Statistiques fin de partie",
   "WAITINGPLAYERS": "En attente de joueurs",
   "FULLPLAYERS": "Partie complète",
   "JOIN": "Rejoindre",
@@ -30,6 +31,7 @@
   "GAME_CONF": "Configuration de la partie",
   "GAME_NAME": "Nom de partie",
   "NB_PLAYERS": "Nombre de joueurs",
+  "NB_IA": "Nombre d'IA",
   "GO": "C'est parti !",
   "PLAYERS": "Listes des joueurs",
   "BANNED": "Banni",
@@ -39,5 +41,8 @@
   "USER": "Abonné",
   "ADMIN": "Administrateur",
   "UPDATE": "Modifier",
-  "VARIANT": "Règles"
+  "VARIANT": "Règles",
+  "IA1": "Facile",
+  "IA2": "Intermédiaire",
+  "IA3": "Difficile"
 }

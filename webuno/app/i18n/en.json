@@ -17,6 +17,7 @@
   "RESUME": "Resume",
   "DELETE": "Delete",
   "STATSPARTY" : "Party Stats",
+  "ENDGAMESTATS" : "Stats end game",
   "WAITINGPLAYERS": "Waiting for players",
   "FULLPLAYERS": "Full players",
   "JOIN": "Join",
@@ -30,6 +31,7 @@
   "GAME_CONF": "Game configuration",
   "GAME_NAME": "Game name",
   "NB_PLAYERS": "Number players",
+  "NB_IA": "Number IA",
   "GO": "Let's go !",
   "PLAYERS": "Lists of players",
   "BANNED": "Banned",
@@ -39,5 +41,8 @@
   "USER": "Register",
   "ADMIN": "Administrator",
   "UPDATE": "Update",
-  "VARIANT": "Rules"
+  "VARIANT": "Rules",
+  "IA1": "Easy",
+  "IA2": "Medium",
+  "IA3": "Hard"
 }

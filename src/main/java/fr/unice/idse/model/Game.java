@@ -7,6 +7,7 @@ import java.util.Observable;
 
 import fr.unice.idse.model.card.Card;
 import fr.unice.idse.model.card.Color;
+import fr.unice.idse.model.player.IA;
 import fr.unice.idse.model.player.Player;
 import fr.unice.idse.model.regle.EffectCard;
 import fr.unice.idse.model.save.Save;
@@ -97,7 +98,7 @@ public class Game extends Observable {
 	/**
 	 * Ajoute joueur à la partie
 	 * @param player
-	 * @return true/false
+	 * @return boolean
 	 */
 	public boolean addPlayer(Player player)
 	{
@@ -116,7 +117,7 @@ public class Game extends Observable {
 	/**
 	 * Verifie si le joueur indiqué est présent dans la partie
 	 * @param playerName
-	 * @return true/false
+	 * @return boolean
 	 */
 	public boolean containsPlayerByName(String playerName)
 	{
@@ -146,7 +147,7 @@ public class Game extends Observable {
 	/**
 	 * Supprime joueur de la partie selon son nom
 	 * @param playerName
-	 * @return true/false
+	 * @return boolean
 	 */
 	public boolean removePlayerByName(String playerName)
 	{
@@ -161,7 +162,7 @@ public class Game extends Observable {
 	/**
 	 * Verifie si le joueur indiqué est présent dans la partie
 	 * @param playerToken
-	 * @return true/false
+	 * @return boolean
 	 */
 	public boolean containsPlayerByToken(String playerToken)
 	{
@@ -191,7 +192,7 @@ public class Game extends Observable {
 	/**
 	 * Supprime joueur de la partie selon son token
 	 * @param playerToken
-	 * @return true/false
+	 * @return boolean
 	 */
 	public boolean removePlayerByToken(String playerToken)
 	{
@@ -223,7 +224,7 @@ public class Game extends Observable {
 	
 	/**
 	 * Méthode qui initialise une partie afin de qu'elle devienne jouable
-	 * @return
+	 * @return boolean
 	 */
 	public boolean start()
 	{
@@ -241,6 +242,7 @@ public class Game extends Observable {
 
 	/**
 	 * Retourne le joueur suivant
+	 * @return int
 	 */
 	public int getNextPlayer () {
 		if(orientation)
@@ -344,9 +346,6 @@ public class Game extends Observable {
 	 * Change la couleur actuel de la partie.
 	 * @param color
 	 */
-	//Je suis pas trop daccord sur le fait de changer la couleur de la carte 
-	//car celà impliquerait qu'il y ai une carte d'une couleur final en plus 
-	//et une carte de couleur depart en moins si vous voyez ce que je veu dire
 	public void changeColor(Color color)
 	{
 		actualColor = color;

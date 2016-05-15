@@ -23,8 +23,8 @@ public class Deck {
 	}
 	
 	/**
-	 * 	Getter de la pioche
-	 * @return
+	 * Getter de la pioche
+	 * @return deck
 	 */
 	public ArrayList<Card> getDeck(){
 		return deck;
@@ -48,7 +48,11 @@ public class Deck {
 	 *  - 4 cartes "+4"
 	 */
 	public void fillDeck() {
-		
+		/*for (Value v : Value.values()) {
+			for (Color c : Color.values()) {
+				deck.add(new Card(v, c));
+			}
+		}*/
 		deck.add(new Card(Value.Zero,Color.Blue));
 		deck.add(new Card(Value.Zero,Color.Red));
 		deck.add(new Card(Value.Zero,Color.Green));

@@ -1,6 +1,7 @@
 package fr.unice.idse.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.ws.rs.DELETE;
@@ -16,6 +17,8 @@ import javax.ws.rs.core.Response;
 
 import fr.unice.idse.constante.Config;
 import fr.unice.idse.model.Alternative;
+import fr.unice.idse.model.player.IA;
+import fr.unice.idse.model.player.IAFactory;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -151,16 +154,56 @@ public class GameRest extends OriginRest{
             return sendResponse(405, jsonResult.toString(), "POST");
         }
 
-        ArrayList alternative = Config.alternatives.get(json.getString("alternative"));
+        ArrayList<EffectCard> alternative = Config.alternatives.get(json.getString("alternative"));
         if(alternative == null){
             jsonResult.put("error", "No alternative found");
             return sendResponse(405, jsonResult.toString(), "POST");
+        }
+
+        int nb = 0;
+        int difficulty = 0;
+        if(json.has("ia")){
+            if(json.has("difficulty")){
+                try {
+                    nb = json.getInt("ia");
+                    difficulty = json.getInt("difficulty");
+                }catch (JSONException e){
+                    jsonResult.put("error", "ia or difficulty parameter invalid");
+                    return sendResponse(405, jsonResult.toString(), "POST");
+                }
+                if(difficulty < 1 || difficulty > 3){
+                    jsonResult.put("error", "difficulty parameter invalid");
+                    return sendResponse(405, jsonResult.toString(), "POST");
+                }
+                if(nb > numberplayers-1){
+                    jsonResult.put("error", "IA number invalid");
+                    return sendResponse(405, jsonResult.toString(), "POST");
+                }
+            }else{
+                jsonResult.put("error", "Difficulty parameter invalid");
+                return sendResponse(405, jsonResult.toString(), "POST");
+            }
         }
 
         // creation de la game
         if(!model.addGame(model.getPlayerFromList(token), game,numberplayers, alternative)){
             jsonResult.put("message", false);
             return sendResponse(500, jsonResult.toString(), "POST");
+        }
+        for(int i = 1; i <= nb; i++){
+            String name = "";
+            switch (difficulty){
+                case 1 :
+                    name = "easy";
+                    break;
+                case 2 :
+                    name = "medium";
+                    break;
+                case 3 :
+                    name = "Hard";
+                    break;
+            }
+            model.findGameByName(game).addPlayer(IAFactory.setIA(name+"#"+i, difficulty));
         }
 
         jsonResult.put("message", true);
@@ -197,21 +240,35 @@ public class GameRest extends OriginRest{
             return sendResponse(405, jsonObject.toString(), "GET");
         }
 
-        if(model.findGameByName(gamename).gameBegin()){
+        Game game = model.findGameByName(gamename);
+        if(game.gameBegin()){
             jsonObject.put("state", true);
-            jsonObject.put("currentplayer", model.findGameByName(gamename).getActualPlayer().getName());
-            for(int i = 0; i < model.findGameByName(gamename).getPlayers().size(); i++){
+            jsonObject.put("color", game.getActualColor());
+            jsonObject.put("currentplayer", game.getActualPlayer().getName());
+            for(int i = 0; i < game.getPlayers().size(); i++){
                 JSONObject objFils = new JSONObject();
-                objFils.put("name", model.findGameByName(gamename).getPlayers().get(i).getName());
-                objFils.put("cartes", model.findGameByName(gamename).getPlayers().get(i).getCards().size());
+                objFils.put("name", game.getPlayers().get(i).getName());
+                objFils.put("cartes", game.getPlayers().get(i).getCards().size());
                 players.add(objFils);
             }
             jsonObject.put("players", players);
             JSONObject jsonStack = new JSONObject();
-            jsonStack.put("number", model.findGameByName(gamename).getStack().topCard().getValue());
-            jsonStack.put("family", model.findGameByName(gamename).getStack().topCard().getColor());
+            jsonStack.put("number", game.getStack().topCard().getValue());
+            jsonStack.put("family", game.getStack().topCard().getColor());
             jsonObject.put("stack", jsonStack);
-            jsonObject.put("gameEnd", model.findGameByName(gamename).gameEnd());
+            jsonObject.put("gameEnd", game.gameEnd());
+            if(game.gameEnd()){
+                ArrayList<JSONObject> score = new ArrayList<>();
+                game.calculatePoints();
+                HashMap<String, Integer> scores = game.ranking();
+                for(String key : scores.keySet()){
+                    JSONObject js = new JSONObject();
+                    js.put("playerName", key);
+                    js.put("value", scores.get(key));
+                    score.add(js);
+                }
+                jsonObject.put("score", score);
+            }
             return sendResponse(200, jsonObject.toString(), "GET");
         }
 
@@ -400,6 +457,7 @@ public class GameRest extends OriginRest{
         Player player = model.findPlayerByName(gameName, playerName);
         JSONObject jsonObject = new JSONObject();
         ArrayList<JSONObject> cartes = new ArrayList<>();
+        ArrayList<JSONObject> playable = new ArrayList<>();
 
         if(token == null){
             jsonObject.put("error", "Token not found");
@@ -422,6 +480,18 @@ public class GameRest extends OriginRest{
             jsonFils.put("position", i);
             cartes.add(jsonFils);
         }
+
+        if(model.findGameByName(gameName).getActualPlayer().getToken().equals(token)){
+            ArrayList<Card> tmp = model.findGameByName(gameName).playableCards();
+            for(int i = 0; i < tmp.size(); i++){
+                JSONObject jsonFils = new JSONObject();
+                jsonFils.put("number", tmp.get(i).getValue());
+                jsonFils.put("family", tmp.get(i).getColor());
+                playable.add(jsonFils);
+            }
+        }
+
+        jsonObject.put("playable", playable);
         jsonObject.put("cartes", cartes);
 
         return sendResponse(200, jsonObject.toString(), "GET");
@@ -497,6 +567,10 @@ public class GameRest extends OriginRest{
         }
         jsonReturn.put("return", true);
         game.nextPlayer();
+        while (game.getActualPlayer() instanceof IA){
+            ((IA) game.getActualPlayer()).thinking(game);
+            game.nextPlayer();
+        }
         return sendResponse(200, jsonReturn.toString(), "POST");
     }
 
@@ -612,12 +686,10 @@ public class GameRest extends OriginRest{
         }
 
         game.nextPlayer();
-        
-        /*La méthode à apeller est ici mais 2 des tests fails je vous laisse aranger ça
-        if(rule.getEffect())
-        {
-        	rule.effect();
-        }*/
+        while (game.getActualPlayer() instanceof IA){
+            ((IA) game.getActualPlayer()).thinking(game);
+            game.nextPlayer();
+        }
         
         jsonObject.put("success", true);
         return sendResponse(200, jsonObject.toString(), "PUT");

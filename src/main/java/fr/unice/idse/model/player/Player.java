@@ -23,6 +23,15 @@ public class Player implements Comparable<Player>{
 		this.token = token;
 	}
 
+	// Constructeur pour l'IA, car celui-ci n'a pas de token
+	public Player(String name) {
+		this.name = name;
+		this.cards = new ArrayList<Card>();
+		this.turn = false;
+		this.lastCardPlayed = null;
+		this.score = 0;
+	}
+
 	public String getName() {
 		return name;
 	}

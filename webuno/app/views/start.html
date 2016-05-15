@@ -26,6 +26,19 @@
                     </div>
                     <hr style="border-color: rgba(0, 0, 0, 0.2);">
                     <div class="form-group">
+                        <label for="nbIA" class="col-md-4 control-label" translate="NB_IA"></label>
+                        <div class="col-md-8">
+                            <input id="nbIA" class="form-control input-lg" type="number" min="0" max="{{nbPlayers-1}}" data-ng-model="ia" />
+                            <br>
+                            <select class="form-control input-lg" name="nbPlayers" data-ng-model="difficulty" id="difficulty">
+                                <option value="1" translate="IA1"></option>
+                                <option value="2" translate="IA2"></option>
+                                <option value="3" translate="IA3"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr style="border-color: rgba(0, 0, 0, 0.2);">
+                    <div class="form-group">
                         <label for="typeVariante" class="col-md-4 control-label" translate="VARIANT"></label>
                         <div class="col-md-8">
                             <select class="form-control input-lg" name="typeVariante" data-ng-model="alternative" id="typeVariante">

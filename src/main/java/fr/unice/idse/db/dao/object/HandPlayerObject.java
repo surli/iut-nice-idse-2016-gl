@@ -1,5 +1,6 @@
 package fr.unice.idse.db.dao.object;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class HandPlayerObject {
 	private List<CardObject> cards;
 
 	public HandPlayerObject() {
-		// Default constructor
+		this.cards = new ArrayList<>();
 	}
 
 	public HandPlayerObject(int idMatch, int idTurn, int idUser, List<CardObject> cards) {
@@ -68,8 +69,13 @@ public class HandPlayerObject {
 	}
 
 	public void setCard(List<Card> cards) {
-		for(Card card : cards) {
-			this.cards.add(((CardDAO)DAOFactory.getCardDAO()).find(card.getColor().getNumber(), card.getColor().getNumber()));
+		try {
+			for(Card card : cards) {
+				CardObject cardObj = ((CardDAO)DAOFactory.getCardDAO()).find(card.getColor().getNumber(), card.getValue().getNumber()); 
+				this.cards.add(cardObj);
+			}
+		} catch (SQLException e) {
+				e.printStackTrace();
 		}
 	}
 

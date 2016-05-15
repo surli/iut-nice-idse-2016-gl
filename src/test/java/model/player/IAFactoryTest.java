@@ -3,24 +3,21 @@ package model.player;
 import fr.unice.idse.model.player.*;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class IAFactoryTest {
 
-    /* ------------ testGetIA ----------------------------- */
+    /* ------------ testSetIA ----------------------------- */
     @Test
-    public void testGetIA(){
-        IAEasy expectedEasy = new IAEasy("testGetIAEasy", "", 1);
-        IA monTestIAEasy = IAFactory.getIA("testGetIAEasy", "", 1);
+	public void testSetIA(){
+        IA monTestIAEasy = IAFactory.setIA("testSetIAEasy", 1);
 
-        IAMedium expectedMedium = new IAMedium("testGetIAMedium", "", 2);
-        IA monTestIAMedium = IAFactory.getIA("testGetIAMedium", "", 2);
+        IA monTestIAMedium = IAFactory.setIA("testSetIAMedium", 2);
 
-        IAHard expectedHard = new IAHard("testGetIAHard", "", 3);
-        IA monTestIAHard = IAFactory.getIA("testGetIAHard", "", 3);
+        IA monTestIAHard = IAFactory.setIA("testSetIAHard", 3);
 
-        assertEquals(expectedEasy, monTestIAEasy);
-        assertEquals(expectedMedium, monTestIAMedium);
-        assertEquals(expectedHard, monTestIAHard);
+        assertTrue(monTestIAEasy instanceof IAEasy);
+        assertTrue(monTestIAMedium instanceof IAMedium);
+        assertTrue(monTestIAHard instanceof IAHard);
     }
 }

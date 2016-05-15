@@ -7,8 +7,13 @@ import fr.unice.idse.model.card.NumberCardByColor;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class IAMedium extends IA {
 
+    private Logger logger = LoggerFactory.getLogger(IAMedium.class);
+    
 // ------------------------------------------------------------------- myCard
     /** La carte qui sera joué. */
     protected Card myCard;
@@ -70,60 +75,63 @@ public class IAMedium extends IA {
     }
 
 // ------------------------------------------------------------------- CONSTRUCTEUR
-    public IAMedium(String name, String token, int difficulty) {
-        super(name, token);
+    public IAMedium(String name, int difficulty) {
+        super(name);
         this.difficulty = difficulty;
     }
 
     public void thinking (Game game) {
         ArrayList<Card> mainIA = game.getActualPlayer().getCards();
         ArrayList<Card> playableCards = game.playableCards();
-
+        setTurnPlay(false);
         setMyCard(chooseCardToPlay(mainIA, playableCards, game));
         playCard(game, getMyCard(), mainIA, getTurnPlay());
     }
 
     public Card chooseCardToPlay (ArrayList<Card> mainIA, ArrayList<Card> playableCards, Game game) {
-
         ArrayList<NumberCardByColor> cards = calculateNumberCardByColor(mainIA);
-
         int nbCard = 0;
-        Card myCard = null;
+        Card cardPlay = null;
 
-        while (!getTurnPlay() && nbCard < cards.get(3).getNumber()) {
+    	while (!getTurnPlay() && nbCard < cards.get(3).getNumber()) {
             setBestColor(cards.get(3).getColor());
-            myCard = mainIA.get(nbCard);
-            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(0).getColor(), getTurnPlay()));
+            cardPlay = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(playableCards, cardPlay));
             nbCard++;
         }
+    
         while (!getTurnPlay() && nbCard < cards.get(2).getNumber()) {
-            myCard = mainIA.get(nbCard);
-            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(1).getColor(), getTurnPlay()));
+            setBestColor(cards.get(2).getColor());
+            cardPlay = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(playableCards, cardPlay));
             nbCard++;
         }
+    
         while (!getTurnPlay() && nbCard < cards.get(1).getNumber()) {
-            myCard = mainIA.get(nbCard);
-            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(2).getColor(), getTurnPlay()));
+            setBestColor(cards.get(1).getColor());
+            cardPlay = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(playableCards, cardPlay));
             nbCard++;
         }
+    
         while (!getTurnPlay() && nbCard < cards.get(0).getNumber()) {
-            myCard = mainIA.get(nbCard);
-            setTurnPlay(testCardPlayable(game, playableCards, myCard, cards.get(3).getColor(), getTurnPlay()));
+            setBestColor(cards.get(0).getColor());
+            cardPlay = mainIA.get(nbCard);
+            setTurnPlay(testCardPlayable(playableCards, cardPlay));
             nbCard++;
         }
-
-        return myCard;
+    
+        return cardPlay;
     }
-
-    public boolean testCardPlayable(Game game, ArrayList<Card> playableCards, Card myCard, Color bestColor, boolean turnPlay) {
-        System.out.println("Appel de la fonction testCardPlayableAndPlay ");
+    public boolean testCardPlayable(ArrayList<Card> playableCards, Card myCard) {
+       
         for (Card aCard : playableCards) {
             if (myCard == aCard) {
                 setTurnPlay(true);
                 break;
             }
         }
-        return turnPlay;
+        return getTurnPlay();
     }
 
     @Override
@@ -133,6 +141,8 @@ public class IAMedium extends IA {
 
     @Override
     public void changeColor(Card cardToPlay, ArrayList<Card> mainIA, Game game) {
-        game.getAlternative().getEffectCard(getMyCard()).action(chooseColor(mainIA));
+        Color color = chooseColor(mainIA);
+        game.getAlternative().getEffectCard(cardToPlay).action(color);
+        game.setActualColor(color);
     }
 }

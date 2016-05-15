@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 public abstract class IA extends Player {
 
     private Logger logger = LoggerFactory.getLogger(IA.class);
+    private static int tokenIA = 1;
 
     // ------------------------------------------------------------------- difficulty
     /** La difficulté de l'IA. */
@@ -37,8 +38,9 @@ public abstract class IA extends Player {
     }
 
 
-    public IA(String name, String token) {
-        super(name, token);
+    public IA(String name) {
+        super(name, "IAToken"+tokenIA);
+        tokenIA++;
     }
 
     public ArrayList<NumberCardByColor> calculateNumberCardByColor (ArrayList<Card> mainIA) {
@@ -83,6 +85,8 @@ public abstract class IA extends Player {
             if (game.getAlternative().getEffectCard(cardToPlay) != null && game.getAlternative().getEffectCard(cardToPlay).isColorChangingCard()) {
                 changeColor(cardToPlay, mainIA, game);
             }
+            if(game.getAlternative().getEffectCard(cardToPlay) != null)
+                game.getAlternative().getEffectCard(cardToPlay).action();
         }
         else {
             game.drawCard();
@@ -115,4 +119,6 @@ public abstract class IA extends Player {
         }
         return valueExist;
     }
+
+    public void thinking (Game game){}
 }
