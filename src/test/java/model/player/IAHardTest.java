@@ -21,7 +21,7 @@ public class IAHardTest {
 
     @Before
     public void initialize(){
-        iaHard = IAFactory.getIA("testIAHard", "", 3);
+        iaHard = IAFactory.setIA("testIAHard", 3);
         ArrayList<Card> cards=new ArrayList<Card>();
 
         cards.add(new Card(Value.Three, Color.Blue));
