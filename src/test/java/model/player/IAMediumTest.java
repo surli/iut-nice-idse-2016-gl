@@ -64,4 +64,22 @@ public class IAMediumTest {
         iaMedium.setBestColor(Color.Red);
         assertEquals(expected, iaMedium.chooseColor(iaMedium.getCards()));
     }
+    
+    /* ------------ testChangeColor -----------------------------  */
+    @Test
+    public void testChangeColor() {
+        Color colorExpected = Color.Red;
+        iaMedium.setBestColor(Color.Red);
+        iaMedium.playCard(game, iaMedium.getCards().get(0), iaMedium.getCards(), true); // Change la couleur qui est jouée
+        assertEquals(colorExpected, game.getActualColor());
+    }
+    
+    /* ------------ testCardPlayable -----------------------------  */
+    @Test
+    public void testCardPlayable() {
+        boolean turnPlayExpected = true;
+        boolean turnPlayer = iaMedium2.testCardPlayable(game, game.playableCards(), iaMedium2.getCards().get(1), Color.Green);
+        
+        assertEquals(turnPlayExpected, turnPlayer);
+    }
 }
